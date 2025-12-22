@@ -3,18 +3,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: whoami-deployment
-  labels:
-    app: whoami
   namespace: whoami
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: whoami
   template:
-    metadata:
-      labels:
-        app: whoami
     spec:
       securityContext:
         runAsNonRoot: true
