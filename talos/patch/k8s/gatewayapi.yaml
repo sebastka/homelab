@@ -1,0 +1,9 @@
+# https://docs.siderolabs.com/kubernetes-guides/advanced-guides/inlinemanifests#extramanifests
+# https://gateway-api.sigs.k8s.io/guides/
+---
+
+cluster:
+  extraManifests:
+    - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/standard-install.yaml
+    - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.4.0/config/crd/experimental/gateway.networking.k8s.io_tlsroutes.yaml
+    # - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/experimental-install.yaml

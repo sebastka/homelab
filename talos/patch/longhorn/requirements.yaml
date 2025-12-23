@@ -1,0 +1,15 @@
+# https://longhorn.io/docs/1.9.0/advanced-resources/os-distro-specific/talos-linux-support/
+
+# https://joshrnoll.com/installing-longhorn-on-talos-with-helm/
+# https://www.johanneskueber.com/posts/longhorn_uservolumes_talos/
+
+---
+
+machine:
+  sysctls:
+    vm.nr_hugepages: "1024"
+  kernel:
+    modules:
+      - name: nvme_tcp
+      - name: vfio_pci
+      # - name: uio_pci_generic

@@ -1,0 +1,24 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: cloudflare-dns01-issuer
+  namespace: gateway
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: sebastian@karlsen.fr
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: cloudflare-dns01-issuer-account-key
+    solvers:
+      - selector:
+          dnsZones:
+            - karlsen.fr
+            - karlsen.org
+        dns01:
+          cloudflare:
+            email: sebastian@karlsen.fr
+            apiTokenSecretRef:
+              name: cloudflare-api-token
+              key: api-token

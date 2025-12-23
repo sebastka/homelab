@@ -1,2 +1,4 @@
-**/infrastructure/**/charts
+.k8s.kustomize/
+**/**/**/charts
 **/Secret.yaml
+**/*.env.secret

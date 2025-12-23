@@ -1,0 +1,83 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless
+  namespace: paperless
+spec:
+  replicas: 1
+  template:
+    spec:
+      volumes:
+        - name: paperless-data
+          persistentVolumeClaim:
+            claimName: paperless-data
+        - name: paperless-media
+          persistentVolumeClaim:
+            claimName: paperless-media
+        - name: paperless-consume
+          persistentVolumeClaim:
+            claimName: paperless-consume
+      containers:
+        - name: gotenberg
+          image: index.docker.io/gotenberg/gotenberg:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+            seccompProfile:
+              type: RuntimeDefault
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+          args:
+            - gotenberg
+            - --chromium-disable-javascript=true
+            - --chromium-allow-list=file:///tmp/.*
+
+        - name: tika
+          image: index.docker.io/apache/tika:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9998
+          securityContext:
+            runAsUser: 35002
+            runAsGroup: 35002
+            seccompProfile:
+              type: RuntimeDefault
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+
+        - name: paperless
+          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          securityContext:
+            # runAsUser: 1000
+            # runAsGroup: 1003
+            # fsGroup: 1003
+            seccompProfile:
+              type: RuntimeDefault
+            allowPrivilegeEscalation: false
+            # runAsNonRoot: true
+            # capabilities:
+            #   drop:
+            #     - ALL
+          envFrom:
+            - configMapRef:
+                name: paperless-config
+          volumeMounts:
+            - mountPath: "/data/data"
+              name: paperless-data
+            - mountPath: "/data/media"
+              name: paperless-media
+            - mountPath: "/data/consume"
+              name: paperless-consume

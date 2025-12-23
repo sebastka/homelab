@@ -1,0 +1,12 @@
+# https://docs.siderolabs.com/talos/v1.9/networking/vip
+---
+
+machine:
+  network:
+    interfaces:
+      - deviceSelector:
+          physical: true
+        # interface: ens18
+        dhcp: true
+        vip:
+          ip: 192.168.6.200

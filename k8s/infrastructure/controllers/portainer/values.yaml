@@ -1,0 +1,19 @@
+# https://docs.portainer.io/start/install-ce/server/kubernetes/baremetal#expose-via-ingress
+---
+
+service:
+  type: ClusterIP
+
+tls:
+  force: false
+
+image:
+  tag: latest
+
+ingress:
+  enabled: false
+
+persistence:
+  enabled: true
+  size: "2Gi"
+  storageClass: longhorn

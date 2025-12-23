@@ -1,0 +1,7 @@
+# https://docs.siderolabs.com/talos/v1.11/reference/configuration/v1alpha1/config#machine
+---
+machine:
+  install:
+    # disk: /dev/sda
+    diskSelector:
+      size: '< 40 GiB'

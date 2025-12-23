@@ -1,0 +1,57 @@
+# https://docs.siderolabs.com/kubernetes-guides/cni/deploying-cilium
+# https://docs.cilium.io/en/latest/installation/k8s-install-helm/
+# https://artifacthub.io/packages/helm/cilium/cilium?modal=values
+---
+
+cluster:
+  name: talmox
+  id: 1
+
+kubeProxyReplacement: true
+
+# Talos specific
+k8sServiceHost: localhost
+k8sServicePort: 7445
+securityContext:
+  capabilities:
+    ciliumAgent: [CHOWN, KILL, NET_ADMIN, NET_RAW, IPC_LOCK, SYS_ADMIN, SYS_RESOURCE, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
+    cleanCiliumState: [NET_ADMIN, SYS_ADMIN, SYS_RESOURCE]
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+
+l2announcements:
+  enabled: true
+
+ipam:
+  mode: kubernetes
+
+# -- (bool) Enable native IP masquerade support in eBPF
+# bpf:
+#   masquerade: true
+
+gatewayAPI:
+  enabled: true
+  enableAlpn: true
+  enableAppProtocol: true
+  gatewayClass:
+    create: "true"
+#   hostNetwork:
+#     enabled: true
+
+# -- Roll out cilium agent pods automatically when configmap is updated.
+rollOutCiliumPods: true
+
+hubble:
+  enabled: false
+  # relay:
+  #   enabled: true
+  #   rollOutPods: true
+  # ui:
+  #   enabled: true
+  #   rollOutPods: true
+
+# -- Grafana dashboards for cilium-agent
+dashboards:
+  enabled: false

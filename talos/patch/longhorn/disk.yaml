@@ -1,0 +1,12 @@
+# https://docs.siderolabs.com/talos/v1.11/reference/configuration/block/uservolumeconfig
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: longhorn-data  # label: u-longhorn-data
+provisioning:
+  diskSelector:
+    match: 'disk.size > 50u * GiB'
+  minSize: 1GiB
+
+filesystem:
+  type: ext4

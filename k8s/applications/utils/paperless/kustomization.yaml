@@ -1,0 +1,23 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      app: paperless
+
+configMapGenerator:
+  - name: paperless-config
+    namespace: paperless
+    envs:
+      - .paperless.env
+      - .paperless.env.secret
+
+resources:
+  - Namespace.yaml
+  - PersistentVolumeClaim.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - HTTPRoute.yaml

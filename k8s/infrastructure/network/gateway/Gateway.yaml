@@ -1,0 +1,44 @@
+# https://docs.cilium.io/en/latest/network/servicemesh/gateway-api/parameterized-gatewayclass/
+# https://blog.stonegarden.dev/articles/2023/12/cilium-gateway-api/
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: cilium-gateway
+  namespace: gateway
+  annotations:
+    cert-manager.io/issuer: cloudflare-dns01-issuer
+    # service.spec.externalTrafficPolicy: Local
+spec:
+  gatewayClassName: cilium
+  listeners:
+    - name: http-wc-talmox-hera-home-karlsen-fr
+      hostname: "*.talmox.hera.home.karlsen.fr"
+      port: 80
+      protocol: HTTP
+      allowedRoutes:
+        kinds:
+          - group: gateway.networking.k8s.io
+            kind: HTTPRoute
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              https-upgrade: "true"
+    - name: https-wc-talmox-hera-home-karlsen-fr
+      hostname: "*.talmox.hera.home.karlsen.fr"
+      protocol: HTTPS
+      port: 443
+      allowedRoutes:
+        kinds:
+          - group: gateway.networking.k8s.io
+            kind: HTTPRoute
+          - group: gateway.networking.k8s.io
+            kind: GRPCRoute
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: wc-karlsen-fr-tls-secret

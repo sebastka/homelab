@@ -1,0 +1,11 @@
+---
+
+extends: default
+
+ignore: |
+  **/**/**/charts
+  .k8s.kustomize/
+  k8s/infrastructure/controllers/.argocd.helm/values.defaults.yaml
+
+rules:
+  line-length: disable

@@ -1,0 +1,6 @@
+# https://docs.siderolabs.com/talos/v1.9/networking/vip
+---
+
+cluster:
+  controlPlane:
+    endpoint: https://192.168.6.200:6443

@@ -1,0 +1,30 @@
+# https://joshrnoll.com/installing-longhorn-on-talos-with-helm/
+# https://www.johanneskueber.com/posts/longhorn_uservolumes_talos/
+# https://github.com/longhorn/charts/blob/v1.10.x/charts/longhorn/values.yaml
+---
+# values.yaml
+defaultSettings:
+  defaultReplicaCount: 2  # Default is 3. Will fail on single node clusters
+  # storageReservedPercentageForDefaultDisk: 1 # longhorn has its own disk - it can use all available space
+  # defaultDataPath: "/var/lib/longhorn"
+  defaultDataPath: /var/mnt/longhorn-data
+  # defaultDataPath: /dev/sdb
+  # v2DataEngine: true
+  # offlineReplicaRebuilding: true
+
+  allowCollectingLonghornUsageMetrics: false
+persistence:
+  reclaimPolicy: Retain
+  defaultClassReplicaCount: 2
+  # dataEngine: v2
+
+# ingress:
+#   enabled: true
+#   ingressClassName: nginx
+#   host: longhorn.talmox.hera.home.karlsen.fr
+#   tls: true
+#   # secureBackend: false
+#   tlsSecret: wc-talmox-tls-secret
+#   # path: /
+#   annotations:
+#     cert-manager.io/cluster-issuer: 'letsencrypt-production'

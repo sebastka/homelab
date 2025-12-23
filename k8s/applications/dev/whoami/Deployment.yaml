@@ -16,11 +16,11 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-      - name: whoami
-        image: traefik/whoami:latest
-        ports:
-        - containerPort: 80
-        securityContext:
+        - name: whoami
+          image: traefik/whoami:latest
+          ports:
+            - containerPort: 80
+          securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
             capabilities:
