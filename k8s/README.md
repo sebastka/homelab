@@ -40,7 +40,12 @@ Install Sealed Secrets:
 1. `kubectl kustomize --enable-helm ./infrastructure/controllers/sealed-secrets | kubectl apply --server-side -f -`
 
 Usage:
-- Seal Cloudflare API Token: `cat infrastructure/network/gateway/Secret.yaml | kubeseal kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets-controller --format yaml > infrastructure/network/gateway/SealedSecret.yaml`
+- Seal Cloudflare API Token:
+  ```shell
+    kubectl create secret generic cloudflare-api-token --from-literal=api-token=$CLOUDFLARE_API_TOKEN --namespace gateway --dry-run=client -o yaml \
+        | kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets-controller --format yaml \
+        > ./infrastructure/network/gateway/SealedSecret.yaml
+  ```
 
 ## ArgoCD
 
@@ -49,16 +54,9 @@ https://argo-cd.readthedocs.io/en/stable/getting_started/
 Install ArgoCD:
 1. `kubectl kustomize --enable-helm ./infrastructure/controllers/argocd | kubectl apply --server-side -f -`
 
-ArgoCD CLI login and bootstrap homelab:
-1. `argocd login argocd.talmox.hera.home.karlsen.fr --sso` 
-2. `argocd proj create homelab --description "Homelab"`
-3. `argocd proj add-source homelab https://github.com/sebastka/homelab.git`
-4. `argocd repo add https://github.com/sebastka/homelab.git --name homelab --project homelab --type git`
-
-<!--
-- `kubectl apply -k infrastructure`
-- `kubectl apply -k sets`
--->
+Deploy homelab:
+1. `kubectl apply -k infrastructure`
+2. `kubectl apply -k sets`
 
 ## Longhorn
 
