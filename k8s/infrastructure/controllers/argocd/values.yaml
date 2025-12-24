@@ -24,13 +24,9 @@ configs:
       enablePKCEAuthentication: true
       preferredUsernameClaim: preferred_username
       logoutURL: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/end_session
+    kustomize.buildOptions: --enable-helm
   cmp:
     create: true
-    plugins:
-      kustomize-build-with-helm:
-        generate:
-          command: [sh, -c]
-          args: [kustomize build --enable-helm]
   params:
     server.insecure: true
     controller.diff.server.side: true
