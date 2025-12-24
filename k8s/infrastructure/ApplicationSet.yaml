@@ -1,0 +1,36 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infrastructure
+  namespace: argocd
+  labels:
+    fr.karlsen: infrastructure
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/sebastka/homelab.git
+        revision: HEAD
+        directories:
+          - path: k8s/infrastructure/*
+  template:
+    metadata:
+      name: '{{ path.basename }}'
+      labels:
+        fr.karlsen: infrastructure
+    spec:
+      project: infrastructure
+      source:
+        repoURL: https://github.com/sebastka/homelab.git
+        targetRevision: HEAD
+        path: '{{ path }}'
+      destination:
+        name: in-cluster
+        namespace: argocd
+      syncPolicy:
+        syncOptions:
+          - ServerSideApply=true
+        automated:
+          prune: true
+          selfHeal: true
+          enabled: true

@@ -1,0 +1,23 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infrastructure
+  namespace: argocd
+spec:
+  destination:
+    namespace: argocd
+    name: in-cluster
+  source:
+    path: k8s/applications
+    repoURL: https://github.com/sebastka/homelab.git
+    targetRevision: HEAD
+  sources: []
+  project: app-of-apps
+  syncPolicy:
+    syncOptions:
+      - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true
+      enabled: true

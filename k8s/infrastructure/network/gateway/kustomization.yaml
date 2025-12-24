@@ -4,7 +4,7 @@ kind: Kustomization
 
 resources:
   - Namespace.yaml
-  - Secret.yaml
+  - SealedSecret.yaml
   - Issuer.yaml
   - Gateway.yaml
   - HTTPRoute.yaml

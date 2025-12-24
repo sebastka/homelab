@@ -1,0 +1,25 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: infrastructure
+  namespace: argocd
+spec:
+  sourceRepos:
+    - https://github.com/sebastka/homelab.git
+  destinations:
+    - namespace: kube-system
+      server: '*'
+    - namespace: argocd
+      server: '*'
+    - namespace: gateway
+      server: '*'
+    - namespace: cert-manager
+      server: '*'
+    - namespace: portainer
+      server: '*'
+    - namespace: longhorn-system
+      server: '*'
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'

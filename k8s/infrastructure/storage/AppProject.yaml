@@ -1,0 +1,17 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: storage
+  namespace: argocd
+spec:
+  sourceRepos:
+    - https://github.com/sebastka/homelab.git
+  destinations:
+    - namespace: argocd
+      server: '*'
+    - namespace: longhorn-system
+      server: '*'
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
