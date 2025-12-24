@@ -1,0 +1,84 @@
+# https://artifacthub.io/packages/helm/argo/argo-cd?modal=values
+---
+
+global:
+  domain: argocd.talmox.hera.home.karlsen.fr
+  securityContext:
+    runAsUser: 999
+    runAsGroup: 999
+    fsGroup: 999
+
+configs:
+  cm:
+    create: true
+    application.resourceTrackingMethod: annotation+label
+    admin.enabled: false
+    # https://argo-cd.readthedocs.io/en/latest/operator-manual/user-management/zitadel
+    url: https://argocd.talmox.hera.home.karlsen.fr
+    oidc.config: |
+      name: Zitadel
+      issuer: https://karlsen-xzy0yv.zitadel.cloud
+      redirectURI: https://argocd.talmox.hera.home.karlsen.fr/auth/callback
+      clientID: "352479117259590425"
+      requestedScopes: ["openid", "profile", "email", "groups"]
+      enablePKCEAuthentication: true
+      preferredUsernameClaim: preferred_username
+      logoutURL: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/end_session
+  cmp:
+    create: true
+    plugins:
+      kustomize-build-with-helm:
+        generate:
+          command: [sh, -c]
+          args: [kustomize build --enable-helm]
+  params:
+    server.insecure: true
+    controller.diff.server.side: true
+  rbac:
+    scopes: '[groups]'
+    policy.csv: |
+      g, argocd_administrators, role:admin
+      g, argocd_users, role:readonly
+    policy.default: ''
+
+crds:
+  install: true
+  keep: false
+
+dex:
+  enabled: false
+
+server:
+  httproute:
+    enabled: true
+    # labels: {}
+    # annotations: {}
+    parentRefs:
+      - name: cilium-gateway
+        namespace: gateway
+        sectionName: https-wc-talmox-hera-home-karlsen-fr
+    hostnames:
+      - argocd.talmox.hera.home.karlsen.fr
+    rules:
+      - matches:
+          - path:
+              type: PathPrefix
+              value: /
+
+  # To be fixed
+  grpcroute:
+    enabled: false
+    # labels: {}
+    # annotations: {}
+    parentRefs:
+      - kind: Gateway
+        name: cilium-gateway
+        namespace: gateway
+        sectionName: https-wc-talmox-hera-home-karlsen-fr
+    hostnames:
+      - argocd.talmox.hera.home.karlsen.fr
+    rules:
+      - matches:
+          - headers:
+              - name: Content-Type
+                value: application/grpc

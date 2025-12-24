@@ -11,12 +11,12 @@ spec:
       namespace: gateway
       sectionName: https-wc-talmox-hera-home-karlsen-fr
   hostnames:
-    - "paperless.talmox.hera.home.karlsen.fr"
+    - paperless.talmox.hera.home.karlsen.fr
   rules:
-    - matches:
+    - backendRefs:
+        - name: paperless-service
+          port: 8000
+      matches:
         - path:
             type: PathPrefix
             value: /
-      backendRefs:
-        - name: paperless-service
-          port: 8000

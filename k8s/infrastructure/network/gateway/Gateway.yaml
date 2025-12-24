@@ -13,28 +13,28 @@ spec:
   gatewayClassName: cilium
   listeners:
     - name: http-wc-talmox-hera-home-karlsen-fr
-      hostname: "*.talmox.hera.home.karlsen.fr"
-      port: 80
       protocol: HTTP
+      port: 80
+      hostname: "*.talmox.hera.home.karlsen.fr"
       allowedRoutes:
-        kinds:
-          - group: gateway.networking.k8s.io
-            kind: HTTPRoute
+        # kinds:
+        #   - group: gateway.networking.k8s.io
+        #     kind: HTTPRoute
         namespaces:
           from: Selector
           selector:
             matchLabels:
               https-upgrade: "true"
     - name: https-wc-talmox-hera-home-karlsen-fr
-      hostname: "*.talmox.hera.home.karlsen.fr"
       protocol: HTTPS
       port: 443
+      hostname: "*.talmox.hera.home.karlsen.fr"
       allowedRoutes:
-        kinds:
-          - group: gateway.networking.k8s.io
-            kind: HTTPRoute
-          - group: gateway.networking.k8s.io
-            kind: GRPCRoute
+        # kinds:
+        #   - group: gateway.networking.k8s.io
+        #     kind: HTTPRoute
+        #   - group: gateway.networking.k8s.io
+        #     kind: GRPCRoute
         namespaces:
           from: All
       tls:
@@ -42,3 +42,12 @@ spec:
         certificateRefs:
           - kind: Secret
             name: wc-karlsen-fr-tls-secret
+# - name: tls-wc-talmox-hera-home-karlsen-fr
+#   protocol: TLS
+#   port: 443
+#   hostname: "*.talmox.hera.home.karlsen.fr"
+#   allowedRoutes:
+#     namespaces:
+#       from: All
+#   tls:
+#     mode: Passthrough
