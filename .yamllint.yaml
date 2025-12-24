@@ -2,10 +2,7 @@
 
 extends: default
 
-ignore: |
-  **/**/**/charts
-  .k8s.kustomize/
-  k8s/infrastructure/controllers/.argocd.helm/values.defaults.yaml
+ignore-from-file: .gitignore
 
 rules:
   line-length: disable
