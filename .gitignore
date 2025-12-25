@@ -1,5 +1,4 @@
 .assets/
-.k8s.kustomize/
 .secret.*
 **/**/**/charts
 **/Secret.yaml
