@@ -11,8 +11,8 @@ defaultSettings:
   # defaultDataPath: /dev/sdb
   # v2DataEngine: true
   # offlineReplicaRebuilding: true
-
   allowCollectingLonghornUsageMetrics: false
+
 persistence:
   reclaimPolicy: Retain
   defaultClassReplicaCount: 2
