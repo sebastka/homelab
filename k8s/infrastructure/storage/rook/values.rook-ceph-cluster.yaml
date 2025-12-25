@@ -1,0 +1,29 @@
+# https://artifacthub.io/packages/helm/rook/rook-ceph-cluster?modal=values
+---
+
+operatorNamespace: rook-ceph
+
+cephClusterSpec:
+  storage:
+    useAllNodes: true 
+    useAllDevices: false
+    deviceFilter: "^sdb"
+  dashboard:
+    enabled: true
+    ssl: false
+
+route:
+  dashboard:
+    # labels:
+    #   external-dns/private: "true"
+    # annotations:
+    #   external-dns.alpha.kubernetes.io/hostname: dashboard.example.com
+    #   nginx.ingress.kubernetes.io/rewrite-target: /ceph-dashboard/$2
+    host:
+      name: ceph.talmox.hera.home.karlsen.fr
+      path: "/"
+      pathType: PathPrefix
+    parentRefs:
+      - name: cilium-gateway
+        namespace: gateway
+        sectionName: https-wc-talmox-hera-home-karlsen-fr

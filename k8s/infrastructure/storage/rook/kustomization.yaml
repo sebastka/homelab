@@ -1,0 +1,22 @@
+# https://docs.siderolabs.com/kubernetes-guides/csi/ceph-with-rook
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - Namespace.yaml
+
+helmCharts:
+  - name: rook-ceph
+    repo: https://charts.rook.io/release
+    version: 1.18.8
+    releaseName: rook-ceph
+    namespace: rook-ceph
+    # valuesFile: values.rook-ceph.yaml
+
+  - name: rook-ceph-cluster
+    repo: https://charts.rook.io/release
+    version: 1.18.8
+    releaseName: rook-ceph-cluster
+    namespace: rook-ceph
+    valuesFile: values.rook-ceph-cluster.yaml
