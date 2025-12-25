@@ -24,12 +24,6 @@ preUpgradeChecker:
   jobEnabled: false
   # upgradeVersionCheck: false
 
-# https://github.com/longhorn/longhorn/issues/6623
-# serviceAccount:
-#   annotations:
-#     argocd.argoproj.io/hook: Sync
-#     argocd.argoproj.io/sync-wave: "-1"
-
 # https://www.reddit.com/r/ArgoCD/comments/1pqnajg/comment/nuxi5uj
 longhorn:
   defaultSettings:
@@ -42,7 +36,3 @@ longhorn:
     defaultClassReplicaCount: 2
   preUpgradeChecker:
     jobEnabled: false
-  # serviceAccount:
-  #   annotations:
-  #     argocd.argoproj.io/hook: Sync
-  #     argocd.argoproj.io/sync-wave: "-1"
