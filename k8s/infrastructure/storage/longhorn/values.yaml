@@ -21,7 +21,12 @@ persistence:
 # https://github.com/longhorn/longhorn/issues/8707
 preUpgradeChecker:
   jobEnabled: false
-  upgradeVersionCheck: false
+  # upgradeVersionCheck: false
+
+# https://www.reddit.com/r/ArgoCD/comments/1pqnajg/comment/nuxi5uj
+longhorn:
+  preUpgradeChecker:
+    jobEnabled: false
 
 # https://github.com/longhorn/longhorn/issues/6623
 serviceAccount:
