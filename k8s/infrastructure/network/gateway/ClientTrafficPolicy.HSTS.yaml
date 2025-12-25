@@ -1,0 +1,17 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: global-hsts-policy
+  namespace: gateway
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: default-gateway
+  config:
+    http:
+      responseHeaders:
+        add:
+          - name: Strict-Transport-Security
+            value: "max-age=31536000; includeSubDomains"
