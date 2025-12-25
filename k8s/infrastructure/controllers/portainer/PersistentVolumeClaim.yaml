@@ -8,6 +8,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
+  volumeMode: Filesystem
+  volumeName: longhorn-portainer-volume
   resources:
     requests:
       storage: 2Gi
