@@ -19,8 +19,7 @@ persistence:
   # dataEngine: v2
 
 # https://github.com/longhorn/longhorn/issues/8707
-preUpgradeChecker:
-  enabled: false
+preUpgradeChecker.jobEnabled: false
 
 # ingress:
 #   enabled: true
