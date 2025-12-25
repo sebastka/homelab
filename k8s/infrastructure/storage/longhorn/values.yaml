@@ -19,7 +19,13 @@ persistence:
   # dataEngine: v2
 
 # https://github.com/longhorn/longhorn/issues/8707
-preUpgradeChecker.jobEnabled: false
+# preUpgradeChecker.jobEnabled: false
+
+# https://github.com/longhorn/longhorn/issues/6623
+serviceAccount:
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/sync-wave: "-1"
 
 # ingress:
 #   enabled: true
