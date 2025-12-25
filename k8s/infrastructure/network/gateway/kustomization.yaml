@@ -8,8 +8,5 @@ resources:
   - Issuer.yaml
   - Certificate.karlsen-fr.yaml
   - Certificate.talmox-hera-home-karlsen-fr.yaml
-  - Gateway.http.yaml
-  - Gateway.internal.yaml
-  - Gateway.private.yaml
-  - Gateway.public.yaml
+  - Gateway.yaml
   - HTTPRoute.https-upgrade.yaml
