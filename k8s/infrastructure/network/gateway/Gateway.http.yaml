@@ -6,8 +6,8 @@ kind: Gateway
 metadata:
   name: http-gateway
   namespace: gateway
-  annotations:
-    # service.spec.externalTrafficPolicy: Local
+  # annotations:
+  #   service.spec.externalTrafficPolicy: Local
 spec:
   gatewayClassName: cilium
   listeners:
