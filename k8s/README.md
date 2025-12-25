@@ -15,6 +15,21 @@ Cilium provides:
 Install:
 1. `kubectl kustomize --enable-helm infrastructure/network/cilium | kubectl apply --server-side -f -`
 
+## Sealed Secrets
+
+https://www.arthurkoziel.com/encrypting-k8s-secrets-with-sealed-secrets/
+
+Install Sealed Secrets:
+1. `kubectl kustomize --enable-helm ./infrastructure/controllers/sealed-secrets | kubectl apply --server-side -f -`
+
+Usage:
+- Seal Cloudflare API Token:
+  ```shell
+    kubectl create secret generic cloudflare-api-token --from-literal=api-token=$CLOUDFLARE_API_TOKEN --namespace gateway --dry-run=client -o yaml \
+        | kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets-controller --format yaml \
+        > ./infrastructure/network/gateway/SealedSecret.yaml
+  ```
+
 ## Cert-manager
 
 https://cert-manager.io/docs/installation/helm/  
@@ -31,21 +46,6 @@ Set up Gateway with Cloudflare DNS01 Issuer:
 Misc:
 - Back up: `kubectl -n gateway get secret wc-karlsen-fr-tls-secret -o yaml > wc-karlsen-fr-tls-secret.yaml`
 - Restore: `kubectl apply --server-side -f wc-karlsen-fr-tls-secret.yaml`
-
-## Sealed Secrets
-
-https://www.arthurkoziel.com/encrypting-k8s-secrets-with-sealed-secrets/
-
-Install Sealed Secrets:
-1. `kubectl kustomize --enable-helm ./infrastructure/controllers/sealed-secrets | kubectl apply --server-side -f -`
-
-Usage:
-- Seal Cloudflare API Token:
-  ```shell
-    kubectl create secret generic cloudflare-api-token --from-literal=api-token=$CLOUDFLARE_API_TOKEN --namespace gateway --dry-run=client -o yaml \
-        | kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets-controller --format yaml \
-        > ./infrastructure/network/gateway/SealedSecret.yaml
-  ```
 
 ## ArgoCD
 
