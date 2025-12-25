@@ -7,11 +7,11 @@ metadata:
 spec:
   parentRefs:
     - kind: Gateway
-      name: cilium-gateway
+      name: internal-gateway
       namespace: gateway
       sectionName: https-wc-talmox-hera-home-karlsen-fr
   hostnames:
-    - "longhorn.talmox.hera.home.karlsen.fr"
+    - longhorn.talmox.hera.home.karlsen.fr
   rules:
     - matches:
         - path:

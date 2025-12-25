@@ -6,5 +6,11 @@ resources:
   - Namespace.yaml
   - SealedSecret.yaml
   - Issuer.yaml
-  - Gateway.yaml
-  - HTTPRoute.yaml
+  - Certificate.karlsen-fr.yaml
+  - Certificate.talmox-hera-home-karlsen-fr.yaml
+  - Issuer.yaml
+  - Gateway.http.yaml
+  - Gateway.internal.yaml
+  - Gateway.private.yaml
+  - Gateway.public.yaml
+  - HTTPRoute.https-upgrade.yaml

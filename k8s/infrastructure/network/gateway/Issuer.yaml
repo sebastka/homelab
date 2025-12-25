@@ -16,6 +16,7 @@ spec:
           dnsZones:
             - karlsen.fr
             - karlsen.org
+            - karlsen.app
         dns01:
           cloudflare:
             email: sebastian@karlsen.fr
