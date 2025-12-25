@@ -7,8 +7,9 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn
-  volumeName: longhorn-portainer-volume
   resources:
     requests:
       storage: 2Gi
+  storageClassName: longhorn
+  volumeMode: Filesystem
+  volumeName: pvc-d81fd468-a41f-44db-a932-98c97bb5d043
