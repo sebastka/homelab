@@ -28,7 +28,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: talmox-hera-home-karlsen-fr-secret
+            name: talmox-hera-home-karlsen-fr-certificate
 # - name: tls-wc-talmox-hera-home-karlsen-fr
 #   protocol: TLS
 #   port: 443

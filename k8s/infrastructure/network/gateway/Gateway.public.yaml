@@ -23,7 +23,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: karlsen-fr-secret
+            name: karlsen-fr-certificate
     - name: https-wc-karlsen-fr
       protocol: HTTPS
       port: 443
@@ -35,7 +35,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: karlsen-fr-secret
+            name: karlsen-fr-certificate
 
     - name: https-karlsen-org
       protocol: HTTPS
@@ -48,7 +48,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: karlsen-fr-secret
+            name: karlsen-fr-certificate
     - name: https-wc-karlsen-org
       protocol: HTTPS
       port: 443
@@ -60,7 +60,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: karlsen-fr-secret
+            name: karlsen-fr-certificate
 
     - name: https-karlsen-app
       protocol: HTTPS
@@ -73,7 +73,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: karlsen-fr-secret
+            name: karlsen-fr-certificate
     - name: https-wc-karlsen-app
       protocol: HTTPS
       port: 443
@@ -85,4 +85,4 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: karlsen-fr-secret
+            name: karlsen-fr-certificate
