@@ -5,7 +5,7 @@ operatorNamespace: rook-ceph
 
 cephClusterSpec:
   storage:
-    useAllNodes: true 
+    useAllNodes: true
     useAllDevices: false
     deviceFilter: "^sdb"
   dashboard:
