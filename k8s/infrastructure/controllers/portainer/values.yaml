@@ -1,4 +1,5 @@
 # https://artifacthub.io/packages/helm/portainer/portainer
+# https://github.com/portainer/k8s/blob/master/charts/portainer/README.md
 ---
 
 service:
@@ -16,4 +17,6 @@ ingress:
 persistence:
   enabled: true
   size: "2Gi"
+  # annotations: {}
   storageClass: longhorn
+  existingClaim: pvc-795e7494-87a5-48d8-b05d-10a1a35eb0bd
