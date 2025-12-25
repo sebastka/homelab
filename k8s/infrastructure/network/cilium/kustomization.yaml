@@ -1,4 +1,4 @@
-# https://docs.siderolabs.com/kubernetes-guides/cni/deploying-cilium  
+# https://docs.siderolabs.com/kubernetes-guides/cni/deploying-cilium
 # https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/
 
 # Cilium provides:
