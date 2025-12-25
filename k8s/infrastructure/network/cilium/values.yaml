@@ -1,4 +1,3 @@
-# https://docs.siderolabs.com/kubernetes-guides/cni/deploying-cilium
 # https://docs.cilium.io/en/latest/installation/k8s-install-helm/
 # https://artifacthub.io/packages/helm/cilium/cilium?modal=values
 ---

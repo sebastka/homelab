@@ -1,3 +1,4 @@
+# https://artifacthub.io/packages/helm/bitnami-labs/sealed-secrets?modal=values
 ---
 
 namespace: sealed-secrets

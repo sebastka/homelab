@@ -1,3 +1,11 @@
+# https://docs.siderolabs.com/kubernetes-guides/cni/deploying-cilium  
+# https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/
+
+# Cilium provides:
+# - CNI networking (Replaces Flannel)
+# - Gateway API implementation (Instead of Ingress)
+# - LoadBalancer implementation (Replaces MetalLB)
+
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
