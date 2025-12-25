@@ -15,7 +15,7 @@ defaultSettings:
   upgradeChecker: false
 
 persistence:
-  reclaimPolicy: Retain
+  reclaimPolicy: Delete
   defaultClassReplicaCount: 2
   # dataEngine: v2
 
@@ -32,7 +32,7 @@ longhorn:
     allowCollectingLonghornUsageMetrics: false
     upgradeChecker: false
   persistence:
-    reclaimPolicy: Retain
+    reclaimPolicy: Delete
     defaultClassReplicaCount: 2
   preUpgradeChecker:
     jobEnabled: false
