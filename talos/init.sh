@@ -18,7 +18,7 @@ main()
 
     ln -sf "$CLUSTER_NAME/talosconfig" "$XDG_CONFIG_HOME/talos/config.yaml"
 
-    wait '\nPress enter to apply configuration to control plane nodes...'
+    wait 'Press enter to apply configuration to control plane nodes...'
     for CP_IP in $TALOS_CPS; do
         talosctl apply-config --insecure --nodes "$CP_IP" --file "$TALOS_CONFIG_HOME/controlplane.yaml" \
             --config-patch @patch/talos/vip-machine.yaml
@@ -27,7 +27,7 @@ main()
     talosctl config endpoint $CONTROL_PLANE_IP
     talosctl config node $CONTROL_PLANE_IP
 
-    wait '\nPress enter to apply configuration to worker nodes...'
+    wait 'Press enter to apply configuration to worker nodes...'
     for WORKER_IP in $TALOS_WORKERS; do
         talosctl apply-config --insecure --nodes "$WORKER_IP" --file "$TALOS_CONFIG_HOME/worker.yaml" \
             --config-patch @patch/talos/vip-cluster.yaml
