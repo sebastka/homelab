@@ -19,7 +19,8 @@ persistence:
   # dataEngine: v2
 
 # https://github.com/longhorn/longhorn/issues/8707
-preUpgradeChecker.jobEnabled: false
+preUpgradeChecker:
+  jobEnabled: false
 
 # https://github.com/longhorn/longhorn/issues/6623
 serviceAccount:
