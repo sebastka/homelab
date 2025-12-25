@@ -2,9 +2,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+# To export the secrets as files, run:
+# for secret in cloudflare-dns01-issuer-account-key karlsen-fr-certificate talmox-hera-home-karlsen-fr-certificate; do kubectl get -n gateway -o yaml secret "$secret" > ".secret.$secret.yaml"; done
+
 resources:
   - Namespace.yaml
   - SealedSecret.yaml
+  # - .secret.cloudflare-dns01-issuer-account-key.yaml
+  # - .secret.karlsen-fr-certificate.yaml
+  # - .secret.talmox-hera-home-karlsen-fr-certificate.yaml
   - Issuer.yaml
   - Certificate.karlsen-fr.yaml
   - Certificate.talmox-hera-home-karlsen-fr.yaml
