@@ -15,4 +15,3 @@
 8.  Deploy homelab:
   - `kubectl apply -k infrastructure`
   - `kubectl apply -k sets`
-9. (To be removed) Install Longhorn: `kubectl kustomize --enable-helm ./infrastructure/storage/longhorn | kubectl apply --server-side -f -`
