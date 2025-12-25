@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-# main <cluster-name>
+# ./init.sh <cluster-name>
 main()
 {
     export CLUSTER_NAME="$1"
@@ -18,7 +18,7 @@ main()
 
     ln -sf "$CLUSTER_NAME/talosconfig" "$XDG_CONFIG_HOME/talos/config.yaml"
 
-    wait 'Press enter to apply configuration to control plane nodes'
+    wait '\nPress enter to apply configuration to control plane nodes...'
     for CP_IP in $TALOS_CPS; do
         talosctl apply-config --insecure --nodes "$CP_IP" --file "$TALOS_CONFIG_HOME/controlplane.yaml" \
             --config-patch @patch/talos/vip-machine.yaml
@@ -27,19 +27,19 @@ main()
     talosctl config endpoint $CONTROL_PLANE_IP
     talosctl config node $CONTROL_PLANE_IP
 
-    wait '\nPress enter to apply configuration to worker nodes'
+    wait '\nPress enter to apply configuration to worker nodes...'
     for WORKER_IP in $TALOS_WORKERS; do
         talosctl apply-config --insecure --nodes "$WORKER_IP" --file "$TALOS_CONFIG_HOME/worker.yaml" \
             --config-patch @patch/talos/vip-cluster.yaml
     done
 
-    wait 'Press enter to bootstrap the cluster...\n'
+    wait 'Press enter to bootstrap the cluster...'
     talosctl bootstrap
 
     printf 'Bootstrapping the cluster, this may take a few minutes...\n'
     sleep 30
 
-    wait 'Press enter to retrieve the kubeconfig file...\n'
+    wait 'Press enter to retrieve the kubeconfig file...'
     rm "$XDG_CONFIG_HOME/kube/config.$CLUSTER_NAME"
     talosctl kubeconfig "$XDG_CONFIG_HOME/kube/config.$CLUSTER_NAME"
     ln -sf "config.$CLUSTER_NAME" "$XDG_CONFIG_HOME/kube/config"
@@ -51,4 +51,4 @@ wait()
     read a
 }
 
-main
+main "$@"
