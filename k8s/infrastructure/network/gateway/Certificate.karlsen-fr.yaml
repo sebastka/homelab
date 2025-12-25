@@ -16,4 +16,4 @@ spec:
   issuerRef:
     kind: Issuer
     name: cloudflare-dns01-issuer
-  secretName: karlsen-fr-secret
+  secretName: karlsen-fr-certificate
