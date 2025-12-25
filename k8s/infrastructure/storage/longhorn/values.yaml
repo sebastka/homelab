@@ -18,6 +18,10 @@ persistence:
   defaultClassReplicaCount: 2
   # dataEngine: v2
 
+# https://github.com/longhorn/longhorn/issues/8707
+preUpgradeChecker:
+  enabled: false
+
 # ingress:
 #   enabled: true
 #   ingressClassName: nginx
