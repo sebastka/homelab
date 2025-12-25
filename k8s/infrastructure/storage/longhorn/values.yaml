@@ -28,14 +28,3 @@ serviceAccount:
   annotations:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/sync-wave: "-1"
-
-# ingress:
-#   enabled: true
-#   ingressClassName: nginx
-#   host: longhorn.talmox.hera.home.karlsen.fr
-#   tls: true
-#   # secureBackend: false
-#   tlsSecret: wc-talmox-tls-secret
-#   # path: /
-#   annotations:
-#     cert-manager.io/cluster-issuer: 'letsencrypt-production'
