@@ -21,6 +21,7 @@ persistence:
 # https://github.com/longhorn/longhorn/issues/8707
 preUpgradeChecker:
   jobEnabled: false
+  upgradeVersionCheck: false
 
 # https://github.com/longhorn/longhorn/issues/6623
 serviceAccount:
