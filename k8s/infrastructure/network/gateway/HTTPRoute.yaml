@@ -4,14 +4,12 @@ kind: HTTPRoute
 metadata:
   name: https-upgrade
   namespace: gateway
-  labels:
-    https-upgrade: "true"
 spec:
   parentRefs:
     - kind: Gateway
       name: cilium-gateway
       namespace: gateway
-      sectionName: http-wc-talmox-hera-home-karlsen-fr
+      sectionName: http
   rules:
     - filters:
         - type: RequestRedirect
