@@ -1,4 +1,4 @@
-# https://docs.portainer.io/start/install-ce/server/kubernetes/baremetal#expose-via-ingress
+# https://artifacthub.io/packages/helm/portainer/portainer
 ---
 
 service:

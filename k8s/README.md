@@ -62,22 +62,8 @@ Deploy homelab:
 
 https://longhorn.io/docs/1.9.0/deploy/install/install-with-kubectl/
 
+> [!NOTE]
+> Should be deployed automatically by ArgoCD. Investigate the issue.
+
 Install Longhorn:
 1. `kubectl kustomize --enable-helm ./infrastructure/storage/longhorn | kubectl apply --server-side -f -`
-
-## Portainer
-
-https://artifacthub.io/packages/helm/portainer/portainer
-
-Install Portainer:
-1. `kubectl kustomize --enable-helm ./infrastructure/controllers/portainer | kubectl apply --server-side -f -`
-
-## Whoami
-
-Install Whoami:
-1. `kubectl apply --server-side -k ./applications/dev/whoami`
-
-## Paperless
-
-Install Paperless:
-1. `kubectl apply --server-side -k ./applications/utils/paperless`
