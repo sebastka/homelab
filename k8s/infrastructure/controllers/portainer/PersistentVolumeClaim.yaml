@@ -12,4 +12,4 @@ spec:
       storage: 2Gi
   storageClassName: longhorn
   volumeMode: Filesystem
-  volumeName: pvc-d81fd468-a41f-44db-a932-98c97bb5d043
+  volumeName: pvc-3fa540f6-5463-46e7-bab5-220954b12caa
