@@ -1,0 +1,10 @@
+# https://support.scc.suse.com/s/kb/How-to-configure-longhorn-NFS-backup-with-CLI
+---
+apiVersion: longhorn.io/v1beta2
+kind: Snapshot
+metadata:
+  name: portainer-data-snapshot
+  namespace: portainer
+spec:
+  createSnapshot: true
+  volume: pvc-4b3fd8ec-0d7d-4d58-8aff-581b674fe4f0

@@ -6,6 +6,7 @@ resources:
   - Namespace.yaml
   # - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
+  - Snapshot.yaml
 
 helmCharts:
   - name: portainer
