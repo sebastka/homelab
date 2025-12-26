@@ -2,5 +2,8 @@
 .secret.*
 **/**/**/charts
 **/Secret.yaml
+**/Secret.*.yaml
+!**/Secret.*.enc.yaml
+!**/Secret.enc.yaml
 **/*.env.secret
 talos/temp.json

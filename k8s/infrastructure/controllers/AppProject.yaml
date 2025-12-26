@@ -16,8 +16,6 @@ spec:
       server: '*'
     - namespace: portainer
       server: '*'
-    - namespace: sealed-secrets
-      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

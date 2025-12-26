@@ -1,0 +1,10 @@
+# https://github.com/viaduct-ai/kustomize-sops
+# https://github.com/getsops/sops
+# https://github.com/FiloSottile/age
+
+# sops encrypt X.yaml > X.enc.yaml
+---
+creation_rules:
+  - unencrypted_regex: "^(apiVersion|metadata|kind|type)$"
+    age: >-
+      age1gxk3ylhwfwe0nkhfu8pr08j5axz5y6qm50ntp0ncu0l6cx20fdrqw36n8a
