@@ -45,11 +45,6 @@ dex:
   enabled: false
 
 repoServer:
-  env:
-    - name: XDG_CONFIG_HOME
-      value: /.config
-    - name: SOPS_AGE_KEY_FILE
-      value: /.config/sops/age/keys.txt
   volumes:
     - name: custom-tools
       emptyDir: {}
@@ -58,21 +53,30 @@ repoServer:
         secretName: sops-age
   initContainers:
     - name: install-ksops
-      image: viaductoss/ksops:latest
+      image: viaductoss/ksops:v4
       command: ["/bin/sh", "-c"]
       args:
-        - echo "Installing KSOPS...";
+        - echo "Installing KSOPS and Kustomize...";
           mv ksops /custom-tools/;
+          mv kustomize /custom-tools/;
           echo "Done.";
       volumeMounts:
         - mountPath: /custom-tools
           name: custom-tools
   volumeMounts:
+    - mountPath: /usr/local/bin/kustomize
+      name: custom-tools
+      subPath: kustomize
     - mountPath: /usr/local/bin/ksops
       name: custom-tools
       subPath: ksops
     - name: sops-age
       mountPath: /.config/sops/age
+  env:
+    - name: XDG_CONFIG_HOME
+      value: /.config
+    - name: SOPS_AGE_KEY_FILE
+      value: /.config/sops/age/keys.txt
 
 server:
   httproute:
