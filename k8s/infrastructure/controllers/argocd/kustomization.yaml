@@ -5,7 +5,7 @@ kind: Kustomization
 
 resources:
   - Namespace.yaml
-  - Secret.redis-credentials.enc.yaml
+  # - Secret.redis-credentials.enc.yaml
   - Service.yaml
   - GRPCRoute.yaml
 
