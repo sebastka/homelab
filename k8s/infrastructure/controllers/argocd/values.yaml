@@ -54,7 +54,7 @@ repoServer:
   initContainers:
     - name: install-ksops
       image: viaductoss/ksops:v4
-      command: ["/bin/sh", "-c"]
+      command: ["/bin/ash", "-c"]
       args:
         - echo "Installing KSOPS and Kustomize...";
           mv ksops /custom-tools/;
