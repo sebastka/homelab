@@ -26,7 +26,6 @@ preUpgradeChecker:
 
 defaultBackupStore:
   backupTarget: nfs://192.168.6.20:/mnt/nfs/longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
-  pollInterval: 5m0s
 
 # https://www.reddit.com/r/ArgoCD/comments/1pqnajg/comment/nuxi5uj
 longhorn:
@@ -40,3 +39,5 @@ longhorn:
     defaultClassReplicaCount: 2
   preUpgradeChecker:
     jobEnabled: false
+  defaultBackupStore:
+    backupTarget: nfs://192.168.6.20:/mnt/nfs/longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
