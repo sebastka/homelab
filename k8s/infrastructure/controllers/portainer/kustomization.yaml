@@ -4,7 +4,7 @@ kind: Kustomization
 
 resources:
   - Namespace.yaml
-  # - PersistentVolumeClaim.yaml
+  - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
 
 helmCharts:
