@@ -55,21 +55,19 @@ repoServer:
   initContainers:
     - name: install-ksops
       image: alpine:latest
-      command: ["/bin/ash", "-c"]
+      command: ["/bin/sh", "-c"]
       args:
         - |
           set -eux
-          apk add --no-cache ca-certificates curl tar
           case "$(uname -m)" in
             x86_64|amd64) ARCH="x86_64" ;;
             aarch64|arm64) ARCH="arm64" ;;
             *) echo "unsupported arch: $(uname -m)"; exit 1 ;;
           esac
-          VERSION="v4.4.0"
-          VERSION_RAW="${VERSION#v}"
-          URL="https://github.com/viaduct-ai/kustomize-sops/releases/download/${VERSION}/ksops_${VERSION_RAW}_Linux_${ARCH}.tar.gz"
-          curl -fsSL -o ksops.tar.gz "${URL}"
-          tar -C /custom-tools -xzf ksops.tar.gz ksops
+          VERSION="4.4.0"
+          URL="https://github.com/viaduct-ai/kustomize-sops/releases/download/v${VERSION}/ksops_latest_Linux_arm64.tar.gz"
+          wget "$URL" -O /tmp/ksops.tar.gz
+          tar -C /custom-tools -xzf /tmp/ksops.tar.gz ksops
           chmod +x /custom-tools/ksops
       volumeMounts:
         - mountPath: /custom-tools
