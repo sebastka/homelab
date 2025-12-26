@@ -44,6 +44,7 @@ crds:
 dex:
   enabled: false
 
+# https://github.com/viaduct-ai/kustomize-sops/issues/300
 repoServer:
   volumes:
     - name: custom-tools
@@ -53,20 +54,27 @@ repoServer:
         secretName: sops-age
   initContainers:
     - name: install-ksops
-      image: viaductoss/ksops:v4
+      image: alpine:latest
       command: ["/bin/ash", "-c"]
       args:
-        - echo "Installing KSOPS and Kustomize...";
-          mv ksops /custom-tools/;
-          mv kustomize /custom-tools/;
-          echo "Done.";
+        - |
+          set -eux
+          apk add --no-cache ca-certificates curl tar
+          case "$(uname -m)" in
+            x86_64|amd64) ARCH="x86_64" ;;
+            aarch64|arm64) ARCH="arm64" ;;
+            *) echo "unsupported arch: $(uname -m)"; exit 1 ;;
+          esac
+          VERSION="v4.4.0"
+          VERSION_RAW="${VERSION#v}"
+          URL="https://github.com/viaduct-ai/kustomize-sops/releases/download/${VERSION}/ksops_${VERSION_RAW}_Linux_${ARCH}.tar.gz"
+          curl -fsSL -o ksops.tar.gz "${URL}"
+          tar -C /custom-tools -xzf ksops.tar.gz ksops
+          chmod +x /custom-tools/ksops
       volumeMounts:
         - mountPath: /custom-tools
           name: custom-tools
   volumeMounts:
-    - mountPath: /usr/local/bin/kustomize
-      name: custom-tools
-      subPath: kustomize
     - mountPath: /usr/local/bin/ksops
       name: custom-tools
       subPath: ksops
