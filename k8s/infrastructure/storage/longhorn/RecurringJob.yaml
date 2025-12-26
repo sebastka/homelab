@@ -1,0 +1,15 @@
+---
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: backup-group1-recurring-job
+  namespace: longhorn-system
+spec:
+  concurrency: 1
+  cron: 40 2 * * *
+  groups:
+    - group1
+  labels: {}
+  name: backup-group1-recurring-job
+  retain: 1
+  task: backup

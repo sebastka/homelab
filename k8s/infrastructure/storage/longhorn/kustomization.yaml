@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - Namespace.yaml
   - HTTPRoute.yaml
+  - RecurringJob.yaml
 
 helmCharts:
   - name: longhorn
