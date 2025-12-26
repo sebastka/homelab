@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: longhorn-portainer-pv
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: portainer
+    namespace: portainer
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      # backupTargetName: default
+      dataEngine: v1
+      # dataLocality: disabled
+      # disableRevisionCounter: "true"
+      # fromBackup: ""
+      fsType: ext4
+      # numberOfReplicas: "2"
+      # staleReplicaTimeout: "30"
+      # storage.kubernetes.io/csiProvisionerIdentity: 1766766421182-3475-driver.longhorn.io
+      # unmapMarkSnapChainRemoved: ignored
+    volumeHandle: longhorn-portainer-pv
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  volumeMode: Filesystem

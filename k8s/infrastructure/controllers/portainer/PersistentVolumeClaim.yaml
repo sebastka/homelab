@@ -14,4 +14,4 @@ spec:
       storage: 2Gi
   storageClassName: longhorn
   volumeMode: Filesystem
-  volumeName: pvc-3fa540f6-5463-46e7-bab5-220954b12caa
+  volumeName: longhorn-portainer-pv

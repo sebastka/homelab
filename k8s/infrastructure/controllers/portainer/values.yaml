@@ -15,8 +15,8 @@ ingress:
   enabled: false
 
 persistence:
-  enabled: true
-  size: "2Gi"
+  enabled: false
+  # size: "2Gi"
   # annotations: {}
-  storageClass: longhorn
+  # storageClass: longhorn
   # existingClaim: longhorn-portainer-pvc
