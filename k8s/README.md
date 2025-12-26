@@ -9,3 +9,7 @@
 7.  Deploy homelab:
   - `kubectl apply -k infrastructure`
   - `kubectl apply -k sets`
+
+# To do:
+
+- Fix pod security for install-ksops
