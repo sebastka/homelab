@@ -2,7 +2,10 @@
 
 extends: default
 
-ignore-from-file: .gitignore
+ignore: |
+  .secret.*.yaml
+  **/charts
+  *.enc.yaml
 
 rules:
   line-length: disable

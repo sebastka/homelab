@@ -10,6 +10,7 @@ generators:
 
 resources:
   - Namespace.yaml
+  - ./Secret.cloudflare-api-token.enc.yaml
   # - .secret.cloudflare-dns01-issuer-account-key.yaml
   # - .secret.karlsen-fr-certificate.yaml
   # - .secret.talmox-hera-home-karlsen-fr-certificate.yaml
