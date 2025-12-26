@@ -7,6 +7,7 @@ resources:
   - Namespace.yaml
   - Service.yaml
   - GRPCRoute.yaml
+  - ksops.redis-credentials-secret-generator.yaml
 
 helmCharts:
   - name: argo-cd

@@ -44,6 +44,13 @@ crds:
 dex:
   enabled: false
 
+redis:
+  enabled: false
+externalRedis:
+  host: 192.168.6.12
+  port: 6379
+  existingSecret: redis-credentials
+
 # https://github.com/viaduct-ai/kustomize-sops/issues/300
 repoServer:
   volumes:
