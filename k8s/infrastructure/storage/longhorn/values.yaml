@@ -17,6 +17,7 @@ defaultSettings:
 persistence:
   reclaimPolicy: Retain
   defaultClassReplicaCount: 2
+  defaultDataLocality: best-effort
   # dataEngine: v2
 
 # https://github.com/longhorn/longhorn/issues/8707
@@ -37,6 +38,7 @@ longhorn:
   persistence:
     reclaimPolicy: Retain
     defaultClassReplicaCount: 2
+    defaultDataLocality: best-effort
   preUpgradeChecker:
     jobEnabled: false
   defaultBackupStore:
