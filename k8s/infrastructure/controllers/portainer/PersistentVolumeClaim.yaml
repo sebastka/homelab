@@ -8,12 +8,7 @@ metadata:
   namespace: portainer
   labels:
     app.kubernetes.io/name: portainer
-    recurring-job-group.longhorn.io/group1: enabled
 spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 500Mi
-  storageClassName: longhorn
-  volumeMode: Filesystem
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: portainer

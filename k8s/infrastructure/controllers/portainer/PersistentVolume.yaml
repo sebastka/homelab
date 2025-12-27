@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: longhorn-portainer-pv
+  labels:
+    app.kubernetes.io/name: portainer
+    recurring-job-group.longhorn.io/group1: enabled
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 500Mi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: longhorn-portainer-pvc
+    namespace: portainer
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  volumeMode: Filesystem
