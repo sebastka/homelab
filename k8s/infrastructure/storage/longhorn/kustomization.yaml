@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - Namespace.yaml
   - HTTPRoute.yaml
+  - BackupTarget.yaml
   - RecurringJob.yaml
 
 helmCharts:
