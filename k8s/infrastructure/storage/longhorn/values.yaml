@@ -13,6 +13,7 @@ defaultSettings:
   # offlineReplicaRebuilding: true
   allowCollectingLonghornUsageMetrics: false
   upgradeChecker: false
+  replicaAutoBalance: best-effort
 
 persistence:
   reclaimPolicy: Retain
@@ -35,6 +36,7 @@ longhorn:
     defaultDataPath: /var/mnt/longhorn-data
     allowCollectingLonghornUsageMetrics: false
     upgradeChecker: false
+    replicaAutoBalance: best-effort
   persistence:
     reclaimPolicy: Retain
     defaultClassReplicaCount: 2
