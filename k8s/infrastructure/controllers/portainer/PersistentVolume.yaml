@@ -19,3 +19,6 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: longhorn
   volumeMode: Filesystem
+  csi:
+    driver: driver.longhorn.io
+    volumeHandle: longhorn-portainer-pv

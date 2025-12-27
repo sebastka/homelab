@@ -12,3 +12,5 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: portainer
+  accessModes:
+    - ReadWriteOnce
