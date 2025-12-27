@@ -17,4 +17,3 @@ spec:
     requests:
       storage: 500Mi
   storageClassName: longhorn
-  volumeName: longhorn-portainer-pv
