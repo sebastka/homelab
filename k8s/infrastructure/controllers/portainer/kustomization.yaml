@@ -4,7 +4,6 @@ kind: Kustomization
 
 resources:
   - Namespace.yaml
-  - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
 
