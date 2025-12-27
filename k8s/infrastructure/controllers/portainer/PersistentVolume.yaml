@@ -16,9 +16,12 @@ spec:
     kind: PersistentVolumeClaim
     name: longhorn-portainer-pvc
     namespace: portainer
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    # volumeAttributes:
+    #   fromBackup: ""
+    volumeHandle: longhorn-portainer-pv
   persistentVolumeReclaimPolicy: Retain
   storageClassName: longhorn
   volumeMode: Filesystem
-  csi:
-    driver: driver.longhorn.io
-    volumeHandle: longhorn-portainer-pv
