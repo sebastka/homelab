@@ -11,7 +11,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 500Mi
   storageClassName: longhorn
   volumeMode: Filesystem
   # volumeName: longhorn-portainer-pv
