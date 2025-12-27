@@ -14,7 +14,7 @@ main()
         --config-patch @patch/k8s/gatewayapi.yaml \
         --config-patch @patch/cilium/cilium.yaml \
         --config-patch @patch/talos/diskSelector.yaml \
-        --config-patch @patch/longhorn/requirements.yaml --config-patch @patch/longhorn/disk.yaml --config-patch @patch/longhorn/mount.yaml
+        --config-patch @patch/longhorn/requirements.yaml
 
     ln -sf "$CLUSTER_NAME/talosconfig" "$XDG_CONFIG_HOME/talos/config.yaml"
 
@@ -30,7 +30,8 @@ main()
     wait 'Press enter to apply configuration to worker nodes...'
     for WORKER_IP in $TALOS_WORKERS; do
         talosctl apply-config --insecure --nodes "$WORKER_IP" --file "$TALOS_CONFIG_HOME/worker.yaml" \
-            --config-patch @patch/talos/vip-cluster.yaml
+            --config-patch @patch/talos/vip-cluster.yaml \
+            --config-patch @patch/longhorn/disk.yaml --config-patch @patch/longhorn/mount.yaml
     done
 
     wait 'Press enter to bootstrap the cluster...'
