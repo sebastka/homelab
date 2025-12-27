@@ -1,0 +1,8 @@
+apiVersion: longhorn.io/v1beta2
+kind: BackupTarget
+metadata:
+  name: nfs-backup-target
+  namespace: longhorn-system
+spec:
+  backupTargetURL: nfs://192.168.6.20:/mnt/nfs/longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
+  pollInterval: 5m0s

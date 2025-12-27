@@ -26,8 +26,8 @@ preUpgradeChecker:
   jobEnabled: false
   # upgradeVersionCheck: false
 
-defaultBackupStore:
-  backupTarget: nfs://192.168.6.20:/mnt/nfs/longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
+# defaultBackupStore:
+#   backupTarget: nfs://192.168.6.20:/mnt/nfs/longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
 
 # https://www.reddit.com/r/ArgoCD/comments/1pqnajg/comment/nuxi5uj
 longhorn:
@@ -43,5 +43,5 @@ longhorn:
     defaultDataLocality: best-effort
   preUpgradeChecker:
     jobEnabled: false
-  defaultBackupStore:
-    backupTarget: nfs://192.168.6.20:/mnt/nfs/longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
+  # defaultBackupStore:
+  #   backupTarget: nfs://192.168.6.20:/mnt/nfs/longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
