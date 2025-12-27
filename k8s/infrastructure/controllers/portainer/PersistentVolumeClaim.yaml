@@ -14,3 +14,6 @@ spec:
       app.kubernetes.io/name: portainer
   accessModes:
     - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
