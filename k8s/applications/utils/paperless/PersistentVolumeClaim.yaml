@@ -59,4 +59,5 @@ spec:
   resources:
     requests:
       storage: 10Gi
+  storageClassName: slow
   volumeName: nfs-paperless-media-pv
