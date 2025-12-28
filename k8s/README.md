@@ -12,3 +12,5 @@
 # To do:
 
 - Fix pod security for install-ksops
+- Pass real client ip to pods
+- Figure out global headers using Gateway API
