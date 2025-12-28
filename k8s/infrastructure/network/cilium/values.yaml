@@ -36,6 +36,7 @@ gatewayAPI:
   enableAppProtocol: true
   gatewayClass:
     create: "true"
+  externalTrafficPolicy: Local
 #   hostNetwork:
 #     enabled: true
 
