@@ -6,17 +6,20 @@ labels:
   - includeSelectors: true
     includeTemplates: true
     pairs:
-      app: paperless
+      app.kubernetes.io/name: paperless
+
+generators:
+  - ./ksops.paperless-secrets-generator.yaml
 
 configMapGenerator:
   - name: paperless-config
     namespace: paperless
     envs:
       - .paperless.env
-      - .paperless.env.secret
 
 resources:
   - Namespace.yaml
+  - ./Secret.paperless-secrets.enc.yaml
   - PersistentVolumeClaim.yaml
   - Deployment.yaml
   - Service.yaml

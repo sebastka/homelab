@@ -1,0 +1,38 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: utils
+  namespace: argocd
+  labels:
+    fr.karlsen: applications
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/sebastka/homelab.git
+        revision: HEAD
+        directories:
+          - path: k8s/applications/utils/*
+  template:
+    metadata:
+      name: '{{ path.basename }}'
+      labels:
+        fr.karlsen: applications
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: utils
+      source:
+        repoURL: https://github.com/sebastka/homelab.git
+        targetRevision: HEAD
+        path: '{{ path }}'
+      destination:
+        name: in-cluster
+        namespace: argocd
+      syncPolicy:
+        syncOptions:
+          - ServerSideApply=true
+        automated:
+          prune: true
+          selfHeal: true
+          enabled: true

@@ -11,7 +11,7 @@ spec:
       namespace: gateway
       sectionName: https-wc-talmox-hera-home-karlsen-fr
   hostnames:
-    - "whoami.talmox.hera.home.karlsen.fr"
+    - whoami.talmox.hera.home.karlsen.fr
   rules:
     - matches:
         - path:

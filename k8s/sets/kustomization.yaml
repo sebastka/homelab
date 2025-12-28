@@ -6,4 +6,4 @@ namespace: argocd
 resources:
   - AppProject.yaml
   - Application.infrastructure.yaml
-  # - Application.applications.yaml
+  - Application.applications.yaml

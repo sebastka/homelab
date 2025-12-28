@@ -1,5 +1,4 @@
 # https://juliushinze.de/posts/paperless-on-k8s/
-# Do not delete these resources, or data will be lost!
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -11,7 +10,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 500Mi
   storageClassName: longhorn
 ---
 apiVersion: v1
@@ -24,7 +23,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: 500Mi
   storageClassName: longhorn
 ---
 apiVersion: v1
@@ -37,5 +36,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 500Mi
   storageClassName: longhorn

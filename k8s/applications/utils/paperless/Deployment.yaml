@@ -74,6 +74,27 @@ spec:
           envFrom:
             - configMapRef:
                 name: paperless-config
+          env:
+            - name: PAPERLESS_REDIS
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secrets
+                  key: paperless-redis
+            - name: PAPERLESS_DBPASS
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secrets
+                  key: paperless-dbpass
+            - name: PAPERLESS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secrets
+                  key: paperless-secret-key
+            - name: PAPERLESS_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secrets
+                  key: paperless-admin-password
           volumeMounts:
             - mountPath: "/data/data"
               name: paperless-data
