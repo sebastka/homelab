@@ -13,7 +13,7 @@ spec:
   nfs:
     server: 192.168.6.20
     path: /mnt/nfs/homelab/k8s/paperless/media
-    mountOptions:
+  mountOptions:
     - hard
     - nfsvers=4.1
   volumeMode: Filesystem
