@@ -13,3 +13,4 @@ spec:
   name: backup-group1-recurring-job
   retain: 1
   task: backup
+  # backupTargetName: nfs-backup-target  # Should be available in Longhorn 1.13
