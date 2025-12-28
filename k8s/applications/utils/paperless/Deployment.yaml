@@ -1,3 +1,4 @@
+# Rootless? https://github.com/paperless-ngx/paperless-ngx/discussions/4019
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -9,15 +10,18 @@ spec:
   template:
     spec:
       volumes:
-        - name: paperless-data
-          persistentVolumeClaim:
-            claimName: paperless-data
-        - name: paperless-media
-          persistentVolumeClaim:
-            claimName: paperless-media
         - name: paperless-consume
           persistentVolumeClaim:
             claimName: paperless-consume
+        - name: paperless-data
+          persistentVolumeClaim:
+            claimName: paperless-data
+        - name: paperless-export
+          persistentVolumeClaim:
+            claimName: paperless-export
+        - name: paperless-media
+          persistentVolumeClaim:
+            claimName: paperless-media
       containers:
         - name: gotenberg
           image: index.docker.io/gotenberg/gotenberg:latest
@@ -96,9 +100,11 @@ spec:
                   name: paperless-secrets
                   key: paperless-admin-password
           volumeMounts:
-            - mountPath: "/data/data"
+            - mountPath: /data/data
               name: paperless-data
-            - mountPath: "/data/media"
+            - mountPath: /data/media
               name: paperless-media
-            - mountPath: "/data/consume"
+            - mountPath: /data/export
+              name: paperless-export
+            - mountPath: /data/consume
               name: paperless-consume

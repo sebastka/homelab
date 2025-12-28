@@ -1,9 +1,16 @@
 # https://juliushinze.de/posts/paperless-on-k8s/
+
+# For each of data, export, consume do the following:
+## 1. Restore volume:        Longhorn UI -> Backups -> Restore latest backup -> Name: longhorn-paperless-XXX-pv
+## 2. Create PV from volume: Longhorn UI -> Volumes -> longhorn-paperless-XXX-pv -> Create PV/PVC -> Create PV only
+
+# Run the following command to update labels for RecurringJob:
+## for vol in data export consume; do kubectl -n longhorn-system label "volume/longhorn-paperless-${vol}-pv" recurring-job-group.longhorn.io/group1=enabled; kubectl -n longhorn-system label "volume/longhorn-paperless-${vol}-pv" recurring-job-group.longhorn.io/default-; done
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: paperless-data
+  name: longhorn-paperless-data-pvc
   namespace: paperless
 spec:
   accessModes:
@@ -11,30 +18,45 @@ spec:
   resources:
     requests:
       storage: 500Mi
-  storageClassName: longhorn
+  storageClassName: longhorn-static
+  volumeName: longhorn-paperless-data-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: paperless-media
+  name: longhorn-paperless-export-pvc
   namespace: paperless
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 500Mi
-  storageClassName: longhorn
+      storage: 100Mi
+  storageClassName: longhorn-static
+  volumeName: longhorn-paperless-export-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: paperless-consume
+  name: longhorn-paperless-consume-pvc
   namespace: paperless
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 500Mi
-  storageClassName: longhorn
+      storage: 100Mi
+  storageClassName: longhorn-static
+  volumeName: longhorn-paperless-consume-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-paperless-media-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: nfs-paperless-media-pv

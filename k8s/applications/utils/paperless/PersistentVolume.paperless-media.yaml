@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-paperless-media-pv
+  namespace: paperless
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 100 Gi  # Value is determined by NFS share
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 192.168.6.20
+    path: /mnt/nfs/homelab/k8s/paperless/media
