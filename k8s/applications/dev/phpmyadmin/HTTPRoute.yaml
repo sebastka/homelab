@@ -18,5 +18,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: phpmyadmin-svc
+        - name: phpmyadmin
           port: 80
