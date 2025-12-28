@@ -1,5 +1,6 @@
 # Delete the claimRef from the PV to be able to use the PVC: kubectl edit pv XXXXX
 # Label volume: kubectl -n longhorn-system label volume/XXX recurring-job-group.longhorn.io/group1=enabled
+# Volume longhorn-portainer-pv must be created in Longhorn UI or CLI
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -15,3 +16,4 @@ spec:
     requests:
       storage: 500Mi
   storageClassName: longhorn
+  volumeName: longhorn-portainer-pv
