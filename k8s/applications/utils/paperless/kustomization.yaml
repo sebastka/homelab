@@ -20,7 +20,6 @@ configMapGenerator:
 resources:
   - Namespace.yaml
   - Secret.paperless-secrets.enc.yaml
-  - PersistentVolume.paperless-media.yaml
   - PersistentVolumeClaim.yaml
   - Deployment.yaml
   - Service.yaml

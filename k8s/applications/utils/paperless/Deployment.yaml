@@ -21,7 +21,7 @@ spec:
             claimName: longhorn-paperless-export-pvc
         - name: paperless-media
           persistentVolumeClaim:
-            claimName: nfs-paperless-media-pvc
+            claimName: longhorn-paperless-media-pvc
       containers:
         - name: gotenberg
           image: index.docker.io/gotenberg/gotenberg:latest
