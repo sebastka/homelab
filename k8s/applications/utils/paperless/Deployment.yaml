@@ -12,16 +12,16 @@ spec:
       volumes:
         - name: paperless-consume
           persistentVolumeClaim:
-            claimName: paperless-consume
+            claimName: longhorn-paperless-consume-pvc
         - name: paperless-data
           persistentVolumeClaim:
-            claimName: paperless-data
+            claimName: longhorn-paperless-data-pvc
         - name: paperless-export
           persistentVolumeClaim:
-            claimName: paperless-export
+            claimName: longhorn-paperless-export-pvc
         - name: paperless-media
           persistentVolumeClaim:
-            claimName: paperless-media
+            claimName: nfs-paperless-media-pvc
       containers:
         - name: gotenberg
           image: index.docker.io/gotenberg/gotenberg:latest
