@@ -11,7 +11,7 @@ spec:
       namespace: gateway
       sectionName: https-wc-talmox-hera-home-karlsen-fr
   hostnames:
-    - "portainer.talmox.hera.home.karlsen.fr"
+    - portainer.talmox.hera.home.karlsen.fr
   rules:
     - matches:
         - path:
