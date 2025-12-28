@@ -9,7 +9,12 @@ spec:
     - ReadWriteOnce
   capacity:
     storage: 100 Gi  # Value is determined by NFS share
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Recycle
   nfs:
     server: 192.168.6.20
     path: /mnt/nfs/homelab/k8s/paperless/media
+    mountOptions:
+    - hard
+    - nfsvers=4.1
+  volumeMode: Filesystem
+  storageClassName: slow
