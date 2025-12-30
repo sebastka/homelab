@@ -1,0 +1,19 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      app.kubernetes.io/name: tailscale
+      app: tailscale
+
+generators:
+  - ./ksops.paperless-secrets-generator.yaml
+
+resources:
+  - Namespace.yaml
+  - Secret.tailscale-auth.enc.yaml
+  - Rbac.yaml
+  - Subnet-router.yaml

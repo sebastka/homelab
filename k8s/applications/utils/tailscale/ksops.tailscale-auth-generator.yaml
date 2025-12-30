@@ -1,0 +1,14 @@
+# Create: kubectl create secret --dry-run=client generic -n tailscale tailscale-auth -o yaml --from-literal=TS_AUTHKEY=XX
+# Encrypt: sops -e Secret.tailscale-auth.yaml > Secret.tailscale-auth.enc.yaml
+# Decrypt: sops -d Secret.tailscale-auth.enc.yaml > Secret.tailscale-auth.yaml
+---
+apiVersion: viaduct.ai/v1
+kind: ksops
+metadata:
+  name: tailscale-auth-generator
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: ksops
+files:
+  - ./Secret.tailscale-auth.enc.yaml
