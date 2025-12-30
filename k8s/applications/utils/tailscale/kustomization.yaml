@@ -10,7 +10,7 @@ labels:
       app: tailscale
 
 generators:
-  - ./ksops.paperless-secrets-generator.yaml
+  - ./ksops.tailscale-auth-generator.yaml
 
 resources:
   - Namespace.yaml
