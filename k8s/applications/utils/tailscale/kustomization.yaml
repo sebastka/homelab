@@ -16,4 +16,4 @@ resources:
   - Namespace.yaml
   - Secret.tailscale-auth.enc.yaml
   - Rbac.yaml
-  - Subnet-router.yaml
+  - Deployment.yaml
