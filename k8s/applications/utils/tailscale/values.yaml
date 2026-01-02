@@ -2,5 +2,8 @@
 # https://tailscale.com/kb/1236/kubernetes-operator/?q=operator#setting-up-the-kubernetes-operator
 ---
 
+oauth:
+  clientId: kpHfGGrXKh11CNTRL
+
 ingressClass:
   enabled: false
