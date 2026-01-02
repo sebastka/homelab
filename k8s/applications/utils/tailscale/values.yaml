@@ -1,0 +1,6 @@
+# https://artifacthub.io/packages/helm/tailscale/tailscale-operator?modal=values
+# https://tailscale.com/kb/1236/kubernetes-operator/?q=operator#setting-up-the-kubernetes-operator
+---
+
+ingressClass:
+  enabled: false
