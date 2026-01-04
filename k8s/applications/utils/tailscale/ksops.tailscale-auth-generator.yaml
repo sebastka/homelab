@@ -1,0 +1,14 @@
+# Create: kubectl create secret --dry-run=client generic -n tailscale operator-oauth -o yaml --from-literal=clientId=XX --from-literal=clientSecret=YY
+# Encrypt: sops -e Secret.operator-oauth.yaml > Secret.operator-oauth.enc.yaml
+# Decrypt: sops -d Secret.operator-oauth.enc.yaml > Secret.operator-oauth.yaml
+---
+apiVersion: viaduct.ai/v1
+kind: ksops
+metadata:
+  name: operator-oauth-generator
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: ksops
+files:
+  - ./Secret.operator-oauth.enc.yaml

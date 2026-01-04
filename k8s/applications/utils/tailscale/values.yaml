@@ -1,0 +1,10 @@
+# https://artifacthub.io/packages/helm/tailscale/tailscale-operator?modal=values
+# https://tailscale.com/kb/1236/kubernetes-operator/?q=operator#setting-up-the-kubernetes-operator
+---
+
+oauth:
+  clientId: kpHfGGrXKh11CNTRL
+  clientSecret: tskey-client-kpHfGGrXKh11CNTRL-zTc78Sg1EdboCUxgcg8kdb7WtGWN2E9SN
+
+ingressClass:
+  enabled: false
