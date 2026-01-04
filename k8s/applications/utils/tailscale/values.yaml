@@ -3,8 +3,8 @@
 ---
 
 oauth:
-  clientId: kpHfGGrXKh11CNTRL
-  clientSecret: tskey-client-kpHfGGrXKh11CNTRL-zTc78Sg1EdboCUxgcg8kdb7WtGWN2E9SN
+  clientId: kFHWuwoEr821CNTRL
+  clientSecret: tskey-client-kFHWuwoEr821CNTRL-nsCsqda7L5Po8uMbkLFE5PBVRacitB9g
 
 ingressClass:
   enabled: false
