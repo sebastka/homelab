@@ -3,7 +3,7 @@ apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
   name: subnet-router-local2
-  namespace: tailscale
+  namespace: tailscale2
   labels:
     app.kubernetes.io/name: subnet-router-local2
 spec:
