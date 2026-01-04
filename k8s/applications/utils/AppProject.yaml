@@ -12,7 +12,7 @@ spec:
       server: '*'
     - namespace: paperless
       server: '*'
-    - namespace: tailscale2
+    - namespace: tailscale
       server: '*'
   clusterResourceWhitelist:
     - group: '*'
