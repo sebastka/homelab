@@ -14,6 +14,6 @@ helmCharts:
   - name: tailscale-operator
     repo: https://pkgs.tailscale.com/helmcharts
     version: 1.92.4
-    releaseName: tailscale
+    releaseName: tailscale-operator
     namespace: tailscale
     valuesFile: values.yaml

@@ -6,8 +6,6 @@ metadata:
   namespace: tailscale
   labels:
     app.kubernetes.io/name: subnet-router-local
-    app.kubernetes.io/instance: tailscale
-    app.kubernetes.io/part-of: tailscale
 spec:
   hostname: subnet-router-local
   subnetRouter:
