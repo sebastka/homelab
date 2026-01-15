@@ -3,6 +3,12 @@ set -eux
 
 main()
 {
+    # v1 "$1"
+    v2 "$1"
+}
+
+v1()
+{
     NAMESPACE="$1"
     (
         kubectl proxy &
@@ -11,6 +17,16 @@ main()
     )
 
     killall -9 kubectl
+}
+
+v2()
+{
+    NAMESPACE="$1"
+
+    kubectl get namespace "$NAMESPACE" -o json \
+        | tr -d "\n" \
+        | sed "s/\"finalizers\": \[[^]]\+\]/\"finalizers\": []/" \
+        | kubectl replace --raw /api/v1/namespaces/$NAMESPACE/finalize -f -
 }
 
 main "$@"
