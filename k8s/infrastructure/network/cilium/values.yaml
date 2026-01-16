@@ -26,21 +26,56 @@ l2announcements:
 ipam:
   mode: kubernetes
 
-# -- (bool) Enable native IP masquerade support in eBPF
-# bpf:
-#   masquerade: true
-
 gatewayAPI:
-  enabled: false
-#   enableAlpn: true
-#   enableAppProtocol: true
-#   gatewayClass:
-#     create: "true"
-# #   hostNetwork:
-# #     enabled: true
+  enabled: true
+  enableAlpn: true
+  enableAppProtocol: true
+  gatewayClass:
+    create: "true"
+#   hostNetwork:
+#     enabled: true
 
 # -- Roll out cilium agent pods automatically when configmap is updated.
 rollOutCiliumPods: true
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 200m
+    memory: 512Mi
+
+k8sClientRateLimit:
+  qps: 20
+  burst: 100
+
+# https://docs.cilium.io/en/stable/operations/performance/tuning/#ebpf-host-routing
+# bpf:
+#   masquerade: true
+#   lbModeAnnotation: true
+
+loadBalancer:
+  # https://cilium.io/blog/2022/04/12/cilium-standalone-L4LB-XDP/
+  # https://cilium.io/blog/2021/05/20/cilium-110/#standalonelb
+  standalone: true
+  # https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#maglev-consistent-hashing
+  algorithm: maglev
+  mode: dsr
+  # dsrDispatch: opt  # Use with native routing
+  dsrDispatch: geneve  # Use with tunnelling
+  l7:
+    backend: envoy
+
+# The default tunnel protocol "vxlan" is incompatible with loadBalancer.mode: "dsr"
+routingMode: tunnel
+tunnelProtocol: geneve
+
+envoy:
+  securityContext:
+    capabilities:
+      keepCapNetBindService: true
+      envoy: [NET_ADMIN, PERFMON, BPF]
 
 hubble:
   enabled: false

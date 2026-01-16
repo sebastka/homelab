@@ -8,14 +8,13 @@ generators:
 resources:
   - Namespace.yaml
   - ./Secret.cloudflare-api-token.enc.yaml
-  # - Secret.karlsen-fr-certificate.yaml
-  # - Secret.karlsen-org-certificate.yaml
-  # - Secret.karlsen-app-certificate.yaml
-  # - Secret.wc-karlsen-fr-certificate.yaml
-  # - Secret.wc-karlsen-org-certificate.yaml
-  # - Secret.wc-karlsen-app-certificate.yaml
-  # - Secret.talmox-hera-home-karlsen-fr-certificate.yaml
+  - Secret.karlsen-fr-certificate.yaml
+  - Secret.karlsen-org-certificate.yaml
+  - Secret.karlsen-app-certificate.yaml
+  - Secret.wc-karlsen-fr-certificate.yaml
+  - Secret.wc-karlsen-org-certificate.yaml
+  - Secret.wc-karlsen-app-certificate.yaml
+  - Secret.talmox-hera-home-karlsen-fr-certificate.yaml
   - Issuer.yaml
-  - GatewayClass.yaml
   - Gateway.yaml
   - HTTPRoute.https-upgrade.yaml

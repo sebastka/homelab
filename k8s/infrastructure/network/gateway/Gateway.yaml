@@ -9,7 +9,8 @@ metadata:
   annotations:
     cert-manager.io/issuer: cloudflare-dns01-issuer
 spec:
-  gatewayClassName: envoy-gatewayclass
+  # gatewayClassName: envoy-gatewayclass
+  gatewayClassName: cilium
   listeners:
     - name: http
       protocol: HTTP
