@@ -6,7 +6,15 @@ metadata:
   namespace: whoami
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: whoami
   template:
+    metadata:
+      namespace: whoami
+      labels:
+        app.kubernetes.io/name: whoami
+        app: whoami
     spec:
       securityContext:
         runAsNonRoot: true
