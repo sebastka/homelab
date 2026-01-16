@@ -12,6 +12,8 @@ resources:
   # - Secret.talmox-hera-home-karlsen-fr-certificate.yaml
   - Issuer.yaml
   - Certificate.karlsen-fr.yaml
+  - Certificate.karlsen-org.yaml
+  - Certificate.karlsen-yaml.yaml
   - Certificate.talmox-hera-home-karlsen-fr.yaml
   - GatewayClass.yaml
   - Gateway.yaml
