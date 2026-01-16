@@ -13,5 +13,6 @@ resources:
   - Issuer.yaml
   - Certificate.karlsen-fr.yaml
   - Certificate.talmox-hera-home-karlsen-fr.yaml
+  - GatewayClass.yaml
   - Gateway.yaml
   - HTTPRoute.https-upgrade.yaml
