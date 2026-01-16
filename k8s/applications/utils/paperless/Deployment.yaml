@@ -22,7 +22,7 @@ spec:
         runAsUser: 999
         runAsGroup: 999
         # fsGroup: 999
-        fsGroupChangePolicy: OnRootMismatch
+        # fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
       containers:
@@ -67,6 +67,7 @@ spec:
             # readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
+              add: ["CAP_CHOWN", "CAP_FOWNER"]
           envFrom:
             - configMapRef:
                 name: paperless-config
