@@ -12,7 +12,10 @@ spec:
         repoURL: https://github.com/sebastka/homelab.git
         revision: HEAD
         directories:
-          - path: k8s/applications/viewtube/*
+          - path: k8s/applications/media/*
+          - path: k8s/applications/media/viewtube
+            exclude: true
+
   template:
     metadata:
       name: '{{ path.basename }}'
