@@ -35,4 +35,3 @@ spec:
               memory: 24Mi
           ports:
             - containerPort: 8080
-              hostPort: 8080
