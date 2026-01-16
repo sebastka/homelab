@@ -69,6 +69,14 @@ repoServer:
           wget "$URL" -O /tmp/ksops.tar.gz
           tar -C /custom-tools -xzf /tmp/ksops.tar.gz ksops
           chmod +x /custom-tools/ksops
+      securityContext:
+        allowPrivilegeEscalation: false
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+            - ALL
       volumeMounts:
         - mountPath: /custom-tools
           name: custom-tools
