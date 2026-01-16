@@ -65,7 +65,6 @@ spec:
             # readOnlyRootFilesystem: true
             # capabilities:
             #   drop: ["ALL"]
-            #   add: ["CAP_CHOWN", "CAP_FOWNER"]
           envFrom:
             - configMapRef:
                 name: paperless-config
