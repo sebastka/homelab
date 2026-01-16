@@ -7,12 +7,15 @@ metadata:
 spec:
   sourceRepos:
     - https://github.com/sebastka/homelab.git
+    - docker.io/envoyproxy
   destinations:
     - namespace: kube-system
       server: '*'
     - namespace: cilium-secrets
       server: '*'
     - namespace: argocd
+      server: '*'
+    - namespace: envoy-gateway-system
       server: '*'
     - namespace: gateway
       server: '*'
