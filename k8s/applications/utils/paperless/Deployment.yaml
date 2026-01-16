@@ -28,10 +28,10 @@ spec:
       resources:
         requests:
           cpu: 1000m
-          memory: 1200Mi
+          memory: 1280Mi
         limits:
           cpu: 2000m
-          memory: 2500Mi
+          memory: 2560Mi
       containers:
         - name: gotenberg
           image: index.docker.io/gotenberg/gotenberg:latest
@@ -46,10 +46,10 @@ spec:
           resources:
             requests:
               cpu: 250m
-              memory: 100Mi
+              memory: 128Mi
             limits:
               cpu: 500m
-              memory: 500Mi
+              memory: 512Mi
           args:
             - gotenberg
             - --chromium-disable-javascript=true
@@ -70,10 +70,10 @@ spec:
           resources:
             requests:
               cpu: 250m
-              memory: 100Mi
+              memory: 128Mi
             limits:
               cpu: 500m
-              memory: 500Mi
+              memory: 512Mi
           ports:
             - containerPort: 9998
 
@@ -89,10 +89,10 @@ spec:
           resources:
             requests:
               cpu: 500m
-              memory: 1000Mi
+              memory: 1024Mi
             limits:
               cpu: 1000m
-              memory: 1500Mi
+              memory: 1536Mi
           envFrom:
             - configMapRef:
                 name: paperless-config
