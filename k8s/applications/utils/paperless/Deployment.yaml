@@ -27,11 +27,11 @@ spec:
           type: RuntimeDefault
       resources:
         requests:
-          cpu: 750m
-          memory: 450Mi
+          cpu: 1000m
+          memory: 700Mi
         limits:
-          cpu: 1500m
-          memory: 1500Mi
+          cpu: 2000m
+          memory: 2000Mi
       containers:
         - name: gotenberg
           image: index.docker.io/gotenberg/gotenberg:latest
@@ -88,11 +88,11 @@ spec:
             #   drop: ["ALL"]
           resources:
             requests:
-              cpu: 250m
-              memory: 250Mi
-            limits:
               cpu: 500m
               memory: 500Mi
+            limits:
+              cpu: 1000m
+              memory: 1000Mi
           envFrom:
             - configMapRef:
                 name: paperless-config
