@@ -13,7 +13,7 @@ resources:
   - Issuer.yaml
   - Certificate.karlsen-fr.yaml
   - Certificate.karlsen-org.yaml
-  - Certificate.karlsen-yaml.yaml
+  - Certificate.karlsen-app.yaml
   - Certificate.talmox-hera-home-karlsen-fr.yaml
   - GatewayClass.yaml
   - Gateway.yaml
