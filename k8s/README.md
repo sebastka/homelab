@@ -9,8 +9,25 @@
   - `kubectl apply -k infrastructure`
   - `kubectl apply -k sets`
 
+# Cheat sheet
+
+Kube overview:
+- `watch -n 1 kubectl get nodes -o wide`
+- `watch -n 1 kubectl get deployments -o wide -A`
+- `watch -n 1 kubectl get pods -o wide -A`
+- `watch -n 1 kubectl get svc -o wide -A`
+
+Force delete namespace:
+- `kubectl delete all --all -n {namespace}`
+- `kubectl delete namespace {namespace}`
+
 # To do:
 
 - Fix pod security for install-ksops
 - Pass real client ip to pods
 - Figure out global headers using Gateway API
+
+# Projects to test
+
+- Invidious
+- Viewtube
