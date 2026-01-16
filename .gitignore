@@ -1,9 +1,17 @@
-.assets/
-.secret.*
-**/**/**/charts
-**/Secret.yaml
-**/Secret.*.yaml
-!**/Secret.*.enc.yaml
-!**/Secret.enc.yaml
-**/*.env.secret
+.env
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
+*.tfstate
+*.tfstate.backup
+tfplan
+
+# k8s
+charts/
+Secret.*.yaml
+!Secret.*.enc.yaml
+
+# Talos
 talos/temp.json
