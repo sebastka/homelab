@@ -32,7 +32,6 @@ spec:
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
-            # fsGroup: 1001
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
@@ -50,9 +49,8 @@ spec:
           securityContext:
             runAsUser: 35002
             runAsGroup: 35002
-            # fsGroup: 35002
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            # readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
           ports:
