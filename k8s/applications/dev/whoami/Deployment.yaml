@@ -34,4 +34,5 @@ spec:
               cpu: 500m
               memory: 24Mi
           ports:
-            - containerPort: 8080
+            - name: http
+              containerPort: 8080
