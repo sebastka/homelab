@@ -73,7 +73,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: karlsen-fr-certificate
+            name: karlsen-org-certificate
     - name: https-wc-karlsen-org
       protocol: HTTPS
       port: 443
@@ -85,7 +85,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: karlsen-fr-certificate
+            name: karlsen-org-certificate
 
     - name: https-karlsen-app
       protocol: HTTPS
@@ -98,7 +98,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: karlsen-fr-certificate
+            name: karlsen-app-certificate
     - name: https-wc-karlsen-app
       protocol: HTTPS
       port: 443
@@ -110,7 +110,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: karlsen-fr-certificate
+            name: karlsen-app-certificate
 
 # - name: tls-wc-talmox-hera-home-karlsen-fr
 #   protocol: TLS
