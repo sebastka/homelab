@@ -9,10 +9,6 @@ spec:
   dnsNames:
     - karlsen.fr
     - '*.karlsen.fr'
-    - karlsen.org
-    - '*.karlsen.org'
-    - karlsen.app
-    - '*.karlsen.app'
   issuerRef:
     kind: Issuer
     name: cloudflare-dns01-issuer
