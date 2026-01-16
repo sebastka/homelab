@@ -43,10 +43,10 @@ spec:
               drop: ["ALL"]
           resources:
             requests:
-              cpu: 50m
+              cpu: 10m
               memory: 12Mi
             limits:
-              cpu: 500m
+              cpu: 100m
               memory: 24Mi
           ports:
             - name: http
