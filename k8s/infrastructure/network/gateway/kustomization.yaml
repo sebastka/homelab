@@ -9,12 +9,14 @@ resources:
   - Namespace.yaml
   - ./Secret.cloudflare-api-token.enc.yaml
   # - Secret.karlsen-fr-certificate.yaml
+  # - Secret.karlsen-org-certificate.yaml
+  # - Secret.karlsen-app-certificate.yaml
   # - Secret.talmox-hera-home-karlsen-fr-certificate.yaml
   - Issuer.yaml
-  - Certificate.karlsen-fr.yaml
-  - Certificate.karlsen-org.yaml
-  - Certificate.karlsen-app.yaml
-  - Certificate.talmox-hera-home-karlsen-fr.yaml
+  # - Certificate.karlsen-fr.yaml
+  # - Certificate.karlsen-org.yaml
+  # - Certificate.karlsen-app.yaml
+  # - Certificate.talmox-hera-home-karlsen-fr.yaml
   - GatewayClass.yaml
   - Gateway.yaml
   - HTTPRoute.https-upgrade.yaml
