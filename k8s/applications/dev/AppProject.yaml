@@ -12,8 +12,6 @@ spec:
       server: '*'
     - namespace: whoami
       server: '*'
-    - namespace: phpmyadmin
-      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
