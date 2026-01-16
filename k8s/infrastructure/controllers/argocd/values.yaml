@@ -46,12 +46,21 @@ dex:
 
 # https://github.com/viaduct-ai/kustomize-sops/issues/300
 repoServer:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 2Gi
+
   volumes:
     - name: custom-tools
       emptyDir: {}
     - name: sops-age
       secret:
         secretName: sops-age
+
   initContainers:
     - name: install-ksops
       image: alpine:latest
@@ -80,19 +89,38 @@ repoServer:
       volumeMounts:
         - mountPath: /custom-tools
           name: custom-tools
+
   volumeMounts:
     - mountPath: /usr/local/bin/ksops
       name: custom-tools
       subPath: ksops
     - name: sops-age
       mountPath: /.config/sops/age
+
   env:
     - name: XDG_CONFIG_HOME
       value: /.config
     - name: SOPS_AGE_KEY_FILE
       value: /.config/sops/age/keys.txt
 
+redis:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 126Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
 server:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 126Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
   httproute:
     enabled: true
     # labels: {}
@@ -126,3 +154,22 @@ server:
           - headers:
               - name: Content-Type
                 value: application/grpc
+
+applicationSet:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 1Gi
+
+notifications:
+  enabled: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
