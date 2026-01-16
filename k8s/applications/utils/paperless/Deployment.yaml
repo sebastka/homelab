@@ -60,6 +60,7 @@ spec:
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
           imagePullPolicy: Always
           securityContext:
+            runAsNonRoot: false
             runAsUser: 0
             runAsGroup: 0
             allowPrivilegeEscalation: false
