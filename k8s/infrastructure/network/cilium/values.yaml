@@ -26,6 +26,16 @@ l2announcements:
 ipam:
   mode: kubernetes
 
+operator:
+  rollOutPods: true
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
 gatewayAPI:
   enabled: true
   enableAlpn: true
@@ -39,12 +49,12 @@ gatewayAPI:
 rollOutCiliumPods: true
 
 resources:
-  limits:
-    cpu: 1000m
-    memory: 1Gi
   requests:
     cpu: 200m
     memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
 
 k8sClientRateLimit:
   qps: 20
