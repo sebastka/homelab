@@ -22,7 +22,7 @@ spec:
         runAsUser: 999
         runAsGroup: 999
         fsGroup: 999
-        # fsGroupChangePolicy: OnRootMismatch
+        fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
       containers:
@@ -32,7 +32,7 @@ spec:
           securityContext:
             runAsUser: 1001
             runAsGroup: 1001
-            fsGroup: 1001
+            # fsGroup: 1001
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
@@ -50,7 +50,7 @@ spec:
           securityContext:
             runAsUser: 35002
             runAsGroup: 35002
-            fsGroup: 35002
+            # fsGroup: 35002
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
@@ -64,7 +64,7 @@ spec:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1003
-            fsGroup: 1003
+            # fsGroup: 1003
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
