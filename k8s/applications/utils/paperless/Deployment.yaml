@@ -60,8 +60,8 @@ spec:
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
           imagePullPolicy: Always
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1003
+            # runAsUser: 1000
+            # runAsGroup: 1003
             # fsGroup: 1003
             allowPrivilegeEscalation: false
             # readOnlyRootFilesystem: true
