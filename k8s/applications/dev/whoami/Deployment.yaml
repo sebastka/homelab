@@ -10,7 +10,6 @@ spec:
     spec:
       securityContext:
         readOnlyRootFilesystem: true
-        allowPrivilegeEscalation: false
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
@@ -24,6 +23,7 @@ spec:
           args:
             - "-port=8080"
           securityContext:
+            allowPrivilegeEscalation: false
             capabilities:
               drop: ["ALL"]
           resources:
