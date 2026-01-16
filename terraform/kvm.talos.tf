@@ -1,0 +1,206 @@
+locals {
+  current_status = "running" # running | stopped
+  talos_image    = "local:iso/nocloud-amd64-secureboot.iso"
+  current_image  = "" # local.talos_image
+
+  k8s_control_planes = {
+    "tcp01" = { mac_address = "bc:24:11:10:fe:09", iso = local.current_image }
+    "tcp02" = { mac_address = "bc:24:11:10:fe:0A", iso = local.current_image }
+    "tcp03" = { mac_address = "bc:24:11:10:fe:0B", iso = local.current_image }
+  }
+
+  k8s_worker = {
+    "tw01" = { mac_address = "bc:24:11:1c:42:be", iso = local.current_image }
+    "tw02" = { mac_address = "bc:24:11:97:24:5f", iso = local.current_image }
+    "tw03" = { mac_address = "bc:24:11:02:d7:95", iso = local.current_image }
+    "tw04" = { mac_address = "bc:24:11:02:d7:96", iso = local.current_image }
+    "tw05" = { mac_address = "bc:24:11:02:d7:97", iso = local.current_image }
+    "tw06" = { mac_address = "bc:24:11:02:d7:98", iso = local.current_image }
+  }
+}
+
+resource "proxmox_vm_qemu" "k8s_control_planes" {
+  for_each = local.k8s_control_planes
+
+  name               = "${each.key}.${var.pve_host}"
+  tags               = "talos,talmox,controlplane"
+  target_nodes       = [var.pve_node_name]
+  qemu_os            = "l26"
+  machine            = "q35"
+  agent              = 1
+  agent_timeout      = 30
+  skip_ipv6          = true
+  bios               = "ovmf"
+  start_at_node_boot = true
+  vm_state           = local.current_status
+  scsihw             = "virtio-scsi-single"
+  memory             = 8192
+  balloon            = 512
+  boot               = "order=scsi0;ide2"
+
+  startup_shutdown {
+    shutdown_timeout = 300
+    startup_delay    = 60
+  }
+
+  cpu {
+    cores = 4
+    type  = "host"
+    numa  = true
+  }
+
+  network {
+    id      = 0
+    bridge  = "vmbr0"
+    model   = "virtio"
+    macaddr = each.value.mac_address
+  }
+
+  disks {
+    scsi {
+      # Boot disk
+      scsi0 {
+        disk {
+          size       = "32G"
+          storage    = var.pve_storage_pool
+          iothread   = true
+          emulatessd = true
+          backup     = false
+          replicate  = false
+        }
+      }
+    }
+
+    ide {
+      ide2 {
+        cdrom {
+          iso = each.value.iso
+        }
+      }
+    }
+  }
+
+  efidisk {
+    pre_enrolled_keys = false
+    efitype           = "4m"
+    storage           = var.pve_storage_pool
+  }
+
+  tpm_state {
+    storage = var.pve_storage_pool
+    version = "v2.0"
+  }
+
+  vga {
+    type   = "virtio-gl"
+    memory = 512
+  }
+
+  lifecycle {
+    ignore_changes = [
+      vm_state,
+      ciuser,
+      sshkeys,
+      network
+    ]
+  }
+}
+
+resource "proxmox_vm_qemu" "k8s_workers" {
+  for_each = local.k8s_worker
+
+  name               = "${each.key}.${var.pve_host}"
+  tags               = "talos,talmox,worker"
+  target_nodes       = [var.pve_node_name]
+  qemu_os            = "l26"
+  machine            = "q35"
+  agent              = 1
+  agent_timeout      = 30
+  skip_ipv6          = true
+  bios               = "ovmf"
+  start_at_node_boot = true
+  vm_state           = local.current_status
+  scsihw             = "virtio-scsi-single"
+  memory             = 12288
+  balloon            = 512
+  boot               = "order=scsi0;ide2"
+
+  startup_shutdown {
+    shutdown_timeout = 300
+    startup_delay    = 60
+  }
+
+  cpu {
+    cores = 8
+    type  = "host"
+    numa  = true
+  }
+
+  network {
+    id      = 0
+    bridge  = "vmbr0"
+    model   = "virtio"
+    macaddr = each.value.mac_address
+  }
+
+  disks {
+    scsi {
+      # Boot disk
+      scsi0 {
+        disk {
+          size       = "32G"
+          storage    = var.pve_storage_pool
+          iothread   = true
+          emulatessd = true
+          backup     = false
+          replicate  = false
+        }
+      }
+
+      # Data disk
+      scsi1 {
+        disk {
+          size       = "64G"
+          storage    = var.pve_storage_pool
+          iothread   = true
+          emulatessd = true
+          backup     = false
+          replicate  = false
+        }
+      }
+    }
+
+    ide {
+      ide2 {
+        cdrom {
+          iso = each.value.iso
+        }
+      }
+    }
+  }
+
+  efidisk {
+    pre_enrolled_keys = false
+    efitype           = "4m"
+    storage           = var.pve_storage_pool
+  }
+
+  tpm_state {
+    storage = var.pve_storage_pool
+    version = "v2.0"
+  }
+
+  vga {
+    type   = "virtio-gl"
+    memory = 512
+  }
+
+  lifecycle {
+    ignore_changes = [
+      vm_state,
+      ciuser,
+      sshkeys,
+      network
+    ]
+  }
+}
