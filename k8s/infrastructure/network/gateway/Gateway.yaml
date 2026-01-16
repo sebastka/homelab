@@ -10,7 +10,7 @@ metadata:
     cert-manager.io/issuer: cloudflare-dns01-issuer
     # service.spec.externalTrafficPolicy: Local
 spec:
-  gatewayClassName: cilium
+  gatewayClassName: envoy-gatewayclass
   listeners:
     - name: http
       protocol: HTTP
