@@ -1,11 +1,12 @@
 # Bootstrap
 
 1. First, make sure Gateway API CRDs are installed.
-2. Install Cilium and Envoy:  `kubectl kustomize --enable-helm infrastructure/network/cilium | kubectl apply --server-side -f -`
-3. Install cert-manager: `kubectl kustomize --enable-helm infrastructure/controllers/cert-manager | kubectl apply --server-side -f -`
-4. Set up Gateway with Cloudflare DNS01 Issuer: `kustomize build --enable-helm --enable-alpha-plugins --enable-exec infrastructure/network/gateway | kubectl apply --server-side -f -`
-5. Install ArgoCD and provide it with the sops/age secret: `kustomize build --enable-helm --enable-alpha-plugins --enable-exec infrastructure/controllers/argocd | kubectl apply --server-side -f -; cat "$XDG_CONFIG_HOME/sops/age/keys.txt" | kubectl create secret generic sops-age -n argocd --from-file=keys.txt=/dev/stdin`
-6.  Deploy homelab:
+2. Install Cilium:  `kubectl kustomize --enable-helm infrastructure/network/cilium | kubectl apply --server-side -f -`
+3. Install Envoy Gateway: `helm install envoy-gateway oci://docker.io/envoyproxy/gateway-helm --version v1.6.2 -n envoy-gateway-system --create-namespace -f infrastructure/network/envoy-gateway/values.yaml`
+4. Install cert-manager: `kubectl kustomize --enable-helm infrastructure/controllers/cert-manager | kubectl apply --server-side -f -`
+5. Set up Gateway with Cloudflare DNS01 Issuer: `kustomize build --enable-helm --enable-alpha-plugins --enable-exec infrastructure/network/gateway | kubectl apply --server-side -f -`
+6. Install ArgoCD and provide it with the sops/age secret: `kustomize build --enable-helm --enable-alpha-plugins --enable-exec infrastructure/controllers/argocd | kubectl apply --server-side -f -; cat "$XDG_CONFIG_HOME/sops/age/keys.txt" | kubectl create secret generic sops-age -n argocd --from-file=keys.txt=/dev/stdin`
+7.  Deploy infrastructure and applications:
   - `kubectl apply -k infrastructure`
   - `kubectl apply -k sets`
 

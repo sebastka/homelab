@@ -31,13 +31,13 @@ ipam:
 #   masquerade: true
 
 gatewayAPI:
-  enabled: true
-  enableAlpn: true
-  enableAppProtocol: true
-  gatewayClass:
-    create: "true"
-#   hostNetwork:
-#     enabled: true
+  enabled: false
+#   enableAlpn: true
+#   enableAppProtocol: true
+#   gatewayClass:
+#     create: "true"
+# #   hostNetwork:
+# #     enabled: true
 
 # -- Roll out cilium agent pods automatically when configmap is updated.
 rollOutCiliumPods: true

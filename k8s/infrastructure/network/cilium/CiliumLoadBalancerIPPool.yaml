@@ -6,4 +6,4 @@ metadata:
   name: cilium-default-pool
 spec:
   blocks:
-    - cidr: "192.168.6.250/32"
+    - cidr: 192.168.6.250/32
