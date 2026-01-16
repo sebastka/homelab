@@ -6,6 +6,10 @@
 
 # Run the following command to update labels for RecurringJob:
 ## for vol in data export consume media; do kubectl -n longhorn-system label "volume/longhorn-paperless-${vol}-pv" recurring-job-group.longhorn.io/group1=enabled; kubectl -n longhorn-system label "volume/longhorn-paperless-${vol}-pv" recurring-job-group.longhorn.io/default-; done
+
+# Remove claimRef from PVs:
+## for vol in data export consume media; do kubectl patch pv "longhorn-paperless-${vol}-pv" --type=json -p '[{"op": "remove", "path": "/spec/claimRef"}]'; done
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
