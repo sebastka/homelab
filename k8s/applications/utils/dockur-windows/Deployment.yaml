@@ -37,8 +37,8 @@ spec:
           securityContext:
             # allowPrivilegeEscalation: false
             # readOnlyRootFilesystem: true
-            # capabilities:
-            #   add: ["NET_ADMIN"]
+            capabilities:
+              add: ["NET_ADMIN"]
             privileged: true
           resources:
             requests:
