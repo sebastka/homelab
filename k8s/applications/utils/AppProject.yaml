@@ -12,8 +12,6 @@ spec:
       server: '*'
     - namespace: paperless
       server: '*'
-    - namespace: dockur-windows
-      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
