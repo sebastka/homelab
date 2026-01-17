@@ -15,14 +15,14 @@ spec:
       labels:
         app: dockur-windows
     spec:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+      # securityContext:
+      #   runAsNonRoot: true
+      #   runAsUser: 1000
+      #   runAsGroup: 1000
+      #   fsGroup: 1000
+      #   fsGroupChangePolicy: OnRootMismatch
+      #   seccompProfile:
+      #     type: RuntimeDefault
       resources:
         requests:
           cpu: 500m
@@ -36,7 +36,7 @@ spec:
           image: dockurr/windows:latest
           securityContext:
             # allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            # readOnlyRootFilesystem: true
             capabilities:
               add: ["NET_ADMIN"]
             privileged: true
