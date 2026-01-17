@@ -35,7 +35,7 @@ spec:
         - name: windows
           image: dockurr/windows:latest
           securityContext:
-            allowPrivilegeEscalation: false
+            # allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
               add: ["NET_ADMIN"]
