@@ -16,7 +16,6 @@ resources:
   # - Secret.wc-karlsen-app-certificate.yaml
   # - Secret.talmox-hera-home-karlsen-fr-certificate.yaml
   - Issuer.yaml
-  - GatewayClass.yaml
   - Gateway.yaml
   - SecurityPolicy.yaml
   - ClientTrafficPolicy.yaml

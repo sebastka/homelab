@@ -12,4 +12,3 @@ labels:
 resources:
   - AppProject.yaml
   - ApplicationSet.yaml
-  - envoy-gateway/Application.yaml

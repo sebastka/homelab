@@ -13,8 +13,6 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/infrastructure/network/*
-          - path: k8s/infrastructure/network/envoy-gateway
-            exclude: true
   template:
     metadata:
       name: '{{ path.basename }}'
