@@ -1,7 +1,7 @@
 locals {
   current_status = "running" # running | stopped
   talos_image    = "local:iso/nocloud-amd64-secureboot.iso"
-  current_image  = local.talos_image
+  current_image  = "" # local.talos_image
 
   k8s_control_planes = {
     "tcp01" = { mac_address = "bc:24:11:10:fe:09", iso = local.current_image, gpu = false }
