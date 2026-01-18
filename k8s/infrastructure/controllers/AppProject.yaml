@@ -16,6 +16,8 @@ spec:
       server: '*'
     - namespace: portainer
       server: '*'
+    - namespace: 'node-feature-discovery'
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
