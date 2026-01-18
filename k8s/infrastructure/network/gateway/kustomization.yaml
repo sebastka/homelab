@@ -18,4 +18,6 @@ resources:
   - Issuer.yaml
   - GatewayClass.yaml
   - Gateway.yaml
+  - SecurityPolicy.yaml
+  - ClientTrafficPolicy.yaml
   - HTTPRoute.https-upgrade.yaml
