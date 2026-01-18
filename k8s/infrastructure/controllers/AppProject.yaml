@@ -18,6 +18,8 @@ spec:
       server: '*'
     - namespace: node-feature-discovery
       server: '*'
+    - namespace: 'intel-device-plugins'
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
