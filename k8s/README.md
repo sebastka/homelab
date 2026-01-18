@@ -22,6 +22,13 @@ Force delete namespace:
 - `kubectl delete all --all -n {namespace}`
 - `kubectl delete namespace {namespace}`
 
+Clean up failede pods:
+- `kubectl -A delete pods --field-selector status.phase=Failed`
+
+Run debug container on node ([siderolabs.com](https://www.siderolabs.com/blog/how-to-ssh-into-talos-linux/)):
+- `kubectl debug -n kube-system -it --image alpine:edge node/tw01`
+- `apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing igt-gpu-tools pciutils`
+
 # To do:
 
 - Fix pod security for install-ksops
