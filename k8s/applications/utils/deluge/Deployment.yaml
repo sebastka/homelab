@@ -1,0 +1,79 @@
+# Rootless? https://github.com/deluge-ngx/deluge-ngx/discussions/4019
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deluge
+  namespace: deluge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deluge
+  template:
+    metadata:
+      namespace: deluge
+      labels:
+        app.kubernetes.io/name: deluge
+        app: deluge
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      # resources:
+      #   requests:
+      #     cpu: 1000m
+      #     memory: 1280Mi
+      #   limits:
+      #     cpu: 2000m
+      #     memory: 2560Mi
+      containers:
+        - name: deluge
+          # image: index.docker.io/linuxserver/deluge:latest
+          image: lscr.io/linuxserver/deluge:latest
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          # resources:
+          #   requests:
+          #     cpu: 250m
+          #     memory: 128Mi
+          #   limits:
+          #     cpu: 500m
+          #     memory: 512Mi
+          # args:
+          env:
+            - name: PUID
+              value: 1000
+            - name: PGID
+              value: 1000
+            - name: TZ
+              value: Europe/Oslo
+            - name: DELUGE_LOGLEVEL
+              value: info
+          ports:
+            - name: http
+              containerPort: 8112
+            - name: torrent-tcp
+              containerPort: 6881
+              protocol: TCP
+            - name: torrent-udp
+              containerPort: 6881
+              protocol: UDP
+            # - name: thin-client
+            #   containerPort: 58846
+      #     volumeMounts:
+      #       - mountPath: /data/data
+      #         name: deluge-data
+      # volumes:
+      #   - name: deluge-consume
+      #     persistentVolumeClaim:
+      #       claimName: longhorn-deluge-consume-pvc

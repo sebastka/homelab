@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deluge-service
+  namespace: deluge
+spec:
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8112
+    - protocol: TCP
+      port: 6881
+    - protocol: UDP
+      port: 6881
