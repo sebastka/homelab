@@ -112,6 +112,20 @@ spec:
           - kind: Secret
             name: wc-karlsen-app-certificate
 
+    - name: torrent-tcp
+      protocol: TCP
+      port: 6881
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: torrent-udp
+      protocol: UDP
+      port: 6881
+      allowedRoutes:
+        namespaces:
+          from: All
+
 # - name: tls-wc-talmox-hera-home-karlsen-fr
 #   protocol: TLS
 #   port: 443
