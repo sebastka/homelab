@@ -11,9 +11,9 @@ spec:
       kind: Gateway
       name: default-gateway
   authorization:
-    defaultAction: Deny
-    rules:
-      - action: Allow
-        principal:
-          clientCIDRs:
-            - 192.168.0.0/16  # Home LAN
+    defaultAction: Allow
+    # rules:
+    #   - action: Allow
+    #     principal:
+    #       clientCIDRs:
+    #         - 192.168.0.0/16  # Home LAN
