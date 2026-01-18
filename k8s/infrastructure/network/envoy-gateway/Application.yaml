@@ -4,9 +4,9 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: envoy-gateway
-  namespace: argocd
+  namespace: envoy-gateway-system
 spec:
-  project: network
+  project: envoy-gateway
   source:
     chart: gateway-helm
     repoURL: docker.io/envoyproxy
