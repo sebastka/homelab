@@ -21,17 +21,17 @@ spec:
         runAsGroup: 2501
         fsGroup: 2501
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [ 44, 104 ]
+        supplementalGroups: [44, 104]
         seccompProfile:
           type: RuntimeDefault
       containers:
         - name: jellyfin
-          image: ghcr.io/jellyfin/jellyfin:10.11.0 # renovate: docker=ghcr.io/jellyfin/jellyfin
+          image: ghcr.io/jellyfin/jellyfin:10.11.0
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
-              drop: [ "ALL" ]
+              drop: ["ALL"]
           resources:
             requests:
               cpu: 500m
@@ -61,9 +61,9 @@ spec:
             claimName: jellyfin-config
         - name: media
           nfs:
-            server: 192.168.1.117
-            path: /mnt/pool-0/data/media
+            server: 192.168.6.20
+            path: /mnt/nfs
         - name: cache
-          emptyDir: { }
+          emptyDir: {}
         - name: tmp
-          emptyDir: { }
+          emptyDir: {}
