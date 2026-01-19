@@ -12,7 +12,7 @@ spec:
       server: '*'
     - namespace: paperless
       server: '*'
-    - namespace: deluge
+    - namespace: torrent
       server: '*'
   clusterResourceWhitelist:
     - group: '*'
