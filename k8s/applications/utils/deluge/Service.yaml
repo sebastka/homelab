@@ -8,7 +8,7 @@ spec:
   type: ClusterIP
   ports:
     - name: http
-      port: 8112
+      port: 80
       targetPort: http
       protocol: TCP
     - name: torrent-tcp
