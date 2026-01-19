@@ -59,10 +59,6 @@ spec:
               value: Europe/Oslo
             - name: DELUGE_LOGLEVEL
               value: info
-            - name: S6_YES_I_WANT_A_WORLD_WRITABLE_RUN_BECAUSE_KUBERNETES
-              value: "1"
-            - name: S6_READ_ONLY_ROOT
-              value: "1"
           ports:
             - name: http
               containerPort: 8112
