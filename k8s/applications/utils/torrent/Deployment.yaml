@@ -68,9 +68,9 @@ spec:
             - name: torrent-tcp
               containerPort: 10011
               protocol: TCP
-            - name: torrent-udp
-              containerPort: 10011
-              protocol: UDP
+            # - name: torrent-udp
+            #   containerPort: 10011
+            #   protocol: UDP
           envFrom:
             - configMapRef:
                 name: common-env
