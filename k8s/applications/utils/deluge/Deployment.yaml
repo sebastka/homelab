@@ -26,7 +26,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-        - name: deluge
+        - name: deluged
           image: ghcr.io/home-operations/deluge:2
           imagePullPolicy: Always
           securityContext:
@@ -35,8 +35,6 @@ spec:
             capabilities:
               drop: ["ALL"]
           ports:
-            - name: http
-              containerPort: 8112
             - name: torrent-tcp
               containerPort: 6881
               protocol: TCP
@@ -46,10 +44,8 @@ spec:
           env:
             - name: TZ
               value: Europe/Oslo
-            - name: DELUGE_LOGLEVEL
-              value: debug
             - name: DELUGE_BIN
-              value: deluge-web
+              value: deluged
           resources:
             requests:
               cpu: 100m
@@ -62,6 +58,29 @@ spec:
               mountPath: /config
             - name: data
               mountPath: /downloads
+        - name: deluge-web
+          image: ghcr.io/home-operations/deluge:2
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          ports:
+            - name: http
+              containerPort: 8112
+          env:
+            - name: TZ
+              value: Europe/Oslo
+            - name: DELUGE_BIN
+              value: deluge-web
+          resources:
+            requests:
+              cpu: 100m
+              memory: 1.5Gi
+            limits:
+              cpu: 2000m
+              memory: 8Gi
       volumes:
         - name: config
           persistentVolumeClaim:
