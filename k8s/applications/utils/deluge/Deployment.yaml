@@ -15,14 +15,14 @@ spec:
         app.kubernetes.io/name: deluge
         app: deluge
     spec:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65533
-        fsGroup: 65534
-        fsGroupChangePolicy: Always
-        seccompProfile:
-          type: RuntimeDefault
+      # securityContext:
+      #   runAsNonRoot: true
+      #   runAsUser: 65534
+      #   runAsGroup: 65533
+      #   fsGroup: 65534
+      #   fsGroupChangePolicy: OnRootMismatch
+      #   seccompProfile:
+      #     type: RuntimeDefault
       containers:
         - name: deluge
           image: ghcr.io/home-operations/deluge:2
