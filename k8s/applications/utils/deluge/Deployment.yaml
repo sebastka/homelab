@@ -48,6 +48,8 @@ spec:
               value: Europe/Oslo
             - name: DELUGE_LOGLEVEL
               value: debug
+            - name: DELUGE_BIN
+              value: deluge-web
           resources:
             requests:
               cpu: 100m
