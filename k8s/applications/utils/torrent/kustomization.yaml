@@ -15,5 +15,5 @@ resources:
   - Service.yaml
   - HTTPRoute.yaml
   - TCPRoute.yaml
-  - UDPRoute.yaml
+  # - UDPRoute.yaml
   - PersistentVolumeClaim.yaml
