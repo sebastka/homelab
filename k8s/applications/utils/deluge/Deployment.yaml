@@ -54,8 +54,6 @@ spec:
               cpu: 2000m
               memory: 8Gi
           volumeMounts:
-            - name: config
-              mountPath: /config
             - name: data
               mountPath: /downloads
         - name: deluge-web
@@ -81,6 +79,9 @@ spec:
             limits:
               cpu: 2000m
               memory: 8Gi
+          volumeMounts:
+            - name: config
+              mountPath: /config
       volumes:
         - name: config
           persistentVolumeClaim:
