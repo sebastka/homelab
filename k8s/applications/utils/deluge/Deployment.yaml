@@ -2,34 +2,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: torrent
-  namespace: torrent
-  labels:
-    app: torrent
+  name: deluge-deployment
+  namespace: deluge
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: torrent
   strategy:
     type: Recreate
   template:
     metadata:
-      namespace: torrent
+      namespace: deluge
       labels:
-        app: torrent
+        app.kubernetes.io/name: deluge
+        app: deluge
     spec:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 2501
-        runAsGroup: 2501
-        fsGroup: 2501
+        runAsUser: 65534
+        runAsGroup: 65533
+        fsGroup: 65534
         fsGroupChangePolicy: Always
         seccompProfile:
           type: RuntimeDefault
       containers:
-        - name: torrent
-          image: ghcr.io/home-operations/qbittorrent:5.1.4
+        - name: deluge
+          image: ghcr.io/home-operations/deluge:latest
+          imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -37,17 +34,18 @@ spec:
               drop: ["ALL"]
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 8112
             - name: torrent-tcp
               containerPort: 6881
               protocol: TCP
             - name: torrent-udp
               containerPort: 6881
               protocol: UDP
-          envFrom:
-            - configMapRef:
-                name: common-env
-                optional: true
+          env:
+            - name: TZ
+              value: Europe/Oslo
+            - name: DELUGE_LOGLEVEL
+              value: info
           resources:
             requests:
               cpu: 100m
@@ -56,14 +54,14 @@ spec:
               cpu: 2000m
               memory: 8Gi
           volumeMounts:
-            - name: torrent-config
+            - name: config
               mountPath: /config
             - name: data
-              mountPath: /app/data
+              mountPath: /downloads
       volumes:
-        - name: torrent-config
+        - name: config
           persistentVolumeClaim:
-            claimName: longhorn-torrent-config-pvc
+            claimName: longhorn-deluge-config-pvc
         - name: data
           emptyDir: {}
           # nfs:

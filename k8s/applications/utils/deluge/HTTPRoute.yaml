@@ -2,8 +2,8 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: torrent-httproute
-  namespace: torrent
+  name: deluge-httproute
+  namespace: deluge
 spec:
   parentRefs:
     - kind: Gateway
@@ -11,11 +11,11 @@ spec:
       namespace: gateway
       sectionName: https-wc-talmox-hera-home-karlsen-fr
   hostnames:
-    - torrent.talmox.hera.home.karlsen.fr
+    - deluge.talmox.hera.home.karlsen.fr
   rules:
     - backendRefs:
-        - name: torrent-service
-          port: 80
+        - name: deluge-service
+          port: 8112
       matches:
         - path:
             type: PathPrefix

@@ -6,8 +6,8 @@ labels:
   - includeSelectors: true
     includeTemplates: true
     pairs:
-      app.kubernetes.io/name: torrent
-      app: torrent
+      app.kubernetes.io/name: deluge
+      app: deluge
 
 resources:
   - Namespace.yaml

@@ -1,16 +1,16 @@
 ---
 apiVersion: gateway.networking.k8s.io/v1alpha2
-kind: UDPRoute
+kind: TCPRoute
 metadata:
-  name: torrent-udproute
-  namespace: torrent
+  name: deluge-tcproute
+  namespace: deluge
 spec:
   parentRefs:
     - kind: Gateway
       name: default-gateway
       namespace: gateway
-      sectionName: torrent-udp
+      sectionName: torrent-tcp
   rules:
     - backendRefs:
-        - name: torrent-service
+        - name: deluge-service
           port: 6881
