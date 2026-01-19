@@ -15,7 +15,7 @@ spec:
       port: 6881
       targetPort: torrent-tcp
       protocol: TCP
-    # - name: torrent-udp
-    #   port: 6881
-    #   targetPort: torrent-udp
-    #   protocol: UDP
+    - name: torrent-udp
+      port: 6881
+      targetPort: torrent-udp
+      protocol: UDP
