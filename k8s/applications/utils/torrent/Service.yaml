@@ -6,8 +6,6 @@ metadata:
   namespace: torrent
 spec:
   type: ClusterIP
-  selector:
-    app: torrent
   ports:
     - name: http
       port: 80
