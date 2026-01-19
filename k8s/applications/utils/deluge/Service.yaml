@@ -7,15 +7,17 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - name: http
-      port: 80
-      targetPort: http
+    - name: web
       protocol: TCP
+      port: 8112
+      targetPort: 8112
+
     - name: torrent-tcp
+      protocol: TCP
       port: 6881
       targetPort: torrent-tcp
-      protocol: TCP
+
     - name: torrent-udp
+      protocol: UDP
       port: 6881
       targetPort: torrent-udp
-      protocol: UDP
