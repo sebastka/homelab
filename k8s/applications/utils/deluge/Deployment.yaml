@@ -47,7 +47,7 @@ spec:
             - name: TZ
               value: Europe/Oslo
             - name: DELUGE_LOGLEVEL
-              value: info
+              value: debug
           resources:
             requests:
               cpu: 100m
