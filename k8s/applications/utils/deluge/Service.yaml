@@ -7,9 +7,12 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 8112
-    - protocol: TCP
+    - name: torrent-tcp
+      protocol: TCP
       port: 6881
-    - protocol: UDP
+    - name: torrent-udp
+      protocol: UDP
       port: 6881
