@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: longhorn-deluge-config-pvc
-  namespace: deluge
+  name: longhorn-torrent-config-pvc
+  namespace: torrent
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 500Mi
+      storage: 1Gi
   storageClassName: longhorn-static
-  volumeName: longhorn-deluge-config-pv
+  volumeName: longhorn-torrent-config-pv

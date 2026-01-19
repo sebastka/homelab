@@ -114,14 +114,14 @@ spec:
 
     - name: torrent-tcp
       protocol: TCP
-      port: 6881
+      port: 10011
       allowedRoutes:
         namespaces:
           from: All
 
     - name: torrent-udp
       protocol: UDP
-      port: 6881
+      port: 10011
       allowedRoutes:
         namespaces:
           from: All
