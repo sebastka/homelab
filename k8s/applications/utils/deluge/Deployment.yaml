@@ -1,3 +1,5 @@
+# https://github.com/home-operations/containers
+# https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -15,14 +17,14 @@ spec:
         app.kubernetes.io/name: deluge
         app: deluge
     spec:
-      # securityContext:
-      #   runAsNonRoot: true
-      #   runAsUser: 65534
-      #   runAsGroup: 65533
-      #   fsGroup: 65534
-      #   fsGroupChangePolicy: OnRootMismatch
-      #   seccompProfile:
-      #     type: RuntimeDefault
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: deluge
           image: ghcr.io/home-operations/deluge:2
