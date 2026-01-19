@@ -39,10 +39,10 @@ spec:
             - name: http
               containerPort: 8080
             - name: torrent-tcp
-              containerPort: 10011
+              containerPort: 6881
               protocol: TCP
             # - name: torrent-udp
-            #   containerPort: 10011
+            #   containerPort: 6881
             #   protocol: UDP
           envFrom:
             - configMapRef:
