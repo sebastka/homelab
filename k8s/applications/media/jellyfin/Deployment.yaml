@@ -2,15 +2,12 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: jellyfin
+  name: jellyfin-deployment
   namespace: jellyfin
 spec:
   replicas: 1
   strategy:
     type: Recreate
-  selector:
-    matchLabels:
-      app: jellyfin
   template:
     spec:
       nodeSelector:
@@ -26,7 +23,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: jellyfin
-          image: ghcr.io/jellyfin/jellyfin:10.11.0
+          image: ghcr.io/jellyfin/jellyfin:10
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -40,9 +37,9 @@ spec:
               cpu: 6000m
               memory: 6Gi
               gpu.intel.com/i915: 1000m
-          envFrom:
-            - configMapRef:
-                name: jellyfin-env
+          env:
+            - name: TZ
+              value: Europe/Oslo
           ports:
             - name: http
               containerPort: 8096
@@ -58,11 +55,10 @@ spec:
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: jellyfin-config
+            claimName: jellyfin-config-pvc
         - name: media
-          nfs:
-            server: 192.168.6.20
-            path: /mnt/nfs
+          persistentVolumeClaim:
+            claimName: jellyfin-media-pvc
         - name: cache
           emptyDir: {}
         - name: tmp

@@ -6,15 +6,10 @@ commonLabels:
   app.kubernetes.io/name: jellyfin
   app: jellyfin
 
-configMapGenerator:
-  - name: jellyfin-env
-    namespace: jellyfin
-    literals:
-      - TZ="Europe/Oslo"
-
 resources:
   - Namespace.yaml
   - Deployment.yaml
   - Service.yaml
+  - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml

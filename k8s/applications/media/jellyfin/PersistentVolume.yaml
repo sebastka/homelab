@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-media-pv
+  namespace: jellyfin
+spec:
+  accessModes:
+    - ReadOnlyMany
+  capacity:
+    storage: 1Gi
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 192.168.6.20
+    path: /mnt/nfs/homelab/k8s/deluge/downloads
+  readOnly: true
