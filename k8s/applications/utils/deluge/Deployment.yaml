@@ -54,7 +54,7 @@ spec:
               cpu: 1000m
               memory: 2Gi
           volumeMounts:
-            - name: deluged-config
+            - name: config
               mountPath: /config
             - name: downloads
               mountPath: /downloads
@@ -84,15 +84,12 @@ spec:
               cpu: 500m
               memory: 500Mi
           volumeMounts:
-            - name: deluge-web-config
+            - name: config
               mountPath: /config
       volumes:
-        - name: deluged-config
+        - name: config
           persistentVolumeClaim:
-            claimName: deluged-config-pvc
-        - name: deluge-web-config
-          persistentVolumeClaim:
-            claimName: deluge-web-config-pvc
+            claimName: deluge-config-pvc
         - name: downloads
           nfs:
             server: 192.168.6.20
