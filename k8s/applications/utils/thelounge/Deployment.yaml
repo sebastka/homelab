@@ -28,10 +28,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: thelounge
-          # image: ghcr.io/thelounge/thelounge:latest
-          image: ubuntu:latest
-          command: [ "/bin/bash", "-c", "--" ]
-          args: [ "while true; do sleep 30; done;" ]
+          image: ghcr.io/thelounge/thelounge:latest
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
@@ -55,11 +52,7 @@ spec:
           volumeMounts:
             - name: opt-thelounge
               mountPath: /var/opt/thelounge
-            - name: opt-temp-thelounge
-              mountPath: /temp
       volumes:
         - name: opt-thelounge
-          emptyDir: {}
-        - name: opt-temp-thelounge
           persistentVolumeClaim:
             claimName: thelounge-data-pvc
