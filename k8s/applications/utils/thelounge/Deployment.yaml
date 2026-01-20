@@ -29,7 +29,9 @@ spec:
       containers:
         - name: thelounge
           # image: ghcr.io/thelounge/thelounge:latest
-          image: alpine:edge
+          image: traefik/whoami:latest
+          args:
+            - "-port=9000"
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
