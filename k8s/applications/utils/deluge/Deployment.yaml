@@ -58,8 +58,6 @@ spec:
               mountPath: /config
             - name: downloads
               mountPath: /downloads
-            - name: temp
-              mountPath: /temp
         - name: deluge-web
           image: ghcr.io/home-operations/deluge:2
           imagePullPolicy: Always
@@ -96,7 +94,3 @@ spec:
           nfs:
             server: 192.168.6.20
             path: /mnt/nfs/homelab/k8s/deluge/downloads
-        - name: temp
-          nfs:
-            server: 192.168.6.20
-            path: /mnt/nfs/homelab/k8s/deluge/config
