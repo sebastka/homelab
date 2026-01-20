@@ -84,14 +84,17 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: temp
+              mountPath: /temp
             - name: data
               mountPath: /downloads
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: longhorn-deluge-config-pvc
+        - name: temp
+          nfs:
+            server: 192.168.6.20
+            path: /mnt/nfs/homelab/k8s/deluge/config
         - name: data
           emptyDir: {}
-          # nfs:
-          #   server: 192.168.1.117
-          #   path: /mnt/pool-0/data
