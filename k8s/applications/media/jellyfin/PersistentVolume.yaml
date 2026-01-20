@@ -13,4 +13,4 @@ spec:
   nfs:
     server: 192.168.6.20
     path: /mnt/nfs/homelab/k8s/deluge/downloads
-  readOnly: true
+    readOnly: true
