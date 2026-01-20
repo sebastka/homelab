@@ -1,0 +1,60 @@
+# https://github.com/thelounge/thelounge
+# https://github.com/thelounge/thelounge-docker
+# https://hub.docker.com/r/thelounge/thelounge/
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thelounge-deployment
+  namespace: thelounge
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      namespace: thelounge
+      labels:
+        app.kubernetes.io/name: thelounge
+        app: thelounge
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: thelounge
+          image: ghcr.io/thelounge/thelounge:latest
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          ports:
+            - name: web
+              containerPort: 9000
+              protocol: TCP
+            - name: identd
+              containerPort: 9001
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 250i
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          volumeMounts:
+            # - name: opt-thelounge
+            #   mountPath: /var/opt/thelounge
+            - name: opt-thelounge
+              mountPath: /temp
+      volumes:
+        - name: opt-thelounge
+          persistentVolumeClaim:
+            claimName: thelounge-data-pvc
