@@ -24,3 +24,4 @@ spec:
   resources:
     requests:
       storage: 1Gi
+  volumeName: jellyfin-media-pv
