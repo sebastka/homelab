@@ -21,7 +21,7 @@ spec:
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
-      project: viewtube
+      project: media
       source:
         repoURL: https://github.com/sebastka/homelab.git
         targetRevision: HEAD
