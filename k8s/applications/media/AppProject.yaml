@@ -10,8 +10,6 @@ spec:
   destinations:
     - namespace: argocd
       server: '*'
-    - namespace: viewtube
-      server: '*'
     - namespace: jellyfin
       server: '*'
   clusterResourceWhitelist:
