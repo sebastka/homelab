@@ -15,8 +15,6 @@ spec:
           - path: k8s/applications/utils/*
           - path: k8s/applications/utils/paperless
             exclude: true
-          - path: k8s/applications/utils/deluge
-            exclude: true
   template:
     metadata:
       name: '{{ path.basename }}'
