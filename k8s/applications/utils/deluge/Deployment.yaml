@@ -56,8 +56,10 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: data
+            - name: downloads
               mountPath: /downloads
+            - name: temp
+              mountPath: /temp
         - name: deluge-web
           image: ghcr.io/home-operations/deluge:2
           imagePullPolicy: Always
@@ -81,21 +83,19 @@ spec:
             limits:
               cpu: 500m
               memory: 500Mi
-          volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: temp
-              mountPath: /temp
-            - name: data
-              mountPath: /downloads
+          # volumeMounts:
+          #   - name: config
+          #     mountPath: /config
+          #   - name: downloads
+          #     mountPath: /downloads
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: longhorn-deluge-config-pvc
-        - name: data
+        - name: downloads
           nfs:
             server: 192.168.6.20
-            path: /mnt/nfs/homelab/k8s/deluge/data
+            path: /mnt/nfs/homelab/k8s/deluge/downloads
         - name: temp
           nfs:
             server: 192.168.6.20
