@@ -50,11 +50,13 @@ spec:
               cpu: 500m
               memory: 1Gi
           volumeMounts:
-            # - name: opt-thelounge
-            #   mountPath: /var/opt/thelounge
             - name: opt-thelounge
+              mountPath: /var/opt/thelounge
+            - name: opt-temp-thelounge
               mountPath: /temp
       volumes:
         - name: opt-thelounge
+          emptyDir: {}
+        - name: opt-temp-thelounge
           persistentVolumeClaim:
             claimName: thelounge-data-pvc
