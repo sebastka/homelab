@@ -10,6 +10,7 @@ spec:
   capacity:
     storage: 1Gi
   persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
   nfs:
     server: 192.168.6.20
     path: /mnt/nfs/homelab/k8s/deluge/downloads
