@@ -32,6 +32,9 @@ Run debug container on node ([siderolabs.com](https://www.siderolabs.com/blog/ho
 Open container sheel:
 - `kubectl -n MY_NAMESPACE exec -it pods/MY_POO_ID -c MY_CONTAINER -- /bin/bash`
 
+Copy files to a container:
+- `kubectl -n MY_NAMESPACE cp ./ MY_DEPLOYMENT:MY_PATH -c MY_CONTAINER`
+
 # To do:
 
 - Fix pod security for install-ksops
