@@ -14,8 +14,8 @@ resource "proxmox_vm_qemu" "file01" {
   start_at_node_boot = true
   vm_state           = "running"
   scsihw             = "virtio-scsi-single"
-  memory             = 4096
-  balloon            = 512
+  memory             = 8192
+  balloon            = 1024
 
   startup_shutdown {
     shutdown_timeout = 300
