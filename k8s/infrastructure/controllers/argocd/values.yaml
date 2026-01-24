@@ -53,14 +53,12 @@ repoServer:
     limits:
       cpu: 500m
       memory: 2Gi
-
   volumes:
     - name: custom-tools
       emptyDir: {}
     - name: sops-age
       secret:
         secretName: sops-age
-
   initContainers:
     - name: install-ksops
       image: alpine:latest
