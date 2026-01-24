@@ -13,6 +13,8 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/applications/dev/*
+          - path: k8s/applications/dev/mongo-express
+            exclude: true
   template:
     metadata:
       name: '{{ path.basename }}'
