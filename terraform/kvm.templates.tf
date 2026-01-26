@@ -11,8 +11,8 @@ resource "proxmox_vm_qemu" "templatevm" {
   agent_timeout      = 30
   skip_ipv6          = true
   bios               = "ovmf"
-  start_at_node_boot = true
-  vm_state           = "running"
+  start_at_node_boot = false
+  vm_state           = "stopped"
   scsihw             = "virtio-scsi-single"
   memory             = 4096
   balloon            = 512

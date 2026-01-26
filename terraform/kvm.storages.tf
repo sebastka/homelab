@@ -1,6 +1,6 @@
 resource "proxmox_vm_qemu" "file01" {
-  # clone_id     = 100 # template.hera.home.karlsen.fr
-  full_clone = false
+  clone_id   = 105 # template.hera.home.karlsen.fr
+  full_clone = true
 
   name               = "file01.${var.pve_host}"
   tags               = "fileserver,nfs,samba"

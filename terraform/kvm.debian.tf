@@ -1,5 +1,5 @@
-resource "proxmox_vm_qemu" "debian01" {
-  clone_id   = 999 # template.hera.home.karlsen.fr
+resource "proxmox_vm_qemu" "debian" {
+  clone_id   = 105 # template.hera.home.karlsen.fr
   full_clone = true
 
   name               = "debian.${var.pve_host}"

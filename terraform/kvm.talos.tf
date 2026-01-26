@@ -1,21 +1,24 @@
 locals {
   current_status = "running" # running | stopped
   talos_image    = "local:iso/nocloud-amd64-secureboot.iso"
-  current_image  = "" # local.talos_image
+  current_image  = local.talos_image
+
+  cp_mem     = 8192
+  worker_mem = 24576 # 12288
 
   k8s_control_planes = {
-    "tcp01" = { mac_address = "bc:24:11:10:fe:09", iso = local.current_image, gpu = false }
-    "tcp02" = { mac_address = "bc:24:11:10:fe:0A", iso = local.current_image, gpu = false }
-    "tcp03" = { mac_address = "bc:24:11:10:fe:0B", iso = local.current_image, gpu = false }
+    # "cp01" = { mac_address = "bc:24:11:10:fe:09", iso = local.current_image, gpu = false }
+    # "cp02" = { mac_address = "bc:24:11:10:fe:0A", iso = local.current_image, gpu = false }
+    # "cp03" = { mac_address = "bc:24:11:10:fe:0B", iso = local.current_image, gpu = false }
   }
 
   k8s_worker = {
-    "tw01" = { mac_address = "bc:24:11:1c:42:be", iso = local.current_image, gpu = true }
-    "tw02" = { mac_address = "bc:24:11:97:24:5f", iso = local.current_image, gpu = false }
-    "tw03" = { mac_address = "bc:24:11:02:d7:95", iso = local.current_image, gpu = false }
-    "tw04" = { mac_address = "bc:24:11:02:d7:96", iso = local.current_image, gpu = false }
-    "tw05" = { mac_address = "bc:24:11:02:d7:97", iso = local.current_image, gpu = false }
-    "tw06" = { mac_address = "bc:24:11:02:d7:98", iso = local.current_image, gpu = false }
+    # "w01" = { mac_address = "bc:24:11:1c:42:be", iso = local.current_image, gpu = true }
+    # "w02" = { mac_address = "bc:24:11:97:24:5f", iso = local.current_image, gpu = false }
+    # "w03" = { mac_address = "bc:24:11:02:d7:95", iso = local.current_image, gpu = false }
+    # "w04" = { mac_address = "bc:24:11:02:d7:96", iso = local.current_image, gpu = false }
+    # "w05" = { mac_address = "bc:24:11:02:d7:97", iso = local.current_image, gpu = false }
+    # "w06" = { mac_address = "bc:24:11:02:d7:98", iso = local.current_image, gpu = false }
   }
 }
 
@@ -34,7 +37,7 @@ resource "proxmox_vm_qemu" "k8s_control_planes" {
   start_at_node_boot = true
   vm_state           = local.current_status
   scsihw             = "virtio-scsi-single"
-  memory             = 8192
+  memory             = local.cp_mem
   balloon            = 512
   boot               = "order=scsi0;ide2"
 
@@ -80,20 +83,6 @@ resource "proxmox_vm_qemu" "k8s_control_planes" {
     }
   }
 
-  dynamic "pcis" {
-    for_each = each.value.gpu ? [1] : []
-    content {
-      pci0 {
-        raw {
-          raw_id      = "0000:00:02.0"
-          pcie        = true
-          primary_gpu = true
-          rombar      = true
-        }
-      }
-    }
-  }
-
   efidisk {
     pre_enrolled_keys = false
     efitype           = "4m"
@@ -105,12 +94,9 @@ resource "proxmox_vm_qemu" "k8s_control_planes" {
     version = "v2.0"
   }
 
-  dynamic "vga" {
-    for_each = each.value.gpu ? [1] : []
-    content {
-      type   = "virtio"
-      memory = 512
-    }
+  vga {
+    type   = "virtio"
+    memory = 512
   }
 
   lifecycle {
@@ -138,7 +124,7 @@ resource "proxmox_vm_qemu" "k8s_workers" {
   start_at_node_boot = true
   vm_state           = local.current_status
   scsihw             = "virtio-scsi-single"
-  memory             = 12288
+  memory             = local.worker_mem
   balloon            = 512
   boot               = "order=scsi0;ide2"
 
@@ -177,7 +163,7 @@ resource "proxmox_vm_qemu" "k8s_workers" {
       # Data disk
       scsi1 {
         disk {
-          size       = "64G"
+          size       = "128G"
           storage    = var.pve_storage_pool
           iothread   = true
           emulatessd = true
@@ -200,10 +186,10 @@ resource "proxmox_vm_qemu" "k8s_workers" {
     for_each = each.value.gpu ? [1] : []
     content {
       pci0 {
-        raw {
-          raw_id      = "0000:00:02.0"
+        mapping {
+          mapping_id  = "iGPU"
           pcie        = true
-          primary_gpu = true
+          primary_gpu = false
           rombar      = true
         }
       }
@@ -222,10 +208,17 @@ resource "proxmox_vm_qemu" "k8s_workers" {
   }
 
   dynamic "vga" {
-    for_each = each.value.gpu ? [1] : []
+    for_each = each.value.gpu ? [] : [1]
     content {
       type   = "virtio"
       memory = 512
+    }
+  }
+
+  dynamic "vga" {
+    for_each = each.value.gpu ? [1] : []
+    content {
+      type = "none"
     }
   }
 
