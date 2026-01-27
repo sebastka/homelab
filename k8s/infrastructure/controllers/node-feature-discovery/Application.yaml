@@ -11,6 +11,7 @@ spec:
     repoURL: oci://gcr.io/k8s-staging-nfd/charts/node-feature-discovery
     targetRevision: 0.18.3
     helm:
+      installCRDs: true
       valueFiles:
         - values.yaml
   destination:
