@@ -1,13 +1,12 @@
+# Save certificate secrets:
+# for tld in fr org app; do for subdomain in '' 'wc-'; do kubectl -n gateway get -o yaml secrets ${subdomain}karlsen-${tld}-certificate | yq 'del(.metadata.uid) | del(.metadata.resourceVersion)' > Secret.${subdomain}karlsen-${tld}-certificate.yaml; done; done
+# kubectl -n gateway get -o yaml secrets talmox-hera-home-karlsen-fr-certificate | yq 'del(.metadata.uid) | del(.metadata.resourceVersion)' > Secret.talmox-hera-home-karlsen-fr-certificate.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-generators:
-  - ./ksops.cloudflare-api-token-secret-generator.yaml
-
 resources:
   - Namespace.yaml
-  - ./Secret.cloudflare-api-token.enc.yaml
   # - Secret.karlsen-fr-certificate.yaml
   # - Secret.karlsen-org-certificate.yaml
   # - Secret.karlsen-app-certificate.yaml
@@ -15,7 +14,6 @@ resources:
   # - Secret.wc-karlsen-org-certificate.yaml
   # - Secret.wc-karlsen-app-certificate.yaml
   # - Secret.talmox-hera-home-karlsen-fr-certificate.yaml
-  - Issuer.yaml
   - Gateway.yaml
   - SecurityPolicy.yaml
   - ClientTrafficPolicy.yaml

@@ -1,5 +1,7 @@
 # https://docs.cilium.io/en/latest/installation/k8s-install-helm/
 # https://artifacthub.io/packages/helm/cilium/cilium?modal=values
+
+# https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/
 ---
 
 cluster:
@@ -35,30 +37,37 @@ gatewayAPI:
 # #   hostNetwork:
 # #     enabled: true
 
-operator:
-  rollOutPods: true
-  resources:
-    requests:
-      cpu: 50m
-      memory: 128Mi
-    limits:
-      cpu: 500m
-      memory: 256Mi
+# operator:
+#   rollOutPods: true
+#   resources:
+#     requests:
+#       cpu: 50m
+#       memory: 128Mi
+#     limits:
+#       cpu: 500m
+#       memory: 256Mi
 
-# -- Roll out cilium agent pods automatically when configmap is updated.
-rollOutCiliumPods: true
+# # -- Roll out cilium agent pods automatically when configmap is updated.
+# rollOutCiliumPods: true
 
-resources:
-  requests:
-    cpu: 200m
-    memory: 512Mi
-  limits:
-    cpu: 1000m
-    memory: 1Gi
+loadBalancer:
+  mode: dsr
+  dsrDispatch: geneve
+  algorithm: maglev
+routingMode: tunnel
+tunnelProtocol: geneve
 
-k8sClientRateLimit:
-  qps: 20
-  burst: 100
+# resources:
+#   requests:
+#     cpu: 200m
+#     memory: 512Mi
+#   limits:
+#     cpu: 1000m
+#     memory: 1Gi
+
+# k8sClientRateLimit:
+#   qps: 20
+#   burst: 100
 
 # https://docs.cilium.io/en/stable/operations/performance/tuning/#ebpf-host-routing
 # bpf:

@@ -1,0 +1,25 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cilium
+  namespace: kube-system
+spec:
+  project: cilium
+  source:
+    path: .
+    repoURL: oci://quay.io/cilium/charts/cilium
+    targetRevision: 1.18.6
+    helm:
+      valueFiles:
+        - k8s/infrastructure/network/cilium/values.yaml
+  destination:
+    namespace: kube-system
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    syncOptions:
+      # - CreateNamespace=true
+      - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true

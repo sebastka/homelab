@@ -1,21 +1,20 @@
-# https://gateway.envoyproxy.io/v1.6/install/install-argocd/
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: envoy-gateway
-  namespace: envoy-gateway-system
+  name: cert-manager
+  namespace: cert-manager
 spec:
-  project: envoy-gateway
+  project: cert-manager
   source:
     path: .
-    repoURL: oci://docker.io/envoyproxy/gateway-helm
-    targetRevision: 1.6.3
+    repoURL: oci://quay.io/jetstack/charts/cert-manager
+    targetRevision: 1.19.2
     helm:
       valueFiles:
-        - k8s/infrastructure/network/envoy-gateway/values.yaml
+        - k8s/infrastructure/controllers/cert-manager/values.yaml
   destination:
-    namespace: envoy-gateway-system
+    namespace: cert-manager
     server: https://kubernetes.default.svc
   syncPolicy:
     syncOptions:

@@ -1,21 +1,20 @@
-# https://gateway.envoyproxy.io/v1.6/install/install-argocd/
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: envoy-gateway
-  namespace: envoy-gateway-system
+  name: argocd
+  namespace: argocd
 spec:
-  project: envoy-gateway
+  project: argocd
   source:
     path: .
-    repoURL: oci://docker.io/envoyproxy/gateway-helm
-    targetRevision: 1.6.3
+    repoURL: oci://ghcr.io/argoproj/argo-helm/argo-cd
+    targetRevision: 9.3.7
     helm:
       valueFiles:
-        - k8s/infrastructure/network/envoy-gateway/values.yaml
+        - k8s/infrastructure/controllers/argocd/values.yaml
   destination:
-    namespace: envoy-gateway-system
+    namespace: argocd
     server: https://kubernetes.default.svc
   syncPolicy:
     syncOptions:
