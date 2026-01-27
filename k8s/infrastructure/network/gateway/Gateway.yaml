@@ -9,7 +9,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
 spec:
-  gatewayClassName: envoy-gatewayclass
+  gatewayClassName: envoy
   # gatewayClassName: cilium
   listeners:
     - name: http
