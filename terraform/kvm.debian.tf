@@ -60,7 +60,8 @@ resource "proxmox_vm_qemu" "debian" {
     ignore_changes = [
       ciuser,
       sshkeys,
-      network
+      network,
+      vm_state
     ]
   }
 }

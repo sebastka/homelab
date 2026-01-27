@@ -7,15 +7,15 @@ locals {
   worker_mem = 24576 # 12288
 
   k8s_control_planes = {
-    # "cp01" = { mac_address = "bc:24:11:10:fe:09", iso = local.current_image, gpu = false }
-    # "cp02" = { mac_address = "bc:24:11:10:fe:0A", iso = local.current_image, gpu = false }
-    # "cp03" = { mac_address = "bc:24:11:10:fe:0B", iso = local.current_image, gpu = false }
+    "cp01" = { mac_address = "bc:24:11:10:fe:09", iso = local.current_image, gpu = false }
+    "cp02" = { mac_address = "bc:24:11:10:fe:0A", iso = local.current_image, gpu = false }
+    "cp03" = { mac_address = "bc:24:11:10:fe:0B", iso = local.current_image, gpu = false }
   }
 
   k8s_worker = {
-    # "w01" = { mac_address = "bc:24:11:1c:42:be", iso = local.current_image, gpu = true }
-    # "w02" = { mac_address = "bc:24:11:97:24:5f", iso = local.current_image, gpu = false }
-    # "w03" = { mac_address = "bc:24:11:02:d7:95", iso = local.current_image, gpu = false }
+    "w01" = { mac_address = "bc:24:11:1c:42:be", iso = local.current_image, gpu = true }
+    "w02" = { mac_address = "bc:24:11:97:24:5f", iso = local.current_image, gpu = false }
+    "w03" = { mac_address = "bc:24:11:02:d7:95", iso = local.current_image, gpu = false }
     # "w04" = { mac_address = "bc:24:11:02:d7:96", iso = local.current_image, gpu = false }
     # "w05" = { mac_address = "bc:24:11:02:d7:97", iso = local.current_image, gpu = false }
     # "w06" = { mac_address = "bc:24:11:02:d7:98", iso = local.current_image, gpu = false }
