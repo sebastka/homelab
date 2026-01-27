@@ -12,8 +12,8 @@ patches:
       kind: Namespace
       metadata:
         name: node-feature-discovery
-      labels:
-        pod-security.kubernetes.io/enforce: privileged
+        labels:
+          pod-security.kubernetes.io/enforce: privileged
     target:
       kind: Namespace
       name: node-feature-discovery
