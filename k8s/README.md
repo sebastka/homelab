@@ -6,13 +6,13 @@
 2. Install Envoy Gateway and set up GatewayClass:
   - `helm install envoy-gateway oci://docker.io/envoyproxy/gateway-helm --version v1.6.3 --namespace envoy-gateway-system --create-namespace -f infrastructure/network/envoy-gateway/values.yaml`
   - `kubectl apply -f infrastructure/network/envoy-gateway/EnvoyProxy.yaml -f infrastructure/network/envoy-gateway/GatewayClass.yaml`
-3. Install cert-manager and a ClusterIssuer:
+3. Install cert-manager and set up a ClusterIssuer:
   - `helm install cert-manager oci://quay.io/jetstack/charts/cert-manager --version v1.19.2 --namespace cert-manager --create-namespace -f infrastructure/controllers/cert-manager/values.yaml`
   - `kubectl apply -f infrastructure/controllers/cert-manager/Secret.cloudflare-api-token.yaml -f infrastructure/controllers/cert-manager/ClusterIssuer.yaml`
 4. Set up Gateway:
   - `kubectl apply -k infrastructure/network/gateway`
 5. Install ArgoCD and provide it with the sops/age secret:
-  - `helm install argo-cd oci://ghcr.io/argoproj/argo-helm/argo-cd --version 9.3.7 --namespace argocd --create-namespace -f infrastructure/controllers/argocd/values.yaml`
+  - `helm install argocd oci://ghcr.io/argoproj/argo-helm/argo-cd --version 9.3.7 --namespace argocd --create-namespace -f infrastructure/controllers/argocd/values.yaml`
   - `kubectl apply -f infrastructure/controllers/argocd/Service.yaml -f infrastructure/controllers/argocd/GRPCRoute.yaml`
   - `cat "$XDG_CONFIG_HOME/sops/age/keys.txt" | kubectl create secret generic sops-age -n argocd --from-file=keys.txt=/dev/stdin`
 6.  Deploy infrastructure and applications:
