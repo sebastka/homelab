@@ -4,5 +4,5 @@ kind: Kustomization
 
 resources:
   - Namespace.yaml
-  - Application.yaml
+  - https://github.com/kubernetes-sigs/node-feature-discovery/deployment/overlays/default?ref=v0.18.3
   - https://github.com/intel/intel-device-plugins-for-kubernetes/deployments/nfd/overlays/node-feature-rules?ref=v0.34.1  # NFD rules for Intel HW
