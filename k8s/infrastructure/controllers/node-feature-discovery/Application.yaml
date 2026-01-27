@@ -1,0 +1,25 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: node-feature-discovery
+  namespace: node-feature-discovery
+spec:
+  project: node-feature-discovery
+  source:
+    path: .
+    repoURL: oci://gcr.io/k8s-staging-nfd/charts/node-feature-discovery
+    targetRevision: 0.18.3
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    namespace: node-feature-discovery
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    syncOptions:
+      # - CreateNamespace=true
+      - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true
