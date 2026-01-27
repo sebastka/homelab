@@ -5,6 +5,6 @@ talmox,hera,controlplane,tcp03,192.168.6.203
 talmox,hera,worker,tw01,192.168.6.211
 talmox,hera,worker,tw02,192.168.6.212
 talmox,hera,worker,tw03,192.168.6.213
-talmox,hera,worker,tw04,192.168.6.214
-talmox,hera,worker,tw05,192.168.6.215
-talmox,hera,worker,tw06,192.168.6.216
+# talmox,hera,worker,tw04,192.168.6.214
+# talmox,hera,worker,tw05,192.168.6.215
+# talmox,hera,worker,tw06,192.168.6.216

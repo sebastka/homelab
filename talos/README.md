@@ -4,6 +4,9 @@ Run: `./init.sh`
 
 # Cheat sheet
 
+Watch nodes:
+- `talosctl get members --watch`
+
 Edit machine config:
 - `talosctl -n 192.168.6.201 edit machineconfig`
 
