@@ -29,14 +29,14 @@ spec:
             readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
-          resources:
-            requests:
-              cpu: 500m
-              memory: 2Gi
-            limits:
-              cpu: 6000m
-              memory: 6Gi
-              gpu.intel.com/i915: 1000m
+          # resources:
+          #   requests:
+          #     cpu: 500m
+          #     memory: 2Gi
+          #   limits:
+          #     cpu: 6000m
+          #     memory: 6Gi
+          #     gpu.intel.com/i915: 1000m
           env:
             - name: TZ
               value: Europe/Oslo
