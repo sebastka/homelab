@@ -1,6 +1,6 @@
 # Bootstrap
 
-1. Install Cilium: 
+1. Install Cilium:
   - `helm install cilium oci://quay.io/cilium/charts/cilium --version 1.18.6 --namespace kube-system -f infrastructure/network/cilium/values.yaml`
   - `kubectl apply -f infrastructure/network/cilium/CiliumL2AnnouncementPolicy.yaml -f infrastructure/network/cilium/CiliumLoadBalancerIPPool.yaml`
 2. Install Envoy Gateway and set up GatewayClass:
@@ -12,9 +12,7 @@
 4. Set up Gateway:
   - `kubectl apply -k infrastructure/network/gateway`
 5. Install ArgoCD and provide it with the sops/age secret:
-  - `helm install argocd oci://ghcr.io/argoproj/argo-helm/argo-cd --version 9.3.7 --namespace argocd --create-namespace -f infrastructure/controllers/argocd/values.yaml`
-  - `kubectl apply -f infrastructure/controllers/argocd/Service.yaml -f infrastructure/controllers/argocd/GRPCRoute.yaml`
-  - `cat "$XDG_CONFIG_HOME/sops/age/keys.txt" | kubectl create secret generic sops-age -n argocd --from-file=keys.txt=/dev/stdin`
+  - `kustomize build --enable-helm --enable-alpha-plugins --enable-exec infrastructure/controllers/argocd | kubectl apply --server-side -f -; cat "$XDG_CONFIG_HOME/sops/age/keys.txt" | kubectl create secret generic sops-age -n argocd --from-file=keys.txt=/dev/stdin`
 6.  Deploy infrastructure and applications:
   - `kubectl apply -k infrastructure`
   - `kubectl apply -k sets`
