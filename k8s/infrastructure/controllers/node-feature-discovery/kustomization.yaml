@@ -3,17 +3,15 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - https://github.com/kubernetes-sigs/node-feature-discovery/deployment/overlays/default?ref=v0.18.3
+  - Namespace.yaml
   - https://github.com/intel/intel-device-plugins-for-kubernetes/deployments/nfd/overlays/node-feature-rules?ref=v0.34.1  # NFD rules for Intel HW
 
-patches:
-  - patch: |-
-      apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: node-feature-discovery
-        labels:
-          pod-security.kubernetes.io/enforce: privileged
-    target:
-      kind: Namespace
-      name: node-feature-discovery
+# https://kubernetes-sigs.github.io/node-feature-discovery/v0.16/deployment/helm.html
+helmCharts:
+  - name: node-feature-discovery
+    repo: https://kubernetes-sigs.github.io/node-feature-discovery/charts
+    version: 0.18.3
+    releaseName: nfd
+    includeCRDs: true
+    namespace: node-feature-discovery
+    valuesFile: values.yaml
