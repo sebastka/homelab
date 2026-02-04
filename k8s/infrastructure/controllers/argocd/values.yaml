@@ -46,13 +46,13 @@ dex:
 
 # https://github.com/viaduct-ai/kustomize-sops/issues/300
 repoServer:
-  resources:
-    requests:
-      cpu: 100m
-      memory: 256Mi
-    limits:
-      cpu: 500m
-      memory: 2Gi
+  # resources:
+  #   requests:
+  #     cpu: 100m
+  #     memory: 256Mi
+  #   limits:
+  #     cpu: 500m
+  #     memory: 2Gi
   volumes:
     - name: custom-tools
       emptyDir: {}
@@ -101,23 +101,23 @@ repoServer:
     - name: SOPS_AGE_KEY_FILE
       value: /.config/sops/age/keys.txt
 
-redis:
-  resources:
-    requests:
-      cpu: 100m
-      memory: 126Mi
-    limits:
-      cpu: 200m
-      memory: 512Mi
+# redis:
+#   resources:
+#     requests:
+#       cpu: 100m
+#       memory: 126Mi
+#     limits:
+#       cpu: 200m
+#       memory: 512Mi
 
 server:
-  resources:
-    requests:
-      cpu: 100m
-      memory: 126Mi
-    limits:
-      cpu: 200m
-      memory: 512Mi
+  # resources:
+  #   requests:
+  #     cpu: 100m
+  #     memory: 126Mi
+  #   limits:
+  #     cpu: 200m
+  #     memory: 512Mi
 
   httproute:
     enabled: true
@@ -153,21 +153,21 @@ server:
               - name: Content-Type
                 value: application/grpc
 
-applicationSet:
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 200m
-      memory: 1Gi
+# applicationSet:
+#   resources:
+#     requests:
+#       cpu: 100m
+#       memory: 128Mi
+#     limits:
+#       cpu: 200m
+#       memory: 1Gi
 
-notifications:
-  enabled: false
-  resources:
-    requests:
-      cpu: 100m
-      memory: 64Mi
-    limits:
-      cpu: 200m
-      memory: 128Mi
+# notifications:
+#   enabled: false
+#   resources:
+#     requests:
+#       cpu: 100m
+#       memory: 64Mi
+#     limits:
+#       cpu: 200m
+#       memory: 128Mi
