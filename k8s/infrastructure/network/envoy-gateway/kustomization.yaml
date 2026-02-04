@@ -13,4 +13,5 @@ resources:
 #     version: 1.4.6
 #     releaseName: envoy-gateway
 #     namespace: envoy-gateway-system
+#     includeCRDs: true
 #     valuesFile: values.yaml

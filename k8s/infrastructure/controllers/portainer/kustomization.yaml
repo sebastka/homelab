@@ -13,4 +13,5 @@ helmCharts:
     version: 2.33.6
     releaseName: portainer
     namespace: portainer
+    includeCRDs: true
     valuesFile: values.yaml
