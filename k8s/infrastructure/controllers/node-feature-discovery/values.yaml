@@ -1,0 +1,6 @@
+# https://artifacthub.io/packages/helm/node-feature-discovery/node-feature-discovery?modal=values
+---
+worker:
+  config:
+    core:
+      sleepInterval: 0s
