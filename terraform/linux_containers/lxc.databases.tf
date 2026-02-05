@@ -1,10 +1,10 @@
 resource "proxmox_lxc" "db01" {
-  hostname             = "db01.${var.pve_host}"
+  hostname             = "db01.${var.pve.domain}"
   ostemplate           = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
   description          = "Database server (MariaDB)"
   tags                 = "database,db,mariadb"
   password             = "changeme"
-  target_node          = var.pve_node_name
+  target_node          = var.pve.name
   arch                 = "amd64"
   console              = true
   cores                = 4
@@ -14,7 +14,7 @@ resource "proxmox_lxc" "db01" {
   onboot               = true
   startup              = "up=10"
   start                = true
-  ssh_public_keys      = join("\n", var.authorized_keys)
+  ssh_public_keys      = join("\n", var.ssh_authorized_keys)
   unprivileged         = true
 
   features {
@@ -34,7 +34,7 @@ resource "proxmox_lxc" "db01" {
   }
 
   rootfs {
-    storage = var.pve_storage_pool
+    storage = var.pve.default_storage_pool
     size    = "8G"
   }
 
@@ -44,7 +44,7 @@ resource "proxmox_lxc" "db01" {
     size      = "128G"
     slot      = 0
     key       = 0
-    storage   = var.pve_storage_pool
+    storage   = var.pve.default_storage_pool
     backup    = false
     replicate = false
     shared    = false
@@ -61,12 +61,12 @@ resource "proxmox_lxc" "db01" {
 }
 
 resource "proxmox_lxc" "db02" {
-  hostname             = "db02.${var.pve_host}"
+  hostname             = "db02.${var.pve.domain}"
   ostemplate           = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
   description          = "Database server (PostgreSQL)"
   tags                 = "database,db,postgresql,postgres"
   password             = "changeme"
-  target_node          = var.pve_node_name
+  target_node          = var.pve.name
   arch                 = "amd64"
   console              = true
   cores                = 4
@@ -76,7 +76,7 @@ resource "proxmox_lxc" "db02" {
   onboot               = true
   startup              = "up=10"
   start                = true
-  ssh_public_keys      = join("\n", var.authorized_keys)
+  ssh_public_keys      = join("\n", var.ssh_authorized_keys)
   unprivileged         = true
 
   features {
@@ -96,7 +96,7 @@ resource "proxmox_lxc" "db02" {
   }
 
   rootfs {
-    storage = var.pve_storage_pool
+    storage = var.pve.default_storage_pool
     size    = "8G"
   }
 
@@ -106,7 +106,7 @@ resource "proxmox_lxc" "db02" {
     size      = "128G"
     slot      = 0
     key       = 0
-    storage   = var.pve_storage_pool
+    storage   = var.pve.default_storage_pool
     backup    = false
     replicate = false
     shared    = false
@@ -124,12 +124,12 @@ resource "proxmox_lxc" "db02" {
 }
 
 resource "proxmox_lxc" "db03" {
-  hostname             = "db03.${var.pve_host}"
+  hostname             = "db03.${var.pve.domain}"
   ostemplate           = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
   description          = "Database server (MongoDB)"
   tags                 = "database,db,mongodb,mongo"
   password             = "changeme"
-  target_node          = var.pve_node_name
+  target_node          = var.pve.name
   arch                 = "amd64"
   console              = true
   cores                = 4
@@ -139,7 +139,7 @@ resource "proxmox_lxc" "db03" {
   onboot               = true
   startup              = "up=10"
   start                = true
-  ssh_public_keys      = join("\n", var.authorized_keys)
+  ssh_public_keys      = join("\n", var.ssh_authorized_keys)
   unprivileged         = true
 
   features {
@@ -159,7 +159,7 @@ resource "proxmox_lxc" "db03" {
   }
 
   rootfs {
-    storage = var.pve_storage_pool
+    storage = var.pve.default_storage_pool
     size    = "8G"
   }
 
@@ -169,7 +169,7 @@ resource "proxmox_lxc" "db03" {
     size      = "128G"
     slot      = 0
     key       = 0
-    storage   = var.pve_storage_pool
+    storage   = var.pve.default_storage_pool
     backup    = false
     replicate = false
     shared    = false

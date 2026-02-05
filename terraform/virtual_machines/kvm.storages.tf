@@ -2,9 +2,9 @@ resource "proxmox_vm_qemu" "file01" {
   clone_id   = 105 # template.hera.home.karlsen.fr
   full_clone = true
 
-  name               = "file01.${var.pve_host}"
+  name               = "file01.${var.pve.domain}"
   tags               = "fileserver,nfs,samba"
-  target_nodes       = [var.pve_node_name]
+  target_nodes       = [var.pve.name]
   qemu_os            = "l26"
   machine            = "q35"
   agent              = 1
@@ -41,7 +41,7 @@ resource "proxmox_vm_qemu" "file01" {
       scsi0 {
         disk {
           size       = "32G"
-          storage    = var.pve_storage_pool
+          storage    = var.pve.default_storage_pool
           iothread   = true
           emulatessd = true
           backup     = false

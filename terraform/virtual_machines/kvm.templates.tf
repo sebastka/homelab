@@ -2,9 +2,9 @@ resource "proxmox_vm_qemu" "templatevm" {
   # clone_id =
   full_clone = false
 
-  name               = "templatevm.${var.pve_host}"
+  name               = "templatevm.${var.pve.domain}"
   tags               = "template"
-  target_nodes       = [var.pve_node_name]
+  target_nodes       = [var.pve.name]
   qemu_os            = "l26"
   machine            = "q35"
   agent              = 1
@@ -41,7 +41,7 @@ resource "proxmox_vm_qemu" "templatevm" {
       scsi0 {
         disk {
           size       = "8G"
-          storage    = var.pve_storage_pool
+          storage    = var.pve.default_storage_pool
           iothread   = true
           emulatessd = true
           backup     = false

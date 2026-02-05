@@ -7,11 +7,28 @@ terraform {
       source  = "Telmate/proxmox"
       version = "3.0.2-rc07"
     }
+
+    # kubernetes = {
+    #   source  = "hashicorp/kubernetes"
+    #   version = "~> 3"
+    # }
+
+    # talos = {
+    #   source  = "siderolabs/talos"
+    #   version = "~> 0"
+    # }
   }
 }
 
 provider "proxmox" {
-  pm_api_url = "https://${var.pve_host}:8006/api2/json"
+  pm_api_url = "${var.pve.endpoint}/api2/json"
   # pm_minimum_permission_check = false
   # pm_debug                  = true
 }
+
+# provider "kubernetes" {
+#   host                   = module.talos.kube_config.kubernetes_client_configuration.host
+#   client_certificate     = base64decode(module.talos.kube_config.kubernetes_client_configuration.client_certificate)
+#   client_key             = base64decode(module.talos.kube_config.kubernetes_client_configuration.client_key)
+#   cluster_ca_certificate = base64decode(module.talos.kube_config.kubernetes_client_configuration.ca_certificate)
+# }

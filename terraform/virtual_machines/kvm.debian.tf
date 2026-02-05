@@ -2,9 +2,9 @@ resource "proxmox_vm_qemu" "debian" {
   clone_id   = 105 # template.hera.home.karlsen.fr
   full_clone = true
 
-  name               = "debian.${var.pve_host}"
+  name               = "debian.${var.pve.domain}"
   tags               = "debian"
-  target_nodes       = [var.pve_node_name]
+  target_nodes       = [var.pve.name]
   qemu_os            = "l26"
   machine            = "q35"
   agent              = 1
@@ -41,7 +41,7 @@ resource "proxmox_vm_qemu" "debian" {
       scsi0 {
         disk {
           size       = "64G"
-          storage    = var.pve_storage_pool
+          storage    = var.pve.default_storage_pool
           iothread   = true
           emulatessd = true
           backup     = false
