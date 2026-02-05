@@ -2,11 +2,12 @@
 
 # Terraform
 .terraform/
-.terraform.lock.hcl
+# .terraform.lock.hcl
 .terraform.tfstate.lock.info
 terraform/.bak
 *.tfstate
 *.tfstate.backup
+*.tfstate.*.backup
 tfplan
 
 # k8s
