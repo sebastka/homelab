@@ -13,7 +13,8 @@ main()
     talosctl gen config "$CLUSTER_NAME" "https://$CONTROL_PLANE_IP:6443" --output-dir "$TALOS_CONFIG_HOME" --install-image "$FACTORY_IMAGE" \
         --config-patch @patch/common/diskSelector.yaml \
         --config-patch @patch/common/longhorn.yaml \
-        --config-patch @patch/common/cni-proxy.yaml
+        --config-patch @patch/common/cni-proxy.yaml \
+        --config-patch @patch/common/extra-manifests.yaml
 
     ln -sf "$CLUSTER_NAME/talosconfig" "$XDG_CONFIG_HOME/talos/config.yaml"
 
