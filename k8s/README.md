@@ -1,7 +1,7 @@
 # Bootstrap
 
 1. Install Cilium:
-  - `helm install cilium oci://quay.io/cilium/charts/cilium --version 1.18.6 --namespace kube-system -f infrastructure/network/cilium/values.yaml`
+  - `helm install cilium oci://quay.io/cilium/charts/cilium --version 1.19.0 --namespace kube-system -f infrastructure/network/cilium/values.yaml`
   - `kubectl apply -f infrastructure/network/cilium/CiliumL2AnnouncementPolicy.yaml -f infrastructure/network/cilium/CiliumLoadBalancerIPPool.yaml`
 2. Install Envoy Gateway and set up GatewayClass:
   - `helm install envoy-gateway oci://docker.io/envoyproxy/gateway-helm --version v1.6.3 --namespace envoy-gateway-system --create-namespace -f infrastructure/network/envoy-gateway/values.yaml`
