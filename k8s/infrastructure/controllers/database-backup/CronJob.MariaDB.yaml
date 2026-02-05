@@ -25,11 +25,22 @@ spec:
           containers:
             - name: mariadb-backup
               image: mariadb:latest
-              # command: ["/bin/sh", "-c"]
+              command: ['/bin/sh', '-c']
               args:
-                - /bin/sh
-                - -c
-                - echo "$MARIADB_DB_CSV" | sed 1d | sed '/^$/d' | while IFS=, read username password host port database; do mariadb-dump --host="$host" --port="$port" --user="$username" --password="$password" "$database" > "/mnt/backup/mariadb/${database}.$(date +'%Y-%m-%d--%H-%M-%S').sql"; done
+                - |
+                  set -eu
+                  echo "$MARIADB_DB_CSV" | sed 1d | sed '/^$/d' | while IFS=, read username password host port database; do
+                    filename="${database}.$(date +'%Y-%m-%d--%H-%M-%S')"
+
+                    mariadb-dump --host="$host" --port="$port" --user="$username" --password="$password" "$database" >"/tmp/${filename}.sql"
+                    printf -- '%s - Database "%s" dumped to "/tmp/%s.sql"\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$database" "$filename"
+
+                    xz -6 "/tmp/${filename}.sql"
+                    printf -- '%s - Dump file "/tmp/%s.sql" xz-compressed\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$filename"
+
+                    mv "/tmp/${filename}.sql.xz" /mnt/backup/mariadb/
+                    printf -- '%s - Dump file "/tmp/%s.sql.xz" moved to backup target. Done\n\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$filename"
+                  done
               imagePullPolicy: Always
               securityContext:
                 allowPrivilegeEscalation: false
