@@ -1,18 +1,18 @@
 locals {
   current_status = "running" # running | stopped
   talos_image    = "local:iso/nocloud-amd64-secureboot.iso"
-  current_image  = local.talos_image
+  current_image  = "" # local.talos_image
 
   cp_config     = { mem = 8192,  cores = 4 }
   worker_config = { mem = 24576, cores = 8 }
 
   talos_nodes = {
-    "cp01" = { type = "controlplane", mac_address = "bc:24:11:10:fe:09", gpu = false }
-    "cp02" = { type = "controlplane", mac_address = "bc:24:11:10:fe:0A", gpu = false }
-    "cp03" = { type = "controlplane", mac_address = "bc:24:11:10:fe:0B", gpu = false }
-    "w01"  = { type = "worker",       mac_address = "bc:24:11:1c:42:be", gpu = true }
-    "w02"  = { type = "worker",       mac_address = "bc:24:11:97:24:5f", gpu = false }
-    "w03"  = { type = "worker",       mac_address = "bc:24:11:02:d7:95", gpu = false }
+    "cp01" = { type = "controlplane", pve_node: "hera", mac_address = "bc:24:11:10:fe:09", gpu = false }
+    "cp02" = { type = "controlplane", pve_node: "hera", mac_address = "bc:24:11:10:fe:0A", gpu = false }
+    "cp03" = { type = "controlplane", pve_node: "hera", mac_address = "bc:24:11:10:fe:0B", gpu = false }
+    "w01"  = { type = "worker",       pve_node: "hera", mac_address = "bc:24:11:1c:42:be", gpu = true }
+    "w02"  = { type = "worker",       pve_node: "hera", mac_address = "bc:24:11:97:24:5f", gpu = false }
+    "w03"  = { type = "worker",       pve_node: "hera", mac_address = "bc:24:11:02:d7:95", gpu = false }
 
     # "w04"  = { type = "worker",       mac_address = "bc:24:11:02:d7:96", gpu = false }
     # "w05"  = { type = "worker",       mac_address = "bc:24:11:02:d7:97", gpu = false }
@@ -26,7 +26,7 @@ resource "proxmox_vm_qemu" "talos_nodes" {
   name               = "${each.key}.${var.pve.domain}"
   description        = each.value.type == "controlplane" ? "Talos Control Plane" : "Talos Worker"
   tags               = "talos,talmox,${each.value.type}"
-  target_nodes       = [var.pve.name]
+  target_nodes       = [each.value.pve_node]
   qemu_os            = "l26"
   machine            = "q35"
   agent              = 1
