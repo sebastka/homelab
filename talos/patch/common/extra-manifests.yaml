@@ -4,6 +4,7 @@
 
 cluster:
   extraManifests:
+    # Gateway API - Let the Envoy Gateway install them
     # - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/standard-install.yaml
     # - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.4.1/config/crd/experimental/gateway.networking.k8s.io_tlsroutes.yaml
     - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml
