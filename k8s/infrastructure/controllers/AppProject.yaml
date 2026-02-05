@@ -12,8 +12,6 @@ spec:
       server: '*'
     - namespace: kube-system
       server: '*'
-    - namespace: metrics-server
-      server: '*'
     - namespace: cert-manager
       server: '*'
     - namespace: portainer
