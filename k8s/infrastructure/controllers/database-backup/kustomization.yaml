@@ -7,5 +7,6 @@ generators:
   - ./ksops.paperless-secrets-generator.yaml
 
 resources:
+  - Namespace.yaml
   - Secret.mariadb-secrets.enc.yaml
   - CronJob.MariaDB.yaml
