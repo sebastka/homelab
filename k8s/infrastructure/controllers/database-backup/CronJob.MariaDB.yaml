@@ -54,9 +54,13 @@ spec:
                       name: mariadb-secrets
                       key: mariadb-db-csv
               volumeMounts:
+                - name: tmp-empty
+                  mountPath: /tmp
                 - name: mariadb-backup-target
                   mountPath: /mnt/backup
           volumes:
+            - name: tmp-empty
+              emptyDir: {}
             - name: mariadb-backup-target
               nfs:
                 server: file01.hera.home.karlsen.fr
