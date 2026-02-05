@@ -1,0 +1,49 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mariadb-backup
+  namespace: databases-backup
+spec:
+  schedule: '0 2 * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: mariadb-backup
+              image: mariadb:latest
+              # command: ["/bin/sh", "-c"]
+              args:
+                - /bin/sh
+                - -c
+                - echo "$MARIADB_DB_CSV" | sed 1d | while IFS=, read username password host port database; do mariadb-dump --host="$host" --port="$port" --user="$username" --password="$password" "$database" > "/mnt/backup/mariadb/$(date +'%Y-%m-%d--%H-%M-%S')"; done
+              imagePullPolicy: Always
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+              env:
+                - name: MARIADB_DB_CSV
+                  valueFrom:
+                    secretKeyRef:
+                      name: mariadb-secrets
+                      key: mariadb-db-csv
+              volumeMounts:
+                - name: mariadb-backup-target
+                  mountPath: /mnt/backup
+          volumes:
+            - name: mariadb-backup-target
+              nfs:
+                server: file01.hera.home.karlsen.fr
+                path: /mnt/nfs/homelab/databases-backup

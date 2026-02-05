@@ -1,0 +1,11 @@
+# https://medium.com/@Vishwa22/mastering-kubernetes-cronjobs-the-complete-guide-for-periodic-task-automation-2d2c0961eff4
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+generators:
+  - ./ksops.paperless-secrets-generator.yaml
+
+resources:
+  - Secret.mariadb-secrets.enc.yaml
+  - CronJob.MariaDB.yaml
