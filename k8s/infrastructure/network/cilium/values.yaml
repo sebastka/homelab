@@ -37,18 +37,26 @@ gatewayAPI:
 # #   hostNetwork:
 # #     enabled: true
 
-# operator:
-#   rollOutPods: true
-#   resources:
-#     requests:
-#       cpu: 50m
-#       memory: 128Mi
-#     limits:
-#       cpu: 500m
-#       memory: 256Mi
+operator:
+  rollOutPods: true
+  prometheus:
+    metricsService: true
+    enabled: true
+    port: 9963
+    serviceMonitor:
+      enabled: true
+  dashboards:
+    enabled: true
+  # resources:
+  #   limits:
+  #     cpu: 500m
+  #     memory: 256Mi
+  #   requests:
+  #     cpu: 50m
+  #     memory: 128Mi
 
 # # -- Roll out cilium agent pods automatically when configmap is updated.
-# rollOutCiliumPods: true
+rollOutCiliumPods: true
 
 loadBalancer:
   mode: dsr
@@ -75,14 +83,61 @@ tunnelProtocol: geneve
 #   lbModeAnnotation: true
 
 hubble:
+  enabled: true
+  metrics:
+    enabled:
+      - dns
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
+    enableOpenMetrics: true
+    port: 9965
+    serviceMonitor:
+      enabled: true
+    dashboards:
+      enabled: true
+  relay:
+    enabled: true
+    rollOutPods: true
+    prometheus:
+      enabled: true
+      port: 9966
+      serviceMonitor:
+        enabled: true
+  ui:
+    enabled: true
+    rollOutPods: true
+
+clustermesh:
+  apiserver:
+    metrics:
+      enabled: true
+      port: 9962
+      serviceMonitor:
+        enabled: true
+
+# mTLS
+authentication:
   enabled: false
-  # relay:
-  #   enabled: true
-  #   rollOutPods: true
-  # ui:
-  #   enabled: true
-  #   rollOutPods: true
+  mutual:
+    spire:
+      enabled: false
+      install:
+        server:
+          dataStorage:
+            storageClass: cilium-spire-sc
+
+prometheus:
+  metricsService: true
+  enabled: true
+  port: 9962
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
 
 # -- Grafana dashboards for cilium-agent
 dashboards:
-  enabled: false
+  enabled: true
