@@ -4,9 +4,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 generators:
-  - ./ksops.paperless-secrets-generator.yaml
+  - ./ksops.mariadb-secrets-generator.yaml
+  - ./ksops.postgres-secrets-generator.yaml
 
 resources:
   - Namespace.yaml
   - Secret.mariadb-secrets.enc.yaml
   - CronJob.MariaDB.yaml
+  - Secret.postgres-secrets.enc.yaml
+  - CronJob.Postgres.yaml
