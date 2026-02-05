@@ -26,6 +26,7 @@ main()
         talosctl apply-config --insecure --nodes "$ip" --file "$TALOS_CONFIG_HOME/controlplane.yaml" \
             --config-patch @patch/cp/vip.yaml \
             --config-patch @patch/cp/etcd-metrics-patch.yaml \
+            --config-patch @patch/cp/oidc.yaml \
             --config-patch @/tmp/labels.yaml
     done
 

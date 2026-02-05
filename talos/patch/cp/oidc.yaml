@@ -1,0 +1,14 @@
+# OIDC configuration for api server
+# https://kubernetes.io/docs/reference/access-authn-authz/authentication/
+---
+
+cluster:
+  apiServer:
+    extraArgs:
+      oidc-issuer-url: https://karlsen-xzy0yv.zitadel.cloud
+      oidc-client-id: '358737465722334937'
+      oidc-username-claim: email
+      oidc-username-prefix: 'zitadel:'
+      oidc-groups-claim: groups
+      oidc-groups-prefix: 'zitadel:'
+      # oidc-required-claim: XX=YY
