@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      app.kubernetes.io/name: kube-prometheus-stack
+      app: kube-prometheus-stack
+
+resources:
+  - Namespace.yaml
+  - HTTPRoute.prometheus.yaml
+  - HTTPRoute.alertmanager.yaml
+
+helmCharts:
+  - name: kube-prometheus-stack
+    repo: https://prometheus-community.github.io/helm-charts
+    version: 81.5.0
+    releaseName: kube-prometheus-stack
+    namespace: kube-prometheus-stack
+    includeCRDs: true
+    valuesFile: values.yaml
