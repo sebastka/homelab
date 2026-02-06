@@ -1,9 +1,12 @@
 #!/bin/sh
 set -eux
 
+# ./upgrade.sh <cluster-name>
 main()
 {
-    set -a; . ./.env; set +a
+    export CLUSTER_NAME="$1"
+    [ -f "./clusters/${CLUSTER_NAME}.env" ] || return 1
+    set -a; . "./clusters/${CLUSTER_NAME}.env"; set +a
 
     for CP_IP in $TALOS_CPS; do
         talosctl upgrade --nodes "$CP_IP" --image "ghcr.io/siderolabs/installer:v${TALOS_VERSION}" --preserve
@@ -14,4 +17,4 @@ main()
     done
 }
 
-main
+main "$@"
