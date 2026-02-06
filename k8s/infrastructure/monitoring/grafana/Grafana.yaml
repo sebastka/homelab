@@ -9,8 +9,8 @@ spec:
   config:
     log:
       mode: console
-    auth:
-      disable_login_form: "true"
+    # auth:
+    #   disable_login_form: "true"
     server:
       root_url: https://grafana.talmox.hera.home.karlsen.fr
     auth.generic_oauth:
@@ -27,7 +27,7 @@ spec:
       name_attribute_path: name
       allow_assign_grafana_admin: "true"
       role_attribute_path: contains(roles[*], 'k8s_administrators') && 'Admin' || 'Viewer'
-      auto_login: "true"
+      # auto_login: "true"
   version: '12.3'
   deployment:
     spec:
