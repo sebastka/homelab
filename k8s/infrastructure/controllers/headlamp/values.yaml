@@ -1,0 +1,39 @@
+# https://artifacthub.io/packages/helm/headlamp/headlamp?modal=values
+---
+
+config:
+  oidc:
+    clientID: '358827616616091486'
+    issuerURL: https://karlsen-xzy0yv.zitadel.cloud
+    meUserInfoURL: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/userinfo
+    scopes: email
+    usePKCE: true
+
+  # pluginsDir: "/headlamp/plugins"
+  # enableHelm: false
+  # watchPlugins: false
+  # # tlsCertPath: "/headlamp-cert/headlamp-ca.crt"
+  # # tlsKeyPath: "/headlamp-cert/headlamp-tls.key"
+  # # Extra arguments that can be given to the container. See charts/headlamp/README.md for more information.
+  # extraArgs: []
+
+httproute:
+  enabled: true
+  parentRefs:
+    - kind: Gateway
+      name: default-gateway
+      namespace: gateway
+      sectionName: https-wc-talmox-hera-home-karlsen-fr
+  hostnames:
+    - headlamp.talmox.hera.home.karlsen.fr
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: headlamp
+          port: 80
+
+pluginsManager:
+  enabled: false
