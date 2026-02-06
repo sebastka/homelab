@@ -32,7 +32,7 @@ spec:
                   echo "$POSTGRES_DB_CSV" | sed 1d | sed '/^$/d' | while IFS=, read username password host port database; do
                     filename="${database}.$(date +'%Y-%m-%d--%H-%M-%S')"
 
-                    export PGPASSWORD="$password"  
+                    export PGPASSWORD="$password"
                     pg_dump --host="$host" --port="$port" --username="$username" --format=custom --file="/mnt/backup/postgres/${filename}.dump" "$database"
                     printf -- '%s - Database "%s" dumped to "/mnt/backup/postgres/%s.dump". Done\n\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$database" "$filename"
                   done
