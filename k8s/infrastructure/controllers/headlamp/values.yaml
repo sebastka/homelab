@@ -18,7 +18,7 @@ config:
   # extraArgs: []
 
 httproute:
-  enabled: true
+  enabled: false
   parentRefs:
     - kind: Gateway
       name: default-gateway

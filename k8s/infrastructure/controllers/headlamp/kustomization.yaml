@@ -11,6 +11,7 @@ labels:
 
 resources:
   - Namespace.yaml
+  - HTTPRoute.yaml
 
 helmCharts:
   - name: headlamp
