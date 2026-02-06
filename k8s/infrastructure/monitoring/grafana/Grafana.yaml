@@ -22,7 +22,7 @@ spec:
       auth_url: https://karlsen-xzy0yv.zitadel.cloud
       token_url: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
       api_url: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/userinfo
-      signout_redirect_url: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/end_session
+      signout_redirect_url: https://grafana.talmox.hera.home.karlsen.fr
       login_attribute_path: email
       name_attribute_path: name
       allow_assign_grafana_admin: "true"
