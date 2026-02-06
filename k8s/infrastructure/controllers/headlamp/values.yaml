@@ -3,7 +3,7 @@
 
 config:
   oidc:
-    clientID: '358827616616091486'
+    clientID: '358737465722334937'
     issuerURL: https://karlsen-xzy0yv.zitadel.cloud
     meUserInfoURL: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/userinfo
     scopes: email
