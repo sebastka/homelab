@@ -22,10 +22,10 @@ spec:
       client_id: '358847975163817689'
       scopes: openid email profile
       use_pkce: "true"
-      auth_url: https://karlsen-xzy0yv.zitadel.cloud
-      # token_url: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
-      # api_url: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/userinfo
-      # signout_redirect_url: https://grafana.talmox.hera.home.karlsen.fr
+      auth_url: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/authorize
+      token_url: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
+      api_url: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/userinfo
+      signout_redirect_url: https://grafana.talmox.hera.home.karlsen.fr
       login_attribute_path: email
       name_attribute_path: name
       allow_assign_grafana_admin: "true"
