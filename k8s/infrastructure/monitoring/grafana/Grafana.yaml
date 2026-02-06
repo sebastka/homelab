@@ -20,7 +20,7 @@ spec:
       enabled: "true"
       name: Zitadel
       client_id: '358847975163817689'
-      scopes: openid email profile
+      scopes: openid email profile picture
       use_pkce: "true"
       auth_url: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/authorize
       token_url: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
@@ -45,3 +45,4 @@ spec:
                 - name: GF_SECURITY_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef: { key: password, name: admin-credentials }
+https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/authorize?client_id=358847975163817689&code_challenge=IJ0fx2A51ztJWz-EPGGE_BDKnkzCJW-DWp4hpneiEaY&code_challenge_method=S256&redirect_uri=https%3A%2F%2Fgrafana.talmox.hera.home.karlsen.fr%2Flogin%2Fgeneric_oauth&response_type=code&scope=openid+email+profile&state=TQa5PR-E_KkmcGhjndHAvbf4E_HzkXQYCTv8ZidA5HY%3D
