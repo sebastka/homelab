@@ -20,13 +20,13 @@ spec:
       scopes: openid email profile
       use_pkce: "true"
       auth_url: https://karlsen-xzy0yv.zitadel.cloud
-      token_url: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
-      api_url: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/userinfo
-      signout_redirect_url: https://grafana.talmox.hera.home.karlsen.fr
+      # token_url: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
+      # api_url: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/userinfo
+      # signout_redirect_url: https://grafana.talmox.hera.home.karlsen.fr
       login_attribute_path: email
       name_attribute_path: name
       allow_assign_grafana_admin: "true"
-      role_attribute_path: contains(groups[*], 'k8s_administrators') && 'Admin' || 'Viewer'
+      role_attribute_path: contains(roles[*], 'k8s_administrators') && 'Admin' || 'Viewer'
       auto_login: "true"
   version: '12.3'
   deployment:
