@@ -10,17 +10,9 @@ spec:
   destinations:
     - namespace: argocd
       server: '*'
-    - namespace: kube-system
-      server: '*'
     - namespace: databases-backup
       server: '*'
-    - namespace: metrics-server
-      server: '*'
     - namespace: cert-manager
-      server: '*'
-    - namespace: portainer
-      server: '*'
-    - namespace: headlamp
       server: '*'
     - namespace: node-feature-discovery
       server: '*'

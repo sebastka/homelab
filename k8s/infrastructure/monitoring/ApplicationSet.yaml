@@ -1,0 +1,37 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: monitoring
+  namespace: argocd
+  labels:
+    fr.karlsen: monitoring
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/sebastka/homelab.git
+        revision: HEAD
+        directories:
+          - path: k8s/infrastructure/monitoring/*
+  template:
+    metadata:
+      name: '{{ path.basename }}'
+      labels:
+        fr.karlsen: monitoring
+    spec:
+      project: monitoring
+      source:
+        repoURL: https://github.com/sebastka/homelab.git
+        targetRevision: HEAD
+        path: '{{ path }}'
+      destination:
+        name: in-cluster
+        namespace: argocd
+      syncPolicy:
+        syncOptions:
+          # - ApplyOutOfSyncOnly
+          - ServerSideApply=true
+        automated:
+          prune: true
+          selfHeal: true
+          enabled: true

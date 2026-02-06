@@ -2,14 +2,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: infrastructure
+  name: monitoring
   namespace: argocd
 spec:
   sourceRepos:
     - https://github.com/sebastka/homelab.git
-    - docker.io/envoyproxy
   destinations:
     - namespace: argocd
+      server: '*'
+    - namespace: metrics-servrer
+      server: '*'
+    - namespace: portainer
+      server: '*'
+    - namespace: headlamp
       server: '*'
   clusterResourceWhitelist:
     - group: '*'
