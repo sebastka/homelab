@@ -33,8 +33,8 @@ configs:
   rbac:
     scopes: '[groups]'
     policy.csv: |
-      g, argocd_administrators, role:admin
-      g, argocd_users, role:readonly
+      g, k8s_administrators, role:admin
+      g, k8s_users, role:readonly
     policy.default: ''
 
 crds:
