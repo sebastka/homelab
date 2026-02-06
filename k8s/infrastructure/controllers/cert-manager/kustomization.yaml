@@ -12,3 +12,4 @@ resources:
   - Secret.cloudflare-api-token.enc.yaml
   # - Secret.cloudflare-api-token.yaml
   - ClusterIssuer.yaml
+  - GrafanaDashboard.yaml
