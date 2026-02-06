@@ -1,0 +1,31 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      app.kubernetes.io/name: grafana
+      app: grafana
+
+generators:
+  - ./ksops.admin-credentials-generator.yaml
+
+resources:
+  - Namespace.yaml
+  - HTTPRoute.yaml
+  - Secret.admin-credentials.enc.yaml
+  - Grafana.yaml
+  - GrafanaDashboard.yaml
+  - GrafanaDatasource.prometheus.yaml
+  - GrafanaDatasource.alertmanager.yaml
+
+helmCharts:
+  - name: grafana-operator
+    repo: oci://ghcr.io/grafana/helm-charts
+    version: 10.5.15
+    releaseName: grafana
+    namespace: grafana-operator
+    includeCRDs: true
+    valuesFile: values.yaml
