@@ -16,5 +16,4 @@ spec:
       - action: Allow
         principal:
           clientCIDRs:
-            - 192.168.2.102/32  # Home desktop
-            # - 192.168.0.0/16  # Home LAN
+            - 192.168.0.0/16  # Home LAN
