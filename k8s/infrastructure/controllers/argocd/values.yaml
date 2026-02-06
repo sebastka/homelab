@@ -120,7 +120,7 @@ repoServer:
 
   volumeMounts:
     - mountPath: /usr/local/bin/ksops
-      name: custom-tools
+      name: custom-ksops
       subPath: ksops
     - mountPath: /usr/local/bin/kustomize
       name: custom-kustomize
