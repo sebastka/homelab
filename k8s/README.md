@@ -44,9 +44,10 @@ Copy files to a container:
 
 # To do:
 
-- Fix pod security for install-ksops
-- Pass real client ip to pods
-- Figure out global headers using Gateway API
+- Use VLAN for virtual machines and virtual IP
+- Set up OIDC on gateways / httproutes
+- Separate private from public services
+- Use karlsen.app
 
 # Projects to test
 
