@@ -33,8 +33,8 @@ spec:
                     filename="${database}.$(date +'%Y-%m-%d--%H-%M-%S')"
 
                     export PGPASSWORD="$password"  
-                    pg_dump --host="$host" --port="$port" --username="$username" --format=custom --file="/tmp/${filename}.sql" "$database"
-                    printf -- '%s - Database "%s" dumped to "/mnt/backup/postgres/%s.sql". Done\n\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$database" "$filename"
+                    pg_dump --host="$host" --port="$port" --username="$username" --format=custom --file="/mnt/backup/postgres/${filename}.dump" "$database"
+                    printf -- '%s - Database "%s" dumped to "/mnt/backup/postgres/%s.dump". Done\n\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$database" "$filename"
                   done
               imagePullPolicy: Always
               securityContext:
