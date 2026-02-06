@@ -10,7 +10,7 @@ spec:
   destinations:
     - namespace: argocd
       server: '*'
-    - namespace: metrics-servrer
+    - namespace: metrics-server
       server: '*'
     - namespace: portainer
       server: '*'
