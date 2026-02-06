@@ -6,9 +6,9 @@ metadata:
   namespace: grafana
 spec:
   allowCrossNamespaceImport: true
-  instanceSelector:
-    matchLabels:
-      app: grafana
+  # instanceSelector:
+  #   matchLabels:
+  #     app: grafana
   datasource:
     name: Alertmanager
     type: alertmanager
