@@ -15,3 +15,5 @@ resources:
   - Application.yaml
   - CiliumLoadBalancerIPPool.yaml
   - CiliumL2AnnouncementPolicy.yaml
+  - GrafanaDashboard.cilium.yaml
+  - GrafanaDashboard.cilium-operator.yaml
