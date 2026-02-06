@@ -7,6 +7,8 @@ resources:
   - HTTPRoute.yaml
   - BackupTarget.yaml
   - RecurringJob.yaml
+  - GrafanaDashboard.control-plane.yaml
+  - GrafanaDashboard.data-plane.yaml
 
 helmCharts:
   - name: longhorn

@@ -1,0 +1,15 @@
+# https://github.com/longhorn/longhorn/blob/master/scalability/dev/data-plane-grafana_dashboard.json
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: data-plane
+  namespace: longhorn-system
+spec:
+  allowCrossNamespaceImport: true
+  folder: Longhorn
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  url: https://raw.githubusercontent.com/longhorn/longhorn/refs/heads/master/scalability/dev/data-plane-grafana_dashboard.json
