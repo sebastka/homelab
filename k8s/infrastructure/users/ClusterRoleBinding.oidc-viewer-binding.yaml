@@ -9,5 +9,5 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 subjects:
   - kind: Group
-    name: zitadel:users
+    name: zitadel:k8s_users
     apiGroup: rbac.authorization.k8s.io
