@@ -4,6 +4,9 @@ kind: Grafana
 metadata:
   name: grafana
   namespace: grafana
+  labels:
+    app.kubernetes.io/name: grafana
+    app: grafana
 spec:
   disableDefaultAdminSecret: true
   config:
