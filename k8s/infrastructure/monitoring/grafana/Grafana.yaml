@@ -12,7 +12,7 @@ spec:
     auth:
       disable_login_form: "true"
     server:
-      root_url: grafana.talmox.hera.home.karlsen.fr
+      root_url: https://grafana.talmox.hera.home.karlsen.fr
     auth.generic_oauth:
       enabled: "true"
       name: Zitadel
