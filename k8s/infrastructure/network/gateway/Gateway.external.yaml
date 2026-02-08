@@ -4,13 +4,18 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: default-gateway
+  name: external
   namespace: gateway
   annotations:
     cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
 spec:
   gatewayClassName: envoy
-  # gatewayClassName: cilium
+  infrastructure:
+    labels:
+      l2.cilium.io/ip-pool: default-l2-pool
+  addresses:
+    - type: IPAddress
+      value: 192.168.2.2
   listeners:
     - name: http
       protocol: HTTP
@@ -18,24 +23,6 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-
-    - name: https-wc-talmox-hera-home-karlsen-fr
-      protocol: HTTPS
-      port: 443
-      hostname: '*.talmox.hera.home.karlsen.fr'
-      allowedRoutes:
-        # kinds:
-        #   - group: gateway.networking.k8s.io
-        #     kind: HTTPRoute
-        #   - group: gateway.networking.k8s.io
-        #     kind: GRPCRoute
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: talmox-hera-home-karlsen-fr-certificate
 
     - name: https-karlsen-fr
       protocol: HTTPS
@@ -111,27 +98,3 @@ spec:
         certificateRefs:
           - kind: Secret
             name: wc-karlsen-app-certificate
-
-    - name: torrent-tcp
-      protocol: TCP
-      port: 6881
-      allowedRoutes:
-        namespaces:
-          from: All
-
-    - name: torrent-udp
-      protocol: UDP
-      port: 6881
-      allowedRoutes:
-        namespaces:
-          from: All
-
-# - name: tls-wc-talmox-hera-home-karlsen-fr
-#   protocol: TLS
-#   port: 443
-#   hostname: *.talmox.hera.home.karlsen.fr'
-#   allowedRoutes:
-#     namespaces:
-#       from: All
-#   tls:
-#     mode: Passthrough

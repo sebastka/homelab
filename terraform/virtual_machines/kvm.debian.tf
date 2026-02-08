@@ -31,7 +31,6 @@ resource "proxmox_vm_qemu" "debian" {
   network {
     id      = 0
     bridge  = "vmbr0"
-    tag     = 100
     model   = "virtio"
     macaddr = "bc:24:11:d5:b8:6f"
   }

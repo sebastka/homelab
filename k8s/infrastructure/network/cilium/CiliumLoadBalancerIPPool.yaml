@@ -3,7 +3,10 @@
 apiVersion: cilium.io/v2
 kind: CiliumLoadBalancerIPPool
 metadata:
-  name: cilium-default-pool
+  name: default-l2-pool
 spec:
   blocks:
-    - cidr: 192.168.6.250/32
+    - cidr: 192.168.2.0/24
+  serviceSelector:
+    matchLabels:
+      l2.cilium.io/ip-pool: default-l2-pool

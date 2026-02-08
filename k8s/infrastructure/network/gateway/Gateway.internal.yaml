@@ -1,0 +1,67 @@
+# https://docs.cilium.io/en/latest/network/servicemesh/gateway-api/parameterized-gatewayclass/
+# https://blog.stonegarden.dev/articles/2023/12/cilium-gateway-api/
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: internal
+  namespace: gateway
+  annotations:
+    cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
+spec:
+  gatewayClassName: envoy
+  infrastructure:
+    labels:
+      l2.cilium.io/ip-pool: default-l2-pool
+  addresses:
+    - type: IPAddress
+      value: 192.168.2.1
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: https-wc-talmox-hera-home-karlsen-fr
+      protocol: HTTPS
+      port: 443
+      hostname: '*.talmox.hera.home.karlsen.fr'
+      allowedRoutes:
+        # kinds:
+        #   - group: gateway.networking.k8s.io
+        #     kind: HTTPRoute
+        #   - group: gateway.networking.k8s.io
+        #     kind: GRPCRoute
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: talmox-hera-home-karlsen-fr-certificate
+
+    - name: torrent-tcp
+      protocol: TCP
+      port: 6881
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: torrent-udp
+      protocol: UDP
+      port: 6881
+      allowedRoutes:
+        namespaces:
+          from: All
+
+# - name: tls-wc-talmox-hera-home-karlsen-fr
+#   protocol: TLS
+#   port: 443
+#   hostname: *.talmox.hera.home.karlsen.fr'
+#   allowedRoutes:
+#     namespaces:
+#       from: All
+#   tls:
+#     mode: Passthrough

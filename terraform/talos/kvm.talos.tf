@@ -7,16 +7,12 @@ locals {
   worker_config = { mem = 24576, cores = 8 }
 
   talos_nodes = {
-    "cp01" = { type = "controlplane", pve_node: "hera", nic0_hwaddr = "bc:24:11:10:fe:09", nic1_hwaddr = "BC:24:11:78:E8:85", gpu = false }
-    "cp02" = { type = "controlplane", pve_node: "hera", nic0_hwaddr = "bc:24:11:10:fe:0A", nic1_hwaddr = "BC:24:11:FF:24:54", gpu = false }
-    "cp03" = { type = "controlplane", pve_node: "hera", nic0_hwaddr = "bc:24:11:10:fe:0B", nic1_hwaddr = "BC:24:11:F7:10:84", gpu = false }
-    "w01"  = { type = "worker",       pve_node: "hera", nic0_hwaddr = "bc:24:11:1c:42:be", nic1_hwaddr = "BC:24:11:7F:41:E6", gpu = true }
-    "w02"  = { type = "worker",       pve_node: "hera", nic0_hwaddr = "bc:24:11:97:24:5f", nic1_hwaddr = "BC:24:11:D3:CD:22", gpu = false }
-    "w03"  = { type = "worker",       pve_node: "hera", nic0_hwaddr = "bc:24:11:02:d7:95", nic1_hwaddr = "BC:24:11:9D:B6:B9", gpu = false }
-
-    # "w04"  = { type = "worker",       nic0_hwaddr = "bc:24:11:02:d7:96", nic1_hwaddr = "XXX", gpu = false }
-    # "w05"  = { type = "worker",       nic0_hwaddr = "bc:24:11:02:d7:97", nic1_hwaddr = "XXX", gpu = false }
-    # "w06"  = { type = "worker",       nic0_hwaddr = "bc:24:11:02:d7:98", nic1_hwaddr = "XXX", gpu = false }
+    "cp01" = { type = "controlplane", pve_node: "hera", hwaddr = "bc:24:11:10:fe:09", gpu = false }
+    "cp02" = { type = "controlplane", pve_node: "hera", hwaddr = "bc:24:11:10:fe:0A", gpu = false }
+    "cp03" = { type = "controlplane", pve_node: "hera", hwaddr = "bc:24:11:10:fe:0B", gpu = false }
+    "w01"  = { type = "worker",       pve_node: "hera", hwaddr = "bc:24:11:1c:42:be", gpu = true }
+    "w02"  = { type = "worker",       pve_node: "hera", hwaddr = "bc:24:11:97:24:5f", gpu = false }
+    "w03"  = { type = "worker",       pve_node: "hera", hwaddr = "bc:24:11:02:d7:95", gpu = false }
   }
 }
 
@@ -54,17 +50,8 @@ resource "proxmox_vm_qemu" "talos_nodes" {
   network {
     id      = 0
     bridge  = "vmbr0"
-    tag     = 100
     model   = "virtio"
-    macaddr = each.value.nic0_hwaddr
-  }
-
-  network {
-    id      = 1
-    bridge  = "vmbr0"
-    tag     = 200
-    model   = "virtio"
-    macaddr = each.value.nic1_hwaddr
+    macaddr = each.value.hwaddr
   }
 
   # If GPU passthrough is enabled, use "none" VGA, otherwise use "virtio" VGA

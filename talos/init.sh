@@ -19,11 +19,11 @@ main()
     ln -sf "$CLUSTER_NAME/talosconfig" "$XDG_CONFIG_HOME/talos/config.yaml"
 
     wait 'Press enter to apply configuration to control plane nodes...'
-    sed 1d "./clusters/${CLUSTER_NAME}.nodes.csv" | grep -E -v '^#' | grep controlplane | while IFS=, read cluster pve_node role node_name ip; do
+    sed 1d "./clusters/${CLUSTER_NAME}.nodes.csv" | grep -E -v '^#' | grep controlplane | while IFS=, read cluster pve_node role node_name hw_add net_addr; do
         yq -n ".machine.nodeLabels.\"topology.kubernetes.io/region\" = \"$cluster\" | .machine.nodeLabels.\"topology.kubernetes.io/zone\" = \"$node_name\"" \
             > /tmp/labels.yaml
 
-        talosctl apply-config --insecure --nodes "$ip" --file "$TALOS_CONFIG_HOME/controlplane.yaml" \
+        talosctl apply-config --insecure --nodes "$net_addr" --file "$TALOS_CONFIG_HOME/controlplane.yaml" \
             --config-patch @patch/cp/vip.yaml \
             --config-patch @patch/cp/etcd-metrics-patch.yaml \
             --config-patch @patch/cp/oidc.yaml \
@@ -34,11 +34,11 @@ main()
     talosctl config node $CONTROL_PLANE_IP
 
     wait 'Press enter to apply configuration to worker nodes...'
-    sed 1d "./clusters/${CLUSTER_NAME}.nodes.csv" | grep -E -v '^#' | grep worker | while IFS=, read cluster pve_node role node_name ip; do
+    sed 1d "./clusters/${CLUSTER_NAME}.nodes.csv" | grep -E -v '^#' | grep worker | while IFS=, read cluster pve_node role node_name hw_add net_addr; do
         yq -n ".machine.nodeLabels.\"topology.kubernetes.io/region\" = \"$cluster\" | .machine.nodeLabels.\"topology.kubernetes.io/zone\" = \"$node_name\"" \
             > /tmp/labels.yaml
 
-        talosctl apply-config --insecure --nodes "$ip" --file "$TALOS_CONFIG_HOME/worker.yaml" \
+        talosctl apply-config --insecure --nodes "$net_addr" --file "$TALOS_CONFIG_HOME/worker.yaml" \
             --config-patch @patch/worker/vip.yaml \
             --config-patch @patch/worker/longhorn.yaml \
             --config-patch @/tmp/labels.yaml

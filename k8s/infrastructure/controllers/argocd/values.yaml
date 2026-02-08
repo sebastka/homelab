@@ -157,7 +157,7 @@ server:
     # labels: {}
     # annotations: {}
     parentRefs:
-      - name: default-gateway
+      - name: internal
         namespace: gateway
         sectionName: https-wc-talmox-hera-home-karlsen-fr
     hostnames:
@@ -175,7 +175,7 @@ server:
     # annotations: {}
     parentRefs:
       - kind: Gateway
-        name: default-gateway
+        name: internal
         namespace: gateway
         sectionName: https-wc-talmox-hera-home-karlsen-fr
     hostnames:

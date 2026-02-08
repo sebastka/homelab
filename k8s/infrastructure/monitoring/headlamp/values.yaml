@@ -21,7 +21,7 @@ httproute:
   enabled: false
   parentRefs:
     - kind: Gateway
-      name: default-gateway
+      name: internal
       namespace: gateway
       sectionName: https-wc-talmox-hera-home-karlsen-fr
   hostnames:

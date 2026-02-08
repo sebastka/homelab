@@ -31,7 +31,6 @@ resource "proxmox_vm_qemu" "templatevm" {
   network {
     id      = 0
     bridge  = "vmbr0"
-    tag     = 100
     model   = "virtio"
     macaddr = "bc:24:11:85:a7:bf"
   }
