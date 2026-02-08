@@ -9,4 +9,4 @@ machine:
         # interface: ens18
         dhcp: true
         vip:
-          ip: 192.168.6.200
+          ip: 192.168.1.200
