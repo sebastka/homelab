@@ -1,7 +1,7 @@
 locals {
   current_status = "running" # running | stopped
   talos_image    = "local:iso/nocloud-amd64-secureboot.iso"
-  current_image  = "" # local.talos_image
+  current_image  = local.talos_image
 
   cp_config     = { mem = 8192,  cores = 4 }
   worker_config = { mem = 24576, cores = 8 }
@@ -57,6 +57,14 @@ resource "proxmox_vm_qemu" "talos_nodes" {
     tag     = 100
     model   = "virtio"
     macaddr = each.value.mac_address
+  }
+
+  network {
+    id      = 1
+    bridge  = "vmbr0"
+    tag     = 200
+    model   = "virtio"
+    # macaddr = 
   }
 
   disks {
