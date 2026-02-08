@@ -19,7 +19,7 @@ main()
     ln -sf "$CLUSTER_NAME/talosconfig" "$XDG_CONFIG_HOME/talos/config.yaml"
 
     wait 'Press enter to apply configuration to control plane nodes...'
-    sed 1d "./clusters/${CLUSTER_NAME}.nodes.env" | grep -E -v '^#' | grep controlplane | while IFS=, read cluster pve_node role node_name ip; do
+    sed 1d "./clusters/${CLUSTER_NAME}.nodes.csv" | grep -E -v '^#' | grep controlplane | while IFS=, read cluster pve_node role node_name ip; do
         yq -n ".machine.nodeLabels.\"topology.kubernetes.io/region\" = \"$cluster\" | .machine.nodeLabels.\"topology.kubernetes.io/zone\" = \"$node_name\"" \
             > /tmp/labels.yaml
 
@@ -34,7 +34,7 @@ main()
     talosctl config node $CONTROL_PLANE_IP
 
     wait 'Press enter to apply configuration to worker nodes...'
-    sed 1d "./clusters/${CLUSTER_NAME}.nodes.env" | grep -E -v '^#' | grep worker | while IFS=, read cluster pve_node role node_name ip; do
+    sed 1d "./clusters/${CLUSTER_NAME}.nodes.csv" | grep -E -v '^#' | grep worker | while IFS=, read cluster pve_node role node_name ip; do
         yq -n ".machine.nodeLabels.\"topology.kubernetes.io/region\" = \"$cluster\" | .machine.nodeLabels.\"topology.kubernetes.io/zone\" = \"$node_name\"" \
             > /tmp/labels.yaml
 
