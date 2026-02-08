@@ -28,6 +28,7 @@ resource "proxmox_lxc" "db01" {
   network {
     name     = "eth0"
     bridge   = "vmbr0"
+    tag     = 100
     firewall = true
     hwaddr   = "BC:24:11:36:0C:75"
     ip       = "dhcp"

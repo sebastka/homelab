@@ -31,6 +31,7 @@ resource "proxmox_vm_qemu" "file01" {
   network {
     id      = 0
     bridge  = "vmbr0"
+    tag     = 100
     model   = "virtio"
     macaddr = "bc:24:11:82:e0:a3"
   }
@@ -66,7 +67,7 @@ resource "proxmox_vm_qemu" "file01" {
     ignore_changes = [
       ciuser,
       sshkeys,
-      network
+      vm_state
     ]
   }
 }

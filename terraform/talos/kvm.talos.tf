@@ -54,6 +54,7 @@ resource "proxmox_vm_qemu" "talos_nodes" {
   network {
     id      = 0
     bridge  = "vmbr0"
+    tag     = 100
     model   = "virtio"
     macaddr = each.value.mac_address
   }
@@ -143,7 +144,7 @@ resource "proxmox_vm_qemu" "talos_nodes" {
       vm_state,
       ciuser,
       sshkeys,
-      network
+      vm_state
     ]
   }
 }
