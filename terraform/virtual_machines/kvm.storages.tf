@@ -3,6 +3,7 @@ resource "proxmox_vm_qemu" "file01" {
   full_clone = true
 
   name               = "file01.${var.pve.domain}"
+
   tags               = "fileserver,nfs,samba"
   target_nodes       = [var.pve.name]
   qemu_os            = "l26"
@@ -36,6 +37,11 @@ resource "proxmox_vm_qemu" "file01" {
     macaddr = "bc:24:11:82:e0:a3"
   }
 
+  vga {
+    type = "virtio"
+    memory = 512
+  }
+
   disks {
     scsi {
       # Boot disk
@@ -63,11 +69,22 @@ resource "proxmox_vm_qemu" "file01" {
     }
   }
 
+  efidisk {
+    pre_enrolled_keys = false
+    efitype           = "4m"
+    storage           = var.pve.default_storage_pool
+  }
+
+  tpm_state {
+    storage = var.pve.default_storage_pool
+    version = "v2.0"
+  }
+
   lifecycle {
     ignore_changes = [
+      vm_state,
       ciuser,
-      sshkeys,
-      vm_state
+      sshkeys
     ]
   }
 }

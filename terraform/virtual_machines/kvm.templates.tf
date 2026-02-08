@@ -14,8 +14,8 @@ resource "proxmox_vm_qemu" "templatevm" {
   start_at_node_boot = false
   vm_state           = "stopped"
   scsihw             = "virtio-scsi-single"
-  memory             = 4096
-  balloon            = 512
+  memory             = 2048
+  balloon            = 2048
 
   startup_shutdown {
     shutdown_timeout = 300
@@ -36,6 +36,11 @@ resource "proxmox_vm_qemu" "templatevm" {
     macaddr = "bc:24:11:85:a7:bf"
   }
 
+  vga {
+    type   = "virtio"
+    memory = 512
+  }
+
   disks {
     scsi {
       # Boot disk
@@ -52,11 +57,22 @@ resource "proxmox_vm_qemu" "templatevm" {
     }
   }
 
+  efidisk {
+    pre_enrolled_keys = false
+    efitype           = "4m"
+    storage           = var.pve.default_storage_pool
+  }
+
+  tpm_state {
+    storage = var.pve.default_storage_pool
+    version = "v2.0"
+  }
+
   lifecycle {
     ignore_changes = [
+      vm_state,
       ciuser,
-      sshkeys,
-      vm_state
+      sshkeys
     ]
   }
 }

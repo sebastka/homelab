@@ -36,6 +36,11 @@ resource "proxmox_vm_qemu" "debian" {
     macaddr = "bc:24:11:d5:b8:6f"
   }
 
+  vga {
+    type   = "virtio"
+    memory = 512
+  }
+
   disks {
     scsi {
       # Boot disk
@@ -52,16 +57,22 @@ resource "proxmox_vm_qemu" "debian" {
     }
   }
 
-  vga {
-    type   = "virtio"
-    memory = 512
+  efidisk {
+    pre_enrolled_keys = false
+    efitype           = "4m"
+    storage           = var.pve.default_storage_pool
+  }
+
+  tpm_state {
+    storage = var.pve.default_storage_pool
+    version = "v2.0"
   }
 
   lifecycle {
     ignore_changes = [
+      vm_state,
       ciuser,
-      sshkeys,
-      vm_state
+      sshkeys
     ]
   }
 }
