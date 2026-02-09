@@ -40,7 +40,8 @@ spec:
     - karlsen.fr
   rules:
     - filters:
-      - RequestRedirect:
+      - type: RequestRedirect
+        requestRedirect:
           scheme: https
           hostname: www.karlsen.fr
           statusCode: 308
@@ -62,7 +63,8 @@ spec:
     - karlsen.org
   rules:
     - filters:
-      - RequestRedirect:
+      - type: RequestRedirect
+        requestRedirect:
           scheme: https
           hostname: www.karlsen.fr
           statusCode: 308
@@ -84,7 +86,8 @@ spec:
     - www.karlsen.org
   rules:
     - filters:
-      - RequestRedirect:
+      - type: RequestRedirect
+        requestRedirect:
           scheme: https
           hostname: www.karlsen.fr
           statusCode: 308
@@ -106,7 +109,8 @@ spec:
     - karlsen.app
   rules:
     - filters:
-      - RequestRedirect:
+      - type: RequestRedirect
+        requestRedirect:
           scheme: https
           hostname: www.karlsen.fr
           statusCode: 308
@@ -128,7 +132,8 @@ spec:
     - www.karlsen.app
   rules:
     - filters:
-      - RequestRedirect:
+      - type: RequestRedirect
+        requestRedirect:
           scheme: https
           hostname: www.karlsen.fr
           statusCode: 308
