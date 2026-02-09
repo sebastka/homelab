@@ -5,7 +5,7 @@ metadata:
   name: httproute-www-karlsen-fr
   namespace: homepage
   labels:
-    httproute-allow: all
+    security-policy: httproute-allow-all
 spec:
   parentRefs:
     - kind: Gateway
@@ -29,7 +29,7 @@ metadata:
   name: httproute-karlsen-fr
   namespace: homepage
   labels:
-    httproute-allow: all
+    security-policy: httproute-allow-all
 spec:
   parentRefs:
     - kind: Gateway
@@ -52,7 +52,7 @@ metadata:
   name: httproute-karlsen-org
   namespace: homepage
   labels:
-    httproute-allow: all
+    security-policy: httproute-allow-all
 spec:
   parentRefs:
     - kind: Gateway
@@ -75,7 +75,7 @@ metadata:
   name: httproute-www-karlsen-org
   namespace: homepage
   labels:
-    httproute-allow: all
+    security-policy: httproute-allow-all
 spec:
   parentRefs:
     - kind: Gateway
@@ -98,7 +98,7 @@ metadata:
   name: httproute-karlsen-app
   namespace: homepage
   labels:
-    httproute-allow: all
+    security-policy: httproute-allow-all
 spec:
   parentRefs:
     - kind: Gateway
@@ -121,7 +121,7 @@ metadata:
   name: httproute-www-karlsen-app
   namespace: homepage
   labels:
-    httproute-allow: all
+    security-policy: httproute-allow-all
 spec:
   parentRefs:
     - kind: Gateway
