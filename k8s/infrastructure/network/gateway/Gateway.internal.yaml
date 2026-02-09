@@ -13,9 +13,11 @@ spec:
   infrastructure:
     labels:
       l2.cilium.io/ip-pool: default-l2-pool
-  addresses:
-    - type: IPAddress
-      value: 192.168.2.1
+    annotations:
+      lbipam.cilium.io/ips: 192.168.2.1
+  # addresses:
+  #   - type: IPAddress
+  #     value: 192.168.2.1
   listeners:
     - name: http
       protocol: HTTP
