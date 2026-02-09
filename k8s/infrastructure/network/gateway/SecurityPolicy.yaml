@@ -25,7 +25,7 @@ apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
   name: security-policy-httproute-allow-all
-  namespace: homepage
+  namespace: gateway
 spec:
   targetSelectors:
     - group: gateway.networking.k8s.io
