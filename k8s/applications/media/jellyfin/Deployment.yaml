@@ -11,7 +11,7 @@ spec:
   template:
     spec:
       nodeSelector:
-        topology.kubernetes.io/zone: tw01
+        topology.kubernetes.io/zone: w01
       securityContext:
         runAsNonRoot: true
         runAsUser: 2501
