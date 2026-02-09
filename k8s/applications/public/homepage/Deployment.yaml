@@ -75,6 +75,8 @@ spec:
               mountPath: /var/cache/nginx
             - name: nginx-log-volume
               mountPath: /var/log/nginx
+            - name: nginx-var-run-volume
+              mountPath: /var/run
             - name: nginx-default-site-volume
               readOnly: true
               mountPath: /etc/nginx/conf.d/default.conf
@@ -85,6 +87,8 @@ spec:
         - name: nginx-cache-volume
           emptyDir: {}
         - name: nginx-log-volume
+          emptyDir: {}
+        - name: nginx-var-run-volume
           emptyDir: {}
         - name: nginx-default-site-volume
           configMap:
