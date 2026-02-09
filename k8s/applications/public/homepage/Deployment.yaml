@@ -41,7 +41,7 @@ spec:
           args:
             - |
               set -eux
-              rm -rf /tmp/sebastka/*
+              [ ! -d /tmp/sebastka ] || { rm -rf /tmp/sebastka/* /tmp/sebastka/.[!.]*; }
               git -C /tmp/sebastka clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git .
               chmod ugo+rx /tmp/sebastka
           securityContext:
