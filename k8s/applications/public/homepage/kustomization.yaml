@@ -15,6 +15,7 @@ generators:
 resources:
   - Namespace.yaml
   - Secret.dhi-io-registry.enc.yaml
+  - ConfigMap.nginx-default-site.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml

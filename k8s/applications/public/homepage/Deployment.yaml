@@ -52,10 +52,10 @@ spec:
               mountPath: /tmp/sebastka
       containers:
         - name: homepage
-          image: dhi.io/nginx:1-alpine3.23-dev
+          image: dhi.io/nginx:1-alpine3.23
           securityContext:
             allowPrivilegeEscalation: false
-            # readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
           # resources:
@@ -68,12 +68,16 @@ spec:
           ports:
             - name: http
               containerPort: 8080
-          env:
-            - name: NGINX_HOST
-              value: karlsen.fr www.karlsen.fr karlsen.org www.karlsen.org karlsen.app www.karlsen.app
           volumeMounts:
             - name: git-volume
-              mountPath: /usr/share/nginx/html 
+              mountPath: /tmp/sebastka
+            - name: nginx-default-site
+              readOnly: true
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
       volumes:
         - name: git-volume
           emptyDir: {}
+        - name: nginx-default-site
+          configMap:
+            name: nginx-default-site
