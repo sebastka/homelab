@@ -44,7 +44,7 @@ spec:
         requestRedirect:
           scheme: https
           hostname: www.karlsen.fr
-          statusCode: 308
+          statusCode: 301
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -67,7 +67,7 @@ spec:
         requestRedirect:
           scheme: https
           hostname: www.karlsen.fr
-          statusCode: 308
+          statusCode: 301
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -90,7 +90,7 @@ spec:
         requestRedirect:
           scheme: https
           hostname: www.karlsen.fr
-          statusCode: 308
+          statusCode: 301
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -113,7 +113,7 @@ spec:
         requestRedirect:
           scheme: https
           hostname: www.karlsen.fr
-          statusCode: 308
+          statusCode: 301
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -136,4 +136,4 @@ spec:
         requestRedirect:
           scheme: https
           hostname: www.karlsen.fr
-          statusCode: 308
+          statusCode: 301
