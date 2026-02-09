@@ -41,6 +41,8 @@ spec:
           args:
             - |
               set -eux
+              ls -alh /tmp
+              ls -alh /tmp/sebastka || true
               git -C /tmp/sebastka clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git
               chmod ugo+rx /tmp/sebastka
           securityContext:
