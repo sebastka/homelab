@@ -55,7 +55,7 @@ spec:
           image: dhi.io/nginx:1-alpine3.23-dev
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            # readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
           # resources:
