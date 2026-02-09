@@ -41,7 +41,7 @@ spec:
           args:
             - |
               set -eux
-              git clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git -C /tmp/sebastka
+              git -C /tmp/sebastka clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
