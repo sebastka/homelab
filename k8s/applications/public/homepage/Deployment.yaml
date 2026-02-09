@@ -41,7 +41,7 @@ spec:
           args:
             - |
               set -eux
-              git clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git
+              git clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git -C /tmp/sebastka
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -49,7 +49,7 @@ spec:
               drop: ["ALL"]
           volumeMounts:
             - name: git-volume
-              mountPath: /mnt/git
+              mountPath: /tmp/sebastka
       containers:
         - name: homepage
           image: dhi.io/nginx:1-alpine3.23-dev
