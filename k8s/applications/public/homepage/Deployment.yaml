@@ -86,13 +86,17 @@ spec:
               subPath: 'default.conf'
       volumes:
         - name: git-volume
-          emptyDir: {}
+          emptyDir:
+            medium: Memory
         - name: nginx-cache-volume
-          emptyDir: {}
+          emptyDir:
+            medium: Memory
         - name: nginx-log-volume
-          emptyDir: {}
+          emptyDir:
+            medium: Memory
         - name: nginx-var-run-volume
-          emptyDir: {}
+          emptyDir:
+            medium: Memory
         - name: nginx-default-site-volume
           configMap:
             name: nginx-default-site
