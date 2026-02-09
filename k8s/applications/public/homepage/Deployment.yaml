@@ -1,0 +1,79 @@
+# https://hub.docker.com/hardened-images/catalog/dhi/nginx/images/nginx%2Fdebian-13%2Fmainline/sha256-12e286038641ad2919be50aec641eb6eabfc7f68d1ad8a8991cf6b8a922b2bf2/specifications
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+  namespace: homepage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homepage
+  template:
+    metadata:
+      namespace: homepage
+      labels:
+        app.kubernetes.io/name: homepage
+        app: homepage
+    spec:
+      imagePullSecrets:
+        - name: dhi-io-registry
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      # resources:
+      #   requests:
+      #     cpu: 10m
+      #     memory: 12Mi
+      #   limits:
+      #     cpu: 100m
+      #     memory: 24Mi
+      initContainers:
+        - name: git-cloner
+          image: alpine/git:latest
+          command: ['/bin/sh', '-c']
+          args:
+            - |
+              set -eux
+              git clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: git-volume
+              mountPath: /mnt/git
+      containers:
+        - name: homepage
+          image: dhi.io/nginx:1-alpine3.23-dev
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          # resources:
+          #   requests:
+          #     cpu: 10m
+          #     memory: 12Mi
+          #   limits:
+          #     cpu: 100m
+          #     memory: 24Mi
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: NGINX_HOST
+              value: karlsen.fr www.karlsen.fr karlsen.org www.karlsen.org karlsen.app www.karlsen.app
+          volumeMounts:
+            - name: git-volume
+              mountPath: /usr/share/nginx/html 
+      volumes:
+        - name: git-volume
+          emptyDir: {}
