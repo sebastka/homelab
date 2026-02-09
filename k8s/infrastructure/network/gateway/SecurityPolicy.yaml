@@ -34,3 +34,18 @@ spec:
         security-policy: httproute-allow-all
   authorization:
     defaultAction: Allow
+---
+# All HTTPRoutes can reference this SecurityPolicy
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-security-policy-reference
+  namespace: gateway
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+  to:
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: gateway
