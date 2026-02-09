@@ -71,13 +71,13 @@ spec:
           volumeMounts:
             - name: git-volume
               mountPath: /tmp/sebastka
-            - name: nginx-default-site
+            - name: nginx-default-site-volume
               readOnly: true
               mountPath: /etc/nginx/conf.d/default.conf
               subPath: 'default.conf'
       volumes:
         - name: git-volume
           emptyDir: {}
-        - name: nginx-default-site
+        - name: nginx-default-site-volume
           configMap:
             name: nginx-default-site
