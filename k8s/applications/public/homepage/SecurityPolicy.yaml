@@ -10,6 +10,6 @@ spec:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
       matchLabels:
-        app.kubernetes.io/name: homepage-allow-all
+        httproute-allow: all
   authorization:
     defaultAction: Allow
