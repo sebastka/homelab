@@ -2,30 +2,6 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: httproute-karlsen-fr
-  namespace: homepage
-  labels:
-    httproute-allow: all
-spec:
-  parentRefs:
-    - kind: Gateway
-      name: external
-      namespace: gateway
-      sectionName: https-karlsen-fr
-  hostnames:
-    - karlsen.fr
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: homepage-service
-          port: 80
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
   name: httproute-www-karlsen-fr
   namespace: homepage
   labels:
@@ -50,6 +26,28 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
+  name: httproute-karlsen-fr
+  namespace: homepage
+  labels:
+    httproute-allow: all
+spec:
+  parentRefs:
+    - kind: Gateway
+      name: external
+      namespace: gateway
+      sectionName: https-karlsen-fr
+  hostnames:
+    - karlsen.fr
+  rules:
+    - filters:
+      - RequestRedirect:
+          scheme: https
+          hostname: www.karlsen.fr
+          statusCode: 308
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
   name: httproute-karlsen-org
   namespace: homepage
   labels:
@@ -63,13 +61,11 @@ spec:
   hostnames:
     - karlsen.org
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: homepage-service
-          port: 80
+    - filters:
+      - RequestRedirect:
+          scheme: https
+          hostname: www.karlsen.fr
+          statusCode: 308
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -87,13 +83,11 @@ spec:
   hostnames:
     - www.karlsen.org
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: homepage-service
-          port: 80
+    - filters:
+      - RequestRedirect:
+          scheme: https
+          hostname: www.karlsen.fr
+          statusCode: 308
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -111,13 +105,11 @@ spec:
   hostnames:
     - karlsen.app
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: homepage-service
-          port: 80
+    - filters:
+      - RequestRedirect:
+          scheme: https
+          hostname: www.karlsen.fr
+          statusCode: 308
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -135,10 +127,8 @@ spec:
   hostnames:
     - www.karlsen.app
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: homepage-service
-          port: 80
+    - filters:
+      - RequestRedirect:
+          scheme: https
+          hostname: www.karlsen.fr
+          statusCode: 308
