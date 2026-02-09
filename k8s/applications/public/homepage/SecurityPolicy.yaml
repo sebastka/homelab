@@ -6,26 +6,8 @@ metadata:
   name: homepage-allow-all
   namespace: homepage
 spec:
-  targetRefs:
-    - group: gateway.networking.k8s.io/v1
-      kind: HTTPRoute
-      name: https-karlsen-fr
-    - group: gateway.networking.k8s.io/v1
-      kind: HTTPRoute
-      name: https-www-karlsen-fr
-
-    - group: gateway.networking.k8s.io/v1
-      kind: HTTPRoute
-      name: https-karlsen-org
-    - group: gateway.networking.k8s.io/v1
-      kind: HTTPRoute
-      name: https-www-karlsen-org
-
-    - group: gateway.networking.k8s.io/v1
-      kind: HTTPRoute
-      name: https-karlsen-app
-    - group: gateway.networking.k8s.io/v1
-      kind: HTTPRoute
-      name: https-www-karlsen-app
+  targetSelectors:
+    matchLabels:
+      app.kubernetes.io/name: homepage-allow-all
   authorization:
     defaultAction: Allow

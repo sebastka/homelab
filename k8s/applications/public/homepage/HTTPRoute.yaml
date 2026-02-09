@@ -4,6 +4,8 @@ kind: HTTPRoute
 metadata:
   name: httproute-karlsen-fr
   namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage-allow-all
 spec:
   parentRefs:
     - kind: Gateway
@@ -26,6 +28,8 @@ kind: HTTPRoute
 metadata:
   name: httproute-www-karlsen-fr
   namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage-allow-all
 spec:
   parentRefs:
     - kind: Gateway
@@ -48,6 +52,8 @@ kind: HTTPRoute
 metadata:
   name: httproute-karlsen-org
   namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage-allow-all
 spec:
   parentRefs:
     - kind: Gateway
@@ -70,6 +76,8 @@ kind: HTTPRoute
 metadata:
   name: httproute-www-karlsen-org
   namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage-allow-all
 spec:
   parentRefs:
     - kind: Gateway
@@ -92,6 +100,8 @@ kind: HTTPRoute
 metadata:
   name: httproute-karlsen-app
   namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage-allow-all
 spec:
   parentRefs:
     - kind: Gateway
@@ -114,6 +124,8 @@ kind: HTTPRoute
 metadata:
   name: httproute-www-karlsen-app
   namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage-allow-all
 spec:
   parentRefs:
     - kind: Gateway
