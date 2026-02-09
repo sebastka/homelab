@@ -43,6 +43,7 @@ spec:
               set -eux
               [ ! -d /tmp/sebastka ] || { rm -rf /tmp/sebastka/* /tmp/sebastka/.[!.]*; }
               git -C /tmp/sebastka clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git .
+              rm -rf /tmp/sebastka/.git /tmp/sebastka/.nojekyll /tmp/sebastka/README.md
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
