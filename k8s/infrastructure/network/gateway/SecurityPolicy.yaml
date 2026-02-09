@@ -45,6 +45,7 @@ spec:
   from:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
+      namespace: '*'
   to:
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
