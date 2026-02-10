@@ -36,7 +36,7 @@ spec:
       #     memory: 24Mi
       initContainers:
         - name: stork-installer
-          image: index.docker.io/library/alpine:edge
+          image: index.docker.io/library/alpine:latest
           command: ['/bin/sh', '-c']
           args:
             - |
@@ -55,7 +55,7 @@ spec:
               drop: ["ALL"]
       containers:
         - name: stork
-          image: index.docker.io/library/alpine:edge
+          image: index.docker.io/library/alpine:latest
           command: ['/bin/sh', '-c']
           args:
             - |
