@@ -47,7 +47,7 @@ spec:
               # stork-server
               set -a; . /mnt/stork/server.env; set +a
               stork-tool db-create --help
-              stork-tool db-create
+              stork-tool db-create --db-user "${STORK_DATABASE_USER_NAME}"
               sleep 3600
           securityContext:
             allowPrivilegeEscalation: false
