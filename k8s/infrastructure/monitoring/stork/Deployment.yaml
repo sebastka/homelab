@@ -41,9 +41,9 @@ spec:
           args:
             - |
               set -eux
-              apk add --no-cache curl
-              curl -s -o /tmp/stork-files/etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub 'https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key'
-              apk add --no-cache --repository https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main isc-stork-server
+              sudo apk add --no-cache bash curl
+              curl -1sLf https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh | bash
+              apk add --no-cache isc-stork-server
               isc-stork-server
           securityContext:
             allowPrivilegeEscalation: false
