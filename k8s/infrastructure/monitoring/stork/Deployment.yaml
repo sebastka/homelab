@@ -66,13 +66,10 @@ spec:
               containerPort: 8080
           volumeMounts:
             - name: stork-env-volume
-              mountPath: /etc/stork/server.env
+              mountPath: /etc/stork
               subPath: server.env
               readOnly: true
       volumes:
         - name: stork-env-volume
           secret:
             secretName: stork-env
-            items:
-              - key: env
-                path: /etc/stork/server.env
