@@ -41,12 +41,10 @@ spec:
           args:
             - |
               set -eux
-              for dir in /etc/stork /usr/share/stork; do [ ! -d "$dir" ] || { rm -rf "$dir"/* $dir"/.[!.]*; }; done
+              for dir in /etc/stork /usr/share/stork; do [ ! -d "$dir" ] || { rm -rf "$dir"/* "$dir"/.[!.]*; }; done
               for file in /etc/init.d/isc-stork-server /lib/systemd/system/isc-stork-server.service /usr/bin/stork-server /usr/bin/stork-tool /usr/share/man/man8/stork-server.8 /usr/share/man/man8/stork-tool.8; do [ ! -f "$file" ] || rm -f "$file"; done
               apk add --no-cache bash curl ca-certificates
-              curl -1sLf \
-                'https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh' \
-                | bash
+              curl -s https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh | bash
               apk add --no-cache isc-stork-server
               apk info -L isc-stork-server
               cat /etc/passwd
