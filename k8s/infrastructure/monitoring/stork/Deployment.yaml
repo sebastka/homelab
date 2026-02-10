@@ -45,7 +45,7 @@ spec:
               [ ! -d /tmp/stork-files ] || { rm -rf /tmp/stork-files/* /tmp/stork-files/.[!.]*; }
               mkdir -p /tmp/stork-files/etc/apk/keys
               curl -s -o /tmp/stork-files/etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub 'https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key' > /etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub
-              apk add --no-cache -root /tmp/stork-files --repository https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main isc-stork-server              
+              apk add --no-cache --root /tmp/stork-files --repository https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main isc-stork-server              
               sleep 3600
           securityContext:
             runAsNonRoot: false
