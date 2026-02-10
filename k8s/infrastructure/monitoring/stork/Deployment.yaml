@@ -45,9 +45,10 @@ spec:
               curl -1sLf https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh | bash
               apk add --no-cache isc-stork-server isc-stork-server-hook-ldap
               # stork-server --help
-              # stork-tool db-create --db-name stork --db-user stork-server
               # stork-server
               stork-tool db-create --help
+              set -a; . /mnt/stork/server.env; set +a
+              stork-tool db-create
               sleep 3600
           securityContext:
             allowPrivilegeEscalation: false
