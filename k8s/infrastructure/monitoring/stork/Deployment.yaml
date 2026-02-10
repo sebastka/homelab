@@ -45,7 +45,7 @@ spec:
               curl -1sLf https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh | bash
               apk add --no-cache isc-stork-server isc-stork-server-hook-ldap
               stork-server --help
-              stork-server --env-file /etc/stork/server.env
+              stork-server --env-file /etc/stork/server.env --use-env-file
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
