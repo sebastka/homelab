@@ -47,7 +47,7 @@ spec:
               # stork-server --help
               # stork-tool db-create --db-name stork --db-user stork-server
               # stork-server
-              stork-tool --help
+              stork-tool db-create --help
               sleep 3600
           securityContext:
             allowPrivilegeEscalation: false
