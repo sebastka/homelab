@@ -41,6 +41,8 @@ spec:
           args:
             - |
               set -eux
+              apt-get update
+              apt-get install -y curl ca-certificates
               curl -s -o /etc/apt/keyrings/isc.asc https://dl.cloudsmith.io/public/isc/stork/gpg.77F64EC28053D1FB.key
               printf -- 'Types: deb\nURIs: https://dl.cloudsmith.io/public/isc/stork/deb/debian\nSuites: trixie\nComponents: main\nArchitectures: amd64\nSigned-By: /etc/apt/keyrings/isc.asc\n' > /etc/apt/sources.list.d/isc-stork.sources
               apt-get update
