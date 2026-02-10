@@ -41,7 +41,7 @@ spec:
           args:
             - |
               set -eux
-              sudo apk add --no-cache bash curl
+              apk add --no-cache bash curl
               curl -1sLf https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh | bash
               apk add --no-cache isc-stork-server
               isc-stork-server
