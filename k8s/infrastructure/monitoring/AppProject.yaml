@@ -22,6 +22,8 @@ spec:
       server: '*'
     - namespace: headlamp
       server: '*'
+    - namespace: stork
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

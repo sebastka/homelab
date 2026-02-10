@@ -1,0 +1,78 @@
+# https://hub.docker.com/hardened-images/catalog/dhi/nginx/images/nginx%2Fdebian-13%2Fmainline/sha256-12e286038641ad2919be50aec641eb6eabfc7f68d1ad8a8991cf6b8a922b2bf2/specifications
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+  namespace: stork
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stork
+  template:
+    metadata:
+      namespace: stork
+      labels:
+        app.kubernetes.io/name: stork
+        app: stork
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      # resources:
+      #   requests:
+      #     cpu: 10m
+      #     memory: 12Mi
+      #   limits:
+      #     cpu: 100m
+      #     memory: 24Mi
+      initContainers:
+        - name: stork-installer
+          image: dhi.io/alpine-base:3.23-alpine3.23-dev
+          command: ['/bin/sh', '-c']
+          args:
+            - |
+              set -eux
+              curl -s -o /etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key
+              curl -s 'https://dl.cloudsmith.io/public/isc/stork/config.alpine.txt?distro=alpine&codename=v3.23' >> /etc/apk/repositories
+              apk update
+              apk add stork-server
+              apk info -L stork-server
+              cat /etc/passwd
+              cat /etc/group
+              sleep 3600
+          securityContext:
+            runAsNonRoot: false
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop: ["ALL"]
+      containers:
+        - name: stork
+          image: dhi.io/alpine-base:3.23-alpine3.23
+          command: ['/bin/sh', '-c']
+          args:
+            - |
+              set -eux
+              sleep
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          # resources:
+          #   requests:
+          #     cpu: 10m
+          #     memory: 12Mi
+          #   limits:
+          #     cpu: 100m
+          #     memory: 24Mi
+          ports:
+            - name: http
+              containerPort: 8080
