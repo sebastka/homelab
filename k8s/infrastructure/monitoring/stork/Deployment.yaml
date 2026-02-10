@@ -52,6 +52,8 @@ spec:
               sleep 3600
           securityContext:
             runAsNonRoot: false
+            runAsUser: 0
+            runAsGroup: 0
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
             capabilities:
