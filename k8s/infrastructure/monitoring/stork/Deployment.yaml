@@ -41,10 +41,10 @@ spec:
           args:
             - |
               set -eux
-              sudo apk add --no-cache bash curl ca-certificates
+              apk add --no-cache bash curl ca-certificates
               curl -1sLf \
                 'https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh' \
-                | sudo -E bash
+                | bash
           securityContext:
             runAsNonRoot: false
             runAsUser: 0
