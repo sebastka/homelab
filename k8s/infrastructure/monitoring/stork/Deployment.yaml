@@ -41,13 +41,14 @@ spec:
           args:
             - |
               set -eux
+              for dir in /etc/stork /usr/share/stork; do [ ! -d "$dir" ] || { rm -rf "$dir"/* $dir"/.[!.]*; }; done
+              for file in /etc/init.d/isc-stork-server /lib/systemd/system/isc-stork-server.service /usr/bin/stork-server /usr/bin/stork-tool /usr/share/man/man8/stork-server.8 /usr/share/man/man8/stork-tool.8; do [ ! -f "$file" ] || rm -f "$file"; done
               apk add --no-cache bash curl ca-certificates
               curl -1sLf \
                 'https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh' \
                 | bash
               apk add --no-cache isc-stork-server
               apk info -L isc-stork-server
-              ls -alh /var/lib/stork
               cat /etc/passwd
               cat /etc/group
               sleep 3600
@@ -59,6 +60,29 @@ spec:
             readOnlyRootFilesystem: false
             capabilities:
               drop: ["ALL"]
+          volumeMounts:
+            - name: etc-stork-volume
+              mountPath: /etc/stork
+            - name: etc-initd-volume
+              mountPath: /etc/init.d/isc-stork-server
+              subPath: isc-stork-server
+            - name: lib-systemd-system-volume
+              mountPath: /lib/systemd/system/isc-stork-server.service
+              subPath: isc-stork-server.service
+            - name: usr-bin-stork-server-volume
+              mountPath: /usr/bin/stork-server
+              subPath: stork-server
+            - name: usr-bin-stork-tool-volume
+              mountPath: /usr/bin/stork-tool
+              subPath: stork-tool
+            - name: usr-share-man-stork-server-volume
+              mountPath: /usr/share/man/man8/stork-server.8
+              subPath: stork-server.8
+            - name: usr-share-man-stork-tool-volume
+              mountPath: /usr/share/man/man8/stork-tool.8
+              subPath: stork-tool.8
+            - name: usr-share-stork-volume
+              mountPath: /usr/share/stork
       containers:
         - name: stork
           image: index.docker.io/library/alpine:latest
@@ -82,3 +106,20 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+      volumes:
+        - name: etc-stork-volume
+          emptyDir: {}
+        - name: etc-initd-volume
+          emptyDir: {}
+        - name: lib-systemd-system-volume
+          emptyDir: {}
+        - name: usr-bin-stork-server-volume
+          emptyDir: {}
+        - name: usr-bin-stork-tool-volume
+          emptyDir: {}
+        - name: usr-share-man-stork-server-volume
+          emptyDir: {}
+        - name: usr-share-man-stork-tool-volume
+          emptyDir: {}
+        - name: usr-share-stork-volume
+          emptyDir: {}
