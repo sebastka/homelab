@@ -36,15 +36,16 @@ spec:
       #     memory: 24Mi
       initContainers:
         - name: stork-installer
-          image: dhi.io/alpine-base:3.23-alpine3.23-dev
+          image: dhi.io/debian-base:trixie
           command: ['/bin/sh', '-c']
           args:
             - |
               set -eux
-              apk add --no-cache curl
-              curl -s -o /etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key
-              apk add --repository https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main stork-server
-              apk info -L stork-server
+              curl -s -o /etc/apt/keyrings/isc.asc https://dl.cloudsmith.io/public/isc/stork/gpg.77F64EC28053D1FB.key
+              printf -- 'Types: deb\nURIs: https://dl.cloudsmith.io/public/isc/stork/deb/debian\nSuites: trixie\nComponents: main\nArchitectures: amd64\nSigned-By: /etc/apt/keyrings/isc.asc\n' > /etc/apt/sources.list.d/isc-stork.sources
+              apt-get update
+              apt-get install -y stork-server
+              dpkg -L stork-server
               cat /etc/passwd
               cat /etc/group
               sleep 3600
@@ -58,7 +59,7 @@ spec:
               drop: ["ALL"]
       containers:
         - name: stork
-          image: dhi.io/alpine-base:3.23-alpine3.23
+          image: dhi.io/debian-base:trixie
           command: ['/bin/sh', '-c']
           args:
             - |
