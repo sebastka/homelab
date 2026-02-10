@@ -45,6 +45,12 @@ spec:
               curl -1sLf \
                 'https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh' \
                 | bash
+              apk add --no-cache stork-server
+              apk info -L stork-server
+              ls -alh /var/lib/stork
+              cat /etc/passwd
+              cat /etc/group
+              sleep 3600
           securityContext:
             runAsNonRoot: false
             runAsUser: 0
