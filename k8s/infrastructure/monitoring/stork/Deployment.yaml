@@ -17,6 +17,8 @@ spec:
         app.kubernetes.io/name: stork
         app: stork
     spec:
+      imagePullSecrets:
+        - name: dhi-io-registry
       securityContext:
         runAsNonRoot: true
         runAsUser: 65532
