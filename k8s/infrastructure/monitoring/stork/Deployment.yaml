@@ -42,12 +42,9 @@ spec:
             - |
               set -eux
               [ ! -d /tmp/stork-files ] || { rm -rf /tmp/stork-files/* /tmp/stork-files/.[!.]*; }
-              apk add --no-cache bash curl ca-certificates
-              curl -s https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh | bash
-              apk add --no-cache isc-stork-server
-              apk info -L isc-stork-server
-              cat /etc/passwd
-              cat /etc/group
+              mkdir -p /tmp/stork-files/etc/apk/keys
+              curl -s -o /tmp/stork-files/etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub 'https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key' > /etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub
+              apk add --no-cache -root /tmp/stork-files --repository https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main isc-stork-server              
               sleep 3600
           securityContext:
             runAsNonRoot: false
