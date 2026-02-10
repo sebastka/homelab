@@ -41,6 +41,7 @@ spec:
           args:
             - |
               set -eux
+              apk add --no-cache curl
               [ ! -d /tmp/stork-files ] || { rm -rf /tmp/stork-files/* /tmp/stork-files/.[!.]*; }
               mkdir -p /tmp/stork-files/etc/apk/keys
               curl -s -o /tmp/stork-files/etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub 'https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key' > /etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub
