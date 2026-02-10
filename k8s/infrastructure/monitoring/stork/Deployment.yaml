@@ -75,5 +75,5 @@ spec:
           secret:
             secretName: stork-env
             items:
-              - key: 'server.env'
-                path: 'server.env'
+              - key: server-env
+                path: server.env
