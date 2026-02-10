@@ -68,9 +68,12 @@ spec:
           volumeMounts:
             - name: stork-env-volume
               mountPath: /mnt/stork/server.env
-              subPath: server.env
               readOnly: true
+              subPath: server.env
       volumes:
         - name: stork-env-volume
           secret:
             secretName: stork-env
+            items:
+              - key: 'server.env'
+                path: 'server.env'
