@@ -20,10 +20,10 @@ spec:
       # imagePullSecrets:
       #   - name: dhi-io-registry
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 100
-        runAsGroup: 101
-        fsGroup: 101
+        # runAsNonRoot: true
+        # runAsUser: 100
+        # runAsGroup: 101
+        # fsGroup: 101
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
@@ -34,30 +34,6 @@ spec:
       #   limits:
       #     cpu: 100m
       #     memory: 24Mi
-      initContainers:
-        - name: stork-installer
-          image: index.docker.io/library/alpine:latest
-          command: ['/bin/sh', '-c']
-          args:
-            - |
-              set -eux
-              apk add --no-cache curl
-              [ ! -d /tmp/stork-files ] || { rm -rf /tmp/stork-files/* /tmp/stork-files/.[!.]*; }
-              mkdir -p /tmp/stork-files/etc/apk/keys
-              curl -s -o /tmp/stork-files/etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub 'https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key' > /etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub
-              apk add --no-cache --root /tmp/stork-files --repository https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main isc-stork-server              
-              sleep 3600
-          securityContext:
-            runAsNonRoot: false
-            runAsUser: 0
-            runAsGroup: 0
-            allowPrivilegeEscalation: true
-            readOnlyRootFilesystem: false
-            capabilities:
-              drop: ["ALL"]
-          volumeMounts:
-            - name: stork-files-volume
-              mountPath: /tmp/stork-files
       containers:
         - name: stork
           image: index.docker.io/library/alpine:latest
@@ -65,7 +41,10 @@ spec:
           args:
             - |
               set -eux
-              sleep
+              apk add --no-cache curl
+              curl -s -o /tmp/stork-files/etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub 'https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key'
+              apk add --no-cache --repository https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main isc-stork-server
+              isc-stork-server
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
