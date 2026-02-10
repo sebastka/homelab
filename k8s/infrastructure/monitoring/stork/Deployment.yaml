@@ -41,12 +41,9 @@ spec:
           args:
             - |
               set -eux
-              apk add --no-cache curl ca-certificates
+              apk add --no-cache curl
               curl -s -o /etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key
-              curl -s 'https://dl.cloudsmith.io/public/isc/stork/config.alpine.txt?distro=alpine&codename=v3.23' >> /etc/apk/repositories
-              apk update
-              apk upgrade --no-cache
-              apk add --no-cache stork-server
+              apk add --repository https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main stork-server
               apk info -L stork-server
               cat /etc/passwd
               cat /etc/group
