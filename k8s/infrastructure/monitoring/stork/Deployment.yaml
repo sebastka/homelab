@@ -44,8 +44,11 @@ spec:
               apk add --no-cache bash curl
               curl -1sLf https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh | bash
               apk add --no-cache isc-stork-server isc-stork-server-hook-ldap
-              stork-server --help
-              stork-server
+              # stork-server --help
+              # stork-tool db-create --db-name stork --db-user stork-server
+              # stork-server
+              stork-tool --help
+              sleep 3600
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
@@ -61,6 +64,15 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+          volumeMounts:
+            - name: stork-env-volume
+              mountPath: /etc/stork/server.env
+              subPath: server.env
+              readOnly: true
       volumes:
-        - name: stork-files-volume
-          emptyDir: {}
+        - name: stork-env-volume
+          secret:
+            secretName: stork-env
+            items:
+              - key: env
+                path: /etc/stork/server.env
