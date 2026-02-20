@@ -40,11 +40,11 @@ spec:
     - karlsen.fr
   rules:
     - filters:
-      - type: RequestRedirect
-        requestRedirect:
-          scheme: https
-          hostname: www.karlsen.fr
-          statusCode: 301
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            hostname: www.karlsen.fr
+            statusCode: 301
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -63,11 +63,11 @@ spec:
     - karlsen.org
   rules:
     - filters:
-      - type: RequestRedirect
-        requestRedirect:
-          scheme: https
-          hostname: www.karlsen.fr
-          statusCode: 301
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            hostname: www.karlsen.fr
+            statusCode: 301
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -86,11 +86,11 @@ spec:
     - www.karlsen.org
   rules:
     - filters:
-      - type: RequestRedirect
-        requestRedirect:
-          scheme: https
-          hostname: www.karlsen.fr
-          statusCode: 301
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            hostname: www.karlsen.fr
+            statusCode: 301
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -109,11 +109,11 @@ spec:
     - karlsen.app
   rules:
     - filters:
-      - type: RequestRedirect
-        requestRedirect:
-          scheme: https
-          hostname: www.karlsen.fr
-          statusCode: 301
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            hostname: www.karlsen.fr
+            statusCode: 301
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -132,8 +132,8 @@ spec:
     - www.karlsen.app
   rules:
     - filters:
-      - type: RequestRedirect
-        requestRedirect:
-          scheme: https
-          hostname: www.karlsen.fr
-          statusCode: 301
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            hostname: www.karlsen.fr
+            statusCode: 301
