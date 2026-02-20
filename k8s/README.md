@@ -1,13 +1,12 @@
 # Bootstrap
 
-1. Install Cilium:
-  - `helm install cilium oci://quay.io/cilium/charts/cilium --version 1.19.0 --namespace kube-system -f infrastructure/network/cilium/values.yaml`
+1. Set up Cilium IP pool:
   - `kubectl apply -f infrastructure/network/cilium/CiliumL2AnnouncementPolicy.yaml -f infrastructure/network/cilium/CiliumLoadBalancerIPPool.yaml`
 2. Install Envoy Gateway and set up GatewayClass:
-  - `helm install envoy-gateway oci://docker.io/envoyproxy/gateway-helm --version v1.6.3 --namespace envoy-gateway-system --create-namespace -f infrastructure/network/envoy-gateway/values.yaml`
+  - `helm install envoy-gateway oci://docker.io/envoyproxy/gateway-helm --version v1.7.0 --namespace envoy-gateway-system --create-namespace -f infrastructure/network/envoy-gateway/values.yaml`
   - `kubectl apply -f infrastructure/network/envoy-gateway/EnvoyProxy.yaml -f infrastructure/network/envoy-gateway/GatewayClass.yaml`
 3. Install cert-manager and set up a ClusterIssuer:
-  - `helm install cert-manager oci://quay.io/jetstack/charts/cert-manager --version v1.19.2 --namespace cert-manager --create-namespace -f infrastructure/controllers/cert-manager/values.yaml`
+  - `helm install cert-manager oci://quay.io/jetstack/charts/cert-manager --version v1.19.3 --namespace cert-manager --create-namespace -f infrastructure/controllers/cert-manager/values.yaml`
   - `kubectl apply -f infrastructure/controllers/cert-manager/Secret.cloudflare-api-token.yaml -f infrastructure/controllers/cert-manager/ClusterIssuer.yaml`
 4. Set up Gateway:
   - `kubectl apply -k infrastructure/network/gateway`
