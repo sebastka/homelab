@@ -78,9 +78,9 @@ tunnelProtocol: geneve
 #   burst: 100
 
 # https://docs.cilium.io/en/stable/operations/performance/tuning/#ebpf-host-routing
-# bpf:
-#   masquerade: true
-#   lbModeAnnotation: true
+bpf:
+  masquerade: true
+  lbModeAnnotation: true
 
 hubble:
   enabled: true
