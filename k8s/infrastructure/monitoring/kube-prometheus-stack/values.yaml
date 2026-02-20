@@ -4,12 +4,12 @@
 
 prometheus:
   prometheusSpec:
-    podMonitorNamespaceSelector: { }
+    podMonitorNamespaceSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
-    podMonitorSelector: { }
-    serviceMonitorNamespaceSelector: { }
+    podMonitorSelector: {}
+    serviceMonitorNamespaceSelector: {}
     serviceMonitorSelectorNilUsesHelmValues: false
-    serviceMonitorSelector: { }
+    serviceMonitorSelector: {}
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -26,7 +26,7 @@ kubeControllerManager:
   enabled: true
   serviceMonitor:
     relabelings:
-      - sourceLabels: [ __meta_kubernetes_pod_node_name ]
+      - sourceLabels: [__meta_kubernetes_pod_node_name]
         separator: ;
         regex: ^(.*)$
         targetLabel: nodename
@@ -45,7 +45,7 @@ kubeEtcd:
       k8s-app: kube-controller-manager
   serviceMonitor:
     relabelings:
-      - sourceLabels: [ __meta_kubernetes_pod_node_name ]
+      - sourceLabels: [__meta_kubernetes_pod_node_name]
         separator: ;
         regex: ^(.*)$
         targetLabel: nodename
@@ -63,7 +63,7 @@ kubeScheduler:
   enabled: true
   serviceMonitor:
     relabelings:
-      - sourceLabels: [ __meta_kubernetes_pod_node_name ]
+      - sourceLabels: [__meta_kubernetes_pod_node_name]
         separator: ;
         regex: ^(.*)$
         targetLabel: nodename

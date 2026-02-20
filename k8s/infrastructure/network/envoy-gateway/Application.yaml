@@ -10,7 +10,7 @@ spec:
   source:
     path: .
     repoURL: oci://docker.io/envoyproxy/gateway-helm
-    targetRevision: 1.6.3
+    targetRevision: 1.7.0
     helm:
       valueFiles:
         - k8s/infrastructure/network/envoy-gateway/values.yaml

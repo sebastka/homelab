@@ -9,7 +9,7 @@ spec:
   source:
     path: .
     repoURL: oci://quay.io/jetstack/charts/cert-manager
-    targetRevision: 1.19.2
+    targetRevision: 1.19.3
     helm:
       valueFiles:
         - k8s/infrastructure/controllers/cert-manager/values.yaml

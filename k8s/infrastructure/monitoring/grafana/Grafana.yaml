@@ -41,7 +41,7 @@ spec:
               env:
                 - name: GF_SECURITY_ADMIN_USER
                   valueFrom:
-                    secretKeyRef: { key: username, name: admin-credentials }
+                    secretKeyRef: {key: username, name: admin-credentials}
                 - name: GF_SECURITY_ADMIN_PASSWORD
                   valueFrom:
-                    secretKeyRef: { key: password, name: admin-credentials }
+                    secretKeyRef: {key: password, name: admin-credentials}
