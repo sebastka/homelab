@@ -13,5 +13,5 @@ spec:
   storageClassName: nfs-static
   nfs:
     server: file01.hera.home.karlsen.fr
-    path: /mnt/nfs/homelab/k8s/deluge/downloads
+    path: /homelab-k8s/deluge/downloads
     readOnly: true

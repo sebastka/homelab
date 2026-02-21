@@ -59,4 +59,4 @@ spec:
             - name: postgres-backup-target
               nfs:
                 server: file01.hera.home.karlsen.fr
-                path: /mnt/nfs/homelab/databases-backup
+                path: /homelab-databases-backup
