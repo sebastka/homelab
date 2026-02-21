@@ -1,3 +1,15 @@
+# Talos permission workaround:
+# - https://github.com/longhorn/longhorn/issues/6114
+# - https://github.com/xrs444/flux/commit/2c0c7f69c9f878e59938d46a0dd081060a1ff458
+# ---
+# apiVersion: longhorn.io/v1beta2
+# kind: BackupTarget
+# metadata:
+#   name: nfs-backup-target
+#   namespace: longhorn-system
+# spec:
+#   backupTargetURL: nfs://192.168.1.20:/homelab-longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
+#   pollInterval: 5m0s
 ---
 apiVersion: longhorn.io/v1beta2
 kind: BackupTarget
@@ -5,5 +17,35 @@ metadata:
   name: nfs-backup-target
   namespace: longhorn-system
 spec:
-  backupTargetURL: nfs://192.168.1.20:/homelab-longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
-  pollInterval: 5m0s
+  backupTargetURL: /var/lib/longhorn-backup
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: longhorn-backup-target-pv
+  namespace: longhorn-system
+spec:
+  accessModes:
+    - ReadOnlyMany
+  capacity:
+    storage: 1Gi
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: file01.hera.home.karlsen.fr
+    path: /homelab-longhorn-backup
+    readOnly: true
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-backup-target-pvc
+  namespace: longhorn-system
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: nfs-static
+  volumeName: longhorn-backup-target-pv
