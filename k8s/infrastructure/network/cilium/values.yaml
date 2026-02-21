@@ -3,7 +3,6 @@
 
 # https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/
 ---
-
 cluster:
   name: talmox
   id: 1
@@ -17,25 +16,16 @@ securityContext:
   capabilities:
     ciliumAgent: [CHOWN, KILL, NET_ADMIN, NET_RAW, IPC_LOCK, SYS_ADMIN, SYS_RESOURCE, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
     cleanCiliumState: [NET_ADMIN, SYS_ADMIN, SYS_RESOURCE]
+
 cgroup:
   autoMount:
     enabled: false
   hostRoot: /sys/fs/cgroup
 
-l2announcements:
-  enabled: true
-
+# https://docs.cilium.io/en/stable/network/concepts/ipam/
 ipam:
   mode: kubernetes
-
-gatewayAPI:
-  enabled: false  # Use Envoy Gateway instead
-#   enableAlpn: true
-#   enableAppProtocol: true
-#   gatewayClass:
-#     create: "true"
-# #   hostNetwork:
-# #     enabled: true
+  multiPoolPreAllocation: ""
 
 operator:
   rollOutPods: true
@@ -55,16 +45,8 @@ operator:
   #     cpu: 50m
   #     memory: 128Mi
 
-# # -- Roll out cilium agent pods automatically when configmap is updated.
+# Roll out cilium agent pods automatically when ConfigMap is updated.
 rollOutCiliumPods: true
-
-loadBalancer:
-  mode: dsr
-  dsrDispatch: geneve
-  algorithm: maglev
-routingMode: tunnel
-tunnelProtocol: geneve
-
 # resources:
 #   requests:
 #     cpu: 200m
@@ -73,14 +55,66 @@ tunnelProtocol: geneve
 #     cpu: 1000m
 #     memory: 1Gi
 
-# k8sClientRateLimit:
-#   qps: 20
-#   burst: 100
+# debug:
+#  enabled: true
+
+# https://docs.cilium.io/en/latest/network/bgp-control-plane/bgp-control-plane-v2/
+# bgpControlPlane:
+#   enabled: true
+#   secretsNamespace:
+#     name: cilium-secrets
+
+# https://docs.cilium.io/en/latest/network/l2-announcements/#ip-types
+# Deprecated? https://github.com/cilium/cilium/commit/6f33115b861a30c8e21fc99d604afe899772488c
+externalIPs:
+  enabled: true
+
+l2announcements:
+  enabled: true
 
 # https://docs.cilium.io/en/stable/operations/performance/tuning/#ebpf-host-routing
 bpf:
   masquerade: true
   lbModeAnnotation: true
+  # tproxy: true
+
+# ipMasqAgent:
+#   enabled: true
+
+loadBalancer:
+  # https://cilium.io/blog/2022/04/12/cilium-standalone-L4LB-XDP/
+  # https://cilium.io/blog/2021/05/20/cilium-110/#standalonelb
+  standalone: true
+  # https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#maglev-consistent-hashing
+  algorithm: maglev
+  mode: snat
+  dsrDispatch: opt
+  acceleration: native
+  l7:
+    backend: envoy
+
+# https://docs.cilium.io/en/stable/network/concepts/routing/
+routingMode: native
+ipv4NativeRoutingCIDR: 10.244.0.0/16
+autoDirectNodeRoutes: true
+
+gatewayAPI:
+  enabled: true
+  enableAlpn: true
+  enableAppProtocol: true
+  gatewayClass:
+    create: "true"
+
+envoy:
+  prometheus:
+    enabled: true
+    port: "9964"
+    serviceMonitor:
+      enabled: true
+  securityContext:
+    capabilities:
+      keepCapNetBindService: true
+      envoy: [NET_ADMIN, PERFMON, BPF]
 
 hubble:
   enabled: true
@@ -111,6 +145,9 @@ hubble:
     enabled: true
     rollOutPods: true
 
+ingressController:
+  enabled: false
+
 clustermesh:
   apiserver:
     metrics:
@@ -138,6 +175,5 @@ prometheus:
     enabled: true
     trustCRDsExist: true
 
-# -- Grafana dashboards for cilium-agent
 dashboards:
   enabled: true

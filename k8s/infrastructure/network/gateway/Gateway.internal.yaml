@@ -9,10 +9,11 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
 spec:
-  gatewayClassName: envoy
+  gatewayClassName: cilium
   infrastructure:
     labels:
-      l2.cilium.io/ip-pool: default-l2-pool
+      arp.cilium.io/announce-service: default-arp-l2-announcement-policy
+      arp.cilium.io/ip-pool: default-arp-ip-pool
     annotations:
       lbipam.cilium.io/ips: 192.168.2.1
   # addresses:
