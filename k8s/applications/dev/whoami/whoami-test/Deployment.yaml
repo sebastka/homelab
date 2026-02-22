@@ -33,16 +33,19 @@ spec:
       #     memory: 24Mi
       containers:
         - name: whoami
-          image: ghcr.io/nicolaka/netshoot:v0.15
+          # image: ghcr.io/nicolaka/netshoot:v0.15
+          image: debian:trixie-slim
           command:
             - /whoami/whoami
           args:
             - "-port=8080"
-          # securityContext:
-          #   allowPrivilegeEscalation: false
-          #   readOnlyRootFilesystem: true
-          #   capabilities:
-          #     drop: ["ALL"]
+          securityContext:              
+            allowPrivilegeEscalation: true
+            privileged: true
+            readOnlyRootFilesystem: false
+            capabilities:
+              # drop: ["ALL"]
+              add: [NET_ADMIN, CAP_SYS_ADMIN, CAP_NET_RAW]
           # resources:
           #   requests:
           #     cpu: 10m
