@@ -14,6 +14,7 @@ defaultSettings:
   allowCollectingLonghornUsageMetrics: false
   upgradeChecker: false
   replicaAutoBalance: best-effort
+  backupTarget: nfs://192.168.1.20:/homelab-longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
 
 # NFS Permission issue workaround
 defaultBackupStore:
@@ -49,6 +50,7 @@ longhorn:
     allowCollectingLonghornUsageMetrics: false
     upgradeChecker: false
     replicaAutoBalance: best-effort
+    backupTarget: nfs://192.168.1.20:/homelab-longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
   # NFS Permission issue workaround
   defaultBackupStore:
     backupTarget: nfs://192.168.1.20:/homelab-longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
