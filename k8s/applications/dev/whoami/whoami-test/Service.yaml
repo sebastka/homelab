@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: whoami
-  namespace: whoami
+  name: whoami-test
+  namespace: whoami-test
 spec:
   type: ClusterIP
   ports:
