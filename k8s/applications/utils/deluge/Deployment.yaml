@@ -93,4 +93,4 @@ spec:
         - name: downloads
           nfs:
             server: file01.hera.home.karlsen.fr
-            path: /homelab-k8s/deluge/downloads
+            path: /mnt/nfs/homelab/k8s/deluge/downloads
