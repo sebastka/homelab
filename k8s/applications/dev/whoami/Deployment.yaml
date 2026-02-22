@@ -34,8 +34,6 @@ spec:
       containers:
         - name: whoami
           image: ghcr.io/traefik/whoami:latest
-          command:
-            - /whoami/whoami
           args:
             - "-port=8080"
           securityContext:
