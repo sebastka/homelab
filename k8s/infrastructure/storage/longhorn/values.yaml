@@ -14,8 +14,11 @@ defaultSettings:
   allowCollectingLonghornUsageMetrics: false
   upgradeChecker: false
   replicaAutoBalance: best-effort
-  # NFS Permission issue workaround
-  backupTarget: /var/lib/longhorn-backup
+
+# NFS Permission issue workaround
+defaultBackupStore:
+  backupTarget: nfs://192.168.1.20:/homelab-longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
+  pollInterval: 5m0s
 
 persistence:
   reclaimPolicy: Retain
@@ -28,15 +31,15 @@ preUpgradeChecker:
   jobEnabled: false
   # upgradeVersionCheck: false
 
-# Mount NFS backup target via Kubernetes PVC (kubelet handles NFS mount)
-longhornManager:
-  additionalVolumeMounts:
-    - name: longhorn-backup-target-pv
-      mountPath: /var/lib/longhorn-backup
-  additionalVolumes:
-    - name: longhorn-backup-target-pv
-      persistentVolumeClaim:
-        claimName: longhorn-backup-target-pvc
+##  Mount NFS backup target via Kubernetes PVC (kubelet handles NFS mount)
+# longhornManager:
+#   additionalVolumeMounts:
+#     - name: longhorn-backup-target-pv
+#       mountPath: /var/lib/longhorn-backup
+#   additionalVolumes:
+#     - name: longhorn-backup-target-pv
+#       persistentVolumeClaim:
+#         claimName: longhorn-backup-target-pvc
 
 # https://www.reddit.com/r/ArgoCD/comments/1pqnajg/comment/nuxi5uj
 longhorn:
@@ -46,8 +49,10 @@ longhorn:
     allowCollectingLonghornUsageMetrics: false
     upgradeChecker: false
     replicaAutoBalance: best-effort
-    # NFS Permission issue workaround
-    backupTarget: /var/lib/longhorn-backup
+  # NFS Permission issue workaround
+  defaultBackupStore:
+    backupTarget: nfs://192.168.1.20:/homelab-longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
+    pollInterval: 5m0s
   persistence:
     reclaimPolicy: Retain
     defaultClassReplicaCount: 2
