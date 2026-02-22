@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - Namespace.yaml
   - HTTPRoute.yaml
-  # - BackupTarget.yaml
+  - BackupTarget.yaml
   - RecurringJob.yaml
   - GrafanaDashboard.control-plane.yaml
   - GrafanaDashboard.data-plane.yaml
