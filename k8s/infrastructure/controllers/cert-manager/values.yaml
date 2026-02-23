@@ -11,26 +11,28 @@ config:
 extraArgs:
   - --dns01-recursive-nameservers=8.8.8.8:53,8.8.4.4:53
 
-# resources:
-#   requests:
-#     cpu: 10m
-#     memory: 64Mi
-#   limits:
-#     cpu: 100m
-#     memory: 128Mi
-# webhook:
-#   resources:
-#     requests:
-#       cpu: 10m
-#       memory: 32Mi
-#     limits:
-#       cpu: 100m
-#       memory: 64Mi
-# cainjector:
-#   resources:
-#     requests:
-#       cpu: 10m
-#       memory: 64Mi
-#     limits:
-#       cpu: 100m
-#       memory: 128Mi
+resources:
+  requests:
+    # cpu: 10m
+    memory: 64Mi
+  limits:
+    memory: 64Mi
+webhook:
+  resources:
+    requests:
+      # cpu: 10m
+      memory: 64Mi
+    limits:
+      memory: 64Mi
+cainjector:
+  resources:
+    requests:
+      # cpu: 10m
+      memory: 64Mi
+    limits:
+      memory: 64Mi
+
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: true
