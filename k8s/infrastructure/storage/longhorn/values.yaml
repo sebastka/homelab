@@ -1,6 +1,6 @@
 # https://joshrnoll.com/installing-longhorn-on-talos-with-helm/
 # https://www.johanneskueber.com/posts/longhorn_uservolumes_talos/
-# https://github.com/longhorn/charts/blob/v1.10.x/charts/longhorn/values.yaml
+# https://github.com/longhorn/charts/blob/v1.11.x/charts/longhorn/values.yaml
 ---
 # values.yaml
 defaultSettings:
@@ -14,6 +14,15 @@ defaultSettings:
   allowCollectingLonghornUsageMetrics: false
   upgradeChecker: false
   replicaAutoBalance: best-effort
+
+longhornManager:
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 1024Mi
+    limits:
+      # cpu: 500m
+      memory: 1536Mi
 
 persistence:
   reclaimPolicy: Retain
