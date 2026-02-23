@@ -37,23 +37,23 @@ operator:
       enabled: true
   dashboards:
     enabled: true
-  # resources:
-  #   limits:
-  #     cpu: 500m
-  #     memory: 256Mi
-  #   requests:
-  #     cpu: 50m
-  #     memory: 128Mi
+  resources:
+    requests:
+      # cpu: 50m
+      memory: 128Mi
+    limits:
+      # cpu: 500m
+      memory: 256Mi
 
 # Roll out cilium agent pods automatically when ConfigMap is updated.
 rollOutCiliumPods: true
-# resources:
-#   requests:
-#     cpu: 200m
-#     memory: 512Mi
-#   limits:
-#     cpu: 1000m
-#     memory: 1Gi
+resources:
+  requests:
+    # cpu: 200m
+    memory: 512Mi
+  limits:
+    # cpu: 1000m
+    memory: 1Gi
 
 # debug:
 #  enabled: true
