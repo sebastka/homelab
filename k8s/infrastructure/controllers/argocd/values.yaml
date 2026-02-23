@@ -83,8 +83,8 @@ repoServer:
     runAsNonRoot: true
     runAsUser: 999
     runAsGroup: 999
-    fsGroup: 999
-    fsGroupChangePolicy: OnRootMismatch
+    # fsGroup: 999
+    # fsGroupChangePolicy: OnRootMismatch
     seccompProfile:
       type: RuntimeDefault
   volumes:
@@ -126,6 +126,9 @@ repoServer:
           chmod +x /custom-tools/ksops /custom-tools/kustomize
       securityContext:
         allowPrivilegeEscalation: false
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
         capabilities:
           drop:
             - ALL
