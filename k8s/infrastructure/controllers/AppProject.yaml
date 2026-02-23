@@ -10,6 +10,8 @@ spec:
   destinations:
     - namespace: argocd
       server: '*'
+    - namespace: kube-system
+      server: '*'
     - namespace: databases-backup
       server: '*'
     - namespace: cert-manager
