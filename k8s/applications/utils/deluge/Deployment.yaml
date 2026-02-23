@@ -25,6 +25,13 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
+      resources:
+        requests:
+          # cpu: 100m
+          memory: 512Gi
+        limits:
+          # cpu: 1000m
+          memory: 1024Mi
       containers:
         - name: deluged
           image: ghcr.io/home-operations/deluge:2
@@ -46,13 +53,7 @@ spec:
               value: Europe/Oslo
             - name: DELUGE_BIN
               value: deluged
-          resources:
-            requests:
-              # cpu: 100m
-              memory: 512Gi
-            limits:
-              # cpu: 1000m
-              memory: 1024Mi
+
           volumeMounts:
             - name: config
               mountPath: /config
@@ -74,13 +75,6 @@ spec:
               value: Europe/Oslo
             - name: DELUGE_BIN
               value: deluge-web
-          # resources:
-          #   requests:
-          #     cpu: 100m
-          #     memory: 250Mi
-          #   limits:
-          #     cpu: 500m
-          #     memory: 500Mi
           volumeMounts:
             - name: config
               mountPath: /config
