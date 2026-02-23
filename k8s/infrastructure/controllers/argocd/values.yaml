@@ -41,28 +41,74 @@ crds:
   install: true
   keep: false
 
+controller:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 700Mi
+    limits:
+      memory: 1Gi
+
 dex:
   enabled: false
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  resources:
+    requests:
+      # cpu: 10m
+      memory: 32Mi
+    limits:
+      memory: 128Mi
 
 # https://github.com/viaduct-ai/kustomize-sops/issues/300
 repoServer:
-  # resources:
-  #   requests:
-  #     cpu: 100m
-  #     memory: 256Mi
-  #   limits:
-  #     cpu: 500m
-  #     memory: 2Gi
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 2Gi
+  containerSecurityContext:
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 999
+    runAsGroup: 999
+    fsGroup: 999
+    fsGroupChangePolicy: OnRootMismatch
+    seccompProfile:
+      type: RuntimeDefault
   volumes:
-    - name: custom-ksops
-      emptyDir: {}
-    - name: custom-kustomize
+    - name: custom-tools
       emptyDir: {}
     - name: sops-age
       secret:
         secretName: sops-age
+  volumeMounts:
+    - mountPath: /usr/local/bin/ksops
+      name: custom-tools
+      subPath: ksops
+    - mountPath: /usr/local/bin/kustomize
+      name: custom-tools
+      subPath: kustomize
+    - name: sops-age
+      mountPath: /.config/sops/age
+  env:
+    - name: XDG_CONFIG_HOME
+      value: /.config
+    - name: SOPS_AGE_KEY_FILE
+      value: /.config/sops/age/keys.txt
   initContainers:
-    - name: install-ksops
+    - name: install-tools
       image: alpine:latest
       command: ["/bin/sh", "-c"]
       args:
@@ -73,84 +119,43 @@ repoServer:
             aarch64|arm64) ARCH="arm64" ;;
             *) echo "unsupported arch: $(uname -m)"; exit 1 ;;
           esac
-          VERSION="4.4.0"
-          URL="https://github.com/viaduct-ai/kustomize-sops/releases/download/v${VERSION}/ksops_latest_Linux_${ARCH}.tar.gz"
-          wget "$URL" -O /tmp/ksops.tar.gz
-          tar -C /custom-ksops -xzf /tmp/ksops.tar.gz ksops
-          chmod +x /custom-ksops/ksops
+          KSOPS_VERSION="4.4.0" wget -qO- "https://github.com/viaduct-ai/kustomize-sops/releases/download/v${KSOPS_VERSION}/ksops_latest_Linux_${ARCH}.tar.gz" \
+            | tar -C /custom-tools -xzf - ksops
+          KUSTOMIZE_VERSION="5.8.1" wget -qO- "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_${ARCH}.tar.gz" \
+            | tar -C /custom-tools -xzf - kustomize
+          chmod +x /custom-tools/ksops /custom-tools/kustomize
       securityContext:
         allowPrivilegeEscalation: false
-        runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
         capabilities:
           drop:
             - ALL
       volumeMounts:
-        - mountPath: /custom-ksops
-          name: custom-ksops
+        - mountPath: /custom-tools
+          name: custom-tools
 
-    - name: install-kustomize
-      image: alpine:latest
-      command: ["/bin/sh", "-c"]
-      args:
-        - |
-          set -eux
-          case "$(uname -m)" in
-            x86_64|amd64) ARCH="amd64" ;;
-            aarch64|arm64) ARCH="arm64" ;;
-            *) echo "unsupported arch: $(uname -m)"; exit 1 ;;
-          esac
-          VERSION="5.8.0"
-          URL="https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${VERSION}/kustomize_v${VERSION}_linux_${ARCH}.tar.gz"
-          wget "$URL" -O /tmp/kustomize.tar.gz
-          tar -C /custom-kustomize -xzf /tmp/kustomize.tar.gz kustomize
-          chmod +x /custom-kustomize/kustomize
-      securityContext:
-        allowPrivilegeEscalation: false
-        runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
-        capabilities:
-          drop:
-            - ALL
-      volumeMounts:
-        - mountPath: /custom-kustomize
-          name: custom-kustomize
-
-  volumeMounts:
-    - mountPath: /usr/local/bin/ksops
-      name: custom-ksops
-      subPath: ksops
-    - mountPath: /usr/local/bin/kustomize
-      name: custom-kustomize
-      subPath: kustomize
-    - name: sops-age
-      mountPath: /.config/sops/age
-
-  env:
-    - name: XDG_CONFIG_HOME
-      value: /.config
-    - name: SOPS_AGE_KEY_FILE
-      value: /.config/sops/age/keys.txt
-
-# redis:
-#   resources:
-#     requests:
-#       cpu: 100m
-#       memory: 126Mi
-#     limits:
-#       cpu: 200m
-#       memory: 512Mi
+redis:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 64Mi
+    limits:
+      memory: 1Gi
 
 server:
-  # resources:
-  #   requests:
-  #     cpu: 100m
-  #     memory: 126Mi
-  #   limits:
-  #     cpu: 200m
-  #     memory: 512Mi
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  resources:
+    requests:
+      # cpu: 50m
+      memory: 64Mi
+    limits:
+      memory: 1Gi
 
   httproute:
     enabled: true
@@ -186,21 +191,28 @@ server:
               - name: Content-Type
                 value: application/grpc
 
-# applicationSet:
-#   resources:
-#     requests:
-#       cpu: 100m
-#       memory: 128Mi
-#     limits:
-#       cpu: 200m
-#       memory: 1Gi
+applicationSet:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  resources:
+    requests:
+      # cpu: 50m
+      memory: 64Mi
+    limits:
+      memory: 1Gi
 
-# notifications:
-#   enabled: false
-#   resources:
-#     requests:
-#       cpu: 100m
-#       memory: 64Mi
-#     limits:
-#       cpu: 200m
-#       memory: 128Mi
+notifications:
+  enabled: false
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 64Mi
+    limits:
+      # cpu: 1000m
+      memory: 128Mi
