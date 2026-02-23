@@ -6,7 +6,7 @@ kind: Kustomization
 helmCharts:
   - name: argo-cd
     repo: https://argoproj.github.io/argo-helm
-    version: 9.4.3  # 9.4.3 breaks OIDC?
+    version: 9.4.4  # 9.4.3 breaks OIDC?
     releaseName: argocd
     namespace: argocd
     includeCRDs: true
