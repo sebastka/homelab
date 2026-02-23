@@ -10,6 +10,13 @@ prometheus:
     serviceMonitorNamespaceSelector: {}
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelector: {}
+    resources:
+      requests:
+        # cpu: 100m
+        memory: 200Mi
+      limits:
+        # cpu: 100m
+        memory: 400Mi
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -87,3 +94,13 @@ grafana:
     matchLabels:
       app: grafana
     folder: Kubernetes
+
+alertmanager:
+  alertmanagerSpec:
+    resources:
+      requests:
+        # cpu: 100m
+        memory: 200Mi
+      limits:
+        # cpu: 100m
+        memory: 200Mi
