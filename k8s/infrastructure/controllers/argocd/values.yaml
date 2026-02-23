@@ -119,9 +119,11 @@ repoServer:
             aarch64|arm64) ARCH="arm64" ;;
             *) echo "unsupported arch: $(uname -m)"; exit 1 ;;
           esac
-          KSOPS_VERSION="4.4.0" wget -qO- "https://github.com/viaduct-ai/kustomize-sops/releases/download/v${KSOPS_VERSION}/ksops_latest_Linux_${ARCH}.tar.gz" \
+          export KSOPS_VERSION="4.4.0"
+          export KUSTOMIZE_VERSION="5.8.1"
+          wget -qO- "https://github.com/viaduct-ai/kustomize-sops/releases/download/v${KSOPS_VERSION}/ksops_latest_Linux_${ARCH}.tar.gz" \
             | tar -C /custom-tools -xzf - ksops
-          KUSTOMIZE_VERSION="5.8.1" wget -qO- "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_${ARCH}.tar.gz" \
+          wget -qO- "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_${ARCH}.tar.gz" \
             | tar -C /custom-tools -xzf - kustomize
           chmod +x /custom-tools/ksops /custom-tools/kustomize
       securityContext:
