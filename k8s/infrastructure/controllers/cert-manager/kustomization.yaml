@@ -7,8 +7,16 @@ kind: Kustomization
 generators:
   - ./ksops.cloudflare-api-token-secret-generator.yaml
 
+helmCharts:
+  - name: cert-manager
+    repo: oci://quay.io/jetstack/charts
+    version: 1.19.3
+    releaseName: cert-manager
+    namespace: cert-manager
+    includeCRDs: true
+    valuesFile: values.yaml
+
 resources:
-  - Application.yaml
   - Secret.cloudflare-api-token.enc.yaml
   # - Secret.cloudflare-api-token.yaml
   - ClusterIssuer.yaml
