@@ -53,7 +53,6 @@ spec:
               value: Europe/Oslo
             - name: DELUGE_BIN
               value: deluged
-
           volumeMounts:
             - name: config
               mountPath: /config

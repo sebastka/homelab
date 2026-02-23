@@ -14,7 +14,7 @@ spec:
     - deluge.talmox.hera.home.karlsen.fr
   rules:
     - backendRefs:
-        - name: deluge-service
+        - name: http
           port: 8112
       matches:
         - path:
