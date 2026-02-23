@@ -27,13 +27,13 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
-      # resources:
-      #   requests:
-      #     cpu: 10m
-      #     memory: 12Mi
-      #   limits:
-      #     cpu: 100m
-      #     memory: 24Mi
+      resources:
+        requests:
+          # cpu: 10m
+          memory: 256Mi
+        limits:
+          # cpu: 100m
+          memory: 512Mi
       containers:
         - name: stork
           image: index.docker.io/library/alpine:latest
