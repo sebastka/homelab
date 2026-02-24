@@ -5,7 +5,7 @@ kind: Kustomization
 helmCharts:
   - name: intel-device-plugins-operator
     repo: https://intel.github.io/helm-charts/
-    version: 0.34.1 # renovate: github-releases=intel/helm-charts
+    version: 0.35.0 # renovate: github-releases=intel/helm-charts
     namespace: intel-device-plugins
     releaseName: intel-device-plugins-operator
     includeCRDs: true
