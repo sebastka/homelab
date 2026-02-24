@@ -16,7 +16,7 @@ configMapGenerator:
   - name: paperless-config
     namespace: paperless
     envs:
-      - .paperless.env
+      - paperless.env
 
 resources:
   - Namespace.yaml
