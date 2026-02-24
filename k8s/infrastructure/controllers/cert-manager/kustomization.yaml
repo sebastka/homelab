@@ -7,6 +7,13 @@ kind: Kustomization
 generators:
   - ./ksops.cloudflare-api-token-secret-generator.yaml
 
+resources:
+  - Namespace.yaml
+  - Secret.cloudflare-api-token.enc.yaml
+  # - Secret.cloudflare-api-token.yaml
+  - ClusterIssuer.yaml
+  - GrafanaDashboard.yaml
+
 helmCharts:
   - name: cert-manager
     repo: oci://quay.io/jetstack/charts
@@ -15,9 +22,3 @@ helmCharts:
     namespace: cert-manager
     includeCRDs: true
     valuesFile: values.yaml
-
-resources:
-  - Secret.cloudflare-api-token.enc.yaml
-  # - Secret.cloudflare-api-token.yaml
-  - ClusterIssuer.yaml
-  - GrafanaDashboard.yaml
