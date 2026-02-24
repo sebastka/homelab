@@ -1,9 +1,11 @@
 #!/bin/sh
 set -eux
 
+# ./wipe_ns.sh <namespace>
+# Helper script to force delete a namespace stuck in terminating state due to finalizers
 main()
 {
-    # v1 "$1"
+    v1 "$1"
     v2 "$1"
 }
 
@@ -12,8 +14,8 @@ v1()
     NAMESPACE="$1"
     (
         kubectl proxy &
-        kubectl get namespace $NAMESPACE -o json | jq '.spec = {"finalizers":[]}' >temp.json
-        curl -k -H "Content-Type: application/json" -X PUT --data-binary @temp.json 127.0.0.1:8001/api/v1/namespaces/$NAMESPACE/finalize
+        kubectl get namespace $NAMESPACE -o json | jq '.spec = {"finalizers":[]}' >/tmp/temp.json
+        curl -k -H "Content-Type: application/json" -X PUT --data-binary @/tmp/temp.json 127.0.0.1:8001/api/v1/namespaces/$NAMESPACE/finalize
     )
 
     killall -9 kubectl
