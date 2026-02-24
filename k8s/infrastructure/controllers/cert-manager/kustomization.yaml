@@ -17,7 +17,7 @@ resources:
 helmCharts:
   - name: cert-manager
     repo: oci://quay.io/jetstack/charts
-    version: v1.19.4
+    version: v1.19.4 # renovate: github-releases=cert-manager/cert-manager
     releaseName: cert-manager
     namespace: cert-manager
     includeCRDs: true
