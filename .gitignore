@@ -17,3 +17,4 @@ Secret.*.yaml
 
 # Talos
 talos/temp.json
+*.sops.yaml
