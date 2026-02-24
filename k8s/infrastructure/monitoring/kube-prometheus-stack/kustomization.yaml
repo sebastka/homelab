@@ -17,7 +17,7 @@ resources:
 helmCharts:
   - name: kube-prometheus-stack
     repo: oci://ghcr.io/prometheus-community/charts
-    version: 82.3.0
+    version: 82.3.0 # renovate: github-releases=prometheus-community/helm-charts
     releaseName: kube-prometheus-stack
     namespace: kube-prometheus-stack
     includeCRDs: true
