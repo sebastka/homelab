@@ -1,0 +1,59 @@
+;;
+;; Domain:     sebastka.no.
+;; Exported:   2026-02-11 21:53:35
+;;
+;; This file is intended for use for informational and archival
+;; purposes ONLY and MUST be edited before use on a production
+;; DNS server.  In particular, you must:
+;;   -- update the SOA record with the correct authoritative name server
+;;   -- update the SOA record with the contact e-mail address information
+;;   -- update the NS record(s) with the authoritative name servers for this domain.
+;;
+;; For further information, please consult the BIND documentation
+;; located on the following website:
+;;
+;; http://www.isc.org/
+;;
+;; And RFC 1035:
+;;
+;; http://www.ietf.org/rfc/rfc1035.txt
+;;
+;; Please note that we do NOT offer technical support for any use
+;; of this zone data, the BIND name server, or any other third-party
+;; DNS software.
+;;
+;; Use at your own risk.
+;; SOA Record
+sebastka.no	3600	IN	SOA	bethany.ns.cloudflare.com. dns.cloudflare.com. 2052251341 10000 2400 604800 3600
+
+;; NS Records
+sebastka.no.	86400	IN	NS	bethany.ns.cloudflare.com.
+sebastka.no.	86400	IN	NS	sevki.ns.cloudflare.com.
+
+;; A Records
+sebastka.no.	1	IN	A	188.124.156.176 ; cf_tags=cf-proxied:false
+
+;; CAA Records
+sebastka.no.	1	IN	CAA	128 issue "letsencrypt.org"
+
+;; CNAME Records
+autoconfig.sebastka.no.	1	IN	CNAME	autoconfig.domeneshop.no. ; cf_tags=cf-proxied:false
+www.sebastka.no.	1	IN	CNAME	sebastka.no. ; cf_tags=cf-proxied:false
+
+;; MX Records
+sebastka.no.	1	IN	MX	10 mx.domeneshop.no.
+
+;; SRV Records
+_autodiscover._tcp.sebastka.no.	3600	IN	SRV	0 0 443 autoconfig.domeneshop.no.
+_caldavs._tcp.sebastka.no.	3600	IN	SRV	0 0 443 caldav.domeneshop.no.
+_carddavs._tcp.sebastka.no.	3600	IN	SRV	0 0 443 carddav.domeneshop.no.
+
+;; SVCB Records
+sebastka.no.	3600	IN	SVCB	0 karlsen.fr.
+
+;; TXT Records
+_caldavs._tcp.sebastka.no.	3600	IN	TXT	"path=/"
+_carddavs._tcp.sebastka.no.	3600	IN	TXT	"path=/"
+_dmarc.sebastka.no.	3600	IN	TXT	"v=DMARC1; p=reject; adkim=s; aspf=s; fo=1; sp=reject; rua=mailto:dmarc@domeneshop.no,mailto:6b5eb183eee8455aae304f8ccd3e05b6@dmarc-reports.cloudflare.net;"
+ds202509._domainkey.sebastka.no.	3600	IN	TXT	"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuNEc/NXKPx0o6hmzWtLRl4ynMHkMppZw+cZicpnGCkHPm+tiN3Fhqc5u3dl3xnTm/lm/0ZvWnOz3Xk66KkjhdaHvYBGjZUZbKGjl3RHsnC/6XpJEOA6/BjnIXD3X+kHX1XUpHePtzSQv5MCXll0ynxdMf1n0ejUrrfBNBd+fqEVpP5eS0hamp9cSkAcKExX" "7UBTtzYdFiICEP9FmY8GtODCqv5yQ1z9V43gyh/gMS+y7095tXmlXQQZurfZ3SsqpTlSSbHApQippk2MMavKUeJMhonPW5v53ts8lhFBZk0PnsRD8rn51TDE1a6JrItdxuEjTI8pAawARvAxQzosq5QIDAQAB"
+sebastka.no.	1	IN	TXT	"v=spf1 include:_spf.domeneshop.no -all"

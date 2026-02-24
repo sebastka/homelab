@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+zone_id="$1"
+fqdn="$2"
+
+curl --silent \
+    -X POST \
+    -H "Content-Type: multipart/form-data" \
+    -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+    -F "file=@/tmp/${fqdn}.zone" \
+    "https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records/import"

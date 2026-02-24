@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+fqdn="$1"
+
+curl --silent \
+    -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+    --data "{\"name\":\"${fqdn}\",\"account\":{\"id\":\"${CLOUDFLARE_ACCOUNT_ID}\"},\"type\":\"full\"}" \
+    https://api.cloudflare.com/client/v4/zones

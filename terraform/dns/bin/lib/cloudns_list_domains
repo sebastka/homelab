@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+curl --silent \
+    -X POST \
+    --data "auth-id=${CLOUDNS_AUTH_ID}" \
+    --data "auth-password=${CLOUDNS_AUTH_PASSWORD}" \
+    --data "rows-per-page=250" \
+    --data "page=1" \
+    --data "order_by=name" \
+    https://api.cloudns.net/domains/list-domains.json

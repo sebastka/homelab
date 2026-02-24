@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+
+zone_id="$1"
+
+curl --silent \
+    -X GET \
+    --cookie "sessionid=${DOMENESHOP_COOKIE}" \
+    "https://domene.shop/admin?id=${zone_id}&command=downloadzone&dnssec=0"

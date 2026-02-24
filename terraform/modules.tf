@@ -1,3 +1,14 @@
+module "dns" {
+  source = "./dns"
+
+  providers = {
+    cloudflare = cloudflare
+  }
+
+  cloudflare = var.cloudflare
+  domeneshop = var.domeneshop
+}
+
 module "linux_containers" {
   source = "./linux_containers"
 

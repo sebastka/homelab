@@ -1,0 +1,59 @@
+;;
+;; Domain:     spkag.com.
+;; Exported:   2026-02-11 21:53:41
+;;
+;; This file is intended for use for informational and archival
+;; purposes ONLY and MUST be edited before use on a production
+;; DNS server.  In particular, you must:
+;;   -- update the SOA record with the correct authoritative name server
+;;   -- update the SOA record with the contact e-mail address information
+;;   -- update the NS record(s) with the authoritative name servers for this domain.
+;;
+;; For further information, please consult the BIND documentation
+;; located on the following website:
+;;
+;; http://www.isc.org/
+;;
+;; And RFC 1035:
+;;
+;; http://www.ietf.org/rfc/rfc1035.txt
+;;
+;; Please note that we do NOT offer technical support for any use
+;; of this zone data, the BIND name server, or any other third-party
+;; DNS software.
+;;
+;; Use at your own risk.
+;; SOA Record
+spkag.com	3600	IN	SOA	bethany.ns.cloudflare.com. dns.cloudflare.com. 2052251342 10000 2400 604800 3600
+
+;; NS Records
+spkag.com.	86400	IN	NS	bethany.ns.cloudflare.com.
+spkag.com.	86400	IN	NS	sevki.ns.cloudflare.com.
+
+;; A Records
+spkag.com.	1	IN	A	188.124.156.176 ; cf_tags=cf-proxied:false
+
+;; CAA Records
+spkag.com.	1	IN	CAA	128 issue "letsencrypt.org"
+
+;; CNAME Records
+autoconfig.spkag.com.	1	IN	CNAME	autoconfig.domeneshop.no. ; cf_tags=cf-proxied:false
+www.spkag.com.	1	IN	CNAME	spkag.com. ; cf_tags=cf-proxied:false
+
+;; MX Records
+spkag.com.	1	IN	MX	10 mx.domeneshop.no.
+
+;; SRV Records
+_autodiscover._tcp.spkag.com.	3600	IN	SRV	0 0 443 autoconfig.domeneshop.no.
+_caldavs._tcp.spkag.com.	3600	IN	SRV	0 0 443 caldav.domeneshop.no.
+_carddavs._tcp.spkag.com.	3600	IN	SRV	0 0 443 carddav.domeneshop.no.
+
+;; SVCB Records
+spkag.com.	3600	IN	SVCB	0 karlsen.fr.
+
+;; TXT Records
+_caldavs._tcp.spkag.com.	3600	IN	TXT	"path=/"
+_carddavs._tcp.spkag.com.	3600	IN	TXT	"path=/"
+_dmarc.spkag.com.	3600	IN	TXT	"v=DMARC1; p=reject; adkim=s; aspf=s; fo=1; sp=reject; rua=mailto:dmarc@domeneshop.no,mailto:9d9ec2b190c54675920ea199ad77047e@dmarc-reports.cloudflare.net;"
+ds202503._domainkey.spkag.com.	3600	IN	TXT	"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAym8sPsYgQGw5X3oZ0/83eUmZchyucsfC+u620Q5TZpoRaxdkuuw3uASq3SUIv1ahzL1Ke8Sv/bnlNl6LEh3ITjwiHy+HXFVlsXqG60DDUeEFyYMWnZ0OfDQGin+Gdwj0yx/WkBQg1oLO6rsqDV9vUDFBPiWfzFN2EfVR8S0/qkyIPnvpbngSsEY+fA+Gpb7" "c/fYb0Ink0V2JVtlruaCVRiuB4KmdUlun/rzinlCzQTmSqHac90t3eVpcei4iI0JVwdkDtY2omNGE37oDndo67yJy3AFozPb0EndIWXANvwY/Dmt+5ILE2J8aSg7tSTcR3ElMRkr5fesMuqOKlgBe1wIDAQAB"
+spkag.com.	1	IN	TXT	"v=spf1 include:_spf.domeneshop.no -all"

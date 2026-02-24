@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+
+curl --silent \
+    -X GET \
+    --user "${DOMENESHOP_TOKEN_ID}:${DOMENESHOP_TOKEN_SECRET}" \
+    https://api.domeneshop.no/v0/domains

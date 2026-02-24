@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+zone_id="$1"
+
+curl --silent \
+    -X GET \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+    "https://api.cloudflare.com/client/v4/zones/${zone_id}" 

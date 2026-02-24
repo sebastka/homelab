@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+domain_name="$1"
+
+curl --silent \
+    -X POST \
+    --data "auth-id=${CLOUDNS_AUTH_ID}" \
+    --data "auth-password=${CLOUDNS_AUTH_PASSWORD}" \
+    --data "domain-name=${domain_name}" \
+    https://api.cloudns.net/dns/delete.json

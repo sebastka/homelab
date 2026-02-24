@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+
+fqdn="$1"
+ns1="$2"
+ns2="$3"
+
+curl --silent \
+    -X POST \
+    --data "auth-id=${CLOUDNS_AUTH_ID}" \
+    --data "auth-password=${CLOUDNS_AUTH_PASSWORD}" \
+    --data "domain-name=${fqdn}" \
+    --data "nameservers[]=${ns1}" \
+    --data "nameservers[]=${ns2}" \
+    https://api.cloudns.net/domains/set-nameservers.json

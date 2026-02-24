@@ -34,7 +34,7 @@ resource "proxmox_vm_qemu" "talos_nodes" {
   scsihw             = "virtio-scsi-single"
   memory             = each.value.type == "controlplane" ? local.cp_config.mem : local.worker_config.mem
   balloon            = 512
-  boot               = "order=scsi0;ide2"
+  boot               = "order=ide2;scsi0"
 
   startup_shutdown {
     shutdown_timeout = 300

@@ -8,6 +8,11 @@ terraform {
       version = "3.0.2-rc07"
     }
 
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 4"
+    }
+
     # kubernetes = {
     #   source  = "hashicorp/kubernetes"
     #   version = "~> 3"
@@ -24,6 +29,11 @@ provider "proxmox" {
   pm_api_url = "${var.pve.endpoint}/api2/json"
   # pm_minimum_permission_check = false
   # pm_debug                  = true
+}
+
+provider "cloudflare" {
+  # CLOUDFLARE_API_TOKEN
+  # api_token =
 }
 
 # provider "kubernetes" {

@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+fqdn="$1"
+
+curl --silent \
+    -X POST \
+    --data "auth-id=${CLOUDNS_AUTH_ID}" \
+    --data "auth-password=${CLOUDNS_AUTH_PASSWORD}" \
+    --data "domain-name=${fqdn}" \
+    https://api.cloudns.net/dns/records-export.json
