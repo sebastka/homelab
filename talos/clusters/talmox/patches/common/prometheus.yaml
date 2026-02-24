@@ -1,0 +1,6 @@
+# Prometheus and Grafana Operator CRDs
+---
+cluster:
+  extraManifests:
+    - https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/heads/main/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml
+    - https://github.com/grafana/grafana-operator/releases/download/v5.21.4/crds.yaml

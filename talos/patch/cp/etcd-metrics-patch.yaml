@@ -1,6 +1,0 @@
-# https://docs.siderolabs.com/kubernetes-guides/monitoring-and-observability/etcd-metrics
----
-cluster:
-  etcd:
-    extraArgs:
-      listen-metrics-urls: http://0.0.0.0:2381

@@ -1,0 +1,7 @@
+# Expose etcd metrics on all interfaces, so that they can be scraped by the prometheus operator
+# - https://docs.siderolabs.com/kubernetes-guides/monitoring-and-observability/etcd-metrics
+---
+cluster:
+  etcd:
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
