@@ -4,13 +4,9 @@
 ---
 # values.yaml
 defaultSettings:
-  defaultReplicaCount: 2  # Default is 3. Will fail on single node clusters
-  # storageReservedPercentageForDefaultDisk: 1 # longhorn has its own disk - it can use all available space
-  # defaultDataPath: "/var/lib/longhorn"
+  defaultReplicaCount: 2
+  defaultDataLocality: best-effort
   defaultDataPath: /var/mnt/longhorn-data
-  # defaultDataPath: /dev/sdb
-  # v2DataEngine: true
-  # offlineReplicaRebuilding: true
   allowCollectingLonghornUsageMetrics: false
   upgradeChecker: false
   replicaAutoBalance: best-effort
@@ -28,24 +24,8 @@ persistence:
   reclaimPolicy: Retain
   defaultClassReplicaCount: 2
   defaultDataLocality: best-effort
-  # dataEngine: v2
 
 # https://github.com/longhorn/longhorn/issues/8707
 preUpgradeChecker:
   jobEnabled: false
   # upgradeVersionCheck: false
-
-# https://www.reddit.com/r/ArgoCD/comments/1pqnajg/comment/nuxi5uj
-longhorn:
-  defaultSettings:
-    defaultReplicaCount: 2
-    defaultDataPath: /var/mnt/longhorn-data
-    allowCollectingLonghornUsageMetrics: false
-    upgradeChecker: false
-    replicaAutoBalance: best-effort
-  persistence:
-    reclaimPolicy: Retain
-    defaultClassReplicaCount: 2
-    defaultDataLocality: best-effort
-  preUpgradeChecker:
-    jobEnabled: false
