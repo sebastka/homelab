@@ -9,7 +9,7 @@ resources:
   - SealedSecret.cloudflare-api-token.yaml
   # - Secret.cloudflare-api-token.yaml
   - ClusterIssuer.yaml
-  - GrafanaDashboard.yaml
+  # - GrafanaDashboard.yaml
 
 helmCharts:
   - name: cert-manager

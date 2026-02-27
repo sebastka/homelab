@@ -17,7 +17,7 @@ resources:
   - Namespace.yaml
   - Service.yaml
   - GRPCRoute.yaml
-  - GrafanaDashboard.yaml
+  # - GrafanaDashboard.yaml
   # - service-monitors/argocd-application-controller.yaml
   # - service-monitors/argocd-applicationset-controller.yaml
   # - service-monitors/argocd-redis.yaml
