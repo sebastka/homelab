@@ -18,8 +18,8 @@ resources:
   - Service.yaml
   - GRPCRoute.yaml
   - GrafanaDashboard.yaml
-  - service-monitors/argocd-application-controller.yaml
-  - service-monitors/argocd-applicationset-controller.yaml
-  - service-monitors/argocd-redis.yaml
-  - service-monitors/argocd-repo-server.yaml
-  - service-monitors/argocd-server.yaml
+  # - service-monitors/argocd-application-controller.yaml
+  # - service-monitors/argocd-applicationset-controller.yaml
+  # - service-monitors/argocd-redis.yaml
+  # - service-monitors/argocd-repo-server.yaml
+  # - service-monitors/argocd-server.yaml
