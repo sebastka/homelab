@@ -3,13 +3,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-generators:
-  - ./ksops.mariadb-secrets-generator.yaml
-  - ./ksops.postgres-secrets-generator.yaml
-
 resources:
   - Namespace.yaml
-  - Secret.mariadb-secrets.enc.yaml
+  - SealedSecret.mariadb-secrets.yaml
   - CronJob.MariaDB.yaml
-  - Secret.postgres-secrets.enc.yaml
+  - SealedSecret.postgres-secrets.yaml
   - CronJob.Postgres.yaml
