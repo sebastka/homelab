@@ -5,7 +5,7 @@ metadata:
   name: nginx-config
   namespace: homepage
 data:
-  'nginx.conf': |-
+  'nginx.custom.conf': |-
     worker_processes auto;
     error_log stderr notice;
     pid /tmp/nginx.pid;
@@ -35,11 +35,11 @@ data:
       keepalive_timeout 65;
       # gzip  on;
 
-      include /etc/nginx/conf.d/*.conf;
+      include /etc/nginx/conf.d/karlsen.fr.conf;
     }
 
 
-  'default.conf': |-
+  'karlsen.fr.conf': |-
     server {
       listen 8080;
       server_name www.karlsen.fr;
