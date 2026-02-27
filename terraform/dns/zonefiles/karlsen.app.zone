@@ -1,6 +1,6 @@
 ;;
 ;; Domain:     karlsen.app.
-;; Exported:   2026-02-11 21:53:26
+;; Exported:   2026-02-27 22:22:46
 ;;
 ;; This file is intended for use for informational and archival
 ;; purposes ONLY and MUST be edited before use on a production
@@ -24,7 +24,7 @@
 ;;
 ;; Use at your own risk.
 ;; SOA Record
-karlsen.app	3600	IN	SOA	bradley.ns.cloudflare.com. dns.cloudflare.com. 2052251340 10000 2400 604800 3600
+karlsen.app	3600	IN	SOA	bradley.ns.cloudflare.com. dns.cloudflare.com. 2052389756 10000 2400 604800 3600
 
 ;; NS Records
 karlsen.app.	86400	IN	NS	bradley.ns.cloudflare.com.
@@ -37,7 +37,7 @@ karlsen.app.	300	IN	A	188.124.156.176 ; Helios / enp1s0 cf_tags=cf-proxied:false
 karlsen.app.	1	IN	CAA	128 issue "letsencrypt.org"
 
 ;; CNAME Records
-www.karlsen.app.	1	IN	CNAME	karlsen.app. ; cf_tags=cf-proxied:false
+*.karlsen.app.	1	IN	CNAME	karlsen.app. ; cf_tags=cf-proxied:false
 
 ;; TXT Records
 _dmarc.karlsen.app.	3600	IN	TXT	"v=DMARC1; p=reject; adkim=s; aspf=s; fo=1; sp=reject; rua=mailto:b8e3ebfffa7a4245a436159a6ad3d796@dmarc-reports.cloudflare.net;"

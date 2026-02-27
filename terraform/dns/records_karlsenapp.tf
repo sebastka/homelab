@@ -21,9 +21,9 @@ resource "cloudflare_record" "karlsenapp_caa" {
   }
 }
 
-resource "cloudflare_record" "karlsenapp_cname_www" {
+resource "cloudflare_record" "karlsenapp_cname_wc" {
   content = cloudflare_zone.karlsenapp.zone
-  name    = "www"
+  name    = "*"
   proxied = false
   ttl     = 1
   type    = "CNAME"
