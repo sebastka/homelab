@@ -4,6 +4,8 @@ kind: ServiceMonitor
 metadata:
   name: argocd-repo-server
   namespace: argocd
+  annotations:
+    kustomize.config.k8s.io/behavior: replace
 spec:
   endpoints:
     - port: http-metrics
