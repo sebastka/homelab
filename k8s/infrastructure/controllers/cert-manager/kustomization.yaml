@@ -4,12 +4,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-generators:
-  - ./ksops.cloudflare-api-token-secret-generator.yaml
-
 resources:
   - Namespace.yaml
-  - Secret.cloudflare-api-token.enc.yaml
+  - SealedSecret.cloudflare-api-token.yaml
   # - Secret.cloudflare-api-token.yaml
   - ClusterIssuer.yaml
   - GrafanaDashboard.yaml
