@@ -1,0 +1,14 @@
+# https://docs.siderolabs.com/talos/v1.12/platform-specific-installations/bare-metal-platforms/secureboot#booting-talos-linux-in-secureboot-mode
+---
+machine:
+  systemDiskEncryption:
+    ephemeral:
+      provider: luks2
+      keys:
+        - slot: 0
+          tpm: {}
+    state:
+      provider: luks2
+      keys:
+        - slot: 0
+          tpm: {}

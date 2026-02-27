@@ -20,6 +20,7 @@ patches:
   - '@./patches/common/prometheus.yaml'
   - '@./patches/common/longhorn.yaml'
   - '@./patches/common/oom.yaml'
+  - '@./patches/common/tpm-disk-encryption.yaml'
 
 controlPlane:
   patches:
@@ -29,6 +30,26 @@ controlPlane:
 worker:
   patches:
     - '@./patches/worker/longhorn.yaml'
+
+inlineManifests:
+  - name: sealed-secrets
+    contents: |
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: sealed-secrets
+      ---
+      apiVersion: v1
+      kind: Secret
+      type: kubernetes.io/tls
+      metadata:
+        name: sealed-secrets-key
+        namespace: sealed-secrets
+        labels:
+          sealedsecrets.bitnami.com/sealed-secrets-key: active
+      data:
+        tls.crt: ${SEALED_SECRETS_CRT}
+        tls.key: ${SEALED_SECRETS_KEY}
 
 nodes:
   - hostname: cp01.${CLUSTER_DOMAIN}

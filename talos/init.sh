@@ -22,6 +22,10 @@ main()
     #     | sed 's/^/        /' \
     #     >>/tmp/cilium-install.yaml
 
+    # Extracting the Sealed Secrets controller certificate and key from the SOPS encrypted secret file
+    export SEALED_SECRETS_CRT="$(sops -d "./clusters/${CLUSTER_NAME}/talsecret.sops.enc.yaml" | yq -r '.certs.sealedsecrets.crt')"
+    export SEALED_SECRETS_KEY="$(sops -d "./clusters/${CLUSTER_NAME}/talsecret.sops.enc.yaml" | yq -r '.certs.sealedsecrets.key')"
+
     printf 'Generating Talos configuration...\n'
     rm -rf "$TALOS_CONFIG_HOME"
     talhelper genconfig \
