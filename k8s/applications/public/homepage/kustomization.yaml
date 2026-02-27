@@ -9,12 +9,9 @@ labels:
       app.kubernetes.io/name: homepage
       app: homepage
 
-generators:
-  - ksops.dhi-io-registry-secret-generator.yaml
-
 resources:
   - Namespace.yaml
-  - Secret.dhi-io-registry.enc.yaml
+  - SealedSecret.dhi-io-registry.yaml
   - ConfigMap.nginx-default-site.yaml
   - Deployment.yaml
   - Service.yaml
