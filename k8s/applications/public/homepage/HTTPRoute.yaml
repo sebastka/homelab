@@ -2,7 +2,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: httproute-www-karlsen-fr
+  name: www-karlsen-fr
   namespace: homepage
   labels:
     security-policy: httproute-allow-all
@@ -10,6 +10,10 @@ spec:
   parentRefs:
     - kind: Gateway
       name: external
+      namespace: gateway
+      sectionName: https-wc-karlsen-fr
+    - kind: Gateway
+      name: internal
       namespace: gateway
       sectionName: https-wc-karlsen-fr
   hostnames:
@@ -26,7 +30,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: httproute-karlsen-fr
+  name: other-to-www-karlsen-fr
   namespace: homepage
   labels:
     security-policy: httproute-allow-all
@@ -36,99 +40,48 @@ spec:
       name: external
       namespace: gateway
       sectionName: https-karlsen-fr
-  hostnames:
-    - karlsen.fr
-  rules:
-    - filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            hostname: www.karlsen.fr
-            statusCode: 301
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: httproute-karlsen-org
-  namespace: homepage
-  labels:
-    security-policy: httproute-allow-all
-spec:
-  parentRefs:
     - kind: Gateway
       name: external
       namespace: gateway
       sectionName: https-karlsen-org
-  hostnames:
-    - karlsen.org
-  rules:
-    - filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            hostname: www.karlsen.fr
-            statusCode: 301
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: httproute-www-karlsen-org
-  namespace: homepage
-  labels:
-    security-policy: httproute-allow-all
-spec:
-  parentRefs:
     - kind: Gateway
       name: external
       namespace: gateway
       sectionName: https-wc-karlsen-org
-  hostnames:
-    - www.karlsen.org
-  rules:
-    - filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            hostname: www.karlsen.fr
-            statusCode: 301
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: httproute-karlsen-app
-  namespace: homepage
-  labels:
-    security-policy: httproute-allow-all
-spec:
-  parentRefs:
     - kind: Gateway
       name: external
       namespace: gateway
       sectionName: https-karlsen-app
-  hostnames:
-    - karlsen.app
-  rules:
-    - filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            hostname: www.karlsen.fr
-            statusCode: 301
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: httproute-www-karlsen-app
-  namespace: homepage
-  labels:
-    security-policy: httproute-allow-all
-spec:
-  parentRefs:
     - kind: Gateway
       name: external
       namespace: gateway
       sectionName: https-wc-karlsen-app
+
+    - kind: Gateway
+      name: internal
+      namespace: gateway
+      sectionName: https-karlsen-fr
+    - kind: Gateway
+      name: internal
+      namespace: gateway
+      sectionName: https-karlsen-org
+    - kind: Gateway
+      name: internal
+      namespace: gateway
+      sectionName: https-wc-karlsen-org
+    - kind: Gateway
+      name: internal
+      namespace: gateway
+      sectionName: https-karlsen-app
+    - kind: Gateway
+      name: internal
+      namespace: gateway
+      sectionName: https-wc-karlsen-app
   hostnames:
+    - karlsen.fr
+    - karlsen.org
+    - www.karlsen.org
+    - karlsen.app
     - www.karlsen.app
   rules:
     - filters:
