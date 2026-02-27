@@ -6,12 +6,9 @@ metadata:
   namespace: deluge
 spec:
   parentRefs:
-    - kind: Gateway
-      name: internal
-      namespace: gateway
-      sectionName: https-wc-talmox-hera-home-karlsen-fr
+    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
   hostnames:
-    - deluge.talmox.hera.home.karlsen.fr
+    - deluge.karlsen.app
   rules:
     - backendRefs:
         - name: http

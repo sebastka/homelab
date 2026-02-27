@@ -15,8 +15,6 @@ spec:
           - path: k8s/applications/*
           - path: k8s/applications/media
             exclude: true
-          - path: k8s/applications/utils
-            exclude: true
   template:
     metadata:
       name: '{{ path.basename }}'
