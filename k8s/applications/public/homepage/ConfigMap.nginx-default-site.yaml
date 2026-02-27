@@ -10,8 +10,8 @@ data:
       listen 8080;
       server_name www.karlsen.fr;
 
-      access_log /var/log/nginx/www.karlsen.fr.log main;
-      error_log /var/log/nginx/www.karlsen.fr.err.log warn;
+      access_log stdout main;
+      error_log stderr warn;
 
       location ~ /\.(ht|git|wp) {
         deny  all;
@@ -31,7 +31,7 @@ data:
     server {
       listen 8080 default_server;
       server_name _;
-      access_log /var/log/nginx/default.log main;
-      error_log /var/log/nginx/default.err.log warn;
+      access_log stdout main;
+      error_log stderr warn;
       return 404;
     }
