@@ -8,14 +8,8 @@ metadata:
     security-policy: httproute-allow-all
 spec:
   parentRefs:
-    - kind: Gateway
-      name: external
-      namespace: gateway
-      sectionName: https-wc-karlsen-fr
-    - kind: Gateway
-      name: internal
-      namespace: gateway
-      sectionName: https-wc-karlsen-fr
+    - { namespace: gateway, name: internal}
+    - { namespace: gateway, name: external}
   hostnames:
     - www.karlsen.fr
   rules:
@@ -36,47 +30,8 @@ metadata:
     security-policy: httproute-allow-all
 spec:
   parentRefs:
-    - kind: Gateway
-      name: external
-      namespace: gateway
-      sectionName: https-karlsen-fr
-    - kind: Gateway
-      name: external
-      namespace: gateway
-      sectionName: https-karlsen-org
-    - kind: Gateway
-      name: external
-      namespace: gateway
-      sectionName: https-wc-karlsen-org
-    - kind: Gateway
-      name: external
-      namespace: gateway
-      sectionName: https-karlsen-app
-    - kind: Gateway
-      name: external
-      namespace: gateway
-      sectionName: https-wc-karlsen-app
-
-    - kind: Gateway
-      name: internal
-      namespace: gateway
-      sectionName: https-karlsen-fr
-    - kind: Gateway
-      name: internal
-      namespace: gateway
-      sectionName: https-karlsen-org
-    - kind: Gateway
-      name: internal
-      namespace: gateway
-      sectionName: https-wc-karlsen-org
-    - kind: Gateway
-      name: internal
-      namespace: gateway
-      sectionName: https-karlsen-app
-    - kind: Gateway
-      name: internal
-      namespace: gateway
-      sectionName: https-wc-karlsen-app
+    - { namespace: gateway, name: internal}
+    - { namespace: gateway, name: external}
   hostnames:
     - karlsen.fr
     - karlsen.org

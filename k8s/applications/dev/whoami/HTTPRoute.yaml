@@ -6,10 +6,7 @@ metadata:
   namespace: whoami
 spec:
   parentRefs:
-    - kind: Gateway
-      name: internal
-      namespace: gateway
-      sectionName: https-wc-talmox-hera-home-karlsen-fr
+    - { namespace: gateway, name: internal}
   hostnames:
     - whoami.talmox.hera.home.karlsen.fr
   rules:
@@ -28,14 +25,8 @@ metadata:
   namespace: whoami
 spec:
   parentRefs:
-    - kind: Gateway
-      name: external
-      namespace: gateway
-      sectionName: https-wc-karlsen-fr
-    - kind: Gateway
-      name: external
-      namespace: gateway
-      sectionName: https-wc-karlsen-app
+    - { namespace: gateway, name: internal}
+    - { namespace: gateway, name: external}
   hostnames:
     - whoami.karlsen.fr
     - whoami.karlsen.app
