@@ -42,14 +42,3 @@ Open container shell:
 
 Copy files to a container:
 - `kubectl -n MY_NAMESPACE cp ./ MY_DEPLOYMENT:MY_PATH -c MY_CONTAINER`
-
-# To do:
-
-- Use VLAN for virtual machines and virtual IP
-- Set up OIDC on gateways / httproutes
-- Separate private from public services
-
-# Projects to test
-
-- Invidious
-- Viewtube
