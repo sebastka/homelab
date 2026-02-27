@@ -24,7 +24,7 @@ configs:
       enablePKCEAuthentication: true
       preferredUsernameClaim: preferred_username
       logoutURL: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/end_session
-    kustomize.buildOptions: --enable-helm --enable-alpha-plugins --enable-exec
+    kustomize.buildOptions: --enable-helm
   cmp:
     create: true
   params:
@@ -90,23 +90,10 @@ repoServer:
   volumes:
     - name: custom-tools
       emptyDir: {}
-    - name: sops-age
-      secret:
-        secretName: sops-age
   volumeMounts:
-    - mountPath: /usr/local/bin/ksops
-      name: custom-tools
-      subPath: ksops
     - mountPath: /usr/local/bin/kustomize
       name: custom-tools
       subPath: kustomize
-    - name: sops-age
-      mountPath: /.config/sops/age
-  env:
-    - name: XDG_CONFIG_HOME
-      value: /.config
-    - name: SOPS_AGE_KEY_FILE
-      value: /.config/sops/age/keys.txt
   initContainers:
     - name: install-tools
       image: alpine:latest
@@ -114,13 +101,10 @@ repoServer:
       args:
         - |
           set -eux
-          export KSOPS_VERSION="4.4.0"
           export KUSTOMIZE_VERSION="5.8.1"
-          wget -qO- "https://github.com/viaduct-ai/kustomize-sops/releases/download/v${KSOPS_VERSION}/ksops_latest_Linux_x86_64.tar.gz" \
-            | tar -C /custom-tools -xzf - ksops
           wget -qO- "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz" \
             | tar -C /custom-tools -xzf - kustomize
-          chmod +x /custom-tools/ksops /custom-tools/kustomize
+          chmod +x /custom-tools/kustomize
       securityContext:
         allowPrivilegeEscalation: false
         runAsNonRoot: true
