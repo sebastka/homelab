@@ -11,14 +11,10 @@ labels:
       app.kubernetes.io/name: stork
       app: stork
 
-generators:
-  - ksops.dhi-io-registry-secret-generator.yaml
-  - ksops.stork-env-secret-generator.yaml
-
 resources:
   - Namespace.yaml
-  - Secret.dhi-io-registry.enc.yaml
-  - Secret.stork-env.enc.yaml
+  - SealedSecret.dhi-io-registry.yaml
+  - SealedSecret.stork-env.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
