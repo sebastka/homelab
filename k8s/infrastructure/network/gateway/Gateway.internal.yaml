@@ -27,16 +27,86 @@ spec:
         namespaces:
           from: All
 
-    - name: https-wc-talmox-hera-home-karlsen-fr
+    - name: https-karlsen-fr
       protocol: HTTPS
       port: 443
-      hostname: '*.talmox.hera.home.karlsen.fr'
+      hostname: karlsen.fr
       allowedRoutes:
-        # kinds:
-        #   - group: gateway.networking.k8s.io
-        #     kind: HTTPRoute
-        #   - group: gateway.networking.k8s.io
-        #     kind: GRPCRoute
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: karlsen-fr-certificate
+    - name: https-wc-karlsen-fr
+      protocol: HTTPS
+      port: 443
+      hostname: '*.karlsen.fr'
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: karlsen-fr-certificate
+
+    - name: https-karlsen-org
+      protocol: HTTPS
+      port: 443
+      hostname: karlsen.org
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: karlsen-org-certificate
+    - name: https-wc-karlsen-org
+      protocol: HTTPS
+      port: 443
+      hostname: '*.karlsen.org'
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: karlsen-org-certificate
+
+    - name: https-karlsen-app
+      protocol: HTTPS
+      port: 443
+      hostname: karlsen.app
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: karlsen-app-certificate
+    - name: https-wc-karlsen-app
+      protocol: HTTPS
+      port: 443
+      hostname: '*.karlsen.app'
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: karlsen-app-certificate
+
+    - name: https-talmox-hera-home-karlsen-fr
+      protocol: HTTPS
+      port: 443
+      hostname: talmox.hera.home.karlsen.fr
+      allowedRoutes:
         namespaces:
           from: All
       tls:
@@ -44,13 +114,15 @@ spec:
         certificateRefs:
           - kind: Secret
             name: talmox-hera-home-karlsen-fr-certificate
-
-# - name: tls-wc-talmox-hera-home-karlsen-fr
-#   protocol: TLS
-#   port: 443
-#   hostname: *.talmox.hera.home.karlsen.fr'
-#   allowedRoutes:
-#     namespaces:
-#       from: All
-#   tls:
-#     mode: Passthrough
+    - name: https-wc-talmox-hera-home-karlsen-fr
+      protocol: HTTPS
+      port: 443
+      hostname: '*.talmox.hera.home.karlsen.fr'
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: talmox-hera-home-karlsen-fr-certificate

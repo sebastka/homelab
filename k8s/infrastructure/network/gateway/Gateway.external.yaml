@@ -50,7 +50,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: wc-karlsen-fr-certificate
+            name: karlsen-fr-certificate
 
     - name: https-karlsen-org
       protocol: HTTPS
@@ -75,7 +75,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: wc-karlsen-org-certificate
+            name: karlsen-org-certificate
 
     - name: https-karlsen-app
       protocol: HTTPS
@@ -100,4 +100,4 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: wc-karlsen-app-certificate
+            name: karlsen-app-certificate
