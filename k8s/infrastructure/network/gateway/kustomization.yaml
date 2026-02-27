@@ -7,13 +7,6 @@ kind: Kustomization
 
 resources:
   - Namespace.yaml
-  # - Secret.karlsen-fr-certificate.yaml
-  # - Secret.karlsen-org-certificate.yaml
-  # - Secret.karlsen-app-certificate.yaml
-  # - Secret.wc-karlsen-fr-certificate.yaml
-  # - Secret.wc-karlsen-org-certificate.yaml
-  # - Secret.wc-karlsen-app-certificate.yaml
-  # - Secret.talmox-hera-home-karlsen-fr-certificate.yaml
   - Gateway.internal.yaml
   - Gateway.external.yaml
   # - SecurityPolicy.yaml
