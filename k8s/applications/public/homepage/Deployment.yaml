@@ -55,7 +55,7 @@ spec:
         # Dockerfile: https://hub.docker.com/hardened-images/catalog/dhi/nginx/images/nginx%2Falpine-3.23%2Fmainline/sha256-838bfb5a32b0d803389b6ee72ed411c066b3b49301ecdd8e0d7469bca06c2f77/specifications
         - name: homepage
           image: dhi.io/nginx:1-alpine3.23
-          command: nginx
+          command: [nginx]
           args: ['-c', '/etc/nginx/nginx.custom.conf', '-g', 'daemon off;']
           securityContext:
             allowPrivilegeEscalation: false
