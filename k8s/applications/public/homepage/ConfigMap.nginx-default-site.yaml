@@ -11,7 +11,7 @@ data:
       server_name www.karlsen.fr;
 
       access_log /dev/stdout main;
-      # error_log stderr warn;
+      error_log stderr warn;
 
       location ~ /\.(ht|git|wp) {
         deny  all;
@@ -31,7 +31,7 @@ data:
     server {
       listen 8080 default_server;
       server_name _;
-      # access_log stdout main;
-      # error_log stderr warn;
+      access_log /dev/stdout main;
+      error_log stderr warn;
       return 404;
     }
