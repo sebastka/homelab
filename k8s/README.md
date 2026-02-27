@@ -8,7 +8,7 @@
 3. Set up Gateway:
   - `kubectl apply -k infrastructure/network/gateway`
 4. Install ArgoCD and provide it with the sops/age secret:
-  - `kustomize build --enable-helm --enable-alpha-plugins --enable-exec infrastructure/controllers/argocd | kubectl apply --server-side -f -; cat "$XDG_CONFIG_HOME/sops/age/keys.txt" | kubectl create secret generic sops-age -n argocd --from-file=keys.txt=/dev/stdin`
+  - `kustomize build --enable-helm infrastructure/controllers/argocd | kubectl apply --server-side -f -`
 5.  Deploy infrastructure and applications:
   - `kubectl apply -k infrastructure`
   - `kubectl apply -k sets`
