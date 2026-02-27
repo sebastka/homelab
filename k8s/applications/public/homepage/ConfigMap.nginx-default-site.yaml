@@ -10,7 +10,7 @@ data:
       listen 8080;
       server_name www.karlsen.fr;
 
-      # access_log stdout main;
+      access_log /dev/stdout main;
       # error_log stderr warn;
 
       location ~ /\.(ht|git|wp) {
