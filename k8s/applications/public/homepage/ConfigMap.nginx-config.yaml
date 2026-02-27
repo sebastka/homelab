@@ -38,7 +38,6 @@ data:
       include /etc/nginx/conf.d/karlsen.fr.conf;
     }
 
-
   'karlsen.fr.conf': |-
     server {
       listen 8080;
@@ -64,4 +63,3 @@ data:
       server_name _;
       return 404;
     }
-    
