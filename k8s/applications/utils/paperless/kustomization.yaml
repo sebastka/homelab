@@ -9,9 +9,6 @@ labels:
       app.kubernetes.io/name: paperless
       app: paperless
 
-generators:
-  - ./ksops.paperless-secrets-generator.yaml
-
 configMapGenerator:
   - name: paperless-config
     namespace: paperless
