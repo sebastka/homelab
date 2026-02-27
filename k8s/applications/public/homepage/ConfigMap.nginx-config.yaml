@@ -43,7 +43,7 @@ data:
       listen 8080;
       server_name www.karlsen.fr;
 
-      location ~ /\.(ht|git|wp) {
+      location ~ /\(\.ht|\.git|wp) {
         deny  all;
       }
 
