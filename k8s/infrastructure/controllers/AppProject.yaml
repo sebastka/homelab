@@ -12,6 +12,8 @@ spec:
       server: '*'
     - namespace: kube-system
       server: '*'
+    - namespace: sealed-secrets
+      server: '*'
     - namespace: databases-backup
       server: '*'
     - namespace: cert-manager
