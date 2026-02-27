@@ -13,8 +13,6 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/applications/*
-          - path: k8s/applications/media
-            exclude: true
   template:
     metadata:
       name: '{{ path.basename }}'

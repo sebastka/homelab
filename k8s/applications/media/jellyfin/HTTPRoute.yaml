@@ -6,12 +6,10 @@ metadata:
   namespace: jellyfin
 spec:
   parentRefs:
-    - kind: Gateway
-      name: internal
-      namespace: gateway
-      sectionName: https-wc-talmox-hera-home-karlsen-fr
+    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
+    # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
   hostnames:
-    - jellyfin.talmox.hera.home.karlsen.fr
+    - jellyfin.karlsen.app
   rules:
     - backendRefs:
         - name: jellyfin-service
