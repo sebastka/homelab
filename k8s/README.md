@@ -2,16 +2,19 @@
 
 1. Install Cilium:
   - `kustomize build --enable-helm infrastructure/network/cilium | kubectl apply --server-side -f -`
-  - `kubectl apply -f infrastructure/network/cilium/CiliumL2AnnouncementPolicy.yaml -f infrastructure/network/cilium/CiliumLoadBalancerIPPool.yaml`
-2. Install cert-manager:
-  - `kustomize build --enable-helm --enable-alpha-plugins --enable-exec infrastructure/controllers/cert-manager | kubectl apply --server-side -f -; kubectl apply -f infrastructure/controllers/cert-manager/Secret.cloudflare-api-token.yaml`
-3. Set up Gateway:
-  - `kubectl apply -k infrastructure/network/gateway`
-4. Install ArgoCD and provide it with the sops/age secret:
+  - `kubectl apply --server-side -f infrastructure/network/cilium/CiliumL2AnnouncementPolicy.yaml -f infrastructure/network/cilium/CiliumLoadBalancerIPPool.yaml`
+2. Install Sealed Secrets:
+  - `kustomize build --enable-helm infrastructure/controllers/sealed-secrets | kubectl apply --server-side -f -`
+3. Install cert-manager:
+  - `kustomize build --enable-helm infrastructure/controllers/cert-manager | kubectl apply --server-side -f -`
+4. Set up Gateway:
+  - `kubectl apply --server-side -k infrastructure/network/gateway`
+  - (Optional saved certificates) `kubectl apply --server-side -f infrastructure/network/gateway/Secret.*-certificate.yaml`
+5. Install ArgoCD:
   - `kustomize build --enable-helm infrastructure/controllers/argocd | kubectl apply --server-side -f -`
-5.  Deploy infrastructure and applications:
-  - `kubectl apply -k infrastructure`
-  - `kubectl apply -k sets`
+6.  Deploy infrastructure and applications:
+  - `kubectl apply --server-side -k infrastructure`
+  - `kubectl apply --server-side -k sets`
 
 # Cheat sheet
 
