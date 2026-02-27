@@ -10,7 +10,7 @@ resources:
 helmCharts:
   - name: portainer
     repo: https://portainer.github.io/k8s
-    version: 2.33.7 # renovate: github-releases=portainer/k8s
+    version: 2.39.0 # renovate: github-releases=portainer/k8s
     releaseName: portainer
     namespace: portainer
     includeCRDs: true
