@@ -12,7 +12,7 @@ labels:
 resources:
   - Namespace.yaml
   - SealedSecret.dhi-io-registry.yaml
-  - ConfigMap.nginx-default-site.yaml
+  - ConfigMap.nginx-config.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
