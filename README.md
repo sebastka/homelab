@@ -2,6 +2,7 @@
 
 ## To do
 
+- Add two physical nodes and use Talos bare metal
 - Migrate from Terraform to OpenTofu;
 - Use PV in database-backup instead of restricted volume type nfs
 - Use Istio?
