@@ -60,6 +60,9 @@ spec:
             readOnlyRootFilesystem: false
             capabilities:
               drop: ["ALL"]
+            runAsNonRoot: false
+            runAsUser: 0
+            runAsGroup: 0
           # ports:
           #   - name: php-fpm
           #     containerPort: 9000
