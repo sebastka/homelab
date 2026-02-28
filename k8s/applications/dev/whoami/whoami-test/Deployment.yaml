@@ -39,7 +39,7 @@ spec:
             - /whoami/whoami
           args:
             - "-port=8080"
-          securityContext:              
+          securityContext:
             allowPrivilegeEscalation: true
             privileged: true
             readOnlyRootFilesystem: false

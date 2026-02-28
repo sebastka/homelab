@@ -69,7 +69,7 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: git-volume, mountPath: /sebastka, readOnly: true}
             - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: 'nginx.custom.conf', readOnly: true}
-            - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/site.conf,  subPath: 'site.conf',         readOnly: true}
+            - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/site.conf, subPath: 'site.conf', readOnly: true}
       volumes:
         - {name: git-volume, emptyDir: {}}
         - {name: tmp-volume, emptyDir: {}}
