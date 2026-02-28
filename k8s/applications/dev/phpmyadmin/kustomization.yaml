@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      app.kubernetes.io/name: phpmyadmin
+      app: phpmyadmin
+
+resources:
+  - Namespace.yaml
+  - SealedSecret.dhi-io-registry.yaml
+  - ConfigMap.nginx-config.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - HTTPRoute.yaml

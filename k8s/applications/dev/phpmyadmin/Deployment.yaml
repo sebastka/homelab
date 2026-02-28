@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin
+  namespace: phpmyadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phpmyadmin
+  template:
+    metadata:
+      namespace: phpmyadmin
+      labels:
+        app.kubernetes.io/name: phpmyadmin
+        app: phpmyadmin
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      resources:
+        requests:
+          # cpu: 10m
+          memory: 128Mi
+        limits:
+          # cpu: 100m
+          memory: 256Mi
+      initContainers:
+        - name: git-cloner
+          image: alpine/git:latest
+          command: ['/bin/sh', '-c']
+          args:
+            - |
+              set -eux
+              [ ! -d /pma ] || { rm -rf /pma/* /pma/.[!.]*; }
+              git -C /pma clone --depth 1 --branch master --single-branch https://github.com/phpmyadmin/phpmyadmin.git
+              rm -rf /pma/.git
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - {name: git-volume, mountPath: /pma}
+      containers:
+        - name: nginx
+          # Dockerfile: https://hub.docker.com/hardened-images/catalog/dhi/nginx/images/nginx%2Falpine-3.23%2Fmainline/sha256-838bfb5a32b0d803389b6ee72ed411c066b3b49301ecdd8e0d7469bca06c2f77/specifications
+          image: dhi.io/nginx:1-alpine3.23
+          command: [nginx]
+          args: ['-c', '/etc/nginx/nginx.custom.conf', '-g', 'daemon off;']
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: git-volume, mountPath: /pma, readOnly: true}
+            - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: 'nginx.custom.conf', readOnly: true}
+            - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/site.conf,  subPath: 'site.conf',         readOnly: true}
+        - name: php-fpm
+          # Dockerfile: https://hub.docker.com/hardened-images/catalog/dhi/php/images/php%2Falpine-3.22%2F8.5-fpm/sha256-ae0dea3c7d9861de139c1a7461327e3de1b6e6d65caa811ca7dae3a416451574
+          image: dhi.io/php:8-alpine3.22-fpm
+          # command: [nginx]
+          # args: ['-c', '/etc/nginx/nginx.custom.conf', '-g', 'daemon off;']
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          # ports:
+          #   - name: php-fpm
+          #     containerPort: 9000
+          volumeMounts:
+            # - {name: tmp-volume, mountPath: /tmp}
+            - {name: git-volume, mountPath: /pma, readOnly: true}
+      volumes:
+        - {name: git-volume, emptyDir: {}}
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: nginx-config-volume, configMap: {name: nginx-config}}
