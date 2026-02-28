@@ -41,8 +41,8 @@ spec:
             - |
               set -eux
               [ ! -d /pma ] || { rm -rf /pma/* /pma/.[!.]*; }
-              URL="$(curl -s https://www.phpmyadmin.net/home_page/version.txt | sed '$!d' | sed 's/\.zip$/\.tar.gz/')"
-              wget "$URL" -O - | tar -xz -C /pma --strip-components=1 --no-same-owner --no-same-permissions
+              URL="$(wget -qO- https://www.phpmyadmin.net/home_page/version.txt | sed '$!d' | sed 's/\.zip$/\.tar.gz/')"
+              wget -qO- "$URL" | tar -xz -C /pma --strip-components=1 --no-same-owner --no-same-permissions
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
