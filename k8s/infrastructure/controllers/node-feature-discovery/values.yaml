@@ -1,7 +1,42 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/refs/heads/master/deployment/helm/node-feature-discovery/values.schema.json
 # https://artifacthub.io/packages/helm/node-feature-discovery/node-feature-discovery?modal=values
 ---
+
+master:
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 128Mi
+    limits:
+      # cpu: 100m
+      memory: 128Mi
+
 worker:
   config:
     core:
       sleepInterval: 0s
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 128Mi
+    limits:
+      # cpu: 100m
+      memory: 128Mi
+
+topologyUpdater:
+  resources:
+    requests:
+      # cpu: 50m
+      memory: 64Mi
+    limits:
+      # cpu: 50m
+      memory: 64Mi
+
+gc:
+  resources:
+    requests:
+      # cpu: 10m
+      memory: 64Mi
+    limits:
+      # cpu: 10m
+      memory: 64Mi
