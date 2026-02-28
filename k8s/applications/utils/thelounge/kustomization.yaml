@@ -12,7 +12,7 @@ labels:
 resources:
   - Namespace.yaml
   - Deployment.yaml
-  - Service.yaml
+  - Service.http.yaml
+  - Service.identd.yaml
   - HTTPRoute.yaml
-  - TCPRoute.yaml
   - PersistentVolumeClaim.yaml
