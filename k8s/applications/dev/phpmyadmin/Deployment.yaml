@@ -33,41 +33,6 @@ spec:
         limits:
           # cpu: 100m
           memory: 256Mi
-      initContainers:
-        - name: git-cloner
-          image: alpine/git:latest
-          command: ['/bin/sh', '-c']
-          args:
-            - |
-              set -eux
-              [ ! -d /pma ] || { rm -rf /pma/* /pma/.[!.]*; }
-              URL="$(wget -qO- https://www.phpmyadmin.net/home_page/version.txt | sed '$!d' | sed 's/\.zip$/\.tar.gz/')"
-              wget -qO- "$URL" | tar -xz -C /pma --strip-components=1 --no-same-owner --no-same-permissions
-              printf -- '<?php phpinfo(); ?>\n' >/pma/phpinfo.php
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
-          volumeMounts:
-            - {name: git-volume, mountPath: /pma}
-        - name: php-extension-installer
-          image: dhi.io/php:8-alpine3.22-dev
-          command: ['/bin/sh', '-c']
-          args:
-            - |
-              set -eux
-              docker-php-ext-install mysqli
-          securityContext:
-            allowPrivilegeEscalation: true
-            readOnlyRootFilesystem: false
-            capabilities:
-              drop: ["ALL"]
-            runAsNonRoot: false
-            runAsUser: 0
-            runAsGroup: 0
-          # volumeMounts:
-          #   - {name: git-volume, mountPath: /pma}
       containers:
         - name: nginx
           # Dockerfile: https://hub.docker.com/hardened-images/catalog/dhi/nginx/images/nginx%2Falpine-3.23%2Fmainline/sha256-838bfb5a32b0d803389b6ee72ed411c066b3b49301ecdd8e0d7469bca06c2f77/specifications
@@ -83,13 +48,11 @@ spec:
             - name: http
               containerPort: 8080
           volumeMounts:
-            - {name: git-volume,          mountPath: /pma, readOnly: true}
             - {name: nginx-tmp-volume,    mountPath: /tmp}
             - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: 'nginx.custom.conf', readOnly: true}
             - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/site.conf,  subPath: 'site.conf',         readOnly: true}
         - name: php-fpm
-          # Dockerfile: https://hub.docker.com/hardened-images/catalog/dhi/php/images/php%2Falpine-3.22%2F8.5-fpm/sha256-ae0dea3c7d9861de139c1a7461327e3de1b6e6d65caa811ca7dae3a416451574
-          image: dhi.io/php:8-alpine3.22-fpm
+          image: docker.io/phpmyadmin:5.2.3-fpm-alpine
           # command: [nginx]
           # args: ['-c', '/etc/nginx/nginx.custom.conf', '-g', 'daemon off;']
           securityContext:
@@ -101,10 +64,9 @@ spec:
           #   - name: php-fpm
           #     containerPort: 9000
           volumeMounts:
-            - {name: git-volume,           mountPath: /pma, readOnly: true}
-            - {name: phpfpm-tmp-volume,    mountPath: /tmp}
-            - {name: phpfpm-config-volume, mountPath: /opt/php-8.5/etc/php/conf.d/readonly.conf, subPath: 'php-readonly.conf',    readOnly: true}
-            - {name: phpfpm-config-volume, mountPath: /opt/php-8.5/etc/php-fpm.d/readonly.conf,  subPath: 'phpfpm-readonly.conf', readOnly: true}
+            # - {name: phpfpm-tmp-volume,    mountPath: /tmp}
+            # - {name: phpfpm-config-volume, mountPath: /opt/php-8.5/etc/php/conf.d/readonly.conf, subPath: 'php-readonly.conf',    readOnly: true}
+            # - {name: phpfpm-config-volume, mountPath: /opt/php-8.5/etc/php-fpm.d/readonly.conf,  subPath: 'phpfpm-readonly.conf', readOnly: true}
       volumes:
         - {name: git-volume, emptyDir: {}}
         - {name: nginx-tmp-volume, emptyDir: {}}
