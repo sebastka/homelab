@@ -11,9 +11,12 @@ labels:
 
 resources:
   - Namespace.yaml
-  - SealedSecret.dhi-io-registry.yaml
-  - SealedSecret.pma-config.yaml
-  - ConfigMap.nginx-config.yaml
-  - Deployment.yaml
-  - Service.yaml
-  - HTTPRoute.yaml
+
+helmCharts:
+  - name: phpmyadmin
+    repo: oci://registry-1.docker.io/bitnamicharts
+    version: 20.0.0 # renovate: github-releases=bitnami/charts
+    releaseName: phpmyadmin
+    namespace: phpmyadmin
+    includeCRDs: true
+    valuesFile: values.yaml
