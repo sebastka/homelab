@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.12/website/content/v1.12/schemas/config.schema.json
 # https://docs.siderolabs.com/talos/v1.12/platform-specific-installations/bare-metal-platforms/secureboot#booting-talos-linux-in-secureboot-mode
 ---
 apiVersion: v1alpha1
