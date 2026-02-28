@@ -3,6 +3,15 @@
 # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
 ---
 
+crds:
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 64Mi
+    limits:
+      # cpu: 100m
+      memory: 64Mi
+
 prometheus:
   prometheusSpec:
     podMonitorNamespaceSelector: {}
@@ -14,10 +23,10 @@ prometheus:
     resources:
       requests:
         # cpu: 100m
-        memory: 200Mi
+        memory: 128Mi
       limits:
         # cpu: 100m
-        memory: 400Mi
+        memory: 128Mi
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -28,6 +37,40 @@ prometheus:
           resources:
             requests:
               storage: 20G
+
+prometheusOperator:
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 64Mi
+    limits:
+      # cpu: 100m
+      memory: 64Mi
+  admissionWebhooks:
+    deployment:
+      resources:
+        requests:
+          # cpu: 100m
+          memory: 64Mi
+        limits:
+          # cpu: 100m
+          memory: 64Mi
+    patch:
+      resources:
+        requests:
+          # cpu: 100m
+          memory: 64Mi
+        limits:
+          # cpu: 100m
+          memory: 64Mi
+  prometheusConfigReloader:
+    resources:
+      requests:
+        # cpu: 100m
+        memory: 64Mi
+      limits:
+        # cpu: 100m
+        memory: 64Mi
 
 # https://github.com/siderolabs/talos/discussions/7214
 kubeControllerManager:
@@ -101,7 +144,17 @@ alertmanager:
     resources:
       requests:
         # cpu: 100m
-        memory: 200Mi
+        memory: 64Mi
       limits:
         # cpu: 100m
-        memory: 200Mi
+        memory: 64Mi
+
+thanosRuler:
+  thanosRulerSpec:
+    resources:
+      requests:
+        # cpu: 100m
+        memory: 64Mi
+      limits:
+        # cpu: 100m
+        memory: 64Mi
