@@ -15,6 +15,7 @@ tfplan
 charts/
 Secret.*.yaml
 !Secret.*.enc.yaml
+**/thelounge/data
 
 # Talos
 talos/temp.json
