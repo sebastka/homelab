@@ -24,14 +24,14 @@ spec:
         # fsGroup: 999
         # fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
-          type: RuntimeDefault
-      resources:
-        requests:
-          # cpu: 1000m
-          memory: 1536Mi
-        limits:
-          # cpu: 2000m
-          memory: 2560Mi
+      #     type: RuntimeDefault
+      # resources:
+      #   requests:
+      #     # cpu: 1000m
+      #     memory: 1536Mi
+      #   limits:
+      #     # cpu: 2000m
+      #     memory: 2560Mi
       containers:
         - name: gotenberg
           image: index.docker.io/gotenberg/gotenberg:latest
@@ -43,13 +43,13 @@ spec:
             readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
-          # resources:
-          #   requests:
-          #     cpu: 250m
-          #     memory: 128Mi
-          #   limits:
-          #     cpu: 500m
-          #     memory: 512Mi
+          resources:
+            requests:
+              # cpu: 250m
+              memory: 128Mi
+            limits:
+              # cpu: 500m
+              memory: 128Mi
           args:
             - gotenberg
             - --chromium-disable-javascript=true
@@ -67,13 +67,13 @@ spec:
             # readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
-          # resources:
-          #   requests:
-          #     cpu: 250m
-          #     memory: 128Mi
-          #   limits:
-          #     cpu: 500m
-          #     memory: 512Mi
+          resources:
+            requests:
+              # cpu: 250m
+              memory: 128Mi
+            limits:
+              # cpu: 500m
+              memory: 128Mi
           ports:
             - containerPort: 9998
 
@@ -86,13 +86,13 @@ spec:
             # readOnlyRootFilesystem: true
             # capabilities:
             #   drop: ["ALL"]
-          # resources:
-          #   requests:
-          #     cpu: 500m
-          #     memory: 1024Mi
-          #   limits:
-          #     cpu: 1000m
-          #     memory: 1536Mi
+          resources:
+            requests:
+              # cpu: 250m
+              memory: 1024Mi
+            limits:
+              # cpu: 500m
+              memory: 1024Mi
           envFrom:
             - configMapRef:
                 name: paperless-config
