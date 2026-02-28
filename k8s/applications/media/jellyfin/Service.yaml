@@ -12,7 +12,7 @@ spec:
       port: 80
       targetPort: http
 
-    - name: client-discovery
-      protocol: UDP
-      port: 7359
-      targetPort: client-discovery
+    # - name: client-discovery
+    #   protocol: UDP
+    #   port: 7359
+    #   targetPort: client-discovery
