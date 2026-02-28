@@ -11,61 +11,7 @@ defaultSettings:
   allowCollectingLonghornUsageMetrics: false
   upgradeChecker: false
   replicaAutoBalance: best-effort
-  systemManagedCSIComponentsResourceLimits:
-    csi-attacher:
-      requests:
-        # cpu: 100m
-        memory: 128Mi
-      limits:
-        # cpu: 500m
-        memory: 128Mi
-    csi-provisioner:
-      requests:
-        # cpu: 100m
-        memory: 128Mi
-      limits:
-        # cpu: 500m
-        memory: 128Mi
-    csi-resizer:
-      resources:
-        requests:
-          # cpu: 100m
-          memory: 128Mi
-        limits:
-          # cpu: 500m
-          memory: 128Mi
-    csi-snapshotter:
-      resources:
-        requests:
-          # cpu: 100m
-          memory: 128Mi
-        limits:
-          # cpu: 500m
-          memory: 128Mi
-    longhorn-csi-plugin:
-      resources:
-        requests:
-          # cpu: 100m
-          memory: 128Mi
-        limits:
-          # cpu: 500m
-          memory: 128Mi
-    node-driver-registrar:
-      resources:
-        requests:
-          # cpu: 100m
-          memory: 128Mi
-        limits:
-          # cpu: 500m
-          memory: 128Mi
-    longhorn-liveness-probe:
-      resources:
-        requests:
-          # cpu: 100m
-          memory: 128Mi
-        limits:
-          # cpu: 500m
-          memory: 128Mi
+  systemManagedCSIComponentsResourceLimits: '{"csi-attacher":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"csi-provisioner":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"csi-resizer":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"csi-snapshotter":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"longhorn-csi-plugin":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"node-driver-registrar":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"longhorn-liveness-probe":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}}}'
 
 longhornManager:
   resources:
