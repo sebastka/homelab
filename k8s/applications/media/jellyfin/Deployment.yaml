@@ -47,9 +47,9 @@ spec:
             - name: http
               containerPort: 8096
               protocol: TCP
-            - name: client-discovery
-              containerPort: 7359
-              protocol: UDP
+            # - name: client-discovery
+            #   containerPort: 7359
+            #   protocol: UDP
           volumeMounts:
             - name: config
               mountPath: /config
