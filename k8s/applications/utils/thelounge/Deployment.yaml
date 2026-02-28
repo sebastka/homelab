@@ -28,7 +28,8 @@ spec:
           type: RuntimeDefault
       containers:
         - name: thelounge
-          image: ghcr.io/thelounge/thelounge:latest
+          # image: ghcr.io/thelounge/thelounge:latest
+          image: index.docker.io/library/alpine:latest
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
