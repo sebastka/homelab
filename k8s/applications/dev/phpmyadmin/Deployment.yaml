@@ -16,6 +16,8 @@ spec:
         app.kubernetes.io/name: phpmyadmin
         app: phpmyadmin
     spec:
+      imagePullSecrets:
+        - name: dhi-io-registry
       securityContext:
         runAsNonRoot: true
         runAsUser: 65532
