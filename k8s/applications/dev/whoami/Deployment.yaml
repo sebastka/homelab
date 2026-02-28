@@ -30,7 +30,7 @@ spec:
           memory: 12Mi
         limits:
           # cpu: 100m
-          memory: 24Mi
+          memory: 12Mi
       containers:
         - name: whoami
           image: ghcr.io/traefik/whoami:latest
