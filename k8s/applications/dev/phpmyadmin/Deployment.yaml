@@ -84,10 +84,13 @@ spec:
           #   - name: php-fpm
           #     containerPort: 9000
           volumeMounts:
-            - {name: git-volume, mountPath: /pma, readOnly: true}
-            - {name: phpfpm-tmp-volume, mountPath: /tmp}
+            - {name: git-volume,           mountPath: /pma, readOnly: true}
+            - {name: phpfpm-tmp-volume,    mountPath: /tmp}
+            - {name: phpfpm-config-volume, mountPath: /opt/php-8.5/etc/php/conf.d/readonly.conf, subPath: 'php-readonly.conf',    readOnly: true}
+            - {name: phpfpm-config-volume, mountPath: /opt/php-8.5/etc/readonly.conf,            subPath: 'phpfpm-readonly.conf', readOnly: true}
       volumes:
         - {name: git-volume, emptyDir: {}}
         - {name: nginx-tmp-volume, emptyDir: {}}
         - {name: phpfpm-tmp-volume, emptyDir: {}}
         - {name: nginx-config-volume, configMap: {name: nginx-config}}
+        - {name: phpfpm-config-volume, configMap: {name: phpfpm-config}}

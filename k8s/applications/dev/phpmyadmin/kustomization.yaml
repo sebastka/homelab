@@ -13,6 +13,7 @@ resources:
   - Namespace.yaml
   - SealedSecret.dhi-io-registry.yaml
   - ConfigMap.nginx-config.yaml
+  - ConfigMap.phpfpm-config.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
