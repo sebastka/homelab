@@ -39,7 +39,7 @@ operator:
   resources:
     requests:
       # cpu: 50m
-      memory: 128Mi
+      memory: 256Mi
     limits:
       # cpu: 500m
       memory: 256Mi
@@ -52,7 +52,7 @@ resources:
     memory: 512Mi
   limits:
     # cpu: 1000m
-    memory: 1Gi
+    memory: 512Mi
 
 # debug:
 #  enabled: true
@@ -88,7 +88,7 @@ loadBalancer:
   algorithm: maglev
   mode: snat
   dsrDispatch: opt
-  acceleration: native
+  # acceleration: native
   l7:
     backend: envoy
 
@@ -114,6 +114,13 @@ envoy:
     capabilities:
       keepCapNetBindService: true
       envoy: [NET_ADMIN, PERFMON, BPF]
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 256Mi
+    limits:
+      # cpu: 500m
+      memory: 256Mi
 
 hubble:
   enabled: true
@@ -135,6 +142,13 @@ hubble:
   relay:
     enabled: true
     rollOutPods: true
+    resources:
+      requests:
+        # cpu: 50m
+        memory: 256Mi
+      limits:
+        # cpu: 500m
+        memory: 256Mi
     prometheus:
       enabled: true
       port: 9966
@@ -143,6 +157,22 @@ hubble:
   ui:
     enabled: true
     rollOutPods: true
+    backend:
+      resources:
+        requests:
+          # cpu: 50m
+          memory: 256Mi
+        limits:
+          # cpu: 500m
+          memory: 256Mi
+    frontend:
+      resources:
+        requests:
+          # cpu: 50m
+          memory: 256Mi
+        limits:
+          # cpu: 500m
+          memory: 256Mi
 
 ingressController:
   enabled: false
@@ -154,6 +184,39 @@ clustermesh:
       port: 9962
       serviceMonitor:
         enabled: true
+    resources:
+      requests:
+        # cpu: 50m
+        memory: 256Mi
+      limits:
+        # cpu: 500m
+        memory: 256Mi
+    etcd:
+      resources:
+        requests:
+          # cpu: 50m
+          memory: 256Mi
+        limits:
+          # cpu: 500m
+          memory: 256Mi
+    kvstoremesh:
+      resources:
+        requests:
+          # cpu: 50m
+          memory: 256Mi
+        limits:
+          # cpu: 500m
+          memory: 256Mi
+
+cgroup:
+  autoMount:
+    resources:
+      requests:
+        # cpu: 100m
+        memory: 128Mi
+      limits:
+        # cpu: 100m
+        memory: 128Mi
 
 # mTLS
 authentication:
@@ -165,6 +228,21 @@ authentication:
         server:
           dataStorage:
             storageClass: cilium-spire-sc
+          resources:
+            requests:
+              # cpu: 50m
+              memory: 256Mi
+            limits:
+              # cpu: 500m
+              memory: 256Mi
+        agent:
+          resources:
+            requests:
+              # cpu: 50m
+              memory: 256Mi
+            limits:
+              # cpu: 500m
+              memory: 256Mi
 
 prometheus:
   metricsService: true
