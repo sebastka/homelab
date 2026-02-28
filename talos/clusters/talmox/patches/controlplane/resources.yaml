@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.12/website/content/v1.12/schemas/config.schema.json
+# Reources limits for control plane components
+---
+cluster:
+  apiServer:
+    resources:
+      requests:
+        # cpu: 100m
+        memory: 1536Mi
+      limits:
+        # cpu: 200m
+        memory: 1536Mi
+  controllerManager:
+    resources:
+      requests:
+        # cpu: 100m
+        memory: 256Mi
+      limits:
+        # cpu: 200m
+        memory: 256Mi
+  scheduler:
+    resources:
+      requests:
+        # cpu: 100m
+        memory: 256Mi
+      limits:
+        # cpu: 200m
+        memory: 256Mi
