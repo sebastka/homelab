@@ -7,10 +7,9 @@
   - `kustomize build --enable-helm infrastructure/controllers/sealed-secrets | kubectl apply --server-side -f -`
 3. Install cert-manager:
   - `kustomize build --enable-helm infrastructure/controllers/cert-manager | kubectl apply --server-side -f -`
-  - `kubectl apply --server-side -f infrastructure/controllers/cert-manager/ClusterIssuer.yaml`
 4. Set up Gateway:
+  - (Optional: restore saved certificates) `kubectl create namespace gateway; for f in infrastructure/network/gateway/Secret.*-certificate.yaml; do kubectl apply --server-side -f "$f"; done`
   - `kubectl apply --server-side -k infrastructure/network/gateway`
-  - (Optional: restore saved certificates) `for f in infrastructure/network/gateway/Secret.*-certificate.yaml; do kubectl apply --server-side -f "$f"; done`
 5. Install ArgoCD:
   - `kustomize build --enable-helm infrastructure/controllers/argocd | kubectl apply --server-side -f -`
 6.  Deploy infrastructure and applications:
@@ -28,6 +27,7 @@ Kube overview:
 View resource pod usage:
 - `watch -n 5 kubectl top pods --sort-by=memory -A`
 - `watch -n 5 kubectl top pods --sort-by=cpu -A`
+- `watch -n 5 kubectl top node --sort-by=memory`
 
 Force delete namespace:
 - `kubectl delete all --all -n {namespace}`
