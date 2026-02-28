@@ -35,10 +35,10 @@ data:
       keepalive_timeout 65;
       # gzip  on;
 
-      include /etc/nginx/conf.d/karlsen.fr.conf;
+      include /etc/nginx/conf.d/site.conf;
     }
 
-  'karlsen.fr.conf': |-
+  'site.conf': |-
     server {
       listen 8080;
       server_name www.karlsen.fr;
@@ -48,13 +48,13 @@ data:
       }
 
       location / {
-          root   /sebastka;
-          index  index.html;
+        root   /sebastka;
+        index  index.html;
       }
 
       error_page   500 502 503 504  /50x.html;
       location = /50x.html {
-          root   /usr/share/nginx/html;
+        root   /usr/share/nginx/html;
       }
     }
 
