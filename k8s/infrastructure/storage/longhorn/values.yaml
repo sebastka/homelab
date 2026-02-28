@@ -11,14 +11,14 @@ defaultSettings:
   upgradeChecker: false
   replicaAutoBalance: best-effort
 
-longhornManager:
-  resources:
-    requests:
-      # cpu: 100m
-      memory: 1024Mi
-    limits:
-      # cpu: 500m
-      memory: 1536Mi
+# longhornManager:
+#   resources:
+#     requests:
+#       # cpu: 100m
+#       memory: 1024Mi
+#     limits:
+#       # cpu: 500m
+#       memory: 1536Mi
 
 persistence:
   reclaimPolicy: Retain
