@@ -13,7 +13,7 @@ spec:
   rules:
     - backendRefs:
         - name: jellyfin-service
-          port: 8096
+          port: 80
       matches:
         - path:
             type: PathPrefix

@@ -9,7 +9,7 @@ spec:
   ports:
     - name: web
       protocol: TCP
-      port: 8096
+      port: 80
       targetPort: http
 
     - name: client-discovery
