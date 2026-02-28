@@ -10,4 +10,4 @@ data:
 
   'phpfpm-readonly.conf': |-
     [global]
-    pid = /tpm/php-fpm.pid
+    ; pid = /tmp/php-fpm.pid
