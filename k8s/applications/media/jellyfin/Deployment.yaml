@@ -33,11 +33,11 @@ spec:
             requests:
               # cpu: 500m
               memory: 6Gi
-              gpu.intel.com/i915: 1000m
+              gpu.intel.com/xe: 1000m
             limits:
               # cpu: 6000m
               memory: 6Gi
-              gpu.intel.com/i915: 1000m
+              gpu.intel.com/xe: 1000m
           env:
             - name: TZ
               value: Europe/Oslo
