@@ -44,7 +44,7 @@ spec:
               protocol: TCP
             - name: identd-udp
               containerPort: 9001
-              protocol: TCP
+              protocol: UDP
           # resources:
           #   requests:
           #     cpu: 100m
