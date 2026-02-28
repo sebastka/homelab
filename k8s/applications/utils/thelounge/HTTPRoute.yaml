@@ -6,15 +6,13 @@ metadata:
   namespace: thelounge
 spec:
   parentRefs:
-    - kind: Gateway
-      name: internal
-      namespace: gateway
-      sectionName: https-wc-talmox-hera-home-karlsen-fr
+    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
+    # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
   hostnames:
-    - thelounge.talmox.hera.home.karlsen.fr
+    - thelounge.karlsen.app
   rules:
     - backendRefs:
-        - name: thelounge-service
+        - name: http
           port: 80
       matches:
         - path:

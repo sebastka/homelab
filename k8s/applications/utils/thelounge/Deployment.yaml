@@ -36,10 +36,13 @@ spec:
             capabilities:
               drop: ["ALL"]
           ports:
-            - name: web
+            - name: http
               containerPort: 9000
               protocol: TCP
-            - name: identd
+            - name: identd-tcp
+              containerPort: 9001
+              protocol: TCP
+            - name: identd-udp
               containerPort: 9001
               protocol: TCP
           # resources:
