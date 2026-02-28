@@ -35,9 +35,7 @@ spec:
           memory: 256Mi
       containers:
         - name: thelounge
-          # image: ghcr.io/thelounge/thelounge:latest
-          image: alpine:latest
-          command: ["sleep", "infinity"]
+          image: ghcr.io/thelounge/thelounge:latest
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
