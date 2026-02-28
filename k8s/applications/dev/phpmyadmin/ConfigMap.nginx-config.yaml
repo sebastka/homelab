@@ -42,7 +42,7 @@ data:
     server {
       listen 8080;
       server_name pma.karlsen.app;
-      root   /pma/public;
+      root   /pma;
       index  index.php;
 
       location ~ /(\.ht|\.git|wp) {

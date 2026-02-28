@@ -41,8 +41,8 @@ spec:
             - |
               set -eux
               [ ! -d /pma ] || { rm -rf /pma/* /pma/.[!.]*; }
-              git -C /pma clone --depth 1 --branch master --single-branch https://github.com/phpmyadmin/phpmyadmin.git .
-              rm -rf /pma/.git
+              URL="$(curl -s https://www.phpmyadmin.net/home_page/version.txt | sed '$!d' | sed 's/\.zip$/\.tar.gz/')"
+              curl -s -L "$URL" | tar -xz -C /pma --strip-components=1 --no-same-owner --no-same-permissions
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
