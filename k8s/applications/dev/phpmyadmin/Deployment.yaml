@@ -67,6 +67,8 @@ spec:
           #   - name: php-fpm
           #     containerPort: 9000
           volumeMounts:
+            - {name: pma-config-volume, mountPath: /etc/phpmyadmin/config.secret.inc.php, subPath: 'config.secret.inc.php', readOnly: true}
+            - {name: pma-config-volume, mountPath: /etc/phpmyadmin/config.user.inc.php,   subPath: 'config.user.inc.php', readOnly: true}
             # - {name: phpfpm-tmp-volume,    mountPath: /tmp}
             # - {name: phpfpm-config-volume, mountPath: /opt/php-8.5/etc/php/conf.d/readonly.conf, subPath: 'php-readonly.conf',    readOnly: true}
             # - {name: phpfpm-config-volume, mountPath: /opt/php-8.5/etc/php-fpm.d/readonly.conf,  subPath: 'phpfpm-readonly.conf', readOnly: true}
@@ -75,8 +77,4 @@ spec:
         - {name: nginx-tmp-volume, emptyDir: {}}
         - {name: phpfpm-tmp-volume, emptyDir: {}}
         - {name: nginx-config-volume, configMap: {name: nginx-config}}
-        - {name: phpfpm-config-volume, configMap: {name: phpfpm-config}}
-
-# /docker-entrypoint.sh: line 5: /etc/phpmyadmin/config.secret.inc.php: Read-only file system
-# chgrp: /etc/phpmyadmin/config.secret.inc.php: No such file or directory
-# touch: /etc/phpmyadmin/config.user.inc.php: Read-only file system
+        - {name: pma-config-volume, secret: {secretName: pma-config}}

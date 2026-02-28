@@ -12,8 +12,8 @@ labels:
 resources:
   - Namespace.yaml
   - SealedSecret.dhi-io-registry.yaml
+  - SealedSecret.pma-config.yaml
   - ConfigMap.nginx-config.yaml
-  - ConfigMap.phpfpm-config.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
