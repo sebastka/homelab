@@ -32,17 +32,24 @@ spec:
           resources:
             requests:
               # cpu: 500m
-              memory: 2Gi
+              memory: 6Gi
+              gpu.intel.com/i915: 1000m
             limits:
               # cpu: 6000m
               memory: 6Gi
-              # gpu.intel.com/i915: 1000m
+              gpu.intel.com/i915: 1000m
           env:
             - name: TZ
               value: Europe/Oslo
+            - name: JELLYFIN_PublishedServerUrl
+              value: https://jellyfin.karlsen.app
           ports:
             - name: http
               containerPort: 8096
+              protocol: TCP
+            - name: client-discovery
+              containerPort: 7359
+              protocol: UDP
           volumeMounts:
             - name: config
               mountPath: /config
@@ -62,4 +69,5 @@ spec:
         - name: cache
           emptyDir: {}
         - name: tmp
-          emptyDir: {}
+          emptyDir:
+            medium: Memory

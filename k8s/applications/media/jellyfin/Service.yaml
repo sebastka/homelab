@@ -10,4 +10,9 @@ spec:
     - name: web
       protocol: TCP
       port: 8096
-      targetPort: 8096
+      targetPort: http
+
+    - name: client-discovery
+      protocol: UDP
+      port: 7359
+      targetPort: client-discovery
