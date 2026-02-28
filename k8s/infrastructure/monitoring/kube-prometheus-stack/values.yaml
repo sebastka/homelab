@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=
 # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack?modal=values
 # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
 ---

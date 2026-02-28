@@ -1,6 +1,7 @@
+# yaml-language-server: $schema=
+# https://github.com/longhorn/charts/blob/v1.11.x/charts/longhorn/values.yaml
 # https://joshrnoll.com/installing-longhorn-on-talos-with-helm/
 # https://www.johanneskueber.com/posts/longhorn_uservolumes_talos/
-# https://github.com/longhorn/charts/blob/v1.11.x/charts/longhorn/values.yaml
 ---
 # values.yaml
 defaultSettings:

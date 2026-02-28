@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=
 # https://artifacthub.io/packages/helm/metrics-server/metrics-server?modal=values
 ---
 

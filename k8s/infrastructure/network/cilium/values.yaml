@@ -1,7 +1,6 @@
-# https://docs.cilium.io/en/latest/installation/k8s-install-helm/
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cilium/cilium/v1.19.1/install/kubernetes/cilium/values.schema.json
 # https://artifacthub.io/packages/helm/cilium/cilium?modal=values
-
-# https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/
+# https://github.com/cilium/cilium/tree/main/install/kubernetes/cilium
 ---
 cluster:
   name: talmox

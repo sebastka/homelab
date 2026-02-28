@@ -1,2 +1,3 @@
+# yaml-language-server: $schema=
 # https://github.com/envoyproxy/gateway/blob/main/charts/gateway-helm/values.tmpl.yaml
 ---

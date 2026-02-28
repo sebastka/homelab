@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/refs/heads/master/deployment/helm/node-feature-discovery/values.schema.json
 # https://artifacthub.io/packages/helm/node-feature-discovery/node-feature-discovery?modal=values
 ---
 worker:
