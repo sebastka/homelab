@@ -92,6 +92,15 @@ loadBalancer:
   l7:
     backend: envoy
 
+cni:
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 64Mi
+    limits:
+      # cpu: 100m
+      memory: 64Mi
+
 # https://docs.cilium.io/en/stable/network/concepts/routing/
 routingMode: native
 ipv4NativeRoutingCIDR: 10.244.0.0/16
