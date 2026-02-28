@@ -57,7 +57,7 @@ spec:
           # args: ['-c', '/etc/nginx/nginx.custom.conf', '-g', 'daemon off;']
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             capabilities:
               drop: ["ALL"]
           # ports:
@@ -73,3 +73,7 @@ spec:
         - {name: phpfpm-tmp-volume, emptyDir: {}}
         - {name: nginx-config-volume, configMap: {name: nginx-config}}
         - {name: phpfpm-config-volume, configMap: {name: phpfpm-config}}
+
+# /docker-entrypoint.sh: line 5: /etc/phpmyadmin/config.secret.inc.php: Read-only file system
+# chgrp: /etc/phpmyadmin/config.secret.inc.php: No such file or directory
+# touch: /etc/phpmyadmin/config.user.inc.php: Read-only file system
