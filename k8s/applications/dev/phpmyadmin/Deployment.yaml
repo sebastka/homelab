@@ -43,6 +43,7 @@ spec:
               [ ! -d /pma ] || { rm -rf /pma/* /pma/.[!.]*; }
               URL="$(wget -qO- https://www.phpmyadmin.net/home_page/version.txt | sed '$!d' | sed 's/\.zip$/\.tar.gz/')"
               wget -qO- "$URL" | tar -xz -C /pma --strip-components=1 --no-same-owner --no-same-permissions
+              printf -- '<?php phpinfo(); ?>\n' >/pma/phpinfo.php
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -65,8 +66,8 @@ spec:
             - name: http
               containerPort: 8080
           volumeMounts:
-            - {name: tmp-volume, mountPath: /tmp}
-            - {name: git-volume, mountPath: /pma, readOnly: true}
+            - {name: git-volume,          mountPath: /pma, readOnly: true}
+            - {name: nginx-tmp-volume,    mountPath: /tmp}
             - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: 'nginx.custom.conf', readOnly: true}
             - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/site.conf,  subPath: 'site.conf',         readOnly: true}
         - name: php-fpm
@@ -83,9 +84,10 @@ spec:
           #   - name: php-fpm
           #     containerPort: 9000
           volumeMounts:
-            # - {name: tmp-volume, mountPath: /tmp}
             - {name: git-volume, mountPath: /pma, readOnly: true}
+            - {name: phpfpm-tmp-volume, mountPath: /tmp}
       volumes:
         - {name: git-volume, emptyDir: {}}
-        - {name: tmp-volume, emptyDir: {}}
+        - {name: nginx-tmp-volume, emptyDir: {}}
+        - {name: phpfpm-tmp-volume, emptyDir: {}}
         - {name: nginx-config-volume, configMap: {name: nginx-config}}
