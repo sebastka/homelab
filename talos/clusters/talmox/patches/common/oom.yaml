@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.12/website/content/v1.12/schemas/config.schema.json
 # Disable userspace OOM killer
 # https://github.com/siderolabs/talos/issues/12526#issuecomment-3707193227
 ---

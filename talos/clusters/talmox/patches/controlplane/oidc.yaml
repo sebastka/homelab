@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.12/website/content/v1.12/schemas/config.schema.json
 # OIDC configuration for api server
 # - https://kubernetes.io/docs/reference/access-authn-authz/authentication/
 # - https://www.safespring.com/blogg/2025/2025-10-zitadel-oidc-configuration/
