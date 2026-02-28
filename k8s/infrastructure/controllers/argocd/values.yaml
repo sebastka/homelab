@@ -47,12 +47,13 @@ controller:
     enabled: true
     serviceMonitor:
       enabled: true
-  # resources:
-  #   requests:
-  #     # cpu: 100m
-  #     memory: 1Gi
-  #   limits:
-  #     memory: 2Gi
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 512Mi
+    limits:
+      # cpu: 100m
+      memory: 512Mi
 
 dex:
   enabled: false
@@ -60,12 +61,13 @@ dex:
     enabled: true
     serviceMonitor:
       enabled: true
-  # resources:
-  #   requests:
-  #     # cpu: 10m
-  #     memory: 32Mi
-  #   limits:
-  #     memory: 128Mi
+  resources:
+    requests:
+      # cpu: 10m
+      memory: 64Mi
+    limits:
+      # cpu: 10m
+      memory: 64Mi
 
 # https://github.com/viaduct-ai/kustomize-sops/issues/300
 repoServer:
@@ -73,12 +75,13 @@ repoServer:
     enabled: true
     serviceMonitor:
       enabled: true
-  # resources:
-  #   requests:
-  #     # cpu: 100m
-  #     memory: 256Mi
-  #   limits:
-  #     memory: 2Gi
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 256Mi
+    limits:
+      # cpu: 100m
+      memory: 256Mi
   containerSecurityContext:
     readOnlyRootFilesystem: true
     runAsNonRoot: true
@@ -123,24 +126,26 @@ redis:
     enabled: true
     serviceMonitor:
       enabled: true
-  # resources:
-  #   requests:
-  #     # cpu: 100m
-  #     memory: 64Mi
-  #   limits:
-  #     memory: 1Gi
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 64Mi
+    limits:
+      # cpu: 100m
+      memory: 64Mi
 
 server:
   metrics:
     enabled: true
     serviceMonitor:
       enabled: true
-  # resources:
-  #   requests:
-  #     # cpu: 50m
-  #     memory: 64Mi
-  #   limits:
-  #     memory: 1Gi
+  resources:
+    requests:
+      # cpu: 50m
+      memory: 64Mi
+    limits:
+      # cpu: 50m
+      memory: 64Mi
 
   httproute:
     enabled: true
@@ -181,12 +186,13 @@ applicationSet:
     enabled: true
     serviceMonitor:
       enabled: true
-  # resources:
-  #   requests:
-  #     # cpu: 50m
-  #     memory: 64Mi
-  #   limits:
-  #     memory: 1Gi
+  resources:
+    requests:
+      # cpu: 50m
+      memory: 64Mi
+    limits:
+      # cpu: 50m
+      memory: 64Mi
 
 notifications:
   enabled: false
@@ -194,10 +200,10 @@ notifications:
     enabled: true
     serviceMonitor:
       enabled: true
-  # resources:
-  #   requests:
-  #     # cpu: 100m
-  #     memory: 64Mi
-  #   limits:
-  #     # cpu: 1000m
-  #     memory: 128Mi
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 64Mi
+    limits:
+      # cpu: 1000m
+      memory: 64Mi
