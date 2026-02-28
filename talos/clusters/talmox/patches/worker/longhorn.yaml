@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.12/website/content/v1.12/schemas/config.schema.json
 # Longhorn:
 # - https://longhorn.io/docs/1.9.0/advanced-resources/os-distro-specific/talos-linux-support/
 # - https://docs.siderolabs.com/talos/v1.11/reference/configuration/block/uservolumeconfig
@@ -11,6 +12,11 @@ provisioning:
   minSize: 1GiB
 filesystem:
   type: ext4
+encryption:
+  provider: luks2
+  keys:
+    - nodeID: {}
+      slot: 0
 ---
 machine:
   kubelet:

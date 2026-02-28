@@ -1,14 +1,20 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.12/website/content/v1.12/schemas/config.schema.json
 # https://docs.siderolabs.com/talos/v1.12/platform-specific-installations/bare-metal-platforms/secureboot#booting-talos-linux-in-secureboot-mode
 ---
-machine:
-  systemDiskEncryption:
-    ephemeral:
-      provider: luks2
-      keys:
-        - slot: 0
-          tpm: {}
-    state:
-      provider: luks2
-      keys:
-        - slot: 0
-          tpm: {}
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: STATE
+encryption:
+  provider: luks2
+  keys:
+    - nodeID: {}
+      slot: 0
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+encryption:
+  provider: luks2
+  keys:
+    - nodeID: {}
+      slot: 0
