@@ -9,3 +9,4 @@ helmCharts:
     namespace: intel-device-plugins
     releaseName: intel-device-plugins-operator
     includeCRDs: true
+    valuesFile: values.yaml

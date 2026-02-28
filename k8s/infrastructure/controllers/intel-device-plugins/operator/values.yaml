@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=
+# https://artifacthub.io/packages/helm/intel/intel-device-plugins-operator?modal=values
+---
+
+resources:
+  requests:
+    # cpu: 100m
+    memory: 64Mi
+  limits:
+    # cpu: 100m
+    memory: 64Mi
