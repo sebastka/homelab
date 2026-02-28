@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/refs/heads/master/pkg/config/schemas/talconfig.json
 # https://budimanjojo.github.io/talhelper/latest/getting-started/
 # https://budimanjojo.github.io/talhelper/latest/reference/configuration/
 # https://github.com/budimanjojo/talhelper/blob/master/example/talconfig.yaml
