@@ -26,13 +26,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
-      resources:
-        requests:
-          # cpu: 100m
-          memory: 256Mi
-        limits:
-          # cpu: 500m
-          memory: 256Mi
       containers:
         - name: thelounge
           image: ghcr.io/thelounge/thelounge:latest
@@ -42,6 +35,13 @@ spec:
             readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
+          resources:
+            requests:
+              # cpu: 100m
+              memory: 256Mi
+            limits:
+              # cpu: 500m
+              memory: 256Mi
           ports:
             - name: http
               containerPort: 9000

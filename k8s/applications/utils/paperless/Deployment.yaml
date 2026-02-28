@@ -24,14 +24,7 @@ spec:
         # fsGroup: 999
         # fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
-      #     type: RuntimeDefault
-      # resources:
-      #   requests:
-      #     # cpu: 1000m
-      #     memory: 1536Mi
-      #   limits:
-      #     # cpu: 2000m
-      #     memory: 2560Mi
+          type: RuntimeDefault
       containers:
         - name: gotenberg
           image: index.docker.io/gotenberg/gotenberg:latest

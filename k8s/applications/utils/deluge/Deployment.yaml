@@ -25,13 +25,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
-      resources:
-        requests:
-          # cpu: 100m
-          memory: 1024Mi
-        limits:
-          # cpu: 1000m
-          memory: 1024Mi
       containers:
         - name: deluged
           image: ghcr.io/home-operations/deluge:2
@@ -41,6 +34,13 @@ spec:
             readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
+          resources:
+            requests:
+              # cpu: 100m
+              memory: 512Mi
+            limits:
+              # cpu: 1000m
+              memory: 512Mi
           ports:
             - name: torrent-tcp
               containerPort: 6881
@@ -66,6 +66,13 @@ spec:
             readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
+          resources:
+            requests:
+              # cpu: 100m
+              memory: 128Mi
+            limits:
+              # cpu: 1000m
+              memory: 128Mi
           ports:
             - name: http
               containerPort: 8112

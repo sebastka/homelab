@@ -22,13 +22,6 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             seccompProfile:
               type: RuntimeDefault
-          resources:
-            requests:
-              # cpu: 50m
-              memory: 256Mi
-            limits:
-              # cpu: 50m
-              memory: 256Mi
           containers:
             - name: mariadb-backup
               image: mariadb:latest
@@ -54,6 +47,13 @@ spec:
                 readOnlyRootFilesystem: true
                 capabilities:
                   drop: ["ALL"]
+              resources:
+                requests:
+                  # cpu: 50m
+                  memory: 256Mi
+                limits:
+                  # cpu: 50m
+                  memory: 256Mi
               env:
                 - name: MARIADB_DB_CSV
                   valueFrom:

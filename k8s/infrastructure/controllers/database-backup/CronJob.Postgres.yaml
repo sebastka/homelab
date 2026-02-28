@@ -22,13 +22,6 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             seccompProfile:
               type: RuntimeDefault
-          resources:
-            requests:
-              # cpu: 50m
-              memory: 256Mi
-            limits:
-              # cpu: 50m
-              memory: 256Mi
           containers:
             - name: postgres-backup
               image: postgres:alpine
@@ -49,6 +42,13 @@ spec:
                 readOnlyRootFilesystem: true
                 capabilities:
                   drop: ["ALL"]
+              resources:
+                requests:
+                  # cpu: 50m
+                  memory: 256Mi
+                limits:
+                  # cpu: 50m
+                  memory: 256Mi
               env:
                 - name: POSTGRES_DB_CSV
                   valueFrom:
