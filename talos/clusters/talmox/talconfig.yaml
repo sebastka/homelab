@@ -25,6 +25,7 @@ patches:
 
 controlPlane:
   patches:
+    - '@./patches/controlplane/resources.yaml'
     - '@./patches/controlplane/metrics.yaml'
     - '@./patches/controlplane/oidc.yaml'
 
