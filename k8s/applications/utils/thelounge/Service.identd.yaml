@@ -10,7 +10,8 @@ metadata:
   annotations:
     lbipam.cilium.io/ips: 192.168.2.11
 spec:
-  type: ClusterIP
+  type: LoadBalancer
+  externalTrafficPolicy: Local
   ports:
     - name: identd-tcp
       protocol: TCP
