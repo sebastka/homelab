@@ -30,6 +30,7 @@ spec:
         - name: thelounge
           # image: ghcr.io/thelounge/thelounge:latest
           image: index.docker.io/library/alpine:latest
+          command: ["/bin/sh", "-c", "while true; do echo hello world; sleep 10;done"]
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
