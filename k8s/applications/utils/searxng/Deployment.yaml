@@ -38,10 +38,10 @@ spec:
           resources:
             requests:
               # cpu: 10m
-              memory: 128Mi
+              memory: 256Mi
             limits:
               # cpu: 100m
-              memory: 128Mi
+              memory: 256Mi
           env:
             - name: SEARXNG_BASE_URL
               value: https://searxng.karlsen.app
