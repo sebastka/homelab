@@ -8,7 +8,7 @@ spec:
   parentRefs:
     - {namespace: gateway, name: internal, sectionName: https-karlsen-app}
   hostnames:
-    - coturn.karlsen.fr
+    - turn.karlsen.fr
   rules:
     - matches:
         - path:
