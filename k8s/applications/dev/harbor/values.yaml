@@ -3,15 +3,15 @@
 ---
 
 expose:
-  type: route
+  type: clusterIP
   tls:
     enabled: false
-  route:
-    parentRefs:
-      - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
-      # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
-    hosts:
-      - harbor.karlsen.app
+  # route:
+  #   parentRefs:
+  #     - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
+  #     # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
+  #   hosts:
+  #     - harbor.karlsen.app
 
 externalURL: https://harbor.karlsen.app
 
@@ -21,8 +21,11 @@ persistence:
   persistentVolumeClaim:
     registry:
       existingClaim: harbor-registry-pvc
-      storageClass: longhorn-static
-      size: 10Gi
+    jobservice:
+      jobLog:
+        existingClaim: harbor-joblog-pvc
+    trivy:
+      existingClaim: harbor-trivy-pvc
 
 existingSecretAdminPassword: harbor-secrets
 existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
@@ -45,7 +48,7 @@ logLevel: info  # debug, info, warning, error or fatal
 existingSecretSecretKey: harbor-secrets  # secretKey (16 chars)
 
 metrics:
-  enabled: enabled
+  enabled: true
 
 trace:
   enabled: false
@@ -88,6 +91,7 @@ registry:
 
 trivy:
   enabled: true
+  debugMode: true
   resources:
     requests:
       # cpu: 100m
@@ -104,11 +108,15 @@ database:
     username: harbor
     existingSecret: harbor-secrets  # password
 
+# 2207 - Using 'redis.external.existingSecret' causes nil pointer exception
+# https://github.com/goharbor/harbor-helm/issues/2207
 redis:
   type: external
   external:
     addr: redis01.hera.home.karlsen.fr:6379
-    existingSecret: harbor-secrets  # REDIS_USERNAME - REDIS_PASSWORD
+    username: harbor
+    password: EQFbScx4SQsVhwFTMhH8drF0IxyPPrQNoP0rFdu8y48vGfWm
+    # existingSecret: harbor-secrets  # REDIS_USERNAME - REDIS_PASSWORD
 
 exporter:
   resources:

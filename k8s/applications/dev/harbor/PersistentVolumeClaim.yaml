@@ -14,3 +14,35 @@ spec:
       storage: 10Gi
   storageClassName: longhorn-static
   volumeName: harbor-registry-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: harbor-joblog-pvc
+  namespace: harbor
+  labels:
+    app.kubernetes.io/name: harbor
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn-static
+  volumeName: harbor-joblog-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: harbor-trivy-pvc
+  namespace: harbor
+  labels:
+    app.kubernetes.io/name: harbor
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: longhorn-static
+  volumeName: harbor-trivy-pv
