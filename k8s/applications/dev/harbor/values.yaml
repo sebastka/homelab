@@ -107,6 +107,7 @@ database:
     port: '5432'
     username: harbor
     existingSecret: harbor-secrets  # password
+    coreDatabase: harbor-core
 
 # 2207 - Using 'redis.external.existingSecret' causes nil pointer exception
 # https://github.com/goharbor/harbor-helm/issues/2207
