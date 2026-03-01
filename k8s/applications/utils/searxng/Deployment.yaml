@@ -27,14 +27,12 @@ spec:
       containers:
         - name: searxng
           image: docker.io/searxng/searxng:2026.2.28-a2108ce2e
+          command: ["/usr/local/searxng/.venv/bin/granian", "searx.webapp:app"]
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
+            readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
-            runAsNonRoot: false
-            runAsUser: 0
-            runAsGroup: 0
           resources:
             requests:
               # cpu: 10m
@@ -54,15 +52,15 @@ spec:
               value: 'true'
             - name: SEARXNG_VALKEY_URL
               value: valkey://localhost:6379/0
-            - name: FORCE_OWNERSHIP
-              value: 'false'
+            # - name: FORCE_OWNERSHIP
+            #   value: 'false'
           ports:
             - name: http
               containerPort: 8080
           volumeMounts:
             - {name: searxng-config-volume, mountPath: /etc/searxng/settings.yml, subPath: settings.yml, readOnly: true}
             - {name: searxng-config-volume, mountPath: /etc/searxng/limiter.toml, subPath: limiter.toml, readOnly: true}
-            # - {name: cache-volume, mountPath: /var/cache/searxng}
+            - {name: cache-volume, mountPath: /var/cache/searxng}
         - name: valkey
           image: docker.io/valkey/valkey:9.0-alpine3.23
           securityContext:
@@ -88,4 +86,4 @@ spec:
       volumes:
         - {name: etc-volume, emptyDir: {}}
         - {name: searxng-config-volume, configMap: {name: searxng-settings}}
-        # - {name: cache-volume, emptyDir: {}}
+        - {name: cache-volume, emptyDir: {}}
