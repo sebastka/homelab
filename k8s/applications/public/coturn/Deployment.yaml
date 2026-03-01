@@ -29,11 +29,17 @@ spec:
         - name: coturn
           # Dockerfile: https://github.com/coturn/coturn/blob/master/docker/coturn/alpine/Dockerfile
           image: coturn/coturn:4.9.0-alpine3.23
+          # command:
+          #   - turnserver
+          #   - -c /etc/coturn/turnserver.conf
+          #   - --proc-user=nobody
+          #   - --proc-group=nogroup
+          #   # - --external-ip=$(detect-external-ip)
           securityContext:
             # allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            # capabilities:
+            #   drop: ["ALL"]
             allowPrivilegeEscalation: true
           resources:
             requests:
