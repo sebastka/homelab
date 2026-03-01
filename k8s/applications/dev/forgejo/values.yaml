@@ -50,7 +50,7 @@ signing:
 gitea:
   additionalConfigSources:
     - secret:
-      secretName: forjeo-database
+        secretName: forjeo-database
   admin:
     existingSecret: forgejo-admin-secret
     email: postmaster@karlsen.fr
