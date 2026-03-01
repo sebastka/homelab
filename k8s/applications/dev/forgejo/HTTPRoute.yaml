@@ -16,5 +16,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: forjeo
+        - name: forjeo-forgejo-http
           port: 3000
