@@ -78,9 +78,9 @@ gitea:
     ui:
       EXPLORE_PAGING_NUM: 20
     server:
-      PROTOCOL: https
+      # PROTOCOL: https
       DOMAIN: git.karlsen.fr
-      ROOT_URL: https://git.karlsen.fr
+      # ROOT_URL: https://git.karlsen.fr
       START_SSH_SERVER: 'true'
       SSH_CREATE_AUTHORIZED_KEYS_FILE: 'true'
     database:
