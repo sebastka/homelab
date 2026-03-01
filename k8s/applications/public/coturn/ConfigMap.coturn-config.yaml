@@ -24,6 +24,9 @@ data:
     log-file=stdout
     pidfile=/tmp/turnserver.pid
 
+    cert=/etc/ssl/certs/cert.pem
+    pkey=/etc/ssl/private/privkey.pem
+
     web-admin
     web-admin-ip=0.0.0.0
     web-admin-port=8080

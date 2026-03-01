@@ -12,6 +12,7 @@ labels:
 resources:
   - Namespace.yaml
   - ConfigMap.coturn-config.yaml
+  - SealedSecret.coturn-cert.yaml
   - Deployment.yaml
   - Service.http.yaml
   - HTTPRoute.yaml
