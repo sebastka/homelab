@@ -51,6 +51,9 @@ signing:
 
 # https://forgejo.org/docs/latest/admin/config-cheat-sheet/
 gitea:
+  additionalConfigSources:
+    - secret:
+        secretName: forgejo-appini
   admin:
     username: forgejo
     password: changeme
