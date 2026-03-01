@@ -1,0 +1,120 @@
+# yaml-language-server: $schema=
+# https://artifacthub.io/packages/helm/harbor/harbor/1.18.2?modal=values
+---
+
+expose:
+  type: ingress
+  tls:
+    enabled: false
+  route:
+    parentRefs:
+      - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
+      # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
+    hosts:
+      - harbor.karlsen.app
+
+externalURL: https://harbor.karlsen.app
+
+persistence:
+  enabled: true
+  resourcePolicy: keep
+  persistentVolumeClaim:
+    registry:
+      existingClaim: harbor-registry-pvc
+      storageClass: longhorn-static
+      size: 10Gi
+
+existingSecretAdminPassword: harbor-secrets
+existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
+
+internalTLS:
+  enabled: false
+
+ipFamily:
+  ipv6:
+    enabled: false
+  ipv4:
+    enabled: true
+
+# imagePullSecrets:
+#   - name: docker-registry-secret
+#   - name: internal-registry-secret
+
+logLevel: info  # debug, info, warning, error or fatal
+
+existingSecretSecretKey: harbor-secrets  # secretKey (16 chars)
+
+metrics:
+  enabled: enabled
+
+trace:
+  enabled: false
+
+portal:
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 256Mi
+    limits:
+      # cpu: 100m
+      memory: 256Mi
+
+core:
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 256Mi
+    limits:
+      # cpu: 100m
+      memory: 256Mi
+
+jobservice:
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 256Mi
+    limits:
+      # cpu: 100m
+      memory: 256Mi
+
+registry:
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 256Mi
+    limits:
+      # cpu: 100m
+      memory: 256Mi
+
+trivy:
+  enabled: true
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 512Mi
+    limits:
+      # cpu: 100m
+      memory: 512Mi
+
+database:
+  type: external
+  external:
+    host: db02.hera.home.karlsen.fr
+    port: '5432'
+    username: harbor
+    existingSecret: harbor-secrets  # password
+
+redis:
+  type: external
+  external:
+    addr: redis01.hera.home.karlsen.fr:6379
+    existingSecret: harbor-secrets  # REDIS_USERNAME - REDIS_PASSWORD
+
+exporter:
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 256Mi
+    limits:
+      # cpu: 100m
+      memory: 256Mi

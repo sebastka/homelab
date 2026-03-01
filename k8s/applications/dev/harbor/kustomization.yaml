@@ -1,0 +1,19 @@
+# https://artifacthub.io/packages/helm/harbor/harbor
+# https://harbor.io/docs/installation/helm/
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - Namespace.yaml
+  - SealedSecret.harbor-secrets.yaml
+  - PersistentVolumeClaim.yaml
+
+helmCharts:
+  - name: harbor
+    repo: https://helm.goharbor.io
+    version: 1.18.2  # renovate: github-releases=goharbor/harbor-helm
+    releaseName: harbor
+    namespace: harbor
+    includeCRDs: true
+    valuesFile: values.yaml
