@@ -6,7 +6,6 @@ kind: Kustomization
 
 resources:
   - Namespace.yaml
-  - SealedSecret.forgejo-admin-secret.yaml
   - SealedSecret.forgejo-database.yaml
   - SealedSecret.forgejo-gpg.yaml
   - PersistentVolumeClaim.yaml

@@ -57,9 +57,10 @@ gitea:
           name: forgejo-database
           key: PASSWD
   admin:
-    existingSecret: forgejo-admin-secret
+    username: forgejo
+    password: changeme
     email: postmaster@karlsen.fr
-    passwordMode: keepUpdated
+    passwordMode: initialOnlyRequireReset
   metrics:
     enabled: true
     serviceMonitor:
