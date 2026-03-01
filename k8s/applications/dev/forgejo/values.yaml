@@ -32,7 +32,7 @@ resources:
 persistence:
   enabled: true
   create: false
-  claimName: forjeo-shared-storage-pvc
+  claimName: forgejo-shared-storage-pvc
 
 initContainers:
   resources:
@@ -45,12 +45,12 @@ initContainers:
 
 signing:
   enabled: true
-  existingSecret: forjeo-gpg
+  existingSecret: forgejo-gpg
 
 gitea:
   additionalConfigSources:
     - secret:
-        secretName: forjeo-database
+        secretName: forgejo-database
   admin:
     existingSecret: forgejo-admin-secret
     email: postmaster@karlsen.fr

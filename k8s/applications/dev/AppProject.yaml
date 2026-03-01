@@ -14,7 +14,7 @@ spec:
       server: '*'
     - namespace: harbor
       server: '*'
-    - namespace: forjeo
+    - namespace: forgejo
       server: '*'
   clusterResourceWhitelist:
     - group: '*'
