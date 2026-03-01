@@ -29,7 +29,7 @@ spec:
           image: docker.io/searxng/searxng:2026.2.28-a2108ce2e
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             capabilities:
               drop: ["ALL"]
           resources:
@@ -54,9 +54,9 @@ spec:
           ports:
             - name: http
               containerPort: 8080
-          volumeMounts:
-            - {name: etc-volume, mountPath: /etc/searxng}
-            - {name: cache-volume, mountPath: /var/cache/searxng}
+          # volumeMounts:
+          #   - {name: etc-volume, mountPath: /etc/searxng}
+          #   - {name: cache-volume, mountPath: /var/cache/searxng}
         - name: valkey
           image: docker.io/valkey/valkey:9.0-alpine3.23
           securityContext:
