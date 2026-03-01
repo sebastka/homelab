@@ -32,6 +32,7 @@ spec:
             - turnserver
             - --config=/etc/coturn/turnserver.custom.conf
             - --proc-user=nobody
+            - --proc-group=nogroup
             - --external-ip=$(detect-external-ip)
           securityContext:
             allowPrivilegeEscalation: false
