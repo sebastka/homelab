@@ -84,3 +84,107 @@ resource "cloudflare_record" "karlsenfr_txt_spf" {
   type    = "TXT"
   zone_id = cloudflare_zone.karlsenfr.id
 }
+
+resource "cloudflare_record" "karlsenfr_srv_tcp_turn" {
+  name    = "_turn._tcp"
+  type    = "SRV"
+  zone_id = cloudflare_zone.karlsenfr.id
+
+  data {
+    service  = "_turn"
+    proto    = "_tcp"
+    name     = cloudflare_zone.karlsenfr.zone
+    priority = 10
+    weight   = 0
+    port     = 3478
+    target   = "turn.karlsen.fr"
+  }
+}
+
+resource "cloudflare_record" "karlsenfr_srv_udp_turn" {
+  name    = "_turn._udp"
+  type    = "SRV"
+  zone_id = cloudflare_zone.karlsenfr.id
+
+  data {
+    service  = "_turn"
+    proto    = "_udp"
+    name     = cloudflare_zone.karlsenfr.zone
+    priority = 10
+    weight   = 0
+    port     = 3478
+    target   = "turn.karlsen.fr"
+  }
+}
+
+resource "cloudflare_record" "karlsenfr_srv_tcp_turns" {
+  name    = "_turns._tcp"
+  type    = "SRV"
+  zone_id = cloudflare_zone.karlsenfr.id
+
+  data {
+    service  = "_turns"
+    proto    = "_tcp"
+    name     = cloudflare_zone.karlsenfr.zone
+    priority = 10
+    weight   = 0
+    port     = 5349
+    target   = "turn.karlsen.fr"
+  }
+}
+
+
+
+
+
+
+
+
+
+resource "cloudflare_record" "karlsenfr_srv_tcp_stun" {
+  name    = "_stun._tcp"
+  type    = "SRV"
+  zone_id = cloudflare_zone.karlsenfr.id
+
+  data {
+    service  = "_stun"
+    proto    = "_tcp"
+    name     = cloudflare_zone.karlsenfr.zone
+    priority = 10
+    weight   = 0
+    port     = 3478
+    target   = "turn.karlsen.fr"
+  }
+}
+
+resource "cloudflare_record" "karlsenfr_srv_udp_stun" {
+  name    = "_stun._udp"
+  type    = "SRV"
+  zone_id = cloudflare_zone.karlsenfr.id
+
+  data {
+    service  = "_stun"
+    proto    = "_udp"
+    name     = cloudflare_zone.karlsenfr.zone
+    priority = 10
+    weight   = 0
+    port     = 3478
+    target   = "turn.karlsen.fr"
+  }
+}
+
+resource "cloudflare_record" "karlsenfr_srv_tcp_stuns" {
+  name    = "_stuns._tcp"
+  type    = "SRV"
+  zone_id = cloudflare_zone.karlsenfr.id
+
+  data {
+    service  = "_stuns"
+    proto    = "_tcp"
+    name     = cloudflare_zone.karlsenfr.zone
+    priority = 10
+    weight   = 0
+    port     = 5349
+    target   = "turn.karlsen.fr"
+  }
+}
