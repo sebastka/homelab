@@ -18,9 +18,9 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 997
-        runAsGroup: 997
-        fsGroup: 997
+        runAsUser: 977
+        runAsGroup: 977
+        fsGroup: 977
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
