@@ -84,8 +84,8 @@ gitea:
       START_SSH_SERVER: 'true'
       SSH_CREATE_AUTHORIZED_KEYS_FILE: 'true'
       # https://github.com/go-gitea/gitea/issues/4196
-      CERT_FILE: conf/cert.pem
-      CERT_KEY: conf/key.pem
+      CERT_FILE: https/cert.pem
+      CERT_KEY: https/key.pem
     database:
       DB_TYPE: mysql
       HOST: db01.hera.home.karlsen.fr
