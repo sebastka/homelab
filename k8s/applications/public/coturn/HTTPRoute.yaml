@@ -1,0 +1,19 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: webadmin
+  namespace: coturn
+spec:
+  parentRefs:
+    - {namespace: gateway, name: internal, sectionName: https-karlsen-app}
+  hostnames:
+    - coturn.karlsen.fr
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: webadmin
+          port: 80
