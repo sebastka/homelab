@@ -8,7 +8,7 @@ resources:
   - Namespace.yaml
   - SealedSecret.harbor-secrets.yaml
   - PersistentVolumeClaim.yaml
-  # - HTTPRoute.yaml
+  - HTTPRoute.yaml
 
 helmCharts:
   - name: harbor
