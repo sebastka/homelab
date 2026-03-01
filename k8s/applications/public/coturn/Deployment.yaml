@@ -31,14 +31,10 @@ spec:
           image: coturn/coturn:4.9.0-alpine3.23
           command:
             - turnserver
-            - '--config'
-            - /etc/coturn/turnserver.custom.conf
-            - '--proc-user'
-            - nobody
-            - '--proc-group'
-            - nogroup
-            - '--external-ip'
-            - $(detect-external-ip)
+            - -c /etc/coturn/turnserver.custom.conf
+            - --proc-user=nobody
+            - --proc-group=nogroup
+            - --external-ip=$(detect-external-ip)
           securityContext:
             # allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
