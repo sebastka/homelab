@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: nginx-config
+  name: searxng-settings
   namespace: searxng
 data:
   'settings.yaml': |-
