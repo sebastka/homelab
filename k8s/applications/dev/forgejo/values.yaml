@@ -3,7 +3,9 @@
 # https://forgejo.org/docs/latest/admin/config-cheat-sheet
 ---
 
-# clusterDomain: cluster.local
+# Set up Valkey:
+# - https://artifacthub.io/packages/helm/forgejo-helm/forgejo#session-cache-and-queue
+# - https://artifacthub.io/packages/helm/forgejo-helm/forgejo#external-database
 
 service:
   http:
@@ -48,9 +50,12 @@ signing:
   existingSecret: forgejo-gpg
 
 gitea:
-  additionalConfigSources:
-    - secret:
-        secretName: forgejo-database
+  additionalConfigFromEnvs:
+    - name: FORGEJO__DATABASE__PASSWD
+      valueFrom:
+        secretKeyRef:
+          name: forgejo-database
+          key: PASSWD
   admin:
     existingSecret: forgejo-admin-secret
     email: postmaster@karlsen.fr
@@ -60,5 +65,9 @@ gitea:
     serviceMonitor:
       enabled: false
   # oauth: []
-  # config:
-  #   APP_NAME: Forgejo
+  config:
+    database:
+      DB_TYPE: mysql
+      HOST: db01.hera.home.karlsen.fr
+      NAME: forgejo
+      USER: forgejo
