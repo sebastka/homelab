@@ -1,0 +1,64 @@
+# yaml-language-server: $schema=
+# https://artifacthub.io/packages/helm/forgejo-helm/forgejo?modal=values
+# https://forgejo.org/docs/latest/admin/config-cheat-sheet
+---
+
+# clusterDomain: cluster.local
+
+service:
+  http:
+    type: ClusterIP
+    port: 3000
+  ssh:
+    type: ClusterIP
+    port: 22
+
+ingress:
+  enabled: false
+
+httproute:
+  enabled: false
+tcpRoute:
+  enabled: false
+
+resources:
+  requests:
+    # cpu: 100m
+    memory: 128Mi
+  limits:
+    # cpu: 100m
+    memory: 128Mi
+
+persistence:
+  enabled: true
+  create: false
+  claimName: forjeo-shared-storage-pvc
+
+initContainers:
+  resources:
+    requests:
+      # cpu: 100m
+      memory: 128Mi
+    limits:
+      # cpu: 100m
+      memory: 128Mi
+
+signing:
+  enabled: true
+  existingSecret: forjeo-gpg
+
+gitea:
+  additionalConfigSources:
+    - secret:
+      secretName: forjeo-database
+  admin:
+    existingSecret: forgejo-admin-secret
+    email: postmaster@karlsen.fr
+    passwordMode: keepUpdated
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+  # oauth: []
+  # config:
+  #   APP_NAME: Forgejo

@@ -1,0 +1,23 @@
+# https://artifacthub.io/packages/helm/forjeo/forjeo
+# https://forjeo.io/docs/installation/helm/
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - Namespace.yaml
+  - SealedSecret.forgejo-admin-secret.yaml
+  - SealedSecret.forjeo-database.yaml
+  - SealedSecret.forjeo-gpg.yaml
+  - PersistentVolumeClaim.yaml
+  - HTTPRoute.yaml
+  - TCPRoute.yaml
+
+helmCharts:
+  - name: forgejo
+    repo: oci://code.forgejo.org/forgejo-helm
+    version: 16.2.0
+    releaseName: forjeo
+    namespace: forjeo
+    includeCRDs: true
+    valuesFile: values.yaml
