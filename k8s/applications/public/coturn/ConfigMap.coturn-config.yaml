@@ -20,6 +20,7 @@ data:
     fingerprint
     lt-cred-mech
     realm=turn.karlsen.fr
+    server-name=turn.karlsen.fr
     log-file=stdout
     pidfile=/tmp/turnserver.pid
 

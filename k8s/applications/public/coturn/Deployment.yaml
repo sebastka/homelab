@@ -34,7 +34,7 @@ spec:
             - -c /etc/coturn/turnserver.conf
             - --proc-user=nobody
             - --proc-group=nogroup
-            - --external-ip=$(detect-external-ip)
+            # - --external-ip=$(detect-external-ip)
           securityContext:
             # allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -48,6 +48,9 @@ spec:
             limits:
               # cpu: 100m
               memory: 64Mi
+          env:
+            - name: DETECT_EXTERNAL_IP
+              value: 'yes'
           ports:
             - {name: http, protocol: TCP, containerPort: 8080}
             - {name: stun-tcp, protocol: TCP, containerPort: 3478}
