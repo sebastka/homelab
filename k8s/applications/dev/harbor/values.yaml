@@ -24,6 +24,8 @@ persistence:
     jobservice:
       jobLog:
         existingClaim: harbor-joblog-pvc
+    redis:
+      existingClaim: harbor-redis-pvc
     trivy:
       existingClaim: harbor-trivy-pvc
 
@@ -112,12 +114,12 @@ database:
 # 2207 - Using 'redis.external.existingSecret' causes nil pointer exception
 # https://github.com/goharbor/harbor-helm/issues/2207
 redis:
-  type: external
-  external:
-    addr: redis01.hera.home.karlsen.fr:6379
-    username: harbor
-    password: EQFbScx4SQsVhwFTMhH8drF0IxyPPrQNoP0rFdu8y48vGfWm
-    # existingSecret: harbor-secrets  # REDIS_USERNAME - REDIS_PASSWORD
+  type: internal
+  # external:
+  #   addr: redis01.hera.home.karlsen.fr:6379
+  #   username: harbor
+  #   password:
+  #   # existingSecret: harbor-secrets  # REDIS_USERNAME - REDIS_PASSWORD
 
 exporter:
   resources:
