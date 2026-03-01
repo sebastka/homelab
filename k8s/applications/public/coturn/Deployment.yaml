@@ -96,5 +96,7 @@ spec:
             - {name: p39, protocol: UDP, containerPort: 49200}
           volumeMounts:
             - {name: coturn-config-volume, mountPath: /etc/coturn/turnserver.conf, subPath: turnserver.conf, readOnly: true}
+            - {name: tmp-volume, mountPath: /tmp}
       volumes:
         - {name: coturn-config-volume, configMap: {name: coturn-config}}
+        - {name: tmp-volume, emptyDir: {}}

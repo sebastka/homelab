@@ -21,6 +21,7 @@ data:
     lt-cred-mech
     realm=turn.karlsen.fr
     log-file=stdout
+    pidfile=/tmp/turnserver.pid
 
     web-admin
     web-admin-ip=0.0.0.0
