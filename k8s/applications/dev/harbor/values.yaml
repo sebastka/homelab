@@ -3,7 +3,7 @@
 ---
 
 expose:
-  type: ingress
+  type: route
   tls:
     enabled: false
   route:
