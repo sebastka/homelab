@@ -30,11 +30,10 @@ spec:
           # Dockerfile: https://github.com/coturn/coturn/blob/master/docker/coturn/alpine/Dockerfile
           image: coturn/coturn:4.9.0-alpine3.23
           securityContext:
-            # allowPrivilegeEscalation: false
+            allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             # capabilities:
             #   drop: ["ALL"]
-            allowPrivilegeEscalation: true
           resources:
             requests:
               # cpu: 10m
