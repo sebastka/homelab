@@ -5,7 +5,7 @@ metadata:
   name: searxng-settings
   namespace: searxng
 data:
-  'settings.yaml': |-
+  'settings.yml': |-
     # see https://docs.searxng.org/admin/settings/settings.html#settings-use-default-settings
     # https://github.com/searxng/searxng/blob/master/searx/settings.yml
     use_default_settings: true

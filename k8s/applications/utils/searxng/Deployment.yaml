@@ -45,21 +45,24 @@ spec:
           env:
             - name: SEARXNG_BASE_URL
               value: https://searxng.karlsen.app
-            # - name: SEARXNG_SECRET
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: searxng-secrets
-            #       key: searxng-secret
+            - name: SEARXNG_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: searxng-secrets
+                  key: searxng-secret
             - name: SEARXNG_PUBLIC_INSTANCE
               value: 'true'
             - name: SEARXNG_VALKEY_URL
               value: valkey://localhost:6379/0
+            - name: FORCE_OWNERSHIP
+              value: 'false'
           ports:
             - name: http
               containerPort: 8080
-          # volumeMounts:
-          #   - {name: etc-volume, mountPath: /etc/searxng}
-          #   - {name: cache-volume, mountPath: /var/cache/searxng}
+          volumeMounts:
+            - {name: searxng-config-volume, mountPath: /etc/searxng/settings.yml, subPath: settings.yml, readOnly: true}
+            - {name: searxng-config-volume, mountPath: /etc/searxng/limiter.toml, subPath: limiter.toml, readOnly: true}
+            # - {name: cache-volume, mountPath: /var/cache/searxng}
         - name: valkey
           image: docker.io/valkey/valkey:9.0-alpine3.23
           securityContext:
@@ -84,4 +87,5 @@ spec:
           #     containerPort: 6379
       volumes:
         - {name: etc-volume, emptyDir: {}}
-        - {name: cache-volume, emptyDir: {}}
+        - {name: searxng-config-volume, configMap: {name: searxng-settings}}
+        # - {name: cache-volume, emptyDir: {}}
