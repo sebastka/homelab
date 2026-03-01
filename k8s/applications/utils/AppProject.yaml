@@ -10,6 +10,8 @@ spec:
   destinations:
     - namespace: argocd
       server: '*'
+    - namespace: searxng
+      server: '*'
     - namespace: paperless
       server: '*'
     - namespace: deluge

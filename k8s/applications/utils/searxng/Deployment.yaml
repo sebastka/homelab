@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: searxng
+  namespace: searxng
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: searxng
+  template:
+    metadata:
+      namespace: searxng
+      labels:
+        app.kubernetes.io/name: searxng
+        app: searxng
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 997
+        runAsGroup: 997
+        fsGroup: 997
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: searxng
+          image: docker.io/searxng/searxng:2026.2.28-a2108ce2e
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              # cpu: 10m
+              memory: 64Mi
+            limits:
+              # cpu: 100m
+              memory: 64Mi
+          env:
+            - name: SEARXNG_BASE_URL
+              value: https://searxng.karlsen.app
+            # - name: SEARXNG_SECRET
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: searxng-secrets
+            #       key: searxng-secret
+            - name: SEARXNG_PUBLIC_INSTANCE
+              value: 'true'
+            - name: SEARXNG_VALKEY_URL
+              value: valkey://localhost:6379/0
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - {name: etc-volume, mountPath: /etc/searxng}
+            - {name: cache-volume, mountPath: /var/cache/searxng}
+        - name: valkey
+          image: docker.io/valkey/valkey:9.0-alpine3.23
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+            runAsUser: 999
+            runAsGroup: 1000
+          resources:
+            requests:
+              # cpu: 10m
+              memory: 64Mi
+            limits:
+              # cpu: 100m
+              memory: 64Mi
+          # env:
+          #   - name: VALKEY_EXTRA_FLAGS
+          #     value:
+          # ports:
+          #   - name: valkey
+          #     containerPort: 6379
+      volumes:
+        - {name: etc-volume, emptyDir: {}}
+        - {name: cache-volume, emptyDir: {}}
