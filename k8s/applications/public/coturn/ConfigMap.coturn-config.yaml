@@ -5,7 +5,7 @@ metadata:
   name: coturn-config
   namespace: coturn
 data:
-  'turnserver.custom.conf': |-
+  'turnserver.conf': |-
     # https://github.com/coturn/coturn/blob/master/examples/etc/turnserver.conf
     # https://manpages.debian.org/testing/coturn/turnserver.1.en.html
 

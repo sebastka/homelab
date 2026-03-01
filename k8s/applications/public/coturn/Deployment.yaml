@@ -31,7 +31,7 @@ spec:
           image: coturn/coturn:4.9.0-alpine3.23
           command:
             - turnserver
-            - -c /etc/coturn/turnserver.custom.conf
+            - -c /etc/coturn/turnserver.conf
             - --proc-user=nobody
             - --proc-group=nogroup
             - --external-ip=$(detect-external-ip)
@@ -95,6 +95,6 @@ spec:
             - {name: p38, protocol: UDP, containerPort: 49199}
             - {name: p39, protocol: UDP, containerPort: 49200}
           volumeMounts:
-            - {name: coturn-config-volume, mountPath: /etc/coturn/turnserver.custom.conf, subPath: turnserver.custom.conf, readOnly: true}
+            - {name: coturn-config-volume, mountPath: /etc/coturn/turnserver.conf, subPath: turnserver.conf, readOnly: true}
       volumes:
         - {name: coturn-config-volume, configMap: {name: coturn-config}}
