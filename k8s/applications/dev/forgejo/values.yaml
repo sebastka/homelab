@@ -92,8 +92,8 @@ gitea:
       INSTALL_LOCK: 'true'
       GLOBAL_TWO_FACTOR_REQUIREMENT: all
       COOKIE_REMEMBER_NAME: __Host-forgejo_remember_token
-      COOKIE_REMEMBER_SAMESITE: strict  # Made up?
-      COOKIE_REMEMBER_SECURE: 'true'  # Made up?
+      # COOKIE_REMEMBER_SAMESITE: strict  # Made up?
+      # COOKIE_REMEMBER_SECURE: 'true'  # Made up?
       DISABLE_GIT_HOOKS: 'true'
       MIN_PASSWORD_LENGTH: 48
       PASSWORD_COMPLEXITY: lower,upper,digit
