@@ -17,14 +17,13 @@ spec:
         app: coturn
     spec:
       securityContext:
-        # runAsNonRoot: true
+        runAsNonRoot: true
         runAsUser: 65534
         runAsGroup: 65533
         fsGroup: 65533
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
-        runAsNonRoot: false
       containers:
         - name: coturn
           # Dockerfile: https://github.com/coturn/coturn/blob/master/docker/coturn/alpine/Dockerfile
