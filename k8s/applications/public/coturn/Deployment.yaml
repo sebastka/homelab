@@ -31,6 +31,7 @@ spec:
           command:
             - turnserver
             - --config=/etc/coturn/turnserver.custom.conf
+            - --proc-user=nobody
             - --external-ip=$(detect-external-ip)
           securityContext:
             allowPrivilegeEscalation: false
@@ -94,4 +95,3 @@ spec:
             - {name: coturn-config-volume, mountPath: /etc/coturn/turnserver.custom.conf, subPath: turnserver.custom.conf, readOnly: true}
       volumes:
         - {name: coturn-config-volume, configMap: {name: coturn-config}}
-
