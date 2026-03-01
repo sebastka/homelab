@@ -6,12 +6,12 @@ expose:
   type: clusterIP
   tls:
     enabled: false
-  # route:
-  #   parentRefs:
-  #     - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
-  #     # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
-  #   hosts:
-  #     - harbor.karlsen.app
+  route:
+    parentRefs:
+      - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
+      # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
+    hosts:
+      - harbor.karlsen.app
 
 externalURL: https://harbor.karlsen.app
 
