@@ -17,13 +17,14 @@ spec:
         app: coturn
     spec:
       securityContext:
-        runAsNonRoot: true
+        # runAsNonRoot: true
         runAsUser: 65534
         runAsGroup: 65533
         fsGroup: 65533
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
+        runAsNonRoot: false
       containers:
         - name: coturn
           # Dockerfile: https://github.com/coturn/coturn/blob/master/docker/coturn/alpine/Dockerfile
@@ -35,10 +36,11 @@ spec:
             - --proc-group=nogroup
             - --external-ip=$(detect-external-ip)
           securityContext:
-            allowPrivilegeEscalation: false
+            # allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            # capabilities:
+            #   drop: ["ALL"]
+            allowPrivilegeEscalation: true
           resources:
             requests:
               # cpu: 10m
