@@ -64,9 +64,10 @@ gitea:
   config:
     # APP_NAME: 'Forgejo: Beyond coding. We forge.'
     # APP_SLOGAN
-    # RUN_MODE: prod
-    # ACCESS_CONTROL_ALLOW_ORIGIN
-    DEFAULT_BRANCH: master
+    RUN_MODE: prod
+    repository:
+      DEFAULT_BRANCH: master
+      # ACCESS_CONTROL_ALLOW_ORIGIN
     cors:
       ENABLE: 'true'
       ALLOW_ORIGIN: 'git.karlsen.fr'
