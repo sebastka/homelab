@@ -14,6 +14,8 @@ spec:
       server: '*'
     - namespace: coturn
       server: '*'
+    - name: synapse
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

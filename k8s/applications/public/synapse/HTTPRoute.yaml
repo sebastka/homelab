@@ -1,0 +1,22 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: synapse
+  namespace: synapse
+  labels:
+    security-policy: httproute-allow-all
+spec:
+  parentRefs:
+    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-fr}
+    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-fr}
+  hostnames:
+    - matrix.karlsen.fr
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: synapse
+          port: 80

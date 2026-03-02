@@ -1,0 +1,62 @@
+# https://github.com/element-hq/synapse/tree/develop/docker
+# https://github.com/element-hq/synapse/tree/develop/docker
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+  namespace: synapse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: synapse
+  template:
+    metadata:
+      namespace: synapse
+      labels:
+        app.kubernetes.io/name: synapse
+        app: synapse
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 991
+        runAsGroup: 991
+        fsGroup: 991
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: nginx
+          # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
+          # image: index.docker.io/matrixdotorg/synapse:sha-825f308
+          image: alpine:edge
+          command: [sleep, "infinity"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              # cpu: 10m
+              memory: 256Mi
+            limits:
+              # cpu: 100m
+              memory: 256Mi
+          ports:
+            - name: http
+              containerPort: 8080
+          envFrom:
+            - configMapRef: {name: synapse-common-env}
+            - configMapRef: {name: synapse-run-env}
+            # - configMapRef: {name: synapse-generate-env}
+          volumeMounts:
+            - {name: data-volume, mountPath: /data}
+            - {name: synapse-config, mountPath: /homeserver.yaml, subPath: homeserver.yaml}
+            - {name: synapse-config, mountPath: /karlsen.fr.signing.key, subPath: karlsen.fr.signing.key}
+            - {name: tmp-volume, mountPath: /tmp}
+      volumes:
+        - {name: data-volume, persistentVolumeClaim: {claimName: synapse-data-pvc}}
+        - {name: synapse-config, secret: {secretName: synapse-config}}
+        - {name: tmp-volume, emptyDir: {}}
