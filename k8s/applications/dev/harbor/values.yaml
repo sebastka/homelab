@@ -58,7 +58,13 @@ metrics:
 trace:
   enabled: false
 
+nginx:
+  replicas: 1
+  revisionHistoryLimit: 1
+
 portal:
+  replicas: 1
+  revisionHistoryLimit: 1
   resources:
     requests:
       # cpu: 100m
@@ -68,6 +74,8 @@ portal:
       memory: 256Mi
 
 core:
+  replicas: 1
+  revisionHistoryLimit: 1
   resources:
     requests:
       # cpu: 100m
@@ -77,6 +85,8 @@ core:
       memory: 256Mi
 
 jobservice:
+  replicas: 1
+  revisionHistoryLimit: 1
   resources:
     requests:
       # cpu: 100m
@@ -86,6 +96,8 @@ jobservice:
       memory: 256Mi
 
 registry:
+  replicas: 1
+  revisionHistoryLimit: 1
   resources:
     requests:
       # cpu: 100m
@@ -125,6 +137,8 @@ redis:
   #   # existingSecret: harbor-secrets  # REDIS_USERNAME - REDIS_PASSWORD
 
 exporter:
+  replicas: 1
+  revisionHistoryLimit: 1
   resources:
     requests:
       # cpu: 100m
