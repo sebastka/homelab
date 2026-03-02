@@ -1,6 +1,6 @@
 ;;
 ;; Domain:     karlsen.fr.
-;; Exported:   2026-03-01 22:58:37
+;; Exported:   2026-03-02 16:03:07
 ;;
 ;; This file is intended for use for informational and archival
 ;; purposes ONLY and MUST be edited before use on a production
@@ -24,7 +24,7 @@
 ;;
 ;; Use at your own risk.
 ;; SOA Record
-karlsen.fr	3600	IN	SOA	bethany.ns.cloudflare.com. dns.cloudflare.com. 2052407251 10000 2400 604800 3600
+karlsen.fr	3600	IN	SOA	bethany.ns.cloudflare.com. dns.cloudflare.com. 2052413398 10000 2400 604800 3600
 
 ;; NS Records
 karlsen.fr.	86400	IN	NS	bethany.ns.cloudflare.com.
@@ -52,12 +52,10 @@ karlsen.fr.	1	IN	MX	10 mx.domeneshop.no.
 _autodiscover._tcp.karlsen.fr.	3600	IN	SRV	0 0 443 autoconfig.domeneshop.no.
 _caldavs._tcp.karlsen.fr.	3600	IN	SRV	0 0 443 caldav.domeneshop.no.
 _carddavs._tcp.karlsen.fr.	3600	IN	SRV	0 0 443 carddav.domeneshop.no.
-_stuns._tcp.karlsen.fr.	1	IN	SRV	10 0 5349 turn.karlsen.fr.
-_stun._tcp.karlsen.fr.	1	IN	SRV	10 0 3478 turn.karlsen.fr.
-_stun._udp.karlsen.fr.	1	IN	SRV	10 0 3478 turn.karlsen.fr.
-_turns._tcp.karlsen.fr.	1	IN	SRV	10 0 5349 turn.karlsen.fr.
-_turn._tcp.karlsen.fr.	1	IN	SRV	10 0 3478 turn.karlsen.fr.
-_turn._udp.karlsen.fr.	1	IN	SRV	10 0 3478 turn.karlsen.fr.
+_stun._tcp.karlsen.fr.	1	IN	SRV	10 5 3478 turn.karlsen.fr.
+_stun._udp.karlsen.fr.	1	IN	SRV	10 5 3478 turn.karlsen.fr.
+_turn._tcp.karlsen.fr.	1	IN	SRV	10 5 5349 turn.karlsen.fr.
+_turn._udp.karlsen.fr.	1	IN	SRV	10 5 3478 turn.karlsen.fr.
 
 ;; TXT Records
 _caldavs._tcp.karlsen.fr.	3600	IN	TXT	"path=/"

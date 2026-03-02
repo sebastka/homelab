@@ -95,8 +95,8 @@ resource "cloudflare_record" "karlsenfr_srv_tcp_turn" {
     proto    = "_tcp"
     name     = cloudflare_zone.karlsenfr.zone
     priority = 10
-    weight   = 0
-    port     = 3478
+    weight   = 5
+    port     = 5349
     target   = "turn.karlsen.fr"
   }
 }
@@ -111,35 +111,11 @@ resource "cloudflare_record" "karlsenfr_srv_udp_turn" {
     proto    = "_udp"
     name     = cloudflare_zone.karlsenfr.zone
     priority = 10
-    weight   = 0
+    weight   = 5
     port     = 3478
     target   = "turn.karlsen.fr"
   }
 }
-
-resource "cloudflare_record" "karlsenfr_srv_tcp_turns" {
-  name    = "_turns._tcp"
-  type    = "SRV"
-  zone_id = cloudflare_zone.karlsenfr.id
-
-  data {
-    service  = "_turns"
-    proto    = "_tcp"
-    name     = cloudflare_zone.karlsenfr.zone
-    priority = 10
-    weight   = 0
-    port     = 5349
-    target   = "turn.karlsen.fr"
-  }
-}
-
-
-
-
-
-
-
-
 
 resource "cloudflare_record" "karlsenfr_srv_tcp_stun" {
   name    = "_stun._tcp"
@@ -151,7 +127,7 @@ resource "cloudflare_record" "karlsenfr_srv_tcp_stun" {
     proto    = "_tcp"
     name     = cloudflare_zone.karlsenfr.zone
     priority = 10
-    weight   = 0
+    weight   = 5
     port     = 3478
     target   = "turn.karlsen.fr"
   }
@@ -167,24 +143,8 @@ resource "cloudflare_record" "karlsenfr_srv_udp_stun" {
     proto    = "_udp"
     name     = cloudflare_zone.karlsenfr.zone
     priority = 10
-    weight   = 0
+    weight   = 5
     port     = 3478
-    target   = "turn.karlsen.fr"
-  }
-}
-
-resource "cloudflare_record" "karlsenfr_srv_tcp_stuns" {
-  name    = "_stuns._tcp"
-  type    = "SRV"
-  zone_id = cloudflare_zone.karlsenfr.id
-
-  data {
-    service  = "_stuns"
-    proto    = "_tcp"
-    name     = cloudflare_zone.karlsenfr.zone
-    priority = 10
-    weight   = 0
-    port     = 5349
     target   = "turn.karlsen.fr"
   }
 }
