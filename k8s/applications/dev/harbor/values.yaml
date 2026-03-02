@@ -45,6 +45,9 @@ ipFamily:
 #   - name: docker-registry-secret
 #   - name: internal-registry-secret
 
+updateStrategy:
+  type: Recreate
+
 logLevel: info  # debug, info, warning, error or fatal
 
 existingSecretSecretKey: harbor-secrets  # secretKey (16 chars)
