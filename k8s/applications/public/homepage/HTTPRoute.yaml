@@ -20,16 +20,21 @@ spec:
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
-            add: &default-headers
-              - name: Content-Security-Policy
+            add:
+              - &CSP
+                name: Content-Security-Policy
                 value: default-src 'none'; style-src-elem 'self'; script-src-elem 'self'; img-src 'self'; connect-src 'self'
-              - name: Strict-Transport-Security
+              - &HSTS
+                name: Strict-Transport-Security
                 value: max-age=31536000; includeSubDomains; preload
-              - name: X-Content-Type-Options
+              - &CTO
+                name: X-Content-Type-Options
                 value: nosniff
-              - name: X-Frame-Options
+              - &XFO
+                name: X-Frame-Options
                 value: DENY
-              - name: Cross-Origin-Resource-Policy
+              - &CORP
+                name: Cross-Origin-Resource-Policy
                 value: same-origin
       backendRefs: &default-backendrefs
         - name: homepage-service
@@ -43,7 +48,7 @@ spec:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
             add:
-              - *default-headers
+              - <<: [*CSP, *HSTS, *CTO, *XFO, *CORP]
               - name: Access-Control-Allow-Origin
                 value: '*'
       backendRefs: *default-backendrefs
