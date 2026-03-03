@@ -18,7 +18,7 @@ spec:
         app: synapse
     spec:
       securityContext:
-        runAsNonRoot: true
+        # runAsNonRoot: true
         runAsUser: 991
         runAsGroup: 991
         fsGroup: 991
@@ -30,8 +30,8 @@ spec:
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
           image: index.docker.io/matrixdotorg/synapse:sha-825f308
           securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: true
+            readOnlyRootFilesystem: false
             capabilities:
               drop: ["ALL"]
           resources:
