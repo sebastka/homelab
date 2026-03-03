@@ -23,6 +23,8 @@ spec:
             add:
               - name: Content-Security-Policy
                 value: default-src 'none'; style-src-elem 'self'; script-src-elem 'self'; img-src 'self'; connect-src 'self'
+              - name: Strict-Transport-Security
+                value: max-age=31536000; includeSubDomains; preload
       backendRefs:
         - name: homepage-service
           port: 80
