@@ -1,59 +1,59 @@
 # bwdb.info
 resource "cloudflare_zone" "bwdbinfo" {
-  account_id          = var.cloudflare.account_id
-  paused              = false
-  plan                = "free"
+  account = {
+    id = var.cloudflare.account_id
+  }
   type                = "full"
   vanity_name_servers = []
-  zone                = "bwdb.info"
+  name               = "bwdb.info"
 }
 
 # karlsen.app
 resource "cloudflare_zone" "karlsenapp" {
-  account_id          = var.cloudflare.account_id
-  paused              = false
-  plan                = "free"
+  account = {
+    id = var.cloudflare.account_id
+  }
   type                = "full"
   vanity_name_servers = []
-  zone                = "karlsen.app"
+  name               = "karlsen.app"
 }
 
 # karlsen.fr
 resource "cloudflare_zone" "karlsenfr" {
-  account_id          = var.cloudflare.account_id
-  paused              = false
-  plan                = "free"
+  account = {
+    id = var.cloudflare.account_id
+  }
   type                = "full"
   vanity_name_servers = []
-  zone                = "karlsen.fr"
+  name               = "karlsen.fr"
 }
 
 # karlsen.org
 resource "cloudflare_zone" "karlsenorg" {
-  account_id          = var.cloudflare.account_id
-  paused              = false
-  plan                = "free"
+  account = {
+    id = var.cloudflare.account_id
+  }
   type                = "full"
   vanity_name_servers = []
-  zone                = "karlsen.org"
+  name               = "karlsen.org"
 }
 
 # sebastka.no
 resource "cloudflare_zone" "sebastkano" {
-  account_id          = var.cloudflare.account_id
-  paused              = false
-  plan                = "free"
+  account = {
+    id = var.cloudflare.account_id
+  }
   type                = "full"
   vanity_name_servers = []
-  zone                = "sebastka.no"
+  name               = "sebastka.no"
 }
 
 # spkag.com
 resource "cloudflare_zone" "spkagcom" {
-  account_id          = var.cloudflare.account_id
-  paused              = false
-  plan                = "free"
+  account = {
+    id = var.cloudflare.account_id
+  }
   type                = "full"
   vanity_name_servers = []
-  zone                = "spkag.com"
+  name               = "spkag.com"
 }
