@@ -35,6 +35,10 @@ spec:
               - &CORP
                 name: Cross-Origin-Resource-Policy
                 value: same-origin
+              # - name: Reporting-Endpoints
+              #   value:
+              - name: Integrity-Policy
+                value: blocked-destinations=(script style),sources=(inline)
       backendRefs: &default-backendrefs
         - name: homepage-service
           port: 80
