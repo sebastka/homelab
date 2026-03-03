@@ -21,8 +21,7 @@ spec:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
             add:
-              - &CSP
-                name: Content-Security-Policy
+              - name: Content-Security-Policy
                 value: default-src 'none'; style-src-elem 'self'; script-src-elem 'self'; img-src 'self'; connect-src 'self'
               - &HSTS
                 name: Strict-Transport-Security
@@ -48,7 +47,9 @@ spec:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
             add:
-              - <<: [*CSP, *HSTS, *CTO, *XFO, *CORP]
+              - <<: [*HSTS, *CTO, *XFO, *CORP]
+              - name: Content-Security-Policy
+                value: default-src 'none';
               - name: Access-Control-Allow-Origin
                 value: '*'
       backendRefs: *default-backendrefs
