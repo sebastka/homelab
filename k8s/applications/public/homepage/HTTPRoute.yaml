@@ -18,8 +18,8 @@ spec:
             type: PathPrefix
             value: /
       filters:
-        - type: RequestHeaderModifier
-          requestHeaderModifier:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
             add:
               - name: Content-Security-Policy
                 value: default-src 'none';
