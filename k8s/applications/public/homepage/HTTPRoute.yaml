@@ -35,6 +35,9 @@ spec:
               - &CORP
                 name: Cross-Origin-Resource-Policy
                 value: same-origin
+              - &RP
+                name: Referrer-Policy
+                value: no-referrer
               # - name: Reporting-Endpoints
               #   value:
               - name: Integrity-Policy
@@ -55,6 +58,7 @@ spec:
               - *CTO
               - *XFO
               - *CORP
+              - *RP
               - name: Content-Security-Policy
                 value: default-src 'none';
               - name: Access-Control-Allow-Origin
