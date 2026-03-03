@@ -41,7 +41,7 @@ spec:
               # WKD: openpgpkey.karlsen.fr
               [ ! -d /openpgpkey ] || { rm -rf /openpgpkey/* /openpgpkey/.[!.]*; }
               mkdir -p /openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
-              touch /openpgpkey/index.html /openpgpkey/.well-known/openpgpkey/policy
+              touch /openpgpkey/index.html /openpgpkey/.well-known/openpgpkey/karlsen.fr/policy
               cp /karlsenfr/.well-known/openpgpkey/hu/* /openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
           securityContext:
             allowPrivilegeEscalation: false
