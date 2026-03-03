@@ -148,3 +148,19 @@ resource "cloudflare_record" "karlsenfr_srv_udp_stun" {
     target   = "turn.karlsen.fr"
   }
 }
+
+resource "cloudflare_record" "karlsenfr_srv_tcp_matrix" {
+  name    = "_matrix._tcp"
+  type    = "SRV"
+  zone_id = cloudflare_zone.karlsenfr.id
+
+  data {
+    service  = "_matrix"
+    proto    = "_tcp"
+    name     = cloudflare_zone.karlsenfr.zone
+    priority = 10
+    weight   = 1
+    port     = 443
+    target   = "matrix.karlsen.fr"
+  }
+}
