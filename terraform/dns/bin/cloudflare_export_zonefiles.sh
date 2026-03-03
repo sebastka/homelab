@@ -5,6 +5,7 @@ set -eu
 main()
 {
     fqdn="$1"
+    set -a; . ./.cloudflare.env; set +a
 
     sed 1d ../zones.csv | grep -v -E '^#' | grep ',cloudflare,' | grep -E "^$fqdn," | while IFS=, read _ registrar ns cf_zone_id; do
         # Is the NS provider Cloudflare?
