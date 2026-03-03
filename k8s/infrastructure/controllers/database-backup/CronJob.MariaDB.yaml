@@ -9,6 +9,9 @@ metadata:
   namespace: databases-backup
 spec:
   schedule: '0 2 * * *'
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: Replace
   jobTemplate:
     spec:
       template:
