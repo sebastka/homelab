@@ -47,7 +47,10 @@ spec:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
             add:
-              - <<: [*HSTS, *CTO, *XFO, *CORP]
+              - *HSTS
+              - *CTO
+              - *XFO
+              - *CORP
               - name: Content-Security-Policy
                 value: default-src 'none';
               - name: Access-Control-Allow-Origin
