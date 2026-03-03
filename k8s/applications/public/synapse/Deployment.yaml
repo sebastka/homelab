@@ -50,8 +50,9 @@ spec:
             # - configMapRef: {name: synapse-generate-env}
           volumeMounts:
             - {name: data-volume, mountPath: /data}
-            - {name: synapse-config, mountPath: /homeserver.yaml, subPath: homeserver.yaml}
-            - {name: synapse-config, mountPath: /karlsen.fr.signing.key, subPath: karlsen.fr.signing.key}
+            - {name: synapse-config, mountPath: /homeserver.yaml, subPath: homeserver.yaml, readOnly: true}
+            - {name: synapse-config, mountPath: /karlsen.fr.signing.key, subPath: karlsen.fr.signing.key, readOnly: true}
+            - {name: synapse-config, mountPath: /karlsen.fr.log.config, subPath: karlsen.fr.log.config, readOnly: true}
             - {name: tmp-volume, mountPath: /tmp}
             - {name: config-volume, mountPath: /config}
             - {name: log-volume, mountPath: /var/log}
