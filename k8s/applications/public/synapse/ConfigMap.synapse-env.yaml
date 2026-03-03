@@ -7,8 +7,8 @@ metadata:
 data:
   SYNAPSE_CONFIG_DIR: /config
   SYNAPSE_CONFIG_PATH: /homeserver.yaml
-  UID: '991'
-  GID: '991'
+  # UID: '991'
+  # GID: '991'
 ---
 apiVersion: v1
 kind: ConfigMap
