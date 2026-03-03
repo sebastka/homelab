@@ -34,7 +34,7 @@ spec:
           args:
             - |
               set -eux
-              # Hoempage: karlsen.fr
+              # Homepage: karlsen.fr
               [ ! -d /karlsenfr ] || { rm -rf /karlsenfr/* /karlsenfr/.[!.]*; }
               git -C /karlsenfr clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git .
               rm -rf /karlsenfr/.git /karlsenfr/.nojekyll /karlsenfr/README.md
