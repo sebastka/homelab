@@ -1,0 +1,18 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: headers
+  namespace: homepage
+spec:
+  description: Add headers
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: homepage
+  ingress:
+    - fromCIDR:
+        - 0.0.0.0/0
+      # toPorts:
+      #   - ports:
+      #     - port: http
+      #       protocol: TCP
