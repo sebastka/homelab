@@ -90,10 +90,10 @@ jobservice:
   resources:
     requests:
       # cpu: 100m
-      memory: 256Mi
+      memory: 512Mi
     limits:
       # cpu: 100m
-      memory: 256Mi
+      memory: 512Mi
 
 registry:
   replicas: 1
