@@ -41,7 +41,9 @@ data:
   'site.conf': |-
     server {
       listen 8080;
-      server_name www.karlsen.fr;
+      server_name karlsen.fr www.karlsen.fr
+                  karlsen.org www.karlsen.org
+                  karlsen.app www.karlsen.app;
 
       location ~ /(\.ht|\.git|wp) {
         deny  all;
