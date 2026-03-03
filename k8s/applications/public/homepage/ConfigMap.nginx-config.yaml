@@ -50,7 +50,26 @@ data:
       }
 
       location / {
-        root   /sebastka;
+        root   /karlsenfr;
+        index  index.html;
+      }
+
+      error_page   500 502 503 504  /50x.html;
+      location = /50x.html {
+        root   /usr/share/nginx/html;
+      }
+    }
+
+    server {
+      listen 8080;
+      server_name openpgpkey.karlsen.fr;
+
+      location ~ /(\.ht|\.git|wp) {
+        deny  all;
+      }
+
+      location / {
+        root   /openpgpkey;
         index  index.html;
       }
 

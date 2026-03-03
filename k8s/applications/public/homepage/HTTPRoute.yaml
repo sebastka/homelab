@@ -27,6 +27,7 @@ spec:
     - www.karlsen.org
     - karlsen.app
     - www.karlsen.app
+    - openpgpkey.karlsen.fr
   rules:
     - matches:
         - path:
