@@ -28,9 +28,7 @@ spec:
       containers:
         - name: nginx
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
-          # image: index.docker.io/matrixdotorg/synapse:sha-825f308
-          image: alpine:edge
-          command: [sleep, "infinity"]
+          image: index.docker.io/matrixdotorg/synapse:sha-825f308
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
