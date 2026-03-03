@@ -54,8 +54,10 @@ spec:
             - {name: synapse-config, mountPath: /karlsen.fr.signing.key, subPath: karlsen.fr.signing.key}
             - {name: tmp-volume, mountPath: /tmp}
             - {name: config-volume, mountPath: /config}
+            - {name: log-volume, mountPath: /var/log}
       volumes:
         - {name: data-volume, persistentVolumeClaim: {claimName: synapse-data-pvc}}
         - {name: synapse-config, secret: {secretName: synapse-config}}
         - {name: tmp-volume, emptyDir: {}}
         - {name: config-volume, emptyDir: {}}
+        - {name: log-volume, emptyDir: {}}
