@@ -38,6 +38,9 @@ spec:
               - &RP
                 name: Referrer-Policy
                 value: no-referrer
+              - &PP
+                name: Permissions-Policy
+                value: accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
               # - name: Reporting-Endpoints
               #   value:
               - name: Integrity-Policy
@@ -59,6 +62,7 @@ spec:
               - *XFO
               - *CORP
               - *RP
+              - *PP
               - name: Content-Security-Policy
                 value: default-src 'none';
               - name: Access-Control-Allow-Origin
