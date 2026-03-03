@@ -8,10 +8,25 @@ metadata:
     security-policy: httproute-allow-all
 spec:
   parentRefs:
+    - {namespace: gateway, name: internal, sectionName: https-karlsen-fr}
     - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-fr}
+    - {namespace: gateway, name: internal, sectionName: https-karlsen-org}
+    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-org}
+    - {namespace: gateway, name: internal, sectionName: https-karlsen-app}
+    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
+    - {namespace: gateway, name: external, sectionName: https-karlsen-fr}
     - {namespace: gateway, name: external, sectionName: https-wc-karlsen-fr}
+    - {namespace: gateway, name: external, sectionName: https-karlsen-org}
+    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-org}
+    - {namespace: gateway, name: external, sectionName: https-karlsen-app}
+    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
   hostnames:
+    - karlsen.fr
     - www.karlsen.fr
+    - karlsen.org
+    - www.karlsen.org
+    - karlsen.app
+    - www.karlsen.app
   rules:
     - matches:
         - path:
@@ -76,36 +91,3 @@ spec:
               - name: Access-Control-Allow-Origin
                 value: '*'
       backendRefs: *default-backendrefs
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: other-to-www-karlsen-fr
-  namespace: homepage
-  labels:
-    security-policy: httproute-allow-all
-spec:
-  parentRefs:
-    - {namespace: gateway, name: internal, sectionName: https-karlsen-fr}
-    - {namespace: gateway, name: internal, sectionName: https-karlsen-org}
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-org}
-    - {namespace: gateway, name: internal, sectionName: https-karlsen-app}
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
-    - {namespace: gateway, name: external, sectionName: https-karlsen-fr}
-    - {namespace: gateway, name: external, sectionName: https-karlsen-org}
-    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-org}
-    - {namespace: gateway, name: external, sectionName: https-karlsen-app}
-    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
-  hostnames:
-    - karlsen.fr
-    - karlsen.org
-    - www.karlsen.org
-    - karlsen.app
-    - www.karlsen.app
-  rules:
-    - filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            hostname: www.karlsen.fr
-            statusCode: 301
