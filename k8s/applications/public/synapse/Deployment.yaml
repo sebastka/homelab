@@ -1,5 +1,4 @@
 # https://github.com/element-hq/synapse/tree/develop/docker
-# https://github.com/element-hq/synapse/tree/develop/docker
 ---
 apiVersion: apps/v1
 kind: Deployment
