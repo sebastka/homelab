@@ -13,9 +13,6 @@ spec:
   template:
     metadata:
       namespace: lldap
-      labels:
-        app.kubernetes.io/name: lldap
-        app: lldap
     spec:
       securityContext:
         runAsNonRoot: true
