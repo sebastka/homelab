@@ -45,8 +45,8 @@ spec:
             - {name: ldaps, containerPort: 6360}
             - {name: http, containerPort: 17170}
           envFrom:
-            - configMapRef: {name: deployment-env}
-            - secretRef: {name: lldap-env}
+            - configMapRef: {name: lldap-env}
+            - secretRef: {name: lldap-secrets}
           volumeMounts:
             # - {name: tmp-volume, mountPath: /tmp}
             - {name: lldap-config, mountPath: /data/lldap_config.toml, subPath: lldap_config.toml, readOnly: true}

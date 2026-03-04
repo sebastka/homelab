@@ -36,12 +36,12 @@ spec:
               memory: 128Mi
           # ports: []
           envFrom:
-            - configMapRef: {name: deployment-env}
-            - secretRef: {name: lldap-env}
+            - configMapRef: {name: lldap-env}
+            - secretRef: {name: lldap-secrets}
             - configMapRef: {name: bootstrap-env}
           env:
             - {name: LLDAP_ADMIN_USERNAME, valueFrom: {configMapKeyRef: {name: lldap-env, key: LLDAP_LDAP_USER_DN}}}
-            - {name: LLDAP_ADMIN_PASSWORD, valueFrom: {secretKeyRef: {name: lldap-env, key: LLDAP_LDAP_USER_PASS}}}
+            - {name: LLDAP_ADMIN_PASSWORD, valueFrom: {secretKeyRef: {name: lldap-secrets, key: LLDAP_LDAP_USER_PASS}}}
           volumeMounts:
             # - {name: tmp-volume, mountPath: /tmp}
             - {name: lldap-config-volume, mountPath: /data/lldap_config.toml, subPath: lldap_config.toml, readOnly: true}

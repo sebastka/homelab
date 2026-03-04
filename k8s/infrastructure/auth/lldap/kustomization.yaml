@@ -7,12 +7,12 @@ generatorOptions:
 
 configMapGenerator:
   - {name: lldap-config, namespace: lldap, files: [lldap_config.toml=assets/lldap_config.toml]}
-  - {name: deployment-env, namespace: lldap, envs: [assets/lldap.env]}
+  - {name: lldap-env, namespace: lldap, envs: [assets/lldap.env]}
   - {name: bootstrap-env, namespace: lldap, envs: [assets/bootstrap.env]}
 
 resources:
   - Namespace.yaml
-  - SealedSecret.lldap-env.yaml
+  - SealedSecret.lldap-secrets.yaml
   - SealedSecret.bootstrap-schemas.yaml
   - Configmap.avatars.yaml
   # - Secret.ldap-karlsen-fr-certificate.yaml
