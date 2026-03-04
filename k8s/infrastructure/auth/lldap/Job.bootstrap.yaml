@@ -46,14 +46,14 @@ spec:
             - {name: lldap-config, mountPath: /data/lldap_config.toml, subPath: lldap_config.toml, readOnly: true}
             - {name: cert-volume, mountPath: /key.ldap-karlsen-fr.pem, subPath: tls.key, readOnly: true}
             - {name: cert-volume, mountPath: /cert.ldap-karlsen-fr.pem, subPath: tls.crt, readOnly: true}
-            - {name: bootstrap-volume, mountPath: /bootstrap/group-schemas/group-schemas.json, subPath: group-schemas.json, readOnly: true}
-            - {name: bootstrap-volume, mountPath: /bootstrap/group-configs/groups.json, subPath: groups.json, readOnly: true}
-            - {name: bootstrap-volume, mountPath: /bootstrap/user-schemas/user-schemas.json, subPath: user-schemas.json, readOnly: true}
-            - {name: bootstrap-volume, mountPath: /bootstrap/user-configs/users.json, subPath: users.json, readOnly: true}
+            - {name: bootstrap-schemas-volume, mountPath: /bootstrap/group-schemas/group-schemas.json, subPath: group-schemas.json, readOnly: true}
+            - {name: bootstrap-schemas-volume, mountPath: /bootstrap/group-configs/groups.json, subPath: groups.json, readOnly: true}
+            - {name: bootstrap-schemas-volume, mountPath: /bootstrap/user-schemas/user-schemas.json, subPath: user-schemas.json, readOnly: true}
+            - {name: bootstrap-schemas-volume, mountPath: /bootstrap/user-configs/users.json, subPath: users.json, readOnly: true}
             - {name: avatar-volume, mountPath: /avatars/sebastian.jpg, subPath: sebastian.jpg, readOnly: true}
       volumes:
         # - {name: tmp-volume, emptyDir: {}}
         - {name: lldap-config, configMap: {name: lldap-config}}
         - {name: cert-volume, secret: {secretName: ldap-karlsen-fr-certificate}}
-        - {name: bootstrap-volume, secret: {secretName: bootstrap-values}}
-        - {name: avatar-volume, configMap: {name: avatars}}
+        - {name: bootstrap-schemas-volume, secret: {secretName: bootstrap-schemas}}
+        - {name: avatars-volume, configMap: {name: avatars}}
