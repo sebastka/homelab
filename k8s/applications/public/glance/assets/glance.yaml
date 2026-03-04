@@ -67,6 +67,17 @@ pages:
 
       - size: small
         widgets:
+          - type: search
+            search-engine: https://searxng.karlsen.app/search?q={QUERY}
+            new-tab: true
+            autofocus: true
+            target: _blank
+            placeholder: Search the web...
+            bangs:
+            - title: YouTube
+              shortcut: "!yt"
+              url: https://www.youtube.com/results?search_query={QUERY}
+
           - type: weather
             location: Trondheim, Norway
             units: metric # alternatively "imperial"
