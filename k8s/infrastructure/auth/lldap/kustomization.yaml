@@ -21,6 +21,7 @@ resources:
   - SealedSecret.bootstrap-schemas.yaml
   # - Secret.ldap-karlsen-fr-certificate.yaml
   - Certificate.ldap-karlsen-fr.yaml
+  - Job.bootstrap.yaml
   - Deployment.yaml
   - Service.web.yaml
   - Service.ldap.yaml
