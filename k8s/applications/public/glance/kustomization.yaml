@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      app.kubernetes.io/name: glance
+      app: glance
+
+resources:
+  - Namespace.yaml
+  - ConfigMap.glance-config.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - HTTPRoute.yaml
