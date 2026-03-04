@@ -9,8 +9,6 @@ metadata:
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 spec:
   template:
-    metadata:
-      namespace: lldap
     spec:
       restartPolicy: OnFailure
       securityContext:
