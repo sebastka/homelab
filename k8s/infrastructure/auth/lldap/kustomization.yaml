@@ -1,0 +1,29 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      app.kubernetes.io/name: lldap
+      app: lldap
+
+configMapGenerator:
+  - {name: lldap-config, namespace: lldap, files: [lldap_config.toml=assets/lldap_config.toml]}
+  - {name: deployment-env, namespace: lldap, envs: [assets/Deployment.env]}
+  - {name: bootstrap-env, namespace: lldap, envs: [assets/bootstrap.env]}
+  - {name: avatars, namespace: lldap, files: [assets/sebastian.jpg]}
+
+resources:
+  - Namespace.yaml
+  - SealedSecret.lldap-env.yaml
+  - SealedSecret.bootstrap-schemas.yaml
+  # - Secret.ldap-karlsen-fr-certificate.yaml
+  - Certificate.ldap-karlsen-fr.yaml
+  - Deployment.yaml
+  - Service.web.yaml
+  - Service.ldap.yaml
+  - HTTPRoute.yaml
+  - TCPRoute.yaml
+  - TLSRoute.yaml

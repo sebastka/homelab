@@ -1,0 +1,16 @@
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TLSRoute
+metadata:
+  name: ldaps
+  namespace: lldap
+spec:
+  parentRefs:
+    - {namespace: gateway, name: internal, sectionName: ldaps}
+    # - {namespace: gateway, name: external, sectionName: ldaps}
+  hostnames:
+    - ldap.karlsen.fr
+  rules:
+    - backendRefs:
+        - name: ldaps
+          port: 636

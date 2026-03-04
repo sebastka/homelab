@@ -10,6 +10,8 @@ spec:
   destinations:
     - namespace: argocd
       server: '*'
+    - namespace: lldap
+      server: '*'
     - namespace: authelia
       server: '*'
   clusterResourceWhitelist:
