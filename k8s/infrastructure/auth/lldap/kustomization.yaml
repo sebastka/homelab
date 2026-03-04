@@ -6,12 +6,12 @@ configMapGenerator:
   - {name: lldap-config, namespace: lldap, files: [lldap_config.toml=assets/lldap_config.toml]}
   - {name: deployment-env, namespace: lldap, envs: [assets/Deployment.env]}
   - {name: bootstrap-env, namespace: lldap, envs: [assets/bootstrap.env]}
-  - {name: avatars, namespace: lldap, files: [sebastian.jpg=assets/sebastian.jpg]}
 
 resources:
   - Namespace.yaml
   - SealedSecret.lldap-env.yaml
   - SealedSecret.bootstrap-schemas.yaml
+  - Configmap.avatar-sebastian.yaml
   # - Secret.ldap-karlsen-fr-certificate.yaml
   - Certificate.ldap-karlsen-fr.yaml
   - Job.bootstrap.yaml
