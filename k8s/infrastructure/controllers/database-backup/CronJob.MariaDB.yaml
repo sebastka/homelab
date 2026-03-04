@@ -41,7 +41,7 @@ spec:
                     xz -6 "/tmp/${filename}.sql"
                     printf -- '%s - Dump file "/tmp/%s.sql" xz-compressed\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$filename"
 
-                    mv "/tmp/${filename}.sql.xz" /mnt/backup/mariadb/
+                    rsync "/tmp/${filename}.sql.xz" /mnt/backup/mariadb/
                     printf -- '%s - Dump file "/tmp/%s.sql.xz" moved to backup target. Done\n\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$filename"
                   done
               imagePullPolicy: Always
