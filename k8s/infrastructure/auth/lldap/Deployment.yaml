@@ -17,7 +17,6 @@ spec:
         app.kubernetes.io/name: lldap
         app: lldap
     spec:
-      restartPolicy: OnFailure
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
