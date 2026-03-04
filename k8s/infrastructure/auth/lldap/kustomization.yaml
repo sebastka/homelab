@@ -2,6 +2,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 configMapGenerator:
   - {name: lldap-config, namespace: lldap, files: [lldap_config.toml=assets/lldap_config.toml]}
   - {name: deployment-env, namespace: lldap, envs: [assets/Deployment.env]}
