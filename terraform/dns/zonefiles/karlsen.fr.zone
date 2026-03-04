@@ -1,6 +1,6 @@
 ;;
 ;; Domain:     karlsen.fr.
-;; Exported:   2026-03-03 21:29:52
+;; Exported:   2026-03-04 18:35:32
 ;;
 ;; This file is intended for use for informational and archival
 ;; purposes ONLY and MUST be edited before use on a production
@@ -24,7 +24,7 @@
 ;;
 ;; Use at your own risk.
 ;; SOA Record
-karlsen.fr	3600	IN	SOA	bethany.ns.cloudflare.com. dns.cloudflare.com. 2052423999 10000 2400 604800 3600
+karlsen.fr	3600	IN	SOA	bethany.ns.cloudflare.com. dns.cloudflare.com. 2052431593 10000 2400 604800 3600
 
 ;; NS Records
 karlsen.fr.	86400	IN	NS	bethany.ns.cloudflare.com.
@@ -42,6 +42,7 @@ karlsen.fr.	1	IN	CAA	128 issue "letsencrypt.org"
 auth.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false
 autoconfig.karlsen.fr.	1	IN	CNAME	autoconfig.domeneshop.no. ; cf_tags=cf-proxied:false
 git.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false
+ldap.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false
 matrix.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false
 openpgpkey.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false
 www.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false

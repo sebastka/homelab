@@ -39,6 +39,15 @@ resource "cloudflare_dns_record" "karlsenfr_cname_openpgpkey" {
   zone_id = cloudflare_zone.karlsenfr.id
 }
 
+resource "cloudflare_dns_record" "karlsenfr_cname_ldap" {
+  content = cloudflare_zone.karlsenfr.name
+  name    = "ldap"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  zone_id = cloudflare_zone.karlsenfr.id
+}
+
 resource "cloudflare_dns_record" "karlsenfr_cname_git" {
   content = cloudflare_zone.karlsenfr.name
   name    = "git"
