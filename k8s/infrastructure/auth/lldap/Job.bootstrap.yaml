@@ -43,7 +43,7 @@ spec:
             - {name: LLDAP_ADMIN_USERNAME, valueFrom: {configMapKeyRef: {name: lldap-env, key: LLDAP_LDAP_USER_DN}}}
             - {name: LLDAP_ADMIN_PASSWORD, valueFrom: {secretKeyRef: {name: lldap-secrets, key: LLDAP_LDAP_USER_PASS}}}
           volumeMounts:
-            # - {name: tmp-volume, mountPath: /tmp}
+            - {name: tmp-volume, mountPath: /tmp}
             - {name: lldap-config-volume, mountPath: /data/lldap_config.toml, subPath: lldap_config.toml, readOnly: true}
             - {name: cert-volume, mountPath: /key.ldap-karlsen-fr.pem, subPath: tls.key, readOnly: true}
             - {name: cert-volume, mountPath: /cert.ldap-karlsen-fr.pem, subPath: tls.crt, readOnly: true}
@@ -53,7 +53,7 @@ spec:
             - {name: bootstrap-schemas-volume, mountPath: /bootstrap/user-configs/users.json, subPath: users.json, readOnly: true}
             - {name: avatars-volume, mountPath: /avatars/sebastian.jpg, subPath: sebastian.jpg, readOnly: true}
       volumes:
-        # - {name: tmp-volume, emptyDir: {}}
+        - {name: tmp-volume, emptyDir: {}}
         - {name: lldap-config-volume, configMap: {name: lldap-config}}
         - {name: cert-volume, secret: {secretName: ldap-karlsen-fr-certificate}}
         - {name: bootstrap-schemas-volume, secret: {secretName: bootstrap-schemas}}
