@@ -7,7 +7,7 @@ generatorOptions:
 
 configMapGenerator:
   - {name: lldap-config, namespace: lldap, files: [lldap_config.toml=assets/lldap_config.toml]}
-  - {name: deployment-env, namespace: lldap, envs: [assets/Deployment.env]}
+  - {name: deployment-env, namespace: lldap, envs: [assets/lldap.env]}
   - {name: bootstrap-env, namespace: lldap, envs: [assets/bootstrap.env]}
 
 resources:
