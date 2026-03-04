@@ -34,12 +34,14 @@ pages:
 
           - type: twitch-channels
             channels:
-              - theprimeagen
-              - j_blow
-              - giantwaffle
-              - cohhcarnage
+              # - theprimeagen
+              # - j_blow
+              # - giantwaffle
+              # - cohhcarnage
+              - sylvainlyve
+              - chrislannes
               - christitustech
-              - EJ_SA
+              # - EJ_SA
 
       - size: full
         widgets:
