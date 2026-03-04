@@ -9,9 +9,14 @@ labels:
       app.kubernetes.io/name: glance
       app: glance
 
+configMapGenerator:
+  - name: glance-config
+    namespace: glance
+    files:
+      - glance.yaml=assets/glance.yaml
+
 resources:
   - Namespace.yaml
-  - ConfigMap.glance-config.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
