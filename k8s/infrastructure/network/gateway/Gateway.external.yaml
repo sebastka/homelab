@@ -27,6 +27,23 @@ spec:
         namespaces:
           from: All
 
+    # - name: ldap
+    #   protocol: TCP
+    #   port: 636
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
+
+    # - name: ldaps
+    #   protocol: TLS
+    #   port: 636
+    #   hostname: '*.karlsen.fr'
+    #   tls:
+    #     mode: Passthrough
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
+
     - name: tls-wc-karlsen-fr
       protocol: TLS
       port: 443
