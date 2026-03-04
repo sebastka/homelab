@@ -74,9 +74,15 @@ pages:
             target: _blank
             placeholder: Search the web...
             bangs:
-            - title: YouTube
-              shortcut: "!yt"
-              url: https://www.youtube.com/results?search_query={QUERY}
+              - title: Google
+                shortcut: "!g"
+                url: https://www.google.com/search?q={QUERY}
+              - title: YouTube
+                shortcut: "!y"
+                url: https://www.youtube.com/results?search_query={QUERY}
+              - title: Wikipedia
+                shortcut: "!w"
+                url: https://en.wikipedia.org/wiki/Special:Search?search={QUERY}
 
           - type: weather
             location: Trondheim, Norway
