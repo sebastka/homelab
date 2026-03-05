@@ -4,19 +4,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment
+  name: website
   namespace: homepage
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: homepage
+      app.kubernetes.io/name: homepage
   template:
     metadata:
       namespace: homepage
       labels:
         app.kubernetes.io/name: homepage
-        app: homepage
     spec:
       imagePullSecrets:
         - name: dhi-io-registry
@@ -26,8 +25,7 @@ spec:
         runAsGroup: 65532
         fsGroup: 65532
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+        seccompProfile: {type: RuntimeDefault}
       initContainers:
         - name: git-cloner
           image: alpine/git:latest
@@ -50,15 +48,10 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 10m
-              memory: 24Mi
-            limits:
-              # cpu: 100m
-              memory: 24Mi
+            requests: {memory: 24Mi}
+            limits: {memory: 24Mi}
           volumeMounts:
             - {name: karlsenfr-volume, mountPath: /karlsenfr}
             - {name: other-volume, mountPath: /other}
@@ -72,18 +65,12 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 10m
-              memory: 12Mi
-            limits:
-              # cpu: 100m
-              memory: 12Mi
+            requests: {memory: 12Mi}
+            limits: {memory: 12Mi}
           ports:
-            - name: http
-              containerPort: 8080
+            - {name: http, containerPort: 8080}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: karlsenfr-volume, mountPath: /karlsenfr, readOnly: true}
