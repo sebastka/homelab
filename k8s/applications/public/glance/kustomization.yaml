@@ -1,13 +1,16 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: glance
 
 labels:
   - includeSelectors: true
     includeTemplates: true
     pairs:
       app.kubernetes.io/name: glance
-      app: glance
+
+generatorOptions:
+  disableNameSuffixHash: true
 
 configMapGenerator:
   - name: glance-config

@@ -9,13 +9,12 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: glance
+      app.kubernetes.io/name: glance
   template:
     metadata:
       namespace: glance
       labels:
         app.kubernetes.io/name: glance
-        app: glance
     spec:
       securityContext:
         runAsNonRoot: true
@@ -23,8 +22,7 @@ spec:
         runAsGroup: 65532
         fsGroup: 65532
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+        seccompProfile: {type: RuntimeDefault}
       containers:
         - name: glance
           # Dockerfile: https://github.com/glanceapp/glance/blob/main/Dockerfile
@@ -34,18 +32,12 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 10m
-              memory: 64Mi
-            limits:
-              # cpu: 100m
-              memory: 64Mi
+            requests: {memory: 64Mi}
+            limits: {memory: 64Mi}
           ports:
-            - name: http
-              containerPort: 8080
+            - {name: http, containerPort: 8080}
           volumeMounts:
             - {name: glance-config-volume, mountPath: /glance.yaml, subPath: 'glance.yaml', readOnly: true}
       volumes:
