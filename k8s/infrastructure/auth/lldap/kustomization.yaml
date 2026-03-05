@@ -21,7 +21,6 @@ resources:
   - Namespace.yaml
   - SealedSecret.lldap-secrets.yaml
   - SealedSecret.bootstrap-schemas.yaml
-  - Configmap.avatars.yaml
   # - Secret.ldap-karlsen-fr-certificate.yaml
   - Certificate.ldap-karlsen-fr.yaml
   - Job.bootstrap.yaml
