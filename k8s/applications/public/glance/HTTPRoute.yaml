@@ -18,7 +18,7 @@ spec:
           responseHeaderModifier:
             add:
               # - {name: Access-Control-Allow-Origin, value: '*'}
-              - {name: Content-Security-Policy, value: "default-src 'none'; style-src-elem 'self' 'unsafe-inline'; style-src-attr 'self' 'unsafe-inline'; script-src-elem 'self'; img-src 'self';"}
+              - {name: Content-Security-Policy, value: "default-src 'none'; style-src-elem 'self' 'unsafe-inline' 'unsafe-hashes'; style-src-attr 'self' 'unsafe-inline'; script-src-elem 'self' 'unsafe-inline'; img-src 'self';"}
               - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
               - {name: X-Content-Type-Options, value: nosniff}
               - {name: X-Frame-Options, value: DENY}
