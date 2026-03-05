@@ -72,6 +72,9 @@ pages:
           - type: group
             widgets:
               - type: reddit
+                subreddit: kubernetes
+                show-thumbnails: true
+              - type: reddit
                 subreddit: homelab
                 show-thumbnails: true
               - type: reddit
