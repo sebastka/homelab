@@ -13,8 +13,8 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - name: lldap-config
-    namespace: lldap
+  - name: nginx-config
+    namespace: homepage
     files:
       - nginx.custom.conf=assets/nginx.custom.conf
       - sites.conf=assets/sites.conf
