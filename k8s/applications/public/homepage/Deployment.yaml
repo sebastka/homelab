@@ -74,7 +74,7 @@ spec:
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: karlsenfr-volume, mountPath: /karlsenfr, readOnly: true}
-            - {name: other-volume, mountPath: /other}
+            - {name: other-volume, mountPath: /other, readOnly: true}
             - {name: openpgpkey-volume, mountPath: /openpgpkey, readOnly: true}
             - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: 'nginx.custom.conf', readOnly: true}
             - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/sites.conf, subPath: 'sites.conf', readOnly: true}
