@@ -1,4 +1,5 @@
 # https://hub.docker.com/hardened-images/catalog/dhi/nginx/images/nginx%2Fdebian-13%2Fmainline/sha256-12e286038641ad2919be50aec641eb6eabfc7f68d1ad8a8991cf6b8a922b2bf2/specifications
+# Set up redirections in html because of HTST preload requirements on headers
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,16 +35,18 @@ spec:
           args:
             - |
               set -eux
-              # Homepage: karlsen.fr
-              [ ! -d /karlsenfr ] || { rm -rf /karlsenfr/* /karlsenfr/.[!.]*; }
+              # Clean up volumes
+              for d in karlsenfr other openpgpkey; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
+              # Homepage: www.karlsen.fr
               git -C /karlsenfr clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git .
               rm -rf /karlsenfr/.git /karlsenfr/.nojekyll /karlsenfr/README.md
+              # Other tlds (org|app) and karlsen.fr:
+              printf -- '<!DOCTYPE html><html lang="en"><head><title>Karlsen.fr</title><meta http-equiv="refresh" content="0; URL=https://www.karlsen.fr"></head></html>' >/other/index.html
               # WKD: openpgpkey.karlsen.fr
-              [ ! -d /openpgpkey ] || { rm -rf /openpgpkey/* /openpgpkey/.[!.]*; }
               mkdir -p /openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
-              touch /openpgpkey/.well-known/openpgpkey/karlsen.fr/policy
-              printf -- '<!DOCTYPE html><html lang="en"><head><title>Karlsen.fr | WKD</title><meta http-equiv="refresh" content="0; URL=https://www.karlsen.fr"></head></html>' >/openpgpkey/index.html
+              cp /other/index.html /openpgpkey/index.html
               cp /karlsenfr/.well-known/openpgpkey/hu/* /openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
+              touch /openpgpkey/.well-known/openpgpkey/karlsen.fr/policy
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -57,8 +60,9 @@ spec:
               # cpu: 100m
               memory: 24Mi
           volumeMounts:
-            - {name: git-karlsenfr-volume, mountPath: /karlsenfr}
-            - {name: git-openpgpkey-volume, mountPath: /openpgpkey}
+            - {name: karlsenfr-volume, mountPath: /karlsenfr}
+            - {name: other-volume, mountPath: /other}
+            - {name: openpgpkey-volume, mountPath: /openpgpkey}
       containers:
         - name: nginx
           # Dockerfile: https://hub.docker.com/hardened-images/catalog/dhi/nginx/images/nginx%2Falpine-3.23%2Fmainline/sha256-838bfb5a32b0d803389b6ee72ed411c066b3b49301ecdd8e0d7469bca06c2f77/specifications
@@ -82,12 +86,14 @@ spec:
               containerPort: 8080
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
-            - {name: git-karlsenfr-volume, mountPath: /karlsenfr, readOnly: true}
-            - {name: git-openpgpkey-volume, mountPath: /openpgpkey, readOnly: true}
+            - {name: karlsenfr-volume, mountPath: /karlsenfr, readOnly: true}
+            - {name: other-volume, mountPath: /other}
+            - {name: openpgpkey-volume, mountPath: /openpgpkey, readOnly: true}
             - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: 'nginx.custom.conf', readOnly: true}
-            - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/site.conf, subPath: 'site.conf', readOnly: true}
+            - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/sites.conf, subPath: 'sites.conf', readOnly: true}
       volumes:
-        - {name: git-karlsenfr-volume, emptyDir: {}}
-        - {name: git-openpgpkey-volume, emptyDir: {}}
+        - {name: karlsenfr-volume, emptyDir: {}}
+        - {name: other-volume, emptyDir: {}}
+        - {name: openpgpkey-volume, emptyDir: {}}
         - {name: tmp-volume, emptyDir: {}}
         - {name: nginx-config-volume, configMap: {name: nginx-config}}

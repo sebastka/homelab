@@ -9,6 +9,16 @@ labels:
       app.kubernetes.io/name: homepage
       app: homepage
 
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: lldap-config
+    namespace: lldap
+    files:
+      - nginx.custom.conf=assets/nginx.custom.conf
+      - sites.conf=assets/sites.conf
+
 resources:
   - Namespace.yaml
   - SealedSecret.dhi-io-registry.yaml
