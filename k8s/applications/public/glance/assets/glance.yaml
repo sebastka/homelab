@@ -80,6 +80,12 @@ pages:
               - type: reddit
                 subreddit: technology
                 show-thumbnails: true
+              - type: reddit
+                subreddit: norge
+                show-thumbnails: true
+              - type: reddit
+                subreddit: norske
+                show-thumbnails: true
 
       - size: small
         widgets:
