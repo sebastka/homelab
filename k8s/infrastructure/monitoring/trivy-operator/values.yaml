@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=
+# https://github.com/aquasecurity/trivy-operator/tree/main/deploy/helm
+---
+
+trivy:
+  storageClassEnabled: false  # Use emptydir
+  resources:
+    requests: {memory: 128Mi}
+    limits: {memory: 128Mi}
+  # githubToken:
+  server:
+    resources:
+      requests: {memory: 512Mi}
+      limits: {memory: 512Mi}
+
+resources:
+  requests: {memory: 128Mi}
+  limits: {memory: 128Mi}
