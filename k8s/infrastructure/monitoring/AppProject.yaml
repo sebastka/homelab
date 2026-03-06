@@ -14,8 +14,6 @@ spec:
       server: '*'
     - namespace: metrics-server
       server: '*'
-    - namespace: trivy-system
-      server: '*'
     - namespace: grafana
       server: '*'
     - namespace: kube-prometheus-stack
