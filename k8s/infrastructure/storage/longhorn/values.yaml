@@ -30,4 +30,15 @@ persistence:
 # https://github.com/longhorn/longhorn/issues/8707
 preUpgradeChecker:
   jobEnabled: false
-  # upgradeVersionCheck: false
+  upgradeVersionCheck: false
+
+# Longhorn 11.0 memory leak hotfix
+# https://github.com/longhorn/longhorn/issues/12573#issuecomment-3917732660
+image:
+  longhorn:
+    manager:
+      tag: v1.11.0-hotfix-1
+    instanceManager:
+      tag: v1.11.0-hotfix-1
+upgradeCheck:
+  enabled: false
