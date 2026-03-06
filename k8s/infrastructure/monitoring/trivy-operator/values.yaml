@@ -4,6 +4,7 @@
 
 trivy:
   storageClassEnabled: false  # Use emptydir
+  slow: true
   resources:
     requests: {memory: 128Mi}
     limits: {memory: 128Mi}
