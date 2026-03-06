@@ -10,9 +10,9 @@ trivy:
   # githubToken:
   server:
     resources:
-      requests: {memory: 512Mi}
-      limits: {memory: 512Mi}
+      requests: {memory: 1024Mi}
+      limits: {memory: 1024Mi}
 
 resources:
-  requests: {memory: 128Mi}
-  limits: {memory: 128Mi}
+  requests: {memory: 256Mi}
+  limits: {memory: 256Mi}
