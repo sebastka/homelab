@@ -13,6 +13,6 @@ trivy:
       requests: {memory: 1024Mi}
       limits: {memory: 1024Mi}
 
-resources:
-  requests: {memory: 256Mi}
-  limits: {memory: 256Mi}
+# resources:
+#   requests: {memory: 256Mi}
+#   limits: {memory: 256Mi}
