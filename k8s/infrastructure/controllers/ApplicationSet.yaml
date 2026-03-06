@@ -13,6 +13,8 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/infrastructure/controllers/*
+          - path: k8s/infrastructure/controllers/security-profiles-operator
+            exclude: true
   template:
     metadata:
       name: '{{ path.basename }}'
