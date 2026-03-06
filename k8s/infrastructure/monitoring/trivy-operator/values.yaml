@@ -6,8 +6,8 @@ trivy:
   storageClassEnabled: false  # Use emptydir
   slow: true
   resources:
-    requests: {memory: 128Mi}
-    limits: {memory: 128Mi}
+    requests: {memory: 1024Mi}
+    limits: {memory: 1024Mi}
   # githubToken:
   server:
     resources:
