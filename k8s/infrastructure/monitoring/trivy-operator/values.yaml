@@ -4,15 +4,16 @@
 
 trivy:
   storageClassEnabled: false  # Use emptydir
-  slow: true
+  # slow: true
+  parallel: 1
   resources:
-    requests: {memory: 1024Mi}
-    limits: {memory: 1024Mi}
+    requests: {cpu: 100m, memory: 1024Mi}
+    limits: {cpu: 500m, memory: 1024Mi}
   # githubToken:
   server:
     resources:
-      requests: {memory: 1024Mi}
-      limits: {memory: 1024Mi}
+      requests: {cpu: 200m, memory: 1024Mi}
+      limits: {cpu: 1, memory: 1024Mi}
 
 # resources:
 #   requests: {memory: 256Mi}
