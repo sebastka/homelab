@@ -43,12 +43,13 @@ spec:
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: web, kind: Service, port: 80}]
-      # filters:
-      #   - type: ResponseHeaderModifier
-      #     responseHeaderModifier:
-      #       add:
-      #         # - {name: Access-Control-Allow-Origin, value: '*'}
-      #         # - *CSP
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              # - {name: Access-Control-Allow-Origin, value: '*'}
+              - {name: Content-Security-Policy, value: "default-src 'none'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
+      #         - *CSP
       #         - *HSTS
       #         - *XCTO
       #         - *XFO
