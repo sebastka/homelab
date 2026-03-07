@@ -1,19 +1,19 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: paperless
 
 labels:
   - includeSelectors: true
     includeTemplates: true
     pairs:
       app.kubernetes.io/name: paperless
-      app: paperless
+
+generatorOptions:
+  disableNameSuffixHash: true
 
 configMapGenerator:
-  - name: paperless-config
-    namespace: paperless
-    envs:
-      - paperless.env
+  - {namespace: paperless, name: paperless-env, envs: [assets/paperless.env]}
 
 resources:
   - Namespace.yaml

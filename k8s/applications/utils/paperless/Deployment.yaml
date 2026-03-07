@@ -9,128 +9,140 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: paperless
+      app.kubernetes.io/name: paperless
   template:
     metadata:
       namespace: paperless
       labels:
         app.kubernetes.io/name: paperless
-        app: paperless
     spec:
       securityContext:
         runAsNonRoot: true
-        # runAsUser: 999
-        # runAsGroup: 999
-        # fsGroup: 999
-        # fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
       containers:
-        - name: gotenberg
-          image: index.docker.io/gotenberg/gotenberg:latest
-          imagePullPolicy: Always
+        - name: paperless-consumer
+          # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
+          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          command: [python3, "manage.py", "document_consumer"]
           securityContext:
-            runAsUser: 1001
-            runAsGroup: 1001
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 250m
-              memory: 128Mi
-            limits:
-              # cpu: 500m
-              memory: 128Mi
+            requests: {memory: 512Mi}
+            limits: {memory: 512Mi}
+          envFrom:
+            - configMapRef: {name: paperless-config}
+            - secretRef: {name: paperless-secrets}
+          ports:
+            - {name: http, containerPort: 8000}
+          volumeMounts:
+            - {name: paperless-data, mountPath: /data/data}
+            - {name: paperless-media, mountPath: /data/media}
+            - {name: paperless-export, mountPath: /data/export}
+            - {name: paperless-consume, mountPath: /data/consume}
+        - name: paperless-celery-beat
+          # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
+          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 512Mi}
+            limits: {memory: 512Mi}
+          envFrom:
+            - configMapRef: {name: paperless-config}
+            - secretRef: {name: paperless-secrets}
+          ports:
+            - {name: http, containerPort: 8000}
+          volumeMounts:
+            - {name: paperless-data, mountPath: /data/data}
+            - {name: paperless-media, mountPath: /data/media}
+            - {name: paperless-export, mountPath: /data/export}
+            - {name: paperless-consume, mountPath: /data/consume}
+        - name: paperless-celery-worker
+          # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
+          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          command: [celery, "--app", "paperless", "worker", "--loglevel", "INFO"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 512Mi}
+            limits: {memory: 512Mi}
+          envFrom:
+            - configMapRef: {name: paperless-config}
+            - secretRef: {name: paperless-secrets}
+          ports:
+            - {name: http, containerPort: 8000}
+          volumeMounts:
+            - {name: paperless-data, mountPath: /data/data}
+            - {name: paperless-media, mountPath: /data/media}
+            - {name: paperless-export, mountPath: /data/export}
+            - {name: paperless-consume, mountPath: /data/consume}
+        - name: paperless-celery-webserver
+          # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
+          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          command: [granian, "--interface", "asginl", "--ws", "paperless.asgi:application"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 512Mi}
+            limits: {memory: 512Mi}
+          envFrom:
+            - configMapRef: {name: paperless-config}
+            - secretRef: {name: paperless-secrets}
+          env:
+            - {name: GRANIAN_HOST, value: '$(PAPERLESS_BIND_ADDR)'}
+            - {name: GRANIAN_PORT, value: '$(PAPERLESS_PORT)'}
+            - {name: GRANIAN_WORKERS, value: '$(PAPERLESS_WEBSERVER_WORKERS)'}
+            - {name: GRANIAN_URL_PATH_PREFIX, value: '$(PAPERLESS_FORCE_SCRIPT_NAME)'}
+          ports:
+            - {name: http, containerPort: 8000}
+          volumeMounts:
+            - {name: paperless-data, mountPath: /data/data}
+            - {name: paperless-media, mountPath: /data/media}
+            - {name: paperless-export, mountPath: /data/export}
+            - {name: paperless-consume, mountPath: /data/consume}
+        - name: gotenberg
+          # Dockerfile: https://github.com/gotenberg/gotenberg/blob/main/build/Dockerfile
+          image: index.docker.io/gotenberg/gotenberg:latest
           args:
             - gotenberg
             - --chromium-disable-javascript=true
             - --chromium-allow-list=file:///tmp/.*
-          ports:
-            - containerPort: 3000
-
-        - name: tika
-          image: index.docker.io/apache/tika:latest
-          imagePullPolicy: Always
           securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+            runAsUser: 1000
+            runAsGroup: 1000
+          resources:
+            requests: {memory: 128Mi}
+            limits: {memory: 128Mi}
+        - name: tika
+          # Dockerfile: https://github.com/apache/tika-docker/blob/main/minimal/Dockerfile
+          image: index.docker.io/apache/tika:latest
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
             runAsUser: 35002
             runAsGroup: 35002
-            allowPrivilegeEscalation: false
-            # readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
           resources:
-            requests:
-              # cpu: 250m
-              memory: 256Mi
-            limits:
-              # cpu: 500m
-              memory: 256Mi
-          ports:
-            - containerPort: 9998
-
-        - name: paperless
-          image: ghcr.io/paperless-ngx/paperless-ngx:latest
-          imagePullPolicy: Always
-          securityContext:
-            runAsNonRoot: false
-            allowPrivilegeEscalation: false
-            # readOnlyRootFilesystem: true
-            # capabilities:
-            #   drop: ["ALL"]
-          resources:
-            requests:
-              # cpu: 250m
-              memory: 1024Mi
-            limits:
-              # cpu: 500m
-              memory: 1024Mi
-          envFrom:
-            - configMapRef:
-                name: paperless-config
-          env:
-            - name: PAPERLESS_REDIS
-              valueFrom:
-                secretKeyRef:
-                  name: paperless-secrets
-                  key: paperless-redis
-            - name: PAPERLESS_DBPASS
-              valueFrom:
-                secretKeyRef:
-                  name: paperless-secrets
-                  key: paperless-dbpass
-            - name: PAPERLESS_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: paperless-secrets
-                  key: paperless-secret-key
-            - name: PAPERLESS_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: paperless-secrets
-                  key: paperless-admin-password
-          ports:
-            - containerPort: 8000
-          volumeMounts:
-            - mountPath: /data/data
-              name: paperless-data
-            - mountPath: /data/media
-              name: paperless-media
-            - mountPath: /data/export
-              name: paperless-export
-            - mountPath: /data/consume
-              name: paperless-consume
+            requests: {memory: 256Mi}
+            limits: {memory: 256Mi}
       volumes:
-        - name: paperless-consume
-          persistentVolumeClaim:
-            claimName: longhorn-paperless-consume-pvc
-        - name: paperless-data
-          persistentVolumeClaim:
-            claimName: longhorn-paperless-data-pvc
-        - name: paperless-export
-          persistentVolumeClaim:
-            claimName: longhorn-paperless-export-pvc
-        - name: paperless-media
-          persistentVolumeClaim:
-            claimName: longhorn-paperless-media-pvc
+        - {name: paperless-consume, persistentVolumeClaim: {claimName: longhorn-paperless-consume-pvc}}
+        - {name: paperless-data, persistentVolumeClaim: {claimName: longhorn-paperless-data-pvc}}
+        - {name: paperless-export, persistentVolumeClaim: {claimName: longhorn-paperless-export-pvc}}
+        - {name: paperless-media, persistentVolumeClaim: {claimName: longhorn-paperless-media-pvc}}
