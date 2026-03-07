@@ -1,7 +1,6 @@
 # Configuration file for Synapse.
 # https://github.com/element-hq/synapse/blob/develop/docker/conf/homeserver.yaml
 # https://element-hq.github.io/synapse/latest/
----
 
 ## Server ##
 server_name: karlsen.fr
