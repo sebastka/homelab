@@ -26,5 +26,5 @@ spec:
               - {name: Cross-Origin-Opener-Policy, value: same-origin}
               - {name: Referrer-Policy, value: no-referrer}
               # - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}  # Already set by application
-              - {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
+              - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
               # - {name: Reporting-Endpoints, value: ''}
