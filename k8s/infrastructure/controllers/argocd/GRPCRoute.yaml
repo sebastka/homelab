@@ -1,3 +1,4 @@
+# https://github.com/vehagn/homelab/blob/main/k8s/infra/controllers/argocd/grpc-route.yaml
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: GRPCRoute
@@ -10,5 +11,5 @@ spec:
   hostnames:
     - argocd.talmox.hera.home.karlsen.fr
   rules:
-    - matches: [headers: {name: Content-Type, value: application/grpc}]
+    - matches: [headers: [{name: Content-Type, value: application/grpc}]]
       backendRefs: [{name: argocd-server-grpc, kind: Service, port: 80}]
