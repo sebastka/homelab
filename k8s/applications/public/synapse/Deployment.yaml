@@ -27,6 +27,8 @@ spec:
         - name: synapse
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
           image: index.docker.io/matrixdotorg/synapse:sha-825f308
+          command: [/start.py]
+          args: [--config-directory, /config]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -36,6 +38,7 @@ spec:
             limits: {memory: 256Mi}
           ports:
             - {name: http, containerPort: 18080}
+            # - {name: metrics, containerPort: 19090}
           envFrom:
             - configMapRef: {name: common-env}
             - configMapRef: {name: run-env}
