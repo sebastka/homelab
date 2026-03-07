@@ -1,9 +1,8 @@
-# https://hub.docker.com/hardened-images/catalog/dhi/nginx/images/nginx%2Fdebian-13%2Fmainline/sha256-12e286038641ad2919be50aec641eb6eabfc7f68d1ad8a8991cf6b8a922b2bf2/specifications
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment
+  name: glance
   namespace: glance
 spec:
   replicas: 1
