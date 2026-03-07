@@ -99,10 +99,9 @@ spec:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           env:
-            - {name: GRANIAN_HOST, value: '$(PAPERLESS_BIND_ADDR)'}
-            - {name: GRANIAN_PORT, value: '$(PAPERLESS_PORT)'}
-            - {name: GRANIAN_WORKERS, value: '$(PAPERLESS_WEBSERVER_WORKERS)'}
-            - {name: GRANIAN_URL_PATH_PREFIX, value: '$(PAPERLESS_FORCE_SCRIPT_NAME)'}
+            - {name: GRANIAN_HOST, value: '0.0.0.0'}
+            - {name: GRANIAN_PORT, value: '8000'}
+            - {name: GRANIAN_WORKERS, value: '1'}
           ports:
             - {name: http, containerPort: 8000}
           volumeMounts:
