@@ -1,18 +1,24 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: searxng
 
 labels:
   - includeSelectors: true
     includeTemplates: true
     pairs:
       app.kubernetes.io/name: searxng
-      app: searxng
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - {namespace: searxng, name: searxng-env, envs: [assets/searxng.env]}
+  - {namespace: searxng, name: searxng-config, file: [settings.yaml=assets/settings.yaml, limiter.toml=assets/limiter.toml]}
 
 resources:
   - Namespace.yaml
   - SealedSecret.searxng-secrets.yaml
-  - ConfigMap.settings.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml

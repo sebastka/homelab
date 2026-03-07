@@ -8,13 +8,12 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: searxng
+      app.kubernetes.io/name: searxng
   template:
     metadata:
       namespace: searxng
       labels:
         app.kubernetes.io/name: searxng
-        app: searxng
     spec:
       securityContext:
         runAsNonRoot: true
@@ -22,70 +21,30 @@ spec:
         runAsGroup: 977
         fsGroup: 977
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+        seccompProfile: {type: RuntimeDefault}
       containers:
         - name: searxng
+          # Dockerfile: https://github.com/searxng/searxng/blob/master/container/dist.dockerfile
           image: docker.io/searxng/searxng:latest
           command: ["/usr/local/searxng/.venv/bin/granian", "searx.webapp:app"]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 10m
-              memory: 256Mi
-            limits:
-              # cpu: 100m
-              memory: 256Mi
-          env:
-            - name: SEARXNG_BASE_URL
-              value: https://searxng.karlsen.app
-            - name: SEARXNG_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: searxng-secrets
-                  key: searxng-secret
-            - name: SEARXNG_PUBLIC_INSTANCE
-              value: 'true'
-            - name: SEARXNG_VALKEY_URL
-              value: valkey://localhost:6379/0
-            # - name: FORCE_OWNERSHIP
-            #   value: 'false'
+            requests: {memory: 256Mi}
+            limits: {memory: 256Mi}
+          envFrom:
+            - configMapRef: {name: searxng-env}
+            - secretRef: {name: searxng-secrets}
           ports:
-            - name: http
-              containerPort: 8080
+            - {name: http, containerPort: 8080}
           volumeMounts:
-            - {name: searxng-config-volume, mountPath: /etc/searxng/settings.yml, subPath: settings.yml, readOnly: true}
-            - {name: searxng-config-volume, mountPath: /etc/searxng/limiter.toml, subPath: limiter.toml, readOnly: true}
-            - {name: cache-volume, mountPath: /var/cache/searxng}
             - {name: tmp-volume, mountPath: /tmp}
-        - name: valkey
-          image: docker.io/valkey/valkey:9.0-alpine3.23
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
-            runAsUser: 999
-            runAsGroup: 1000
-          resources:
-            requests:
-              # cpu: 10m
-              memory: 64Mi
-            limits:
-              # cpu: 100m
-              memory: 64Mi
-          # env:
-          #   - name: VALKEY_EXTRA_FLAGS
-          #     value:
-          # ports:
-          #   - name: valkey
-          #     containerPort: 6379
+            - {name: cache-volume, mountPath: /var/cache/searxng}
+            - {name: searxng-config-volume, mountPath: /etc/searxng/settings.yml, subPath: settings.yaml, readOnly: true}
+            - {name: searxng-config-volume, mountPath: /etc/searxng/limiter.toml, subPath: limiter.toml, readOnly: true}
       volumes:
-        - {name: etc-volume, emptyDir: {}}
-        - {name: searxng-config-volume, configMap: {name: searxng-settings}}
-        - {name: cache-volume, emptyDir: {}}  # Use Longhorn if persistent data is needed
         - {name: tmp-volume, emptyDir: {}}
+        - {name: cache-volume, emptyDir: {}}  # Use Longhorn if persistent data is needed
+        - {name: searxng-config-volume, configMap: {name: searxng-settings}}
