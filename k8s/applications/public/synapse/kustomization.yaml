@@ -21,7 +21,6 @@ configMapGenerator:
     files:
       - homeserver.yaml=assets/homeserver.yaml
       - karlsen.fr.log.config=assets/karlsen.fr.log.config
-      - start.py=assets/start.py
 
 resources:
   - Namespace.yaml
