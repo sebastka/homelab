@@ -30,7 +30,6 @@ spec:
           # command: [/start.py]
           args:
             - run
-            - --config-path=/config/homeserver.yaml
             - --config-path=/config/secrets.yaml
           securityContext:
             allowPrivilegeEscalation: false
