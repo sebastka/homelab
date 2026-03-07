@@ -36,10 +36,8 @@ spec:
             requests: {memory: 512Mi}
             limits: {memory: 512Mi}
           envFrom:
-            - configMapRef: {name: paperless-config}
+            - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
-          ports:
-            - {name: http, containerPort: 8000}
           volumeMounts:
             - {name: paperless-data, mountPath: /data/data}
             - {name: paperless-media, mountPath: /data/media}
@@ -57,10 +55,8 @@ spec:
             requests: {memory: 512Mi}
             limits: {memory: 512Mi}
           envFrom:
-            - configMapRef: {name: paperless-config}
+            - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
-          ports:
-            - {name: http, containerPort: 8000}
           volumeMounts:
             - {name: paperless-data, mountPath: /data/data}
             - {name: paperless-media, mountPath: /data/media}
@@ -78,16 +74,14 @@ spec:
             requests: {memory: 512Mi}
             limits: {memory: 512Mi}
           envFrom:
-            - configMapRef: {name: paperless-config}
+            - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
-          ports:
-            - {name: http, containerPort: 8000}
           volumeMounts:
             - {name: paperless-data, mountPath: /data/data}
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
             - {name: paperless-consume, mountPath: /data/consume}
-        - name: paperless-celery-webserver
+        - name: paperless-webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
           command: [granian, "--interface", "asginl", "--ws", "paperless.asgi:application"]
@@ -99,7 +93,7 @@ spec:
             requests: {memory: 512Mi}
             limits: {memory: 512Mi}
           envFrom:
-            - configMapRef: {name: paperless-config}
+            - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           env:
             - {name: GRANIAN_HOST, value: '$(PAPERLESS_BIND_ADDR)'}
