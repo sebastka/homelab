@@ -39,7 +39,7 @@ spec:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           volumeMounts:
-            - {name: tmp-volume, mountPath: /tmp}
+            - {name: paperless-tmp-volume, mountPath: /tmp}
             - {name: paperless-data, mountPath: /data/data}
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
@@ -59,7 +59,7 @@ spec:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           volumeMounts:
-            - {name: tmp-volume, mountPath: /tmp}
+            - {name: paperless-tmp-volume, mountPath: /tmp}
             - {name: paperless-data, mountPath: /data/data}
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
@@ -79,7 +79,7 @@ spec:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           volumeMounts:
-            - {name: tmp-volume, mountPath: /tmp}
+            - {name: paperless-tmp-volume, mountPath: /tmp}
             - {name: paperless-data, mountPath: /data/data}
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
@@ -105,7 +105,7 @@ spec:
           ports:
             - {name: http, containerPort: 8000}
           volumeMounts:
-            - {name: tmp-volume, mountPath: /tmp}
+            - {name: paperless-tmp-volume, mountPath: /tmp}
             - {name: paperless-data, mountPath: /data/data}
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
@@ -138,8 +138,11 @@ spec:
           resources:
             requests: {memory: 256Mi}
             limits: {memory: 256Mi}
+          volumeMounts:
+            - {name: tika-tmp-volume, mountPath: /tmp}
       volumes:
-        - {name: tmp-volume, emptyDir: {}}
+        - {name: paperless-tmp-volume, emptyDir: {}}
+        - {name: tika-tmp-volume, emptyDir: {}}
         - {name: paperless-consume, persistentVolumeClaim: {claimName: longhorn-paperless-consume-pvc}}
         - {name: paperless-data, persistentVolumeClaim: {claimName: longhorn-paperless-data-pvc}}
         - {name: paperless-export, persistentVolumeClaim: {claimName: longhorn-paperless-export-pvc}}
