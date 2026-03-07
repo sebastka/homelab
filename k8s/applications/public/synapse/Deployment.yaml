@@ -27,8 +27,6 @@ spec:
         - name: synapse
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
           image: index.docker.io/matrixdotorg/synapse:v1.148.0
-          command: [/start.py]
-          args: [--config-directory, /config]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -48,7 +46,7 @@ spec:
             - {name: log-volume, mountPath: /var/log}
             - {name: data-volume, mountPath: /data}
             - {name: synapse-config-volume, mountPath: /karlsen.fr.log.config, subPath: karlsen.fr.log.config, readOnly: true}
-            - {name: synapse-config-volume, mountPath: /config/homeserver.yaml, subPath: homeserver.yaml, readOnly: true}
+            - {name: synapse-config-volume, mountPath: /homeserver.yaml, subPath: homeserver.yaml, readOnly: true}
             - {name: synapse-secrets-volume, mountPath: /config/secrets.yaml, subPath: secrets.yaml, readOnly: true}
             - {name: synapse-secrets-volume, mountPath: /karlsen.fr.signing.key, subPath: karlsen.fr.signing.key, readOnly: true}
       volumes:
