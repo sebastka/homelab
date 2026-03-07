@@ -7,7 +7,7 @@ metadata:
 spec:
   parentRefs:
     - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
-    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
+    # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
   hostnames:
     - jellyfin.karlsen.app
   rules:
@@ -26,6 +26,6 @@ spec:
               - {name: Cross-Origin-Embedder-Policy, value: require-corp}
               - {name: Cross-Origin-Opener-Policy, value: same-origin}
               - {name: Referrer-Policy, value: no-referrer}
-              - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
+              - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
               - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
               # - &RE {name: Reporting-Endpoints, value: ''}
