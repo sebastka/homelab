@@ -50,7 +50,7 @@ spec:
               # - {name: Access-Control-Allow-Origin, value: '*'}
               - {name: Content-Security-Policy, value: "default-src 'none'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
       #         - *CSP
-      #         - *HSTS
+              - *HSTS
       #         - *XCTO
       #         - *XFO
       #         - *CORP
