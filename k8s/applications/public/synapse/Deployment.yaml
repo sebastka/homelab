@@ -3,19 +3,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment
+  name: synapse
   namespace: synapse
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: synapse
+      app.kubernetes.io/name: synapse
   template:
     metadata:
       namespace: synapse
       labels:
         app.kubernetes.io/name: synapse
-        app: synapse
     spec:
       securityContext:
         runAsNonRoot: true
@@ -23,42 +22,35 @@ spec:
         runAsGroup: 991
         fsGroup: 991
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+        seccompProfile: {type: RuntimeDefault}
       containers:
-        - name: nginx
+        - name: synapse
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
           image: index.docker.io/matrixdotorg/synapse:sha-825f308
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 10m
-              memory: 256Mi
-            limits:
-              # cpu: 100m
-              memory: 256Mi
+            requests: {memory: 256Mi}
+            limits: {memory: 256Mi}
           ports:
-            - name: http
-              containerPort: 18080
+            - {name: http, containerPort: 18080}
           envFrom:
-            - configMapRef: {name: synapse-common-env}
-            - configMapRef: {name: synapse-run-env}
-            # - configMapRef: {name: synapse-generate-env}
+            - configMapRef: {name: common-env}
+            - configMapRef: {name: run-env}
+            # - configMapRef: {name: generate-env}
           volumeMounts:
-            - {name: data-volume, mountPath: /data}
-            - {name: synapse-config, mountPath: /homeserver.yaml, subPath: homeserver.yaml, readOnly: true}
-            - {name: synapse-config, mountPath: /karlsen.fr.signing.key, subPath: karlsen.fr.signing.key, readOnly: true}
-            - {name: synapse-config, mountPath: /karlsen.fr.log.config, subPath: karlsen.fr.log.config, readOnly: true}
             - {name: tmp-volume, mountPath: /tmp}
-            - {name: config-volume, mountPath: /config}
             - {name: log-volume, mountPath: /var/log}
+            - {name: data-volume, mountPath: /data}
+            - {name: synapse-config-volume, mountPath: /karlsen.fr.log.config, subPath: karlsen.fr.log.config, readOnly: true}
+            - {name: synapse-config-volume, mountPath: /config/homeserver.yaml, subPath: homeserver.yaml, readOnly: true}
+            - {name: synapse-secrets-volume, mountPath: /config/secrets.yaml, subPath: secrets.yaml, readOnly: true}
+            - {name: synapse-secrets-volume, mountPath: /karlsen.fr.signing.key, subPath: karlsen.fr.signing.key, readOnly: true}
       volumes:
-        - {name: data-volume, persistentVolumeClaim: {claimName: synapse-data-pvc}}
-        - {name: synapse-config, secret: {secretName: synapse-config}}
         - {name: tmp-volume, emptyDir: {}}
-        - {name: config-volume, emptyDir: {}}
         - {name: log-volume, emptyDir: {}}
+        - {name: data-volume, persistentVolumeClaim: {claimName: synapse-data-pvc}}
+        - {name: synapse-config-volume, configMap: {name: synapse-config}}
+        - {name: synapse-secrets-volume, secret: {secretName: synapse-secrets}}

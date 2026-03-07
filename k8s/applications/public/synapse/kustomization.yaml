@@ -1,18 +1,30 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: synapse
 
 labels:
   - includeSelectors: true
     includeTemplates: true
     pairs:
       app.kubernetes.io/name: synapse
-      app: synapse
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - {namespace: synapse, name: common-env, envs: [assets/common.env]}
+  - {namespace: synapse, name: run-env, envs: [assets/run.env]}
+  # - {namespace: synapse, name: generate-env, envs: [assets/generate.env]}
+  - namespace: synapse
+    name: synapse-config
+    files:
+      - homeserver.yaml=assets/homeserver.yaml
+      - karlsen.fr.log.config=assets/karlsen.fr.log.config
 
 resources:
   - Namespace.yaml
-  - ConfigMap.synapse-env.yaml
-  - SealedSecret.synapse-config.yaml
+  - SealedSecret.synapse-secrets.yaml
   - PersistentVolumeClaim.yaml
   - Deployment.yaml
   - Service.yaml

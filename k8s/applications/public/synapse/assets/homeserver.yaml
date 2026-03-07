@@ -1,0 +1,137 @@
+# Configuration file for Synapse.
+# https://github.com/element-hq/synapse/blob/develop/docker/conf/homeserver.yaml
+# https://element-hq.github.io/synapse/latest/
+---
+
+## Server ##
+server_name: karlsen.fr
+public_baseurl: https://matrix.karlsen.fr
+# web_client_location: https://element.karlsen.app
+pid_file: /tmp/homeserver.pid
+# web_client: False
+# soft_file_limit: 0
+log_config: /karlsen.fr.log.config
+
+## Ports ##
+listeners:
+  - port: 18080
+    tls: false
+    type: http
+    x_forwarded: true
+    bind_addresses:
+      - 0.0.0.0
+    resources:
+      - names: [client]
+        compress: true
+      - names: [federation]
+        compress: false
+  - type: metrics
+    port: 19090
+
+## Database ##
+database:
+  name: psycopg2
+  args:
+    user: synapse
+    # password:  # In secrets.yaml
+    database: synapse
+    host: db02.hera.home.karlsen.fr
+    cp_min: 5
+    cp_max: 10
+
+## Performance ##
+event_cache_size: 10K
+
+## Ratelimiting ##
+rc_messages_per_second: 0.2
+rc_message_burst_count: 10.0
+federation_rc_window_size: 1000
+federation_rc_sleep_limit: 10
+federation_rc_sleep_delay: 500
+federation_rc_reject_limit: 50
+federation_rc_concurrent: 3
+
+## Files ##
+media_store_path: /data/media_store
+max_upload_size: 50M
+max_image_pixels: 32M
+dynamic_thumbnails: false
+
+# List of thumbnail to precalculate when an image is uploaded.
+thumbnail_sizes:
+  - width: 32
+    height: 32
+    method: crop
+  - width: 96
+    height: 96
+    method: crop
+  - width: 320
+    height: 240
+    method: scale
+  - width: 640
+    height: 480
+    method: scale
+  - width: 800
+    height: 600
+    method: scale
+
+url_preview_enabled: false
+max_spider_size: 10M
+
+## Captcha ##
+# recaptcha_public_key: "YOUR_PUBLIC_KEY"
+# recaptcha_private_key:  # In secrets.yaml
+# enable_registration_captcha: False
+# recaptcha_siteverify_api: "https://www.google.com/recaptcha/api/siteverify"
+
+## Turn ##
+turn_uris: ['turn:turn.karlsen.fr?transport=udp', 'turn:turn.karlsen.fr?transport=tcp']
+# turn_shared_secret:  # In secrets.yaml
+turn_user_lifetime: 1h
+turn_allow_guests: true
+
+## Registration ##
+enable_registration: false
+# enable_registration_without_verification: false
+# registration_shared_secret:  # In secrets.yaml
+bcrypt_rounds: 12
+allow_guest_access: false
+enable_group_creation: true
+
+## Metrics ###
+enable_metrics: true
+report_stats: true
+
+## API Configuration ##
+app_service_config_files: []
+
+# macaroon_secret_key:  # In secrets.yaml
+# form_secret:  # In secrets.yaml
+
+## Signing Keys ##
+signing_key_path: /karlsen.fr.signing.key
+old_signing_keys: {}
+key_refresh_interval: 1d  # 1 Day.
+
+# The trusted servers to download signing keys from.
+trusted_key_servers:
+  - server_name: matrix.org
+    verify_keys:
+      'ed25519:auto': Noi6WqcDj0QmPxCNQqgezwTlBKrfqehY1u2FyWP9uYw
+
+email:
+  smtp_host: smtp.domeneshop.no
+  smtp_port: 465
+  smtp_user: karlsenfr1
+  # smtp_pass:  # In secrets.yaml
+  force_tls: true
+  enable_tls: true
+  notif_from: 'Matrix / Karlsen.fr <noreply@karlsen.fr>'
+  app_name: 'Matrix / Karlsen.fr'
+  enable_notifs: true
+  notif_for_new_users: false
+  client_base_url: https://element.karlsen.app
+  validation_token_lifetime: 15m
+  invite_client_location: https://element.karlsen.app
+
+# vim:ft=yaml
