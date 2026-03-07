@@ -28,7 +28,7 @@ spec:
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
           image: index.docker.io/matrixdotorg/synapse:v1.148.0
           # command: [/start.py]
-          ccommand: ['/bin/sh', '-c']
+          command: ['/bin/sh', '-c']
           # args:
           #   - run
           #   - --config-path=/config/homeserver.yaml
