@@ -34,6 +34,7 @@ spec:
               for d in merged-config; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
               # Merge configmap and secret
               cat /config/homeserver.yaml /config/secrets.yaml | yq > /merged-config/homeserver.yaml
+              sleep infinity
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
