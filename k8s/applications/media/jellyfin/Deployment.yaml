@@ -2,13 +2,19 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: jellyfin-deployment
+  name: jellyfin
   namespace: jellyfin
 spec:
+  strategy: {type: Recreate}
   replicas: 1
-  strategy:
-    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: jellyfin
   template:
+    metadata:
+      namespace: jellyfin
+      labels:
+        app.kubernetes.io/name: jellyfin
     spec:
       nodeSelector:
         topology.kubernetes.io/zone: w01
@@ -18,56 +24,31 @@ spec:
         runAsGroup: 2501
         fsGroup: 2501
         fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
         supplementalGroups: [44, 104]
-        seccompProfile:
-          type: RuntimeDefault
       containers:
         - name: jellyfin
+          # Dockerfile: https://hub.docker.com/r/jellyfin/jellyfin/dockerfile
           image: ghcr.io/jellyfin/jellyfin:10
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 500m
-              memory: 6Gi
-              # gpu.intel.com/i915: 1000m  # "xe" supported?
-            limits:
-              # cpu: 6000m
-              memory: 6Gi
-              # gpu.intel.com/i915: 1000m  # "xe" supported?
-          env:
-            - name: TZ
-              value: Europe/Oslo
-            - name: JELLYFIN_PublishedServerUrl
-              value: https://jellyfin.karlsen.app
+            requests: {memory: 6Gi}  # gpu.intel.com/i915: 1000m  # "xe" supported?
+            limits: {memory: 6Gi}  # gpu.intel.com/i915: 1000m  # "xe" supported?
+          envFrom:
+            - configMapRef: {name: jellyfin-env}
           ports:
-            - name: http
-              containerPort: 8096
-              protocol: TCP
-            # - name: client-discovery
-            #   containerPort: 7359
-            #   protocol: UDP
+            - {name: http, containerPort: 8096}
+            # - {name: client-discovery, containerPort: 7359, protocol: UDP}
           volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: media
-              mountPath: /mnt/media
-            - name: cache
-              mountPath: /cache
-            - name: tmp
-              mountPath: /tmp
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /cache}
+            - {name: config-volume, mountPath: /config, readOnly: true}
+            - {name: media-volume, mountPath: /mnt/media, readOnly: true}
       volumes:
-        - name: config
-          persistentVolumeClaim:
-            claimName: jellyfin-config-pvc
-        - name: media
-          persistentVolumeClaim:
-            claimName: jellyfin-media-pvc
-        - name: cache
-          emptyDir: {}
-        - name: tmp
-          emptyDir:
-            medium: Memory
+        - {name: tmp-volume, emptyDir: {medium: Memory}}
+        - {name: cache-volume, emptyDir: {medium: Memory}}
+        - {name: config-volume, persistentVolumeClaim: {claimName: jellyfin-config-pvc}}
+        - {name: media-volume, persistentVolumeClaim: {claimName: jellyfin-media-pvc}}
