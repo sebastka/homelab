@@ -12,3 +12,17 @@ spec:
       storage: 1Gi
   storageClassName: longhorn-static
   volumeName: deluge-config-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: deluge-downloads-pvc
+  namespace: deluge
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: nfs-static
+  volumeName: deluge-downloads-pv

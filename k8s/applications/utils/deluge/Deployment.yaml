@@ -1,65 +1,53 @@
-# https://github.com/home-operations/containers
-# https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deluge-deployment
+  name: deluge
   namespace: deluge
 spec:
   replicas: 1
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: homepage
   template:
     metadata:
       namespace: deluge
       labels:
         app.kubernetes.io/name: deluge
-        app: deluge
     spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
-        fsGroup: 65534
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+        seccompProfile: {type: RuntimeDefault}
       containers:
         - name: deluged
-          image: ghcr.io/home-operations/deluge:2
+          # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
+          image: ghcr.io/home-operations/deluge:2.2.0
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 100m
-              memory: 512Mi
-            limits:
-              # cpu: 1000m
-              memory: 512Mi
+            requests: {memory: 512Mi}
+            limits: {memory: 512Mi}
           ports:
-            - name: torrent-tcp
-              containerPort: 6881
-              protocol: TCP
-            - name: torrent-udp
-              containerPort: 6881
-              protocol: UDP
+            - {name: torrent-tcp, containerPort: 6881, protocol: TCP}
+            - {name: torrent-udp, containerPort: 6881, protocol: UDP}
           env:
-            - name: TZ
-              value: Europe/Oslo
-            - name: DELUGE_BIN
-              value: deluged
+            - {name: TZ, value: Europe/Oslo}
+            - {name: DELUGE_BIN, value: deluged}
           volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: downloads
-              mountPath: /downloads
+            - {name: config-volume, mountPath: /config}
+            - {name: downloads-volume, mountPath: /downloads}
         - name: deluge-web
-          image: ghcr.io/home-operations/deluge:2
+          # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
+          image: ghcr.io/home-operations/deluge:2.2.0
           imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
@@ -67,30 +55,16 @@ spec:
             capabilities:
               drop: ["ALL"]
           resources:
-            requests:
-              # cpu: 100m
-              memory: 128Mi
-            limits:
-              # cpu: 1000m
-              memory: 128Mi
+            requests: {memory: 128Mi}
+            limits: {memory: 128Mi}
           ports:
-            - name: http
-              containerPort: 8112
+            - {name: http, containerPort: 8112}
           env:
-            - name: TZ
-              value: Europe/Oslo
-            - name: DELUGE_BIN
-              value: deluge-web
+            - {name: TZ, value: Europe/Oslo}
+            - {name: DELUGE_BIN, value: deluge-web}
           volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: downloads
-              mountPath: /downloads
+            - {name: config-volume, mountPath: /config}
+            - {name: downloads-volume, mountPath: /downloads}
       volumes:
-        - name: config
-          persistentVolumeClaim:
-            claimName: deluge-config-pvc
-        - name: downloads
-          nfs:
-            server: file01.hera.home.karlsen.fr
-            path: /mnt/nfs/homelab/k8s/deluge/downloads
+        - {name: config-volume, persistentVolumeClaim: {claimName: deluge-config-pvc}}
+        - {name: downloads-volume, persistentVolumeClaim: {claimName: deluge-downloads-pvc}}
