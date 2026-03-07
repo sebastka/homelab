@@ -12,5 +12,5 @@ spec:
     - ldap.karlsen.fr
   rules:
     - backendRefs:
-        - name: ldaps
+        - name: lldap-ldap
           port: 636

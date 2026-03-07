@@ -10,5 +10,5 @@ spec:
     # - {namespace: gateway, name: external, sectionName: ldap}
   rules:
     - backendRefs:
-        - name: ldap
+        - name: lldap-ldap
           port: 389

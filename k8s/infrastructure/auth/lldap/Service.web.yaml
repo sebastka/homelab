@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: web
+  name: lldap-web
   namespace: lldap
 spec:
   type: ClusterIP
@@ -10,4 +10,4 @@ spec:
     - name: http
       protocol: TCP
       port: 80
-      targetPort: http
+      targetPort: 17170
