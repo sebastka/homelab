@@ -75,7 +75,7 @@ spec:
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: log-volume, emptyDir: {}}
-        - {name: config-volume, emptyDir: {}}
+        - {name: merged-config-volume, emptyDir: {}}
         - {name: data-volume, persistentVolumeClaim: {claimName: synapse-data-pvc}}
         - {name: synapse-config-volume, configMap: {name: synapse-config}}
         - {name: synapse-secrets-volume, secret: {secretName: synapse-secrets}}
