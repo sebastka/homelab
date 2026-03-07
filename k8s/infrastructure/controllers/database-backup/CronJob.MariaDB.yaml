@@ -23,8 +23,7 @@ spec:
             runAsGroup: 1000
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
-            seccompProfile:
-              type: RuntimeDefault
+        seccompProfile: {type: RuntimeDefault}
           containers:
             - name: mariadb-backup
               image: mariadb:latest
@@ -48,30 +47,15 @@ spec:
               securityContext:
                 allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: true
-                capabilities:
-                  drop: ["ALL"]
+                capabilities: {drop: [ALL]}
               resources:
-                requests:
-                  # cpu: 50m
-                  memory: 256Mi
-                limits:
-                  # cpu: 50m
-                  memory: 256Mi
-              env:
-                - name: MARIADB_DB_CSV
-                  valueFrom:
-                    secretKeyRef:
-                      name: mariadb-secrets
-                      key: mariadb-db-csv
+                requests: {memory: 256Mi}
+                limits: {memory: 256Mi}
+              envFrom:
+                - secretRef: {name: mariadb-secrets}
               volumeMounts:
-                - name: tmp-empty
-                  mountPath: /tmp
-                - name: mariadb-backup-target
-                  mountPath: /mnt/backup
+                - {name: tmp-empty, mountPath: /tmp}
+                - {name: backup-target-volume, mountPath: /mnt/backup}
           volumes:
-            - name: tmp-empty
-              emptyDir: {}
-            - name: mariadb-backup-target
-              nfs:
-                server: file01.hera.home.karlsen.fr
-                path: /mnt/nfs/homelab/databases-backup
+            - {name: tmp-empty, emptyDir: {}}
+            - {name: backup-target-volume, persistentVolumeClaim: {claimName: databases-backup-pvc}}
