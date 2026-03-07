@@ -11,8 +11,9 @@ labels:
 
 resources:
   - Namespace.yaml
+  - PersistentVolume.yaml
+  - PersistentVolumeClaim.yaml
   - Deployment.yaml
   - Service.web.yaml
   - Service.torrent.yaml
   - HTTPRoute.yaml
-  - PersistentVolumeClaim.yaml
