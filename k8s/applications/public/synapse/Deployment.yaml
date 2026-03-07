@@ -23,37 +23,15 @@ spec:
         fsGroup: 991
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
-      initContainers:
-        - name: startpy-patcher
-          # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
-          image: index.docker.io/matrixdotorg/synapse:v1.148.0
-          command: ['/bin/sh', '-c']
-          args:
-            - |
-              set -eux
-              # Clean up volumes
-              for d in startpy; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
-              # Copy and patch start.py
-              sed \
-                '/args +=/a \ \ \ \ \ \ \ \ if "SYNAPSE_SECRET_PATH" in os\.environ:\n\ \ \ \ \ \ \ \ \ \ \ \ args \+= ["--config-path", os.environ["SYNAPSE_SECRET_PATH"]]' \
-                /start.py \
-                > /startpy/start.py
-              chmod ugo+x /startpy/start.py
-              chown 991:991 /startpy/start.py
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: {drop: [ALL]}
-          resources:
-            requests: {memory: 24Mi}
-            limits: {memory: 24Mi}
-          volumeMounts:
-            - {name: startpy-volume, mountPath: /startpy}
       containers:
         - name: synapse
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
           image: index.docker.io/matrixdotorg/synapse:v1.148.0
-          command: ["/startpy/start.py"]
+          # command: [/start.py]
+          args:
+            - run
+            - --config-path=/config/homeserver.yaml
+            - --config-path=/config/secrets.yaml
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -71,7 +49,6 @@ spec:
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: log-volume, mountPath: /var/log}
-            - {name: startpy-volume, mountPath: /startpy}
             - {name: data-volume, mountPath: /data}
             - {name: synapse-config-volume, mountPath: /start.py, subPath: start.py, readOnly: true}
             - {name: synapse-config-volume, mountPath: /karlsen.fr.log.config, subPath: karlsen.fr.log.config, readOnly: true}
@@ -81,7 +58,6 @@ spec:
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: log-volume, emptyDir: {}}
-        - {name: startpy-volume, emptyDir: {}}
         - {name: data-volume, persistentVolumeClaim: {claimName: synapse-data-pvc}}
         - {name: synapse-config-volume, configMap: {name: synapse-config}}
         - {name: synapse-secrets-volume, secret: {secretName: synapse-secrets}}
