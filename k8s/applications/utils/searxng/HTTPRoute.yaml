@@ -23,7 +23,7 @@ spec:
               # - {name: X-Content-Type-Options, value: nosniff}  # Already set by application
               - {name: X-Frame-Options, value: DENY}
               - {name: Cross-Origin-Resource-Policy, value: same-origin}
-              - {name: Cross-Origin-Embedder-Policy, value: require-corp}
+              - {name: Cross-Origin-Embedder-Policy, value: unsafe-none}
               - {name: Cross-Origin-Opener-Policy, value: same-origin}
               # - {name: Referrer-Policy, value: no-referrer}  # Already set by application
               - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
