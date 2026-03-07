@@ -43,18 +43,18 @@ spec:
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: web, kind: Service, port: 80}]
-      filters:
-        - type: ResponseHeaderModifier
-          responseHeaderModifier:
-            add:
-              # - {name: Access-Control-Allow-Origin, value: '*'}
-              # - *CSP
-              - *HSTS
-              - *XCTO
-              - *XFO
-              - *CORP
-              - *COEP
-              - *COOP
-              - *RP
-              - *PP
-              - *IP
+      # filters:
+      #   - type: ResponseHeaderModifier
+      #     responseHeaderModifier:
+      #       add:
+      #         # - {name: Access-Control-Allow-Origin, value: '*'}
+      #         # - *CSP
+      #         - *HSTS
+      #         - *XCTO
+      #         - *XFO
+      #         - *CORP
+      #         - *COEP
+      #         - *COOP
+      #         - *RP
+      #         - *PP
+      #         - *IP
