@@ -5,18 +5,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: thelounge-deployment
+  name: thelounge
   namespace: thelounge
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: thelounge
   template:
     metadata:
       namespace: thelounge
       labels:
         app.kubernetes.io/name: thelounge
-        app: thelounge
     spec:
       securityContext:
         runAsNonRoot: true
@@ -24,38 +24,23 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+        seccompProfile: {type: RuntimeDefault}
       containers:
         - name: thelounge
+          # Dockerfile: https://github.com/thelounge/thelounge-docker/blob/master/Dockerfile
           image: ghcr.io/thelounge/thelounge:latest
-          imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 100m
-              memory: 256Mi
-            limits:
-              # cpu: 500m
-              memory: 256Mi
+            requests: {memory: 256Mi}
+            limits: {memory: 256Mi}
           ports:
-            - name: http
-              containerPort: 9000
-              protocol: TCP
-            - name: identd-tcp
-              containerPort: 9001
-              protocol: TCP
-            - name: identd-udp
-              containerPort: 9001
-              protocol: UDP
+            - {name: http, containerPort: 9000, protocol: TCP}
+            - {name: identd-tcp, containerPort: 9001, protocol: TCP}
+            - {name: identd-udp, containerPort: 9001, protocol: UDP}
           volumeMounts:
-            - name: opt-thelounge
-              mountPath: /var/opt/thelounge
+            - {name: opt-thelounge, mountPath: /var/opt/thelounge}
       volumes:
-        - name: opt-thelounge
-          persistentVolumeClaim:
-            claimName: thelounge-data-pvc
+        - {name: opt-thelounge, persistentVolumeClaim: {claimName: thelounge-data-pvc}}
