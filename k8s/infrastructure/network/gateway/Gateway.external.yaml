@@ -29,7 +29,7 @@ spec:
 
     # - name: ldap
     #   protocol: TCP
-    #   port: 636
+    #   port: 389
     #   allowedRoutes:
     #     namespaces:
     #       from: All
