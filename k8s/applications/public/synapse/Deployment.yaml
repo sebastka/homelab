@@ -33,7 +33,7 @@ spec:
               # Clean up volumes
               for d in merged-config; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
               # Merge configmap and secret
-              yq eval-all '. as $item ireduce ({}; . * $item)' config/*.yaml >/merged-config/homeserver.yaml
+              yq eval-all '. as $item ireduce ({}; . * $item)' config/homeserver.yaml config/secrets.yaml >/merged-config/homeserver.yaml
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
