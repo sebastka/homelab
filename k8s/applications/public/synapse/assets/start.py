@@ -7,6 +7,7 @@ import platform
 import subprocess
 import sys
 from typing import Any, Mapping, MutableMapping, NoReturn
+from pprint import pprint
 
 import jinja2
 
@@ -233,6 +234,7 @@ def run_generate_config(environ: Mapping[str, str], ownership: str | None) -> No
 
 def main(args: list[str], environ: MutableMapping[str, str]) -> None:
     mode = args[1] if len(args) > 1 else "run"
+    pprint(args)
 
     # if we were given an explicit user to switch to, do so
     ownership = None
