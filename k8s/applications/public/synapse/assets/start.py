@@ -7,8 +7,6 @@ import platform
 import subprocess
 import sys
 from typing import Any, Mapping, MutableMapping, NoReturn
-from pprint import pprint
-from time import sleep
 
 import jinja2
 
@@ -235,8 +233,6 @@ def run_generate_config(environ: Mapping[str, str], ownership: str | None) -> No
 
 def main(args: list[str], environ: MutableMapping[str, str]) -> None:
     mode = args[1] if len(args) > 1 else "run"
-    pprint(args)
-    sleep(6000)
 
     # if we were given an explicit user to switch to, do so
     ownership = None
@@ -308,6 +304,8 @@ running with 'migrate_config'. See the README for more details.
             )
 
         args += ["--config-path", config_path]
+        if "SYNAPSE_SECRET_PATH" in os.environ:
+            args += ["--config-path", os.environ["SYNAPSE_SECRET_PATH"]]
 
     log("Starting synapse with args " + " ".join(args))
 
