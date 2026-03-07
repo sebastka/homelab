@@ -17,7 +17,8 @@ spec:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
         - type: ResponseHeaderModifier
-          responseHeaderModifier: {remove: [Content-Security-Policy]}  # Harbor sets "content-security-policy: frame-ancestors 'none'"
+          responseHeaderModifier:
+            remove: [Content-Security-Policy]  # Harbor sets "content-security-policy: frame-ancestors 'none'"
             add:
               # - {name: Access-Control-Allow-Origin, value: '*'}
               - name: Content-Security-Policy
