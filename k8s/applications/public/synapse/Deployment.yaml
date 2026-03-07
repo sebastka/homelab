@@ -26,7 +26,7 @@ spec:
       containers:
         - name: synapse
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
-          image: index.docker.io/matrixdotorg/synapse:sha-825f308
+          image: index.docker.io/matrixdotorg/synapse:v1.148.0
           command: [/start.py]
           args: [--config-directory, /config]
           securityContext:
