@@ -18,7 +18,7 @@ spec:
           responseHeaderModifier:
             remove: [Content-Security-Policy]  # Synapse sets "content-security-policy: frame-ancestors 'none'"
             add:
-              - {name: Access-Control-Allow-Origin, value: '*'}
+              # - {name: Access-Control-Allow-Origin, value: '*'}
               - {name: Content-Security-Policy, value: "default-src 'none'; style-src-elem 'sha256-5nmABY0n6AHY5A6W8TKSGqMCp6RVWXwjYd7/FoevaVY='; img-src 'self'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
               - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
               - {name: X-Content-Type-Options, value: nosniff}
