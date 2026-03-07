@@ -17,16 +17,16 @@ spec:
           responseHeaderModifier:
             add:
               # - {name: Access-Control-Allow-Origin, value: '*'}
-              - &CSP {name: Content-Security-Policy, value: "default-src 'none'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
-              - &HSTS {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
-              - &XCTO {name: X-Content-Type-Options, value: nosniff}
-              - &XFO {name: X-Frame-Options, value: DENY}
-              - &CORP {name: Cross-Origin-Resource-Policy, value: same-origin}
-              - &COEP {name: Cross-Origin-Embedder-Policy, value: require-corp}
-              - &COOP {name: Cross-Origin-Opener-Policy, value: same-origin}
-              - &RP {name: Referrer-Policy, value: no-referrer}
-              - &PP {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
-              - &IP {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
+              - {name: Content-Security-Policy, value: "default-src 'none'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
+              - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
+              - {name: X-Content-Type-Options, value: nosniff}
+              - {name: X-Frame-Options, value: DENY}
+              - {name: Cross-Origin-Resource-Policy, value: same-origin}
+              - {name: Cross-Origin-Embedder-Policy, value: require-corp}
+              - {name: Cross-Origin-Opener-Policy, value: same-origin}
+              - {name: Referrer-Policy, value: no-referrer}
+              - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
+              - {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
               # - &RE {name: Reporting-Endpoints, value: ''}
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -49,13 +49,13 @@ spec:
             add:
               # - {name: Access-Control-Allow-Origin, value: '*'}
               - {name: Content-Security-Policy, value: "default-src 'none'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
-      #         - *CSP
-              - *HSTS
-      #         - *XCTO
-      #         - *XFO
-      #         - *CORP
-      #         - *COEP
-      #         - *COOP
-      #         - *RP
-      #         - *PP
-      #         - *IP
+              - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
+              - {name: X-Content-Type-Options, value: nosniff}
+              - {name: X-Frame-Options, value: DENY}
+              - {name: Cross-Origin-Resource-Policy, value: same-origin}
+              - {name: Cross-Origin-Embedder-Policy, value: require-corp}
+              - {name: Cross-Origin-Opener-Policy, value: same-origin}
+              - {name: Referrer-Policy, value: no-referrer}
+              - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
+              - {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
+              # - &RE {name: Reporting-Endpoints, value: ''}
