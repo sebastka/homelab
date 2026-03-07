@@ -45,7 +45,7 @@ spec:
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /cache}
-            - {name: config-volume, mountPath: /config, readOnly: true}
+            - {name: config-volume, mountPath: /config}
             - {name: media-volume, mountPath: /mnt/media, readOnly: true}
       volumes:
         - {name: tmp-volume, emptyDir: {medium: Memory}}
