@@ -35,8 +35,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 6Gi}  # gpu.intel.com/i915: 1000m  # "xe" supported?
-            limits: {memory: 6Gi}  # gpu.intel.com/i915: 1000m  # "xe" supported?
+            requests: {memory: 12Gi}  # gpu.intel.com/i915: 1000m  # "xe" supported?
+            limits: {memory: 12Gi}  # gpu.intel.com/i915: 1000m  # "xe" supported?
           envFrom:
             - configMapRef: {name: jellyfin-env}
           ports:
