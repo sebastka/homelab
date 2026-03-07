@@ -14,4 +14,4 @@ spec:
       port: 80
       protocol: TCP
       appProtocol: kubernetes.io/h2c
-      targetPort: 8080
+      targetPort: server
