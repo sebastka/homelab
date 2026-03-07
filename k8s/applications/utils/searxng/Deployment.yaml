@@ -47,4 +47,4 @@ spec:
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: cache-volume, emptyDir: {}}  # Use Longhorn if persistent data is needed
-        - {name: searxng-config-volume, configMap: {name: searxng-settings}}
+        - {name: searxng-config-volume, configMap: {name: searxng-config}}
