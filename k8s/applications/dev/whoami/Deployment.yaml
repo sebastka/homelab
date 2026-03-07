@@ -2,19 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: whoami
+  name: website
   namespace: whoami
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: whoami
+      app.kubernetes.io/name: whoami
   template:
     metadata:
       namespace: whoami
       labels:
         app.kubernetes.io/name: whoami
-        app: whoami
     spec:
       securityContext:
         runAsNonRoot: true
@@ -22,25 +21,18 @@ spec:
         runAsGroup: 999
         fsGroup: 999
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+        seccompProfile: {type: RuntimeDefault}
       containers:
         - name: whoami
+          # Dockerfile: https://github.com/traefik/whoami/blob/master/Dockerfile
           image: ghcr.io/traefik/whoami:latest
-          args:
-            - "-port=8080"
+          args: ['-port=8080']
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
+            capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 10m
-              memory: 12Mi
-            limits:
-              # cpu: 100m
-              memory: 12Mi
+            requests: {memory: 12Mi}
+            limits: {memory: 12Mi}
           ports:
-            - name: http
-              containerPort: 8080
+            - {name: http, containerPort: 8080}
