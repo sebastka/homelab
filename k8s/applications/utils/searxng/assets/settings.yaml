@@ -15,7 +15,7 @@ search:
   # languages: [en, de, fr, nb]
 
 server:
-  limiter: true  # enable this when running the instance for a public usage on the internet
+  limiter: false  # enable this when running the instance for a public usage on the internet
   http_protocol_version: "1.1"
 
 ui:
