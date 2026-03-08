@@ -24,10 +24,16 @@ Kube overview:
 - `watch -n 5 kubectl get pods -o wide -A`
 - `watch -n 5 kubectl get svc -o wide -A`
 
-View resource pod usage:
-- `watch -n 5 kubectl top pods --sort-by=memory -A`
-- `watch -n 5 kubectl top pods --sort-by=cpu -A`
-- `watch -n 5 kubectl top node --sort-by=memory`
+View resource usage:
+  - Per pod:
+    + `watch -n 5 kubectl top pods --sort-by=memory -A`
+    + `watch -n 5 kubectl top pods --sort-by=cpu -A`
+  - Per container:
+    + `watch -n 5 kubectl top pod --sort-by=memory --containers -A`
+    + `watch -n 5 kubectl top pod --sort-by=cpu --containers -A`
+  - Per node:
+    + `watch -n 5 kubectl top node --sort-by=memory`
+    + `watch -n 5 kubectl top node --sort-by=cpu`
 
 Force delete namespace:
 - `kubectl delete all --all -n {namespace}`
