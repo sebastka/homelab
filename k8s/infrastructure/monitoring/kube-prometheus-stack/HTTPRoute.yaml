@@ -1,0 +1,28 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: prometheus
+  namespace: kube-prometheus-stack
+spec:
+  parentRefs:
+    - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
+  hostnames:
+    - prometheus.talmox.hera.home.karlsen.fr
+  rules:
+    - matches: [path: {type: PathPrefix, value: /}]
+      backendRefs: [{name: kube-prometheus-stack-prometheus, kind: Service, port: 9090}]
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: alertmanager
+  namespace: kube-prometheus-stack
+spec:
+  parentRefs:
+    - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
+  hostnames:
+    - alertmanager.talmox.hera.home.karlsen.fr
+  rules:
+    - matches: [path: {type: PathPrefix, value: /}]
+      backendRefs: [{name: kube-prometheus-stack-alertmanager, kind: Service, port: 9093}]
