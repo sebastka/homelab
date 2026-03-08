@@ -1,21 +1,19 @@
-# https://hub.docker.com/hardened-images/catalog/dhi/nginx/images/nginx%2Fdebian-13%2Fmainline/sha256-12e286038641ad2919be50aec641eb6eabfc7f68d1ad8a8991cf6b8a922b2bf2/specifications
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment
+  name: lldap
   namespace: lldap
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: lldap
+      app.kubernetes.io/name: lldap
   template:
     metadata:
       namespace: lldap
       labels:
         app.kubernetes.io/name: lldap
-        app: lldap
     spec:
       securityContext:
         runAsNonRoot: true
@@ -28,26 +26,20 @@ spec:
         - name: lldap
           # Dockerfile: https://github.com/lldap/lldap/blob/main/Dockerfile
           image: docker.io/lldap/lldap:2026-02-27-alpine-rootless  # renovate: docker=ghcr.io/lldap/lldap
-          # command:
+          livenessProbe:
+            exec: {command: [/app/lldap, healthcheck]}
+            initialDelaySeconds: 5
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 10m
-              memory: 128Mi
-            limits:
-              # cpu: 100m
-              memory: 128Mi
+            requests: {memory: 128Mi}
+            limits: {memory: 128Mi}
           ports:
             - {name: ldap, containerPort: 3890}
             - {name: ldaps, containerPort: 6360}
             - {name: http, containerPort: 17170}
-          livenessProbe:
-            exec:
-              command: [ /app/lldap, healthcheck ]
-            initialDelaySeconds: 5
           envFrom:
             - configMapRef: {name: lldap-env}
             - secretRef: {name: lldap-secrets}
