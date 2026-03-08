@@ -2,21 +2,30 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: stork-httproute
+  name: web
   namespace: stork
 spec:
   parentRefs:
-    - kind: Gateway
-      name: internal
-      namespace: gateway
-      sectionName: https-wc-talmox-hera-home-karlsen-fr
+    - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
   hostnames:
     - stork.talmox.hera.home.karlsen.fr
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: stork-service
-          port: 80
+    - matches: [path: {type: PathPrefix, value: /}]
+      backendRefs: [{name: web, kind: Service, port: 80}]
+      # filters:
+      #   - type: ResponseHeaderModifier
+      #     responseHeaderModifier:
+      #       add:
+      #         - {name: Access-Control-Allow-Origin, value: '*'}
+      #         - {name: Content-Security-Policy, value: "default-src 'none'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
+      #         - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
+      #         - {name: X-Content-Type-Options, value: nosniff}
+      #         - {name: X-Frame-Options, value: DENY}
+      #         - {name: Cross-Origin-Resource-Policy, value: same-origin}
+      #         - {name: Cross-Origin-Embedder-Policy, value: require-corp}
+      #         - {name: Cross-Origin-Opener-Policy, value: same-origin}
+      #         - {name: Referrer-Policy, value: no-referrer}
+      #         - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
+      #         - {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
+      #         - {name: Reporting-Endpoints, value: ''}
+

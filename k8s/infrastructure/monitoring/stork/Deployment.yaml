@@ -3,30 +3,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment
+  name: stork
   namespace: stork
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: stork
+      app.kubernetes.io/name: stork
   template:
     metadata:
       namespace: stork
       labels:
         app.kubernetes.io/name: stork
-        app: stork
     spec:
-      # imagePullSecrets:
-      #   - name: dhi-io-registry
       securityContext:
         # runAsNonRoot: true
         # runAsUser: 100
         # runAsGroup: 101
         # fsGroup: 101
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+        seccompProfile: {type: RuntimeDefault}
       containers:
         - name: stork
           image: index.docker.io/library/alpine:latest
@@ -41,34 +37,12 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
-            capabilities:
-              drop: ["ALL"]
+            capabilities: {drop: [ALL]}
           resources:
-            requests:
-              # cpu: 10m
-              memory: 128Mi
-            limits:
-              # cpu: 100m
-              memory: 128Mi
-          # resources:
-          #   requests:
-          #     cpu: 10m
-          #     memory: 12Mi
-          #   limits:
-          #     cpu: 100m
-          #     memory: 24Mi
+            requests: {memory: 128Mi}
+            limits: {memory: 128Mi}
           ports:
-            - name: http
-              containerPort: 8080
-          volumeMounts:
-            - name: stork-env-volume
-              mountPath: /etc/stork/server.env
-              readOnly: true
-              subPath: server.env
-      volumes:
-        - name: stork-env-volume
-          secret:
-            secretName: stork-env
-            items:
-              - key: server-env
-                path: server.env
+            - {name: http, containerPort: 8080}
+          envFrom:
+            - configMapRef: {name: stork-env}
+            - secretRef: {name: stork-secrets}
