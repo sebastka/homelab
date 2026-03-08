@@ -25,16 +25,16 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       containers:
         - name: stork
-          image: index.docker.io/library/alpine:latest
+          image: index.docker.io/library/alpine:3.23.3
           command: ['/bin/sh', '-c']
           args:
             - |
               set -eux
-              apk add --no-cache bash curl
-              curl -1sLf https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh | bash
-              apk add --no-cache isc-stork-server isc-stork-server-hook-ldap
-              while [ ! -f /tmp/continue ]; do sleep 10; done
-              stork-server --use-env-file
+              wget -O /etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key
+              printf -- 'https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main\n' >>/etc/apk/repositories
+              apk add --no-cache gosu isc-stork-server isc-stork-server-hook-ldap
+              env | grep '^STORK_' >/etc/stork/server.env
+              exec gosu stork-server /usr/bin/stork-server --use-env-file
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
