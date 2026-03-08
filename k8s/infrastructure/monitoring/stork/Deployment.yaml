@@ -34,7 +34,7 @@ spec:
               printf -- 'https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main\n' >>/etc/apk/repositories
               apk add --no-cache isc-stork-server isc-stork-server-hook-ldap
               env | grep '^STORK_' >/etc/stork/server.env
-              stork server --config /etc/stork/server.env
+              stork-server --use-env-file
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
