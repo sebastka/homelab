@@ -40,6 +40,7 @@ spec:
             - secretRef: {name: paperless-secrets}
           volumeMounts:
             - {name: paperless-tmp-volume, mountPath: /tmp}
+            - {name: paperless-cache-volume, mountPath: /var/cache}
             - {name: paperless-data, mountPath: /data/data}
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
@@ -60,6 +61,7 @@ spec:
             - secretRef: {name: paperless-secrets}
           volumeMounts:
             - {name: paperless-tmp-volume, mountPath: /tmp}
+            - {name: paperless-cache-volume, mountPath: /var/cache}
             - {name: paperless-data, mountPath: /data/data}
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
@@ -80,6 +82,7 @@ spec:
             - secretRef: {name: paperless-secrets}
           volumeMounts:
             - {name: paperless-tmp-volume, mountPath: /tmp}
+            - {name: paperless-cache-volume, mountPath: /var/cache}
             - {name: paperless-data, mountPath: /data/data}
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
@@ -106,6 +109,7 @@ spec:
             - {name: http, containerPort: 8000}
           volumeMounts:
             - {name: paperless-tmp-volume, mountPath: /tmp}
+            - {name: paperless-cache-volume, mountPath: /var/cache}
             - {name: paperless-data, mountPath: /data/data}
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
@@ -142,6 +146,7 @@ spec:
             - {name: tika-tmp-volume, mountPath: /tmp}
       volumes:
         - {name: paperless-tmp-volume, emptyDir: {}}
+        - {name: paperless-cache-volume, emptyDir: {}}
         - {name: tika-tmp-volume, emptyDir: {}}
         - {name: paperless-consume, persistentVolumeClaim: {claimName: longhorn-paperless-consume-pvc}}
         - {name: paperless-data, persistentVolumeClaim: {claimName: longhorn-paperless-data-pvc}}
