@@ -28,4 +28,3 @@ spec:
       #         - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
       #         - {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
       #         - {name: Reporting-Endpoints, value: ''}
-
