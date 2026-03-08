@@ -9,4 +9,4 @@ spec:
     - {namespace: gateway, name: internal, sectionName: ldap}
     # - {namespace: gateway, name: external, sectionName: ldap}
   rules:
-    - backendRefs: [{name: ldap, kind: Service, port: 389}]
+    - backendRefs: [{name: lldap, kind: Service, port: 389}]

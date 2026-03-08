@@ -12,7 +12,7 @@ spec:
     - ldap.karlsen.fr
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
-      backendRefs: [{name: web, kind: Service, port: 80}]
+      backendRefs: [{name: lldap, kind: Service, port: 80}]
       # filters:
       #   - type: ResponseHeaderModifier
       #     responseHeaderModifier:

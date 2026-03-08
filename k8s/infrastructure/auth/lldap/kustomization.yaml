@@ -25,8 +25,7 @@ resources:
   - Certificate.ldap-karlsen-fr.yaml
   - Job.bootstrap.yaml
   - Deployment.yaml
-  - Service.web.yaml
-  - Service.ldap.yaml
+  - Service.yaml
   - HTTPRoute.yaml
   - TCPRoute.yaml
   - TLSRoute.yaml

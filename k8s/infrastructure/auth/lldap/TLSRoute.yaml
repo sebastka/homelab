@@ -11,4 +11,4 @@ spec:
   hostnames:
     - ldap.karlsen.fr
   rules:
-    - backendRefs: [{name: ldap, kind: Service, port: 636}]
+    - backendRefs: [{name: lldap, kind: Service, port: 636}]
