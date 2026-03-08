@@ -32,9 +32,9 @@ spec:
               set -eux
               wget -O /etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key
               printf -- 'https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main\n' >>/etc/apk/repositories
-              apk add --no-cache gosu isc-stork-server isc-stork-server-hook-ldap
+              apk add --no-cache isc-stork-server isc-stork-server-hook-ldap
               env | grep '^STORK_' >/etc/stork/server.env
-              exec gosu stork-server /usr/bin/stork-server --use-env-file
+              exec su - stork-server -c '/usr/bin/stork-server --use-env-file'
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
