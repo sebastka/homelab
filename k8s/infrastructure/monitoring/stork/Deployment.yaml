@@ -30,6 +30,7 @@ spec:
           args:
             - |
               set -eux
+              # https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh
               wget -O /etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key
               printf -- 'https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main\n' >>/etc/apk/repositories
               apk add --no-cache isc-stork-server isc-stork-server-hook-ldap
