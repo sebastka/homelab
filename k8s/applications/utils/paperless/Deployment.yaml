@@ -75,8 +75,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 256Mi}
-            limits: {memory: 256Mi}
+            requests: {memory: 512Mi}
+            limits: {memory: 512Mi}
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
@@ -128,8 +128,8 @@ spec:
             runAsUser: 1000
             runAsGroup: 1000
           resources:
-            requests: {memory: 32Mi}
-            limits: {memory: 32Mi}
+            requests: {memory: 256Mi}
+            limits: {memory: 256Mi}
         - name: tika
           # Dockerfile: https://github.com/apache/tika-docker/blob/main/minimal/Dockerfile
           image: index.docker.io/apache/tika:latest
