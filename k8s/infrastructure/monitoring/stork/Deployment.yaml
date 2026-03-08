@@ -33,6 +33,7 @@ spec:
               apk add --no-cache bash curl
               curl -1sLf https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh | bash
               apk add --no-cache isc-stork-server isc-stork-server-hook-ldap
+              while [ ! -f /tmp/continue ]; do sleep 10; done
               stork-server --use-env-file
           securityContext:
             allowPrivilegeEscalation: false
