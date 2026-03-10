@@ -23,18 +23,27 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:
-        - name: tessdata-downloader
-          image: alpine/git:latest
+        - name: paperless-custom-init
+          image: ghcr.io/paperless-ngx/paperless-ngx:latest
           command: ['/bin/sh', '-c']
           args:
             - |
               set -eux
+
               # Clean up volumes
-              for d in tessdata; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
+              for d in customizations; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
+
               # Fetch trained data for Tesseract OCR
+              # Use the existing PAPERLESS_OCR_LANGUAGES var
               for lang in $PAPERLESS_OCR_LANGUAGES; do
-                wget -O "/tessdata/${lang}.traineddata" "https://raw.githubusercontent.com/tesseract-ocr/tessdata/refs/heads/main/${lang}.traineddata"
+                wget -O "/customizations/${lang}.traineddata" "https://raw.githubusercontent.com/tesseract-ocr/tessdata/refs/heads/main/${lang}.traineddata"
               done
+
+              # Force cookies to use samesite, httponly and secure
+              {
+                cat /usr/src/paperless/src/paperless/settings.py
+                printf -- '\n##########\n# Custom\n##########\n\n# CSRF_COOKIE_DOMAIN=  # Should be empty\nCSRF_COOKIE_HTTPONLY: Final[bool] = __get_boolean("PAPERLESS_CUSTOM_COOKIE_HTTPONLY", "yes")\n# CSRF_COOKIE_PATH=/\nCSRF_COOKIE_SAMESITE = os.getenv("PAPERLESS_CUSTOM_COOKIE_SAMESITE", "Lax")\nCSRF_COOKIE_SECURE: Final[bool] = __get_boolean("PAPERLESS_CUSTOM_COOKIE_SECURE", "yes")\n'
+              } >/customizations/settings.py
           envFrom:
             - configMapRef: {name: paperless-env}
           securityContext:
@@ -45,7 +54,7 @@ spec:
             requests: {memory: 64Mi}
             limits: {memory: 64Mi}
           volumeMounts:
-            - {name: custom-tessdata-volume, mountPath: /tessdata}
+            - {name: customizations-volume, mountPath: /customizations}
       containers:
         - name: paperless-consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
@@ -69,7 +78,8 @@ spec:
             - {name: paperless-export, mountPath: /data/export}
             - {name: paperless-consume, mountPath: /data/consume}
             - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
-            - {name: custom-tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+            - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+            - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
         - name: paperless-scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
@@ -92,7 +102,8 @@ spec:
             - {name: paperless-export, mountPath: /data/export}
             - {name: paperless-consume, mountPath: /data/consume}
             - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
-            - {name: custom-tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+            - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+            - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
         - name: paperless-task-queue
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
@@ -115,7 +126,8 @@ spec:
             - {name: paperless-export, mountPath: /data/export}
             - {name: paperless-consume, mountPath: /data/consume}
             - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
-            - {name: custom-tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+            - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+            - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
         - name: paperless-webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
@@ -140,7 +152,8 @@ spec:
             - {name: paperless-export, mountPath: /data/export}
             - {name: paperless-consume, mountPath: /data/consume}
             - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
-            - {name: custom-tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+            - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+            - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
         - name: gotenberg
           # Dockerfile: https://github.com/gotenberg/gotenberg/blob/main/build/Dockerfile
           image: index.docker.io/gotenberg/gotenberg:latest
@@ -180,4 +193,4 @@ spec:
         - {name: paperless-export, persistentVolumeClaim: {claimName: longhorn-paperless-export-pvc}}
         - {name: paperless-media, persistentVolumeClaim: {claimName: longhorn-paperless-media-pvc}}
         - {name: paperless-scripts-volume, configMap: {name: paperless-scripts}}
-        - {name: custom-tessdata-volume, emptyDir: {}}
+        - {name: customizations-volume, emptyDir: {}}
