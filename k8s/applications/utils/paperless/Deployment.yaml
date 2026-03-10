@@ -40,8 +40,10 @@ spec:
               done
 
               # Force cookies to use samesite, httponly and secure
-              cat /usr/src/paperless/src/paperless/settings.py /scripts/extra_settings.py \
-                >/customizations/settings.py
+              if [ "$PAPERLESS_CUSTOM_ENABLE" = "true" ]; then
+                cat /usr/src/paperless/src/paperless/settings.py /scripts/extra_settings.py \
+                  >/customizations/settings.py
+              fi
           envFrom:
             - configMapRef: {name: paperless-env}
           securityContext:
