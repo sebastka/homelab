@@ -36,7 +36,7 @@ spec:
               # Fetch trained data for Tesseract OCR
               # Use the existing PAPERLESS_OCR_LANGUAGES var
               for lang in $PAPERLESS_OCR_LANGUAGES; do
-                wget -O "/customizations/${lang}.traineddata" "https://raw.githubusercontent.com/tesseract-ocr/tessdata/refs/heads/main/${lang}.traineddata"
+                curl -sLO --output-dir /customizations "https://raw.githubusercontent.com/tesseract-ocr/tessdata/refs/heads/main/${lang}.traineddata"
               done
 
               # Force cookies to use samesite, httponly and secure
