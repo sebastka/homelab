@@ -28,20 +28,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: longhorn-paperless-export-pvc
-  namespace: paperless
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
-  storageClassName: longhorn-static
-  volumeName: longhorn-paperless-export-pv
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: longhorn-paperless-consume-pvc
   namespace: paperless
 spec:
