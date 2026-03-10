@@ -15,6 +15,9 @@ Rootlessness achieved by running the [scripts](https://github.com/paperless-ngx/
 
 ## Administration:
 
+All logs:
+- `kubectl -n paperless logs --all-containers --max-log-requests 10 --follow pods/<pod-name>`
+
 Sanity check:
 - `python3 manage.py document_sanity_checker`
 - `kubectl -n paperless exec -it <pod-name> -c paperless-celery-worker -- python3 manage.py document_sanity_checker`
