@@ -19,7 +19,7 @@ spec:
             remove: [Referrer-Policy]
             add:
               # - {name: Access-Control-Allow-Origin, value: '*'}
-              - {name: Content-Security-Policy, value: "default-src 'self'; script-src-elem 'self' 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline'; style-src-attr 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'self'; form-action 'none'; base-uri 'self';"}
+              - {name: Content-Security-Policy, value: "default-src 'self'; script-src-elem 'self' 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline'; style-src-attr 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'self'; form-action 'self'; base-uri 'self';"}
               - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
               # - {name: X-Content-Type-Options, value: nosniff}  # Already set in application
               # - {name: X-Frame-Options, value: SAMEORIGIN}  # Already set in application
