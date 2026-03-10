@@ -17,8 +17,7 @@ spec:
         - type: RequestHeaderModifier
           requestHeaderModifier:
             add:
-              # - {name: X-Forwarded-Host, value: 'paperless.karlsen.app'}
-              - {name: Host, value: 'paperless.karlsen.app'}
+              - {name: X-Forwarded-Host, value: 'paperless.karlsen.app'}
         - type: ResponseHeaderModifier
           responseHeaderModifier:
             remove: [Referrer-Policy]
