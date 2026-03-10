@@ -16,7 +16,6 @@ spec:
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
-            remove: [Referrer-Policy]
             add:
               # - {name: Access-Control-Allow-Origin, value: '*'}
               - {name: Content-Security-Policy, value: "default-src 'self'; script-src-elem 'self' 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline'; style-src-attr 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'self'; form-action 'self'; base-uri 'self';"}
@@ -26,7 +25,7 @@ spec:
               - {name: Cross-Origin-Resource-Policy, value: same-origin}
               - {name: Cross-Origin-Embedder-Policy, value: require-corp}
               # - {name: Cross-Origin-Opener-Policy, value: same-origin}  # Already set in application
-              - {name: Referrer-Policy, value: strict-origin}
+              # - {name: Referrer-Policy, value: same-origin}
               - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
               - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
               # - {name: Reporting-Endpoints, value: ''}
