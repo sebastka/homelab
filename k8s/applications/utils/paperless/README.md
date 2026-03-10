@@ -1,7 +1,9 @@
 # Paperless-ngx
 
-- Documentation: https://docs.paperless-ngx.com/configuration/
 - Git: https://github.com/paperless-ngx/paperless-ngx
+- Documentation:
+  + Advanced Topics: https://docs.paperless-ngx.com/advanced_usage
+  + Administration. https://docs.paperless-ngx.com/administration
 
 ## Rootless
 
@@ -11,8 +13,12 @@ Rootlessness achieved by running the [scripts](https://github.com/paperless-ngx/
 - taskqueue: `celery -app paperless beat --loglevel INFO`
 - scheduler: `celery --app paperless worker --loglevel INFO`
 
-## Sanity check:
+## Administration:
 
-Run the following to check for inconsistencies:
+Sanity check:
 - `python3 manage.py document_sanity_checker`
 - `kubectl -n paperless exec -it <pod-name> -c paperless-celery-worker -- python3 manage.py document_sanity_checker`
+
+## To do:
+
+- Look into Flower (`PAPERLESS_ENABLE_FLOWER`)

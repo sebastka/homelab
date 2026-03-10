@@ -14,6 +14,7 @@ generatorOptions:
 
 configMapGenerator:
   - {namespace: paperless, name: paperless-env, envs: [assets/paperless.env]}
+  - {namespace: paperless, name: paperless-scripts, files: [post-consumption.sh=assets/post-consumption.sh]}
 
 resources:
   - Namespace.yaml

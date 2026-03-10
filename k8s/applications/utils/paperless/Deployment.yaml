@@ -22,6 +22,30 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: tessdata-downloader
+          image: alpine/git:latest
+          command: ['/bin/sh', '-c']
+          args:
+            - |
+              set -eux
+              # Clean up volumes
+              for d in tessdata; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
+              # Fetch trained data for Tesseract OCR
+              for lang in $PAPERLESS_OCR_LANGUAGES; do
+                wget -O "/tessdata/${lang}.traineddata" "https://raw.githubusercontent.com/tesseract-ocr/tessdata/refs/heads/main/${lang}.traineddata"
+              done
+          envFrom:
+            - configMapRef: {name: paperless-env}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 64Mi}
+          volumeMounts:
+            - {name: custom-tessdata-volume, mountPath: /tessdata}
       containers:
         - name: paperless-consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
@@ -44,7 +68,9 @@ spec:
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
             - {name: paperless-consume, mountPath: /data/consume}
-        - name: paperless-celery-beat
+            - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: custom-tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+        - name: paperless-scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
           command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO"]
@@ -65,7 +91,9 @@ spec:
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
             - {name: paperless-consume, mountPath: /data/consume}
-        - name: paperless-celery-worker
+            - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: custom-tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+        - name: paperless-task-queue
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
           command: [celery, "--app", "paperless", "worker", "--loglevel", "INFO"]
@@ -86,6 +114,8 @@ spec:
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
             - {name: paperless-consume, mountPath: /data/consume}
+            - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: custom-tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
         - name: paperless-webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
@@ -100,10 +130,6 @@ spec:
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
-          env:
-            - {name: GRANIAN_HOST, value: '0.0.0.0'}
-            - {name: GRANIAN_PORT, value: '8000'}
-            - {name: GRANIAN_WORKERS, value: '1'}
           ports:
             - {name: http, containerPort: 8000}
           volumeMounts:
@@ -113,6 +139,8 @@ spec:
             - {name: paperless-media, mountPath: /data/media}
             - {name: paperless-export, mountPath: /data/export}
             - {name: paperless-consume, mountPath: /data/consume}
+            - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: custom-tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
         - name: gotenberg
           # Dockerfile: https://github.com/gotenberg/gotenberg/blob/main/build/Dockerfile
           image: index.docker.io/gotenberg/gotenberg:latest
@@ -151,3 +179,4 @@ spec:
         - {name: paperless-data, persistentVolumeClaim: {claimName: longhorn-paperless-data-pvc}}
         - {name: paperless-export, persistentVolumeClaim: {claimName: longhorn-paperless-export-pvc}}
         - {name: paperless-media, persistentVolumeClaim: {claimName: longhorn-paperless-media-pvc}}
+        - {name: paperless-scripts-volume, configMap: {name: paperless-scripts}}
