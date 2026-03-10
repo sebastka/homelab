@@ -42,7 +42,7 @@ spec:
               # Force cookies to use samesite, httponly and secure
               {
                 cat /usr/src/paperless/src/paperless/settings.py
-                printf -- '\n##########\n# Custom\n##########\n\nCSRF_COOKIE_DOMAIN = os.getenv("PAPERLESS_CUSTOM_COOKIE_DOMAIN", "")\nCSRF_COOKIE_HTTPONLY: Final[bool] = __get_boolean("PAPERLESS_CUSTOM_COOKIE_HTTPONLY", "yes")\nCSRF_COOKIE_PATH = os.getenv("PAPERLESS_CUSTOM_COOKIE_PATH", "/")\nCSRF_COOKIE_SAMESITE = os.getenv("PAPERLESS_CUSTOM_COOKIE_SAMESITE", "Strict")\nCSRF_COOKIE_SECURE: Final[bool] = __get_boolean("PAPERLESS_CUSTOM_COOKIE_SECURE", "yes")\n'
+                cat /scripts/extra_settings.py
               } >/customizations/settings.py
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -54,6 +54,7 @@ spec:
             requests: {memory: 64Mi}
             limits: {memory: 64Mi}
           volumeMounts:
+            - {name: paperless-scripts-volume, mountPath: /scripts/extra_settings.py, subPath: extra_settings.py, readOnly: true}
             - {name: customizations-volume, mountPath: /customizations}
       containers:
         - name: paperless-consumer
