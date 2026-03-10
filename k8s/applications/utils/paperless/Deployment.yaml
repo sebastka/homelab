@@ -180,3 +180,4 @@ spec:
         - {name: paperless-export, persistentVolumeClaim: {claimName: longhorn-paperless-export-pvc}}
         - {name: paperless-media, persistentVolumeClaim: {claimName: longhorn-paperless-media-pvc}}
         - {name: paperless-scripts-volume, configMap: {name: paperless-scripts}}
+        - {name: custom-tessdata-volume, emptyDir: {}}
