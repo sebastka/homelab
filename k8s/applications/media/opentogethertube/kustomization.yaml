@@ -13,6 +13,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
+  - {namespace: opentogethertube, name: opentogethertube-env, envs: [assets/opentogethertube.env]}
   - {namespace: opentogethertube, name: opentogethertube-config, files: [base.toml=assets/base.toml]}
 
 resources:
