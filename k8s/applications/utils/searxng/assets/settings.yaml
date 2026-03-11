@@ -23,3 +23,6 @@ ui:
   results_on_new_tab: true
   # hotkeys: vim
   url_formatting: full
+
+valkey:
+  url: valkey://127.0.1:6379/0

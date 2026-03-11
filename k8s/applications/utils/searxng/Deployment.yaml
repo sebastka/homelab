@@ -44,6 +44,20 @@ spec:
             - {name: cache-volume, mountPath: /var/cache/searxng}
             - {name: searxng-config-volume, mountPath: /etc/searxng/settings.yml, subPath: settings.yaml, readOnly: true}
             - {name: searxng-config-volume, mountPath: /etc/searxng/limiter.toml, subPath: limiter.toml, readOnly: true}
+        - name: valkey
+          # Dockerfile: https://github.com/valkey-io/valkey-container/blob/mainline/9.0/alpine/Dockerfile
+          image: index.docker.io/valkey/valkey:9.0.3-alpine3.23
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+            runAsUser: 999
+            runAsGroup: 1000
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 64Mi}
+          # env:
+          #   - {name: VALKEY_EXTRA_FLAGS, value: '--save 60 1 --loglevel warning'}
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: cache-volume, emptyDir: {}}  # Use Longhorn if persistent data is needed
