@@ -1,0 +1,44 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: custom-cluster
+  namespace: cnpg-database
+spec:
+  instances: 2
+  storage:
+    storageClass: longhorn-static
+    size: 2Gi
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.3-minimal-trixie
+  monitoring: {enablePodMonitor: true}
+  enableSuperuserAccess: true
+  superuserSecret: {name: postgres-credentials}
+  bootstrap:
+    initdb:
+      database: opentogethertube
+      owner: opentogethertube
+      secret: {name: user-credentials}
+      # postInitApplicationSQLRefs: {configMapRefs: [{name: post-init, key: post-init.sql}]}
+  postgresql: {parameters: {timezone: Europe/Oslo}}
+  managed:
+    roles:
+      - name: read
+        passwordSecret: {name: read-credentials}
+        ensure: present
+        comment: Read Only user
+        login: true
+        inherit: true
+        inRoles:
+          - pg_read_all_data
+    services:
+      disabledDefaultServices: [ro]
+      additional:
+        - selectorType: rw
+          updateStrategy: patch
+          serviceTemplate:
+            metadata:
+              name: custom-database-ext
+              annotations:
+                lbipam.cilium.io/ips: 192.168.2.15
+            spec:
+              type: LoadBalancer

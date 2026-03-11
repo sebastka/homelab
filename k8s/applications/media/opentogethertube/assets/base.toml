@@ -1,0 +1,88 @@
+# https://github.com/dyc3/opentogethertube/blob/master/server/ott-config.ts
+
+env = "production"
+docker = true
+# heroku = false
+# port = 3000
+hostname = "ott.karlsen.app"
+base_url = "https://ott.karlsen.app"
+# api_key = "" # OPENTOGETHERTUBE_API_KEY (generate your own >= 40 characters)
+# session_secret = "" # SESSION_SECRET (generate your own >= 80 characters)
+trust_proxy = 1
+# short_url = ""
+force_insecure_cookies = false
+# cors_proxy = ""
+
+[log]
+level = "info"
+# file = 
+
+[db]
+mode = "postgres"
+# url = "postgresql://user:password@localhost:5432/ott"
+host = "db02.hera.home.karlsen.fr"
+port = 5432
+name = "opentogethertube"
+user = "opentogethertube"
+# password = "" # POSTGRES_PASSWORD
+metrics = false
+
+[redis]
+url = "redis://localhost:6379"
+# host = ""
+# port = ""
+# username = ""
+# password = ""
+# db = 0
+metrics = false
+
+[add_preview]
+# playlist_results_count = 40
+
+[add_preview.search]
+# enabled = true
+provider = "youtube"
+# min_query_length = 3
+# results_count = 8
+
+[info_extractor]
+# services = []
+
+[info_extractor.direct]
+probe_path = "/usr/bin/ffprobe"
+# preview_max_bytes =
+ffprobe_strategy = "stream" # stream, disk, run
+
+[info_extractor.youtube]
+# api_key = # YOUTUBE_API_KEY (get your own key from https://console.developers.google.com/apis/credentials)
+
+## Look at docs for configuration options for other services, e.g. google_drive, peertube, etc.
+
+[rate_limit]
+# enabled = true
+# key_prefix = "rateLimit"
+
+[discord]
+# client_id = ""
+# client_secret = "" # DISCORD_CLIENT_SECRET
+
+[balancing]
+enabled = false
+# port = 3002
+# region = "unknown"
+
+[mail]
+enabled = false
+
+[room]
+# enable_create_temporary = true
+# enable_create_permanent = true
+# unload_after = 300
+# expire_after = 7200
+
+[users]
+enable_registration = false
+
+[video.sponsorblock]
+enable = true
+# cache_ttl = 604800 # One week in seconds

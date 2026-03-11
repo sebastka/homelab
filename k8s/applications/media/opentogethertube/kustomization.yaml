@@ -1,0 +1,25 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: opentogethertube
+
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      app.kubernetes.io/name: opentogethertube
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - {namespace: opentogethertube, name: opentogethertube-config, files: [base.toml=assets/base.toml]}
+
+resources:
+  - Namespace.yaml
+  - SealedSecret.opentogethertube-secrets.yaml
+  # - SealedSecret.postgres.yaml
+  # - Cluster.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - HTTPRoute.yaml

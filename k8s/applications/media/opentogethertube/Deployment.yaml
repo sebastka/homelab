@@ -1,0 +1,62 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: opentogethertube
+  namespace: opentogethertube
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: opentogethertube
+  template:
+    metadata:
+      namespace: opentogethertube
+      labels:
+        app.kubernetes.io/name: opentogethertube
+    spec:
+      nodeSelector:
+        topology.kubernetes.io/zone: w01
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: opentogethertube
+          # Dockerfile: https://hub.docker.com/r/opentogethertube/opentogethertube/dockerfile
+          image: index.docker.io/dyc3/opentogethertube:latest
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 256Mi}
+            limits: {memory: 256Mi}
+          envFrom:
+            - secretRef: {name: opentogethertube-secrets}
+          ports:
+            - {name: http, containerPort: 3000}
+          volumeMounts:
+            # - {name: tmp-volume, mountPath: /tmp}
+            - {name: config-volume, mountPath: /app/env/base.toml, subPath: base.toml, readOnly: true}
+        - name: valkey
+          # Dockerfile: https://github.com/valkey-io/valkey-container/blob/mainline/9.0/alpine/Dockerfile
+          image: index.docker.io/valkey/valkey:9.0.3-alpine3.23
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+            runAsUser: 999
+            runAsGroup: 1000
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 64Mi}
+          # env:
+          #   - {name: VALKEY_EXTRA_FLAGS, value: '--save 60 1 --loglevel warning'}
+      volumes:
+        # - {name: tmp-volume, emptyDir: {medium: Memory}}
+        - {name: config-volume, configMap: {name: opentogethertube-config}}
