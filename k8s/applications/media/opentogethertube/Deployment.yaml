@@ -16,8 +16,6 @@ spec:
       labels:
         app.kubernetes.io/name: opentogethertube
     spec:
-      nodeSelector:
-        topology.kubernetes.io/zone: w01
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
