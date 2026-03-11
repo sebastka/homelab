@@ -40,7 +40,7 @@ spec:
           ports:
             - {name: http, containerPort: 3000}
           volumeMounts:
-            # - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /home/node/.cache}
             - {name: config-volume, mountPath: /app/env/base.toml, subPath: base.toml, readOnly: true}
         - name: valkey
           # Dockerfile: https://github.com/valkey-io/valkey-container/blob/mainline/9.0/alpine/Dockerfile
@@ -57,5 +57,5 @@ spec:
           # env:
           #   - {name: VALKEY_EXTRA_FLAGS, value: '--save 60 1 --loglevel warning'}
       volumes:
-        # - {name: tmp-volume, emptyDir: {medium: Memory}}
+        - {name: cache-volume, emptyDir: {medium: Memory}}
         - {name: config-volume, configMap: {name: opentogethertube-config}}
