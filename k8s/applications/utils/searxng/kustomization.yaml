@@ -13,7 +13,6 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - {namespace: searxng, name: searxng-env, envs: [assets/searxng.env]}
   - {namespace: searxng, name: searxng-config, files: [settings.yaml=assets/settings.yaml, limiter.toml=assets/limiter.toml]}
 
 resources:
