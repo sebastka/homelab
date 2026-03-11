@@ -27,7 +27,7 @@ spec:
         - name: opentogethertube
           # Dockerfile: https://hub.docker.com/r/opentogethertube/opentogethertube/dockerfile
           image: index.docker.io/dyc3/opentogethertube:latest
-          command: [sleep, infinity]
+          command: [yarn, run, start]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
