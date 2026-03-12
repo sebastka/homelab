@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-bootstrap-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: karlsen-fr-ca-issuer
+spec:
+  ca:
+    secretName: karlsen-fr-root-ca-secret
