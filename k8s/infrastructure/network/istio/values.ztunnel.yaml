@@ -2,4 +2,4 @@
 # https://artifacthub.io/packages/helm/istio-official/ztunnel?modal=values
 ---
 
-profile: ambient
+# profile: ambient
