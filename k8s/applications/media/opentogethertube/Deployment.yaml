@@ -23,6 +23,25 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: migrate-db
+          # Dockerfile: https://hub.docker.com/r/opentogethertube/opentogethertube/dockerfile
+          image: index.docker.io/dyc3/opentogethertube:latest
+          command: [yarn, workspace, ott-server, run, sequelize-cli, db:migrate]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 128Mi}
+            limits: {memory: 128Mi}
+          envFrom:
+            - configMapRef: {name: opentogethertube-env}
+            - secretRef: {name: opentogethertube-secrets}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /home/node/.cache}
+            - {name: config-volume, mountPath: /app/env/base.toml, subPath: base.toml, readOnly: true}
       containers:
         - name: opentogethertube
           # Dockerfile: https://hub.docker.com/r/opentogethertube/opentogethertube/dockerfile
