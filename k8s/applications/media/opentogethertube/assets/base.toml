@@ -5,7 +5,7 @@ docker = true
 # heroku = false
 # port = 3000
 hostname = "ott.karlsen.app"
-base_url = "https://ott.karlsen.app"
+# base_url = "/"
 # api_key = "" # OPENTOGETHERTUBE_API_KEY (generate your own >= 40 characters)
 # session_secret = "" # SESSION_SECRET (generate your own >= 80 characters)
 trust_proxy = 1
