@@ -7,7 +7,7 @@ metadata:
 spec:
   parentRefs:
     - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
-    # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
+    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
   hostnames:
     - ott.karlsen.app
   rules:
