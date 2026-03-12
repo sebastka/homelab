@@ -36,12 +36,7 @@ main()
     ln -sf "$CLUSTER_NAME/talosconfig" "$XDG_CONFIG_HOME/talos/config.yaml"
 
     wait 'Press enter to apply configuration to control plane nodes...'
-    sed 1d "./clusters/${CLUSTER_NAME}/nodes.csv" | grep -E -v '^#' | grep controlplane | while IFS=, read cluster pve_node role node_name hw_add net_addr; do
-        talosctl apply-config --insecure --talosconfig="$TALOS_CONFIG_HOME/talosconfig" --nodes "${net_addr}" --file "$TALOS_CONFIG_HOME/talmox-${node_name}.talmox.hera.home.karlsen.fr.yaml"
-    done
-
-    wait 'Press enter to apply configuration to worker nodes...'
-    sed 1d "./clusters/${CLUSTER_NAME}/nodes.csv" | grep -E -v '^#' | grep worker | while IFS=, read cluster pve_node role node_name hw_add net_addr; do
+    sed 1d "./clusters/${CLUSTER_NAME}/nodes.csv" | grep -E -v '^#' | while IFS=, read cluster pve_node node_name hw_add net_addr; do
         talosctl apply-config --insecure --talosconfig="$TALOS_CONFIG_HOME/talosconfig" --nodes "${net_addr}" --file "$TALOS_CONFIG_HOME/talmox-${node_name}.talmox.hera.home.karlsen.fr.yaml"
     done
 

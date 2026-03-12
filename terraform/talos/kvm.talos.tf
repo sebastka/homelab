@@ -3,16 +3,10 @@ locals {
   talos_image    = "local:iso/nocloud-amd64-secureboot.iso"
   current_image  = local.talos_image
 
-  cp_config     = { mem = 8192,  cores = 4 }
-  worker_config = { mem = 24576, cores = 8 }
-
   talos_nodes = {
-    "cp01" = { type = "controlplane", pve_node: "hera", hwaddr = "bc:24:11:10:fe:09", gpu = false }
-    "cp02" = { type = "controlplane", pve_node: "hera", hwaddr = "bc:24:11:10:fe:0A", gpu = false }
-    "cp03" = { type = "controlplane", pve_node: "hera", hwaddr = "bc:24:11:10:fe:0B", gpu = false }
-    "w01"  = { type = "worker",       pve_node: "hera", hwaddr = "bc:24:11:1c:42:be", gpu = true }
-    "w02"  = { type = "worker",       pve_node: "hera", hwaddr = "bc:24:11:97:24:5f", gpu = false }
-    "w03"  = { type = "worker",       pve_node: "hera", hwaddr = "bc:24:11:02:d7:95", gpu = false }
+    "t01" = { pve_node: "hera", hwaddr = "bc:24:11:10:fe:09", gpu = false }
+    "t02" = { pve_node: "hera", hwaddr = "bc:24:11:10:fe:0A", gpu = false }
+    "t03" = { pve_node: "hera", hwaddr = "bc:24:11:10:fe:0B", gpu = true }
   }
 }
 
@@ -20,8 +14,8 @@ resource "proxmox_vm_qemu" "talos_nodes" {
   for_each = local.talos_nodes
 
   name               = "${each.key}.${var.pve.domain}"
-  description        = each.value.type == "controlplane" ? "Talos Control Plane" : "Talos Worker"
-  tags               = "talos,talmox,${each.value.type}"
+  description        = "Talos Kubernetes Node"
+  tags               = "talos,talmox,controlplane,worker"
   target_nodes       = [each.value.pve_node]
   qemu_os            = "l26"
   machine            = "q35"
@@ -32,8 +26,8 @@ resource "proxmox_vm_qemu" "talos_nodes" {
   start_at_node_boot = true
   vm_state           = local.current_status
   scsihw             = "virtio-scsi-single"
-  memory             = each.value.type == "controlplane" ? local.cp_config.mem : local.worker_config.mem
-  balloon            = 512
+  memory             = 32768
+  balloon            = 0
   boot               = "order=ide2;scsi0"
 
   startup_shutdown {
@@ -42,7 +36,7 @@ resource "proxmox_vm_qemu" "talos_nodes" {
   }
 
   cpu {
-    cores = each.value.type == "controlplane" ? local.cp_config.cores : local.worker_config.cores
+    cores = 12
     type  = "host"
     numa  = true
   }
@@ -86,7 +80,7 @@ resource "proxmox_vm_qemu" "talos_nodes" {
 
   disks {
     scsi {
-      # Root disk
+      # OS Root disk
       scsi0 {
         disk {
           size       = "32G"
@@ -98,18 +92,15 @@ resource "proxmox_vm_qemu" "talos_nodes" {
         }
       }
 
-      # Additional data disk for worker nodes
-      dynamic "scsi1" {
-        for_each = each.value.type == "worker" ? [1] : []
-        content {
-          disk {
-            size       = "128G"
-            storage    = var.pve.default_storage_pool
-            iothread   = true
-            emulatessd = true
-            backup     = false
-            replicate  = false
-          }
+      # Data disk
+      scsi1 {
+        disk {
+          size       = "128G"
+          storage    = var.pve.default_storage_pool
+          iothread   = true
+          emulatessd = true
+          backup     = false
+          replicate  = false
         }
       }
     }

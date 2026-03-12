@@ -1,7 +1,4 @@
-cluster,pve_node,role,node_name,hw_add,net_addr
-talmox,hera,controlplane,cp01,BC:24:11:10:FE:09,192.168.1.201
-talmox,hera,controlplane,cp02,BC:24:11:10:FE:0A,192.168.1.202
-talmox,hera,controlplane,cp03,BC:24:11:10:FE:0B,192.168.1.203
-talmox,hera,worker,w01,BC:24:11:1C:42:BE,192.168.1.211
-talmox,hera,worker,w02,BC:24:11:97:24:5F,192.168.1.212
-talmox,hera,worker,w03,BC:24:11:02:D7:95,192.168.1.213
+cluster,pve_node,node_name,hw_add,net_addr
+talmox,hera,t01,BC:24:11:10:FE:09,192.168.1.201
+talmox,hera,t02,BC:24:11:10:FE:0A,192.168.1.202
+talmox,hera,t03,BC:24:11:10:FE:0B,192.168.1.203

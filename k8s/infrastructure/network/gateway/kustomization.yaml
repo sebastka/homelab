@@ -10,6 +10,4 @@ resources:
   - Certificate.talmox-hera-home-karlsen-fr.yaml
   - Gateway.internal.yaml
   - Gateway.external.yaml
-  # - SecurityPolicy.yaml
-  # - ClientTrafficPolicy.yaml
   - HTTPRoute.https-upgrade.yaml

@@ -1,0 +1,5 @@
+# yaml-language-server: $schema=
+# https://artifacthub.io/packages/helm/istio-official/cni?modal=values
+---
+
+profile: ambient

@@ -4,8 +4,6 @@ kind: HTTPRoute
 metadata:
   name: https-upgrade
   namespace: gateway
-  labels:
-    security-policy: httproute-allow-all
 spec:
   parentRefs:
     - kind: Gateway

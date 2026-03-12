@@ -9,7 +9,8 @@ talosVersion: v${TALOS_VERSION}
 kubernetesVersion: v${K8S_VERSION}
 endpoint: https://${CONTROL_PLANE_IP}:6443
 # domain: home.karlsen.fr
-allowSchedulingOnMasters: false
+allowSchedulingOnMasters: true
+allowSchedulingOnControlPlanes: true
 # additionalApiServerCertSans:
 clusterPodNets: [10.244.0.0/16]
 clusterSvcNets: [10.96.0.0/12]
@@ -17,21 +18,13 @@ clusterSvcNets: [10.96.0.0/12]
 #   name: none
 
 patches:
-  - '@./patches/common/cilium.yaml'
-  - '@./patches/common/prometheus.yaml'
-  - '@./patches/common/longhorn.yaml'
-  - '@./patches/common/oom.yaml'
-  - '@./patches/common/tpm-disk-encryption.yaml'
-
-controlPlane:
-  patches:
-    - '@./patches/controlplane/resources.yaml'
-    - '@./patches/controlplane/metrics.yaml'
-    - '@./patches/controlplane/oidc.yaml'
-
-worker:
-  patches:
-    - '@./patches/worker/longhorn.yaml'
+  - '@./patches/cilium.yaml'
+  - '@./patches/longhorn.yaml'
+  - '@./patches/metrics.yaml'
+  - '@./patches/oidc.yaml'
+  - '@./patches/prometheus.yaml'
+  - '@./patches/resources.yaml'
+  - '@./patches/tpm-disk-encryption.yaml'
 
 inlineManifests:
   - name: sealed-secrets
@@ -54,13 +47,13 @@ inlineManifests:
         tls.key: ${SEALED_SECRETS_KEY}
 
 nodes:
-  - hostname: cp01.${CLUSTER_DOMAIN}
+  - hostname: t01.${CLUSTER_DOMAIN}
     ipAddress: 192.168.1.201
     installDisk: &x-installDisk /dev/sda
     # installDiskSelector: &x-installDiskSelector 'size < 40 GiB'  # Make sure Talos is installed on the smaller OS disk and not on the extra data disk
-    controlPlane: true
+    controlPlane: &x-controlPlane true
     ignoreHostname: &x-ignoreHostname true
-    networkInterfaces: &x-networkInterfaces-cp
+    networkInterfaces: &x-networkInterfaces
       - interface: eth0
         dhcp: true
         vip:
@@ -73,7 +66,7 @@ nodes:
       bootMethod: disk-image
     nodeLabels:
       topology.kubernetes.io/region: &x-label-topology-region ${CLUSTER_NAME}
-      topology.kubernetes.io/zone: cp01
+      topology.kubernetes.io/zone: t01
     schematic: &x-schematic
       customization:
         bootloader: sd-boot
@@ -89,69 +82,28 @@ nodes:
             # - siderolabs/i915
             # - siderolabs/cloudflared
 
-  - hostname: cp02.${CLUSTER_DOMAIN}
+  - hostname: t02.${CLUSTER_DOMAIN}
     ipAddress: 192.168.1.202
     installDisk: *x-installDisk
     # installDiskSelector: *x-installDiskSelector
-    controlPlane: true
+    controlPlane: *x-controlPlane
     ignoreHostname: *x-ignoreHostname
-    networkInterfaces: *x-networkInterfaces-cp
+    networkInterfaces: *x-networkInterfaces
     machineSpec: *x-machineSpec
     nodeLabels:
       topology.kubernetes.io/region: *x-label-topology-region
-      topology.kubernetes.io/zone: cp02
+      topology.kubernetes.io/zone: t02
     schematic: *x-schematic
 
-  - hostname: cp03.${CLUSTER_DOMAIN}
+  - hostname: t03.${CLUSTER_DOMAIN}
     ipAddress: 192.168.1.203
     installDisk: *x-installDisk
     # installDiskSelector: *x-installDiskSelector
-    controlPlane: true
+    controlPlane: *x-controlPlane
     ignoreHostname: *x-ignoreHostname
-    networkInterfaces: *x-networkInterfaces-cp
+    networkInterfaces: *x-networkInterfaces
     machineSpec: *x-machineSpec
     nodeLabels:
       topology.kubernetes.io/region: *x-label-topology-region
-      topology.kubernetes.io/zone: cp03
-    schematic: *x-schematic
-
-  - hostname: w01.${CLUSTER_DOMAIN}
-    ipAddress: 192.168.1.211
-    installDisk: *x-installDisk
-    # installDiskSelector: *x-installDiskSelector
-    controlPlane: false
-    ignoreHostname: *x-ignoreHostname
-    networkInterfaces: &x-networkInterfaces-worker
-      - interface: eth0
-        dhcp: true
-    machineSpec: *x-machineSpec
-    nodeLabels:
-      topology.kubernetes.io/region: *x-label-topology-region
-      topology.kubernetes.io/zone: w01
-    schematic: *x-schematic
-
-  - hostname: w02.${CLUSTER_DOMAIN}
-    ipAddress: 192.168.1.212
-    installDisk: *x-installDisk
-    # installDiskSelector: *x-installDiskSelector
-    controlPlane: false
-    ignoreHostname: *x-ignoreHostname
-    networkInterfaces: *x-networkInterfaces-worker
-    machineSpec: *x-machineSpec
-    nodeLabels:
-      topology.kubernetes.io/region: *x-label-topology-region
-      topology.kubernetes.io/zone: w02
-    schematic: *x-schematic
-
-  - hostname: w03.${CLUSTER_DOMAIN}
-    ipAddress: 192.168.1.213
-    installDisk: *x-installDisk
-    # installDiskSelector: *x-installDiskSelector
-    controlPlane: false
-    ignoreHostname: *x-ignoreHostname
-    networkInterfaces: *x-networkInterfaces-worker
-    machineSpec: *x-machineSpec
-    nodeLabels:
-      topology.kubernetes.io/region: *x-label-topology-region
-      topology.kubernetes.io/zone: w03
+      topology.kubernetes.io/zone: t03
     schematic: *x-schematic

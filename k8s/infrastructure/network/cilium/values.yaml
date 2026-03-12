@@ -6,7 +6,7 @@ cluster:
   name: talmox
   id: 1
 
-kubeProxyReplacement: true
+kubeProxyReplacement: false
 
 # Talos specific
 k8sServiceHost: localhost
@@ -89,10 +89,11 @@ loadBalancer:
   mode: snat
   dsrDispatch: opt
   # acceleration: native
-  l7:
-    backend: envoy
+  # l7:
+  #   backend: envoy
 
 cni:
+  exclusive: false
   resources:
     requests:
       # cpu: 100m
@@ -107,13 +108,14 @@ ipv4NativeRoutingCIDR: 10.244.0.0/16
 autoDirectNodeRoutes: true
 
 gatewayAPI:
-  enabled: true
-  enableAlpn: true
-  enableAppProtocol: true
-  gatewayClass:
-    create: "true"
+  enabled: false
+  # enableAlpn: true
+  # enableAppProtocol: true
+  # gatewayClass:
+  #   create: "true"
 
 envoy:
+  enabled: false
   prometheus:
     enabled: true
     port: "9964"
@@ -186,36 +188,36 @@ hubble:
 ingressController:
   enabled: false
 
-clustermesh:
-  apiserver:
-    metrics:
-      enabled: true
-      port: 9962
-      serviceMonitor:
-        enabled: true
-    resources:
-      requests:
-        # cpu: 50m
-        memory: 256Mi
-      limits:
-        # cpu: 500m
-        memory: 256Mi
-    etcd:
-      resources:
-        requests:
-          # cpu: 50m
-          memory: 256Mi
-        limits:
-          # cpu: 500m
-          memory: 256Mi
-    kvstoremesh:
-      resources:
-        requests:
-          # cpu: 50m
-          memory: 256Mi
-        limits:
-          # cpu: 500m
-          memory: 256Mi
+# clustermesh:
+#   apiserver:
+#     metrics:
+#       enabled: true
+#       port: 9962
+#       serviceMonitor:
+#         enabled: true
+#     resources:
+#       requests:
+#         # cpu: 50m
+#         memory: 256Mi
+#       limits:
+#         # cpu: 500m
+#         memory: 256Mi
+#     etcd:
+#       resources:
+#         requests:
+#           # cpu: 50m
+#           memory: 256Mi
+#         limits:
+#           # cpu: 500m
+#           memory: 256Mi
+#     kvstoremesh:
+#       resources:
+#         requests:
+#           # cpu: 50m
+#           memory: 256Mi
+#         limits:
+#           # cpu: 500m
+#           memory: 256Mi
 
 cgroup:
   autoMount:
