@@ -22,7 +22,6 @@ cgroup:
     enabled: false
   hostRoot: /sys/fs/cgroup
 
-
 operator:
   rollOutPods: true
   prometheus:
