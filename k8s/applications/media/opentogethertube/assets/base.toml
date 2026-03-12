@@ -28,8 +28,8 @@ user = "opentogethertube"
 metrics = false
 
 [redis]
-url = "redis://127.0.0.1:6379"
-# host = ""
+# url = ""
+host = "127.0.0.1"
 # port = ""
 # username = ""
 # password = ""
