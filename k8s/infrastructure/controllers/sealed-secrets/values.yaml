@@ -11,3 +11,7 @@ resources:
   limits:
     # cpu: 100m
     memory: 32Mi
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  seccompProfile: {type: RuntimeDefault}

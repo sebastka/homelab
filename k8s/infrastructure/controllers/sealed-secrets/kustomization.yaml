@@ -4,6 +4,7 @@ kind: Kustomization
 
 resources:
   - Namespace.yaml
+  # - Secret.certs.yaml
 
 helmCharts:
   - name: sealed-secrets
