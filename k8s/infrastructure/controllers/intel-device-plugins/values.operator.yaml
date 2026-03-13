@@ -3,9 +3,5 @@
 ---
 
 resources:
-  requests:
-    # cpu: 100m
-    memory: 64Mi
-  limits:
-    # cpu: 100m
-    memory: 64Mi
+  requests: {memory: 64Mi}
+  limits: {memory: 64Mi}
