@@ -12,5 +12,6 @@ resources:
   - Certificate.karlsen-org.yaml
   - Certificate.karlsen-app.yaml
   - Certificate.talmox-hera-home-karlsen-fr.yaml
-  - Gateway.yaml
+  - Gateway.internal.yaml
+  - Gateway.default.yaml
   - HTTPRoute.https-upgrade.yaml

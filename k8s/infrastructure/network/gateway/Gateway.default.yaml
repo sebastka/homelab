@@ -15,31 +15,14 @@ spec:
       arp.cilium.io/announce-service: default-arp-l2-announcement-policy
       arp.cilium.io/ip-pool: default-arp-ip-pool
     annotations:
-      lbipam.cilium.io/ips: 192.168.2.1
+      lbipam.cilium.io/ips: 192.168.2.2
   # addresses:
   #   - type: IPAddress
-  #     value: 192.168.2.1
+  #     value: 192.168.2.2
   listeners:
     - name: ssh
       protocol: TCP
       port: 22
-      allowedRoutes:
-        namespaces:
-          from: All
-
-    - name: ldap
-      protocol: TCP
-      port: 389
-      allowedRoutes:
-        namespaces:
-          from: All
-
-    - name: ldaps
-      protocol: TLS
-      port: 636
-      hostname: '*.karlsen.fr'
-      tls:
-        mode: Passthrough
       allowedRoutes:
         namespaces:
           from: All
@@ -135,28 +118,3 @@ spec:
         certificateRefs:
           - kind: Secret
             name: karlsen-app-certificate
-
-    - name: https-talmox-hera-home-karlsen-fr
-      protocol: HTTPS
-      port: 443
-      hostname: talmox.hera.home.karlsen.fr
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: talmox-hera-home-karlsen-fr-certificate
-    - name: https-wc-talmox-hera-home-karlsen-fr
-      protocol: HTTPS
-      port: 443
-      hostname: '*.talmox.hera.home.karlsen.fr'
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: talmox-hera-home-karlsen-fr-certificate

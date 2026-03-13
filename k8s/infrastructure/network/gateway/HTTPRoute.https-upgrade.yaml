@@ -6,10 +6,8 @@ metadata:
   namespace: gateway
 spec:
   parentRefs:
-    - kind: Gateway
-      name: default
-      namespace: gateway
-      sectionName: http
+    - {namespace: gateway, kind: Gateway, name: internal, sectionName: http}
+    - {namespace: gateway, kind: Gateway, name: default, sectionName: http}
   rules:
     - filters:
         - type: RequestRedirect
