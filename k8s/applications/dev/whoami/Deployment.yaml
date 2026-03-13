@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: website
+  name: whoami
   namespace: whoami
 spec:
   replicas: 1
@@ -14,7 +14,9 @@ spec:
       namespace: whoami
       labels:
         app.kubernetes.io/name: whoami
+        app.kubernetes.io/version: v1
     spec:
+      serviceAccountName: whoami
       securityContext:
         runAsNonRoot: true
         runAsUser: 999

@@ -1,0 +1,18 @@
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: whoami
+  namespace: whoami
+spec:
+  action: ALLOW
+  # provider: {}
+  # rules: {}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: whoami
+  # targetRefs:  # Requires a waypoint
+  #   - group: ""
+  #     kind: ServiceAccount
+  #     name: whoami
+  #     namespace: whoami

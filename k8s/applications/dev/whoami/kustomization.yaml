@@ -11,6 +11,8 @@ labels:
 
 resources:
   - Namespace.yaml
+  - ServiceAccount.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
+  # - AuthorizationPolicy.yaml

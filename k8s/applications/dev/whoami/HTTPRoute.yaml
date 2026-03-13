@@ -7,8 +7,7 @@ metadata:
 spec:
   parentRefs:
     - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
-  hostnames:
-    - whoami.talmox.hera.home.karlsen.fr
+  hostnames: [whoami.talmox.hera.home.karlsen.fr]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: web, kind: Service, port: 80}]
@@ -27,7 +26,7 @@ spec:
               - {name: Referrer-Policy, value: no-referrer}
               - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
               - {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
-              # - &RE {name: Reporting-Endpoints, value: ''}
+              # - {name: Reporting-Endpoints, value: ''}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -36,10 +35,8 @@ metadata:
   namespace: whoami
 spec:
   parentRefs:
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
-    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
-  hostnames:
-    - whoami.karlsen.app
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
+  hostnames: [whoami.karlsen.app]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: web, kind: Service, port: 80}]
@@ -58,4 +55,4 @@ spec:
               - {name: Referrer-Policy, value: no-referrer}
               - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
               - {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
-              # - &RE {name: Reporting-Endpoints, value: ''}
+              # - {name: Reporting-Endpoints, value: ''}
