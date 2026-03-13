@@ -6,6 +6,8 @@ namespace: envoy-gateway-system
 resources:
   - Namespace.yaml
   - GatewayClass.yaml
+  # - Service.admin.yaml
+  # - HTTPRoute.admin.yaml
 
 helmCharts:
   - name: gateway-helm
