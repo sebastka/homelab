@@ -17,6 +17,7 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          serviceAccountName: databases-backup
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000

@@ -6,6 +6,7 @@ namespace: databases-backup
 
 resources:
   - Namespace.yaml
+  - ServiceAccount.yaml
   - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
   - SealedSecret.postgres-secrets.yaml
