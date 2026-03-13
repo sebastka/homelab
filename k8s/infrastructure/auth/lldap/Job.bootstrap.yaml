@@ -11,6 +11,7 @@ spec:
   template:
     spec:
       restartPolicy: OnFailure
+      serviceAccountName: lldap
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
