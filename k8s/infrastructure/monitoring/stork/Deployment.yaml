@@ -15,7 +15,9 @@ spec:
       namespace: stork
       labels:
         app.kubernetes.io/name: stork
+        app.kubernetes.io/version: v1
     spec:
+      serviceAccountName: stork
       securityContext:
         # runAsNonRoot: true
         # runAsUser: 100
