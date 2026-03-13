@@ -33,22 +33,14 @@ operator:
   dashboards:
     enabled: true
   resources:
-    requests:
-      # cpu: 50m
-      memory: 256Mi
-    limits:
-      # cpu: 500m
-      memory: 256Mi
+    requests: {memory: 256Mi}
+    limits: {memory: 256Mi}
 
 # Roll out cilium agent pods automatically when ConfigMap is updated.
 rollOutCiliumPods: true
 resources:
-  requests:
-    # cpu: 200m
-    memory: 512Mi
-  limits:
-    # cpu: 1000m
-    memory: 512Mi
+  requests: {memory: 512Mi}
+  limits: {memory: 512Mi}
 
 # debug:
 #  enabled: true
@@ -91,12 +83,8 @@ loadBalancer:
 cni:
   # exclusive: false  # Use with Istio
   resources:
-    requests:
-      # cpu: 100m
-      memory: 64Mi
-    limits:
-      # cpu: 100m
-      memory: 64Mi
+    requests: {memory: 64Mi}
+    limits: {memory: 64Mi}      
 
 # https://docs.cilium.io/en/stable/network/concepts/routing/
 routingMode: native
@@ -122,12 +110,8 @@ envoy:
       keepCapNetBindService: true
       envoy: [NET_ADMIN, PERFMON, BPF]
   resources:
-    requests:
-      # cpu: 100m
-      memory: 256Mi
-    limits:
-      # cpu: 500m
-      memory: 256Mi
+    requests: {memory: 256Mi}
+    limits: {memory: 256Mi}
 
 hubble:
   enabled: true
@@ -150,12 +134,8 @@ hubble:
     enabled: true
     rollOutPods: true
     resources:
-      requests:
-        # cpu: 50m
-        memory: 256Mi
-      limits:
-        # cpu: 500m
-        memory: 256Mi
+      requests: {memory: 256Mi}
+      limits: {memory: 256Mi}
     prometheus:
       enabled: true
       port: 9966
@@ -166,20 +146,12 @@ hubble:
     rollOutPods: true
     backend:
       resources:
-        requests:
-          # cpu: 50m
-          memory: 256Mi
-        limits:
-          # cpu: 500m
-          memory: 256Mi
+        requests: {memory: 256Mi}
+        limits: {memory: 256Mi}
     frontend:
       resources:
-        requests:
-          # cpu: 50m
-          memory: 256Mi
-        limits:
-          # cpu: 500m
-          memory: 256Mi
+        requests: {memory: 256Mi}
+        limits: {memory: 256Mi}
 
 ingressController:
   enabled: false
@@ -192,38 +164,22 @@ ingressController:
 #       serviceMonitor:
 #         enabled: true
 #     resources:
-#       requests:
-#         # cpu: 50m
-#         memory: 256Mi
-#       limits:
-#         # cpu: 500m
-#         memory: 256Mi
+#       requests: {memory: 256Mi}
+#       limits: {memory: 256Mi}
 #     etcd:
 #       resources:
-#         requests:
-#           # cpu: 50m
-#           memory: 256Mi
-#         limits:
-#           # cpu: 500m
-#           memory: 256Mi
+#         requests: {memory: 256Mi}
+#         limits: {memory: 256Mi}
 #     kvstoremesh:
 #       resources:
-#         requests:
-#           # cpu: 50m
-#           memory: 256Mi
-#         limits:
-#           # cpu: 500m
-#           memory: 256Mi
+#         requests: {memory: 256Mi}
+#         limits: {memory: 256Mi}
 
 cgroup:
   autoMount:
     resources:
-      requests:
-        # cpu: 100m
-        memory: 128Mi
-      limits:
-        # cpu: 100m
-        memory: 128Mi
+      requests: {memory: 128Mi}
+      limits: {memory: 128Mi}
 
 # mTLS
 authentication:
@@ -236,20 +192,12 @@ authentication:
           dataStorage:
             storageClass: cilium-spire-sc
           resources:
-            requests:
-              # cpu: 50m
-              memory: 256Mi
-            limits:
-              # cpu: 500m
-              memory: 256Mi
+            requests: {memory: 128Mi}
+            limits: {memory: 128Mi}
         agent:
           resources:
-            requests:
-              # cpu: 50m
-              memory: 256Mi
-            limits:
-              # cpu: 500m
-              memory: 256Mi
+            requests: {memory: 128Mi}
+            limits: {memory: 128Mi}
 
 prometheus:
   metricsService: true
