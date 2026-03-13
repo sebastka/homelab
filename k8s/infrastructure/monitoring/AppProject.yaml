@@ -14,8 +14,6 @@ spec:
       server: '*'
     - namespace: metrics-server
       server: '*'
-    - namespace: kiali-operator
-      server: '*'
     - namespace: grafana
       server: '*'
     - namespace: kube-prometheus-stack
