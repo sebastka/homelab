@@ -3,7 +3,3 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: whoami
-  labels:
-    istio.io/dataplane-mode: ambient
-    # istio.io/use-waypoint: whoami
-    # istio.io/waypoint-for: service
