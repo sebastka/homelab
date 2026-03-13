@@ -1,20 +1,22 @@
 # Bootstrap
 
-1. Install Cilium:
+1. Install CRDs:
+  - `kustomize build --enable-helm infrastructure/crds | kubectl apply --server-side -f -`
+2. Install Cilium:
   - `kustomize build --enable-helm infrastructure/network/cilium | kubectl apply --server-side -f -`
   - `kubectl apply --server-side -f infrastructure/network/cilium/CiliumL2AnnouncementPolicy.yaml -f infrastructure/network/cilium/CiliumLoadBalancerIPPool.yaml`
-2. Install Sealed Secrets:
+3. Install Envoy Gateway:
+  - `kustomize build --enable-helm infrastructure/network/envoy-gateway | kubectl apply --server-side -f -`
+4. Install Sealed Secrets:
   - `kustomize build --enable-helm infrastructure/controllers/sealed-secrets | kubectl apply --server-side -f -`
-3. Install cert-manager:
+5. Install cert-manager:
   - `kustomize build --enable-helm infrastructure/controllers/cert-manager | kubectl apply --server-side -f -`
-4. Install Istio:
-  - `kustomize build --enable-helm infrastructure/network/istio | kubectl apply --server-side -f -`
-5. Set up Gateway:
+6. Set up Gateway:
   - (Optional: restore saved certificates) `kubectl create namespace gateway; for f in infrastructure/network/gateway/Secret.*-certificate.yaml; do kubectl apply --server-side -f "$f"; done`
   - `kubectl apply --server-side -k infrastructure/network/gateway`
-6. Install ArgoCD:
+7. Install ArgoCD:
   - `kustomize build --enable-helm infrastructure/controllers/argocd | kubectl apply --server-side -f -`
-7.  Deploy infrastructure and applications:
+8.  Deploy infrastructure and applications:
   - `kubectl apply --server-side -k infrastructure`
   - `kubectl apply --server-side -k sets`
 
