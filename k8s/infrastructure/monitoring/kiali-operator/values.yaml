@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=
+# https://artifacthub.io/packages/helm/kiali/kiali-operator?modal=values
+---
+
+resources:
+  requests: {memory: 512Mi}
+  limits: {memory: 512Mi}
+
+cr:
+  create: true
+  namespace: istio-system
+  spec:
+    auth:
+      strategy: anonymous
+
