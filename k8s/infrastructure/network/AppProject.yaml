@@ -15,7 +15,7 @@ spec:
       server: '*'
     - namespace: cilium-secrets
       server: '*'
-    - namespace: istio-system
+    - namespace: envoy-gateway-system
       server: '*'
     - namespace: gateway
       server: '*'

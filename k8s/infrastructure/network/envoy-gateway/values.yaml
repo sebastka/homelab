@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=
+# https://artifacthub.io/packages/helm/envoy-gateway/gateway-helm?modal=values
+---
+
+deployment:
+  envoyGateway:
+    resources:
+      requests: {memory: 512Mi}
+      limits: {memory: 512Mi}
+
+certgen:
+  job:
+    resources:
+      requests: {memory: 256Mi}
+      limits: {memory: 256Mi}

@@ -7,9 +7,9 @@ cluster:
   id: 1
 
 # Talos specific
-kubeProxyReplacement: false
-# k8sServiceHost: localhost  # When kubeProxyReplacement=true
-# k8sServicePort: 7445  # When kubeProxyReplacement=true
+kubeProxyReplacement: true
+k8sServiceHost: localhost  # When kubeProxyReplacement=true
+k8sServicePort: 7445  # When kubeProxyReplacement=true
 ipam:
   mode: kubernetes  # https://docs.cilium.io/en/stable/network/concepts/ipam/
   multiPoolPreAllocation: ""
@@ -69,7 +69,7 @@ l2announcements:
 
 # https://docs.cilium.io/en/stable/operations/performance/tuning/#ebpf-host-routing
 bpf:
-  # masquerade: true  # Do not use with Istio Ambient
+  masquerade: true  # Do not use with Istio Ambient
   lbModeAnnotation: true
   # tproxy: true
 
@@ -85,11 +85,11 @@ loadBalancer:
   mode: snat
   dsrDispatch: opt
   # acceleration: native
-  # l7:
-  #   backend: envoy
+  l7:
+    backend: envoy
 
 cni:
-  exclusive: false
+  # exclusive: false  # Use with Istio
   resources:
     requests:
       # cpu: 100m
@@ -111,7 +111,7 @@ gatewayAPI:
   #   create: "true"
 
 envoy:
-  enabled: false
+  enabled: true
   prometheus:
     enabled: true
     port: "9964"
