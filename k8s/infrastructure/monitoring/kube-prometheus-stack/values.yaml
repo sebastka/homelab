@@ -5,12 +5,8 @@
 
 crds:
   resources:
-    requests:
-      # cpu: 100m
-      memory: 64Mi
-    limits:
-      # cpu: 100m
-      memory: 64Mi
+    requests: {memory: 64Mi}
+    limits: {memory: 64Mi}
 
 prometheus:
   prometheusSpec:
@@ -21,12 +17,8 @@ prometheus:
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelector: {}
     resources:
-      requests:
-        # cpu: 100m
-        memory: 128Mi
-      limits:
-        # cpu: 100m
-        memory: 128Mi
+      requests: {memory: 128Mi}
+      limits: {memory: 128Mi}
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -40,37 +32,21 @@ prometheus:
 
 prometheusOperator:
   resources:
-    requests:
-      # cpu: 100m
-      memory: 64Mi
-    limits:
-      # cpu: 100m
-      memory: 64Mi
+    requests: {memory: 64Mi}
+    limits: {memory: 64Mi}
   admissionWebhooks:
     deployment:
       resources:
-        requests:
-          # cpu: 100m
-          memory: 64Mi
-        limits:
-          # cpu: 100m
-          memory: 64Mi
+        requests: {memory: 64Mi}
+        limits: {memory: 64Mi}
     patch:
       resources:
-        requests:
-          # cpu: 100m
-          memory: 64Mi
-        limits:
-          # cpu: 100m
-          memory: 64Mi
+        requests: {memory: 64Mi}
+        limits: {memory: 64Mi}
   prometheusConfigReloader:
     resources:
-      requests:
-        # cpu: 100m
-        memory: 64Mi
-      limits:
-        # cpu: 100m
-        memory: 64Mi
+      requests: {memory: 64Mi}
+      limits: {memory: 64Mi}
 
 # https://github.com/siderolabs/talos/discussions/7214
 kubeControllerManager:
@@ -142,19 +118,11 @@ grafana:
 alertmanager:
   alertmanagerSpec:
     resources:
-      requests:
-        # cpu: 100m
-        memory: 64Mi
-      limits:
-        # cpu: 100m
-        memory: 64Mi
+      requests: {memory: 64Mi}
+      limits: {memory: 64Mi}
 
 thanosRuler:
   thanosRulerSpec:
     resources:
-      requests:
-        # cpu: 100m
-        memory: 64Mi
-      limits:
-        # cpu: 100m
-        memory: 64Mi
+      requests: {memory: 64Mi}
+      limits: {memory: 64Mi}
