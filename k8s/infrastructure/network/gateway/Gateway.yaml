@@ -9,7 +9,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
 spec:
-  gatewayClassName: istio-waypoint
+  gatewayClassName: istio
   infrastructure:
     labels:
       arp.cilium.io/announce-service: default-arp-l2-announcement-policy
