@@ -23,9 +23,5 @@ persistence:
   existingClaim: longhorn-portainer-pvc
 
 resources:
-  requests:
-    # cpu: 100m
-    memory: 256Mi
-  limits:
-    # cpu: 500m
-    memory: 256Mi
+  requests: {memory: 256Mi}
+  limits: {memory: 256Mi}

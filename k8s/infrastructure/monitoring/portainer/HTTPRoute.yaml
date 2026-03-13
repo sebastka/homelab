@@ -7,8 +7,7 @@ metadata:
 spec:
   parentRefs:
     - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
-  hostnames:
-    - portainer.talmox.hera.home.karlsen.fr
+  hostnames: [portainer.talmox.hera.home.karlsen.fr]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: portainer, kind: Service, port: 9000}]
