@@ -69,7 +69,7 @@ l2announcements:
 
 # https://docs.cilium.io/en/stable/operations/performance/tuning/#ebpf-host-routing
 bpf:
-  masquerade: true
+  # masquerade: true  # Do not use with Istio Ambient
   lbModeAnnotation: true
   # tproxy: true
 
