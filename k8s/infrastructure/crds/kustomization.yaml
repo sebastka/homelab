@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# resources:
+#   - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.0/experimental-install.yaml  # Gateway API CRDs (Managed by Envoy)
+
+helmCharts:
+  - name: prometheus-operator-crds
+    repo: oci://ghcr.io/prometheus-community/charts/
+    version: 27.0.0  # renovate: github-releases=istio/istio
+    releaseName: prometheus-operator-crds
+    includeCRDs: true
+    valuesFile: values.prometheus-operator-crds.yaml
