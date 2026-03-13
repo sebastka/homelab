@@ -48,12 +48,8 @@ controller:
     serviceMonitor:
       enabled: true
   resources:
-    requests:
-      # cpu: 100m
-      memory: 512Mi
-    limits:
-      # cpu: 100m
-      memory: 512Mi
+    requests: {memory: 512Mi}
+    limits: {memory: 512Mi}
 
 dex:
   enabled: false
@@ -62,12 +58,8 @@ dex:
     serviceMonitor:
       enabled: true
   resources:
-    requests:
-      # cpu: 10m
-      memory: 64Mi
-    limits:
-      # cpu: 10m
-      memory: 64Mi
+    requests: {memory: 64Mi}
+    limits: {memory: 64Mi}
 
 # https://github.com/viaduct-ai/kustomize-sops/issues/300
 repoServer:
@@ -76,12 +68,8 @@ repoServer:
     serviceMonitor:
       enabled: true
   resources:
-    requests:
-      # cpu: 100m
-      memory: 256Mi
-    limits:
-      # cpu: 100m
-      memory: 256Mi
+    requests: {memory: 256Mi}
+    limits: {memory: 256Mi}
   containerSecurityContext:
     readOnlyRootFilesystem: true
     runAsNonRoot: true
@@ -127,12 +115,8 @@ redis:
     serviceMonitor:
       enabled: true
   resources:
-    requests:
-      # cpu: 100m
-      memory: 64Mi
-    limits:
-      # cpu: 100m
-      memory: 64Mi
+    requests: {memory: 64Mi}
+    limits: {memory: 64Mi}
 
 server:
   metrics:
@@ -140,28 +124,18 @@ server:
     serviceMonitor:
       enabled: true
   resources:
-    requests:
-      # cpu: 50m
-      memory: 128Mi
-    limits:
-      # cpu: 50m
-      memory: 128Mi
+    requests: {memory: 128Mi}
+    limits: {memory: 128Mi}
 
   httproute:
     enabled: true
     # labels: {}
     # annotations: {}
     parentRefs:
-      - name: internal
-        namespace: gateway
-        sectionName: https-wc-talmox-hera-home-karlsen-fr
-    hostnames:
-      - argocd.talmox.hera.home.karlsen.fr
+      - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
+    hostnames: [argocd.talmox.hera.home.karlsen.fr]
     rules:
-      - matches:
-          - path:
-              type: PathPrefix
-              value: /
+      - matches: [path: {type: PathPrefix, value: /}]
 
   # To be fixed
   grpcroute:
@@ -169,17 +143,10 @@ server:
     # labels: {}
     # annotations: {}
     parentRefs:
-      - kind: Gateway
-        name: internal
-        namespace: gateway
-        sectionName: https-wc-talmox-hera-home-karlsen-fr
-    hostnames:
-      - argocd.talmox.hera.home.karlsen.fr
+      - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
+    hostnames: [argocd.talmox.hera.home.karlsen.fr]
     rules:
-      - matches:
-          - headers:
-              - name: Content-Type
-                value: application/grpc
+      - matches: [headers: [{name: Content-Type, value: application/grpc}]]
 
 applicationSet:
   metrics:
@@ -187,12 +154,8 @@ applicationSet:
     serviceMonitor:
       enabled: true
   resources:
-    requests:
-      # cpu: 50m
-      memory: 64Mi
-    limits:
-      # cpu: 50m
-      memory: 64Mi
+    requests: {memory: 64Mi}
+    limits: {memory: 64Mi}
 
 notifications:
   enabled: false
@@ -201,9 +164,5 @@ notifications:
     serviceMonitor:
       enabled: true
   resources:
-    requests:
-      # cpu: 100m
-      memory: 64Mi
-    limits:
-      # cpu: 1000m
-      memory: 64Mi
+    requests: {memory: 64Mi}
+    limits: {memory: 64Mi}

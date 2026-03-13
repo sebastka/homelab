@@ -8,8 +8,7 @@ metadata:
 spec:
   parentRefs:
     - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
-  hostnames:
-    - argocd.talmox.hera.home.karlsen.fr
+  hostnames: [argocd.talmox.hera.home.karlsen.fr]
   rules:
     - matches: [headers: [{name: Content-Type, value: application/grpc}]]
       backendRefs: [{name: argocd-server-grpc, kind: Service, port: 80}]
