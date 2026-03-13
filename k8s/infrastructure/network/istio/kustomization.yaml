@@ -38,4 +38,3 @@ helmCharts:
 
 resources:
   - Namespace.yaml
-  - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.0/experimental-install.yaml
