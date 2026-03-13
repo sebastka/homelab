@@ -1,7 +1,7 @@
 # Bootstrap
 
 1. Install CRDs:
-  - `kustomize build --enable-helm infrastructure/crds | kubectl apply --server-side -f -`
+  - `kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/heads/main/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml -f https://github.com/grafana/grafana-operator/releases/download/v5.22.1/crds.yaml`
 2. Install Cilium:
   - `kustomize build --enable-helm infrastructure/network/cilium | kubectl apply --server-side -f -`
   - `kubectl apply --server-side -f infrastructure/network/cilium/CiliumL2AnnouncementPolicy.yaml -f infrastructure/network/cilium/CiliumLoadBalancerIPPool.yaml`
