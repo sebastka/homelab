@@ -17,7 +17,7 @@ spec:
         app.kubernetes.io/name: jellyfin
     spec:
       nodeSelector:
-        topology.kubernetes.io/zone: w01
+        topology.kubernetes.io/zone: t03
       serviceAccountName: jellyfin
       securityContext:
         runAsNonRoot: true
