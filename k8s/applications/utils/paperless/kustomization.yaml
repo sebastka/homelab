@@ -20,6 +20,7 @@ resources:
   - Namespace.yaml
   - SealedSecret.paperless-secrets.yaml
   - PersistentVolumeClaim.yaml
+  - ServiceAccount.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
