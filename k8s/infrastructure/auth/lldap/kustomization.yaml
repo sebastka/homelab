@@ -28,5 +28,5 @@ resources:
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
-  - TCPRoute.yaml
-  - TLSRoute.yaml
+  # - TCPRoute.yaml
+  # - TLSRoute.yaml
