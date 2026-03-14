@@ -3,5 +3,6 @@
   "extends": [
     "config:recommended"
   ],
-  "prHourlyLimit": 10
+  "prHourlyLimit": 10,
+  "minimumReleaseAge": "24h"
 }
