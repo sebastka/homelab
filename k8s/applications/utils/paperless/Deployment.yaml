@@ -15,6 +15,7 @@ spec:
       labels:
         app.kubernetes.io/name: paperless
     spec:
+      serviceAccountName: paperless
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
