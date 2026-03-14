@@ -28,20 +28,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: longhorn-paperless-consume-pvc
-  namespace: paperless
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
-  storageClassName: longhorn-static
-  volumeName: longhorn-paperless-consume-pv
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: longhorn-paperless-media-pvc
   namespace: paperless
 spec:
