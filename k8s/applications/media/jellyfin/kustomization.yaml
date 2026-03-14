@@ -13,10 +13,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - name: jellyfin-env
-    namespace: jellyfin
-    envs:
-      - assets/jellyfin.env
+  - {namespace: jellyfin, name: jellyfin-env, envs: [assets/jellyfin.env]}
 
 resources:
   - Namespace.yaml
