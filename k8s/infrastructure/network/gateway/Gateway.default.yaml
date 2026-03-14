@@ -4,7 +4,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: external
+  name: default
   namespace: gateway
   annotations:
     cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
