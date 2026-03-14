@@ -6,7 +6,6 @@ metadata:
   namespace: forgejo
 spec:
   parentRefs:
-    - {namespace: gateway, name: internal, sectionName: ssh}
-    - {namespace: gateway, name: external, sectionName: ssh}
+    - {namespace: gateway, name: default, sectionName: ssh}
   rules:
     - backendRefs: [{name: forgejo-ssh, kind: Service, port: 22}]

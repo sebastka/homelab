@@ -6,10 +6,8 @@ metadata:
   namespace: harbor
 spec:
   parentRefs:
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
-    # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
-  hostnames:
-    - harbor.karlsen.app
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
+  hostnames: [harbor.karlsen.app]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: harbor, kind: Service, port: 80}]

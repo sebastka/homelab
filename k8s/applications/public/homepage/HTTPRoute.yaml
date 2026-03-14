@@ -6,18 +6,12 @@ metadata:
   namespace: homepage
 spec:
   parentRefs:
-    - {namespace: gateway, name: internal, sectionName: https-karlsen-fr}
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-fr}
-    - {namespace: gateway, name: internal, sectionName: https-karlsen-org}
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-org}
-    - {namespace: gateway, name: internal, sectionName: https-karlsen-app}
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
-    - {namespace: gateway, name: external, sectionName: https-karlsen-fr}
-    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-fr}
-    - {namespace: gateway, name: external, sectionName: https-karlsen-org}
-    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-org}
-    - {namespace: gateway, name: external, sectionName: https-karlsen-app}
-    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
+    - {namespace: gateway, name: default, sectionName: https-karlsen-fr}
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-fr}
+    - {namespace: gateway, name: default, sectionName: https-karlsen-org}
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-org}
+    - {namespace: gateway, name: default, sectionName: https-karlsen-app}
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
   hostnames:
     - karlsen.fr
     - www.karlsen.fr

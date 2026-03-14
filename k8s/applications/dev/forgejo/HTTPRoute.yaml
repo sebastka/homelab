@@ -6,10 +6,8 @@ metadata:
   namespace: forgejo
 spec:
   parentRefs:
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-fr}
-    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-fr}
-  hostnames:
-    - git.karlsen.fr
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-fr}
+  hostnames: [git.karlsen.fr]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: forgejo-http, kind: Service, port: 3000}]

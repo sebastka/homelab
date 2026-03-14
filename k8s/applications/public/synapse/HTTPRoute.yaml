@@ -6,10 +6,8 @@ metadata:
   namespace: synapse
 spec:
   parentRefs:
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-fr}
-    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-fr}
-  hostnames:
-    - matrix.karlsen.fr
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-fr}
+  hostnames: [matrix.karlsen.fr]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: web, kind: Service, port: 80}]

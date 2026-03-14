@@ -6,10 +6,8 @@ metadata:
   namespace: thelounge
 spec:
   parentRefs:
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
-    # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
-  hostnames:
-    - thelounge.karlsen.app
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
+  hostnames: [thelounge.karlsen.app]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: web, kind: Service, port: 80}]

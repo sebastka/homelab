@@ -35,8 +35,7 @@ metadata:
   namespace: whoami
 spec:
   parentRefs:
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
-    - {namespace: gateway, name: external, sectionName: https-wc-karlsen-app}
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
   hostnames: [whoami.karlsen.app]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
