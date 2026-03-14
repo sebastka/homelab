@@ -6,8 +6,7 @@ metadata:
   namespace: lldap
 spec:
   parentRefs:
-    - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-fr}
-    # - {namespace: gateway, name: external, sectionName: https-wc-karlsen-fr}
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-fr}
   hostnames: [ldap.karlsen.fr]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
