@@ -13,5 +13,5 @@ resources:
     memory: 32Mi
 
 containerSecurityContext:
-  allowPrivilegeEscalation: false
+  # allowPrivilegeEscalation: false
   seccompProfile: {type: RuntimeDefault}
