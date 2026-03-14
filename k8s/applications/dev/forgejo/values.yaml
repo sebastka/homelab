@@ -3,10 +3,6 @@
 # https://forgejo.org/docs/latest/admin/config-cheat-sheet
 ---
 
-# Set up Valkey:
-# - https://artifacthub.io/packages/helm/forgejo-helm/forgejo#session-cache-and-queue
-# - https://artifacthub.io/packages/helm/forgejo-helm/forgejo#external-database
-
 service:
   http:
     type: ClusterIP
@@ -24,12 +20,8 @@ tcpRoute:
   enabled: false
 
 resources:
-  requests:
-    # cpu: 100m
-    memory: 128Mi
-  limits:
-    # cpu: 100m
-    memory: 128Mi
+  requests: {memory: 128Mi}
+  limits: {memory: 128Mi}
 
 persistence:
   enabled: true
@@ -38,12 +30,8 @@ persistence:
 
 initContainers:
   resources:
-    requests:
-      # cpu: 100m
-      memory: 128Mi
-    limits:
-      # cpu: 100m
-      memory: 128Mi
+    requests: {memory: 128Mi}
+    limits: {memory: 128Mi}
 
 signing:
   enabled: true
