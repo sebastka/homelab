@@ -21,6 +21,7 @@ resources:
   - SealedSecret.opentogethertube-secrets.yaml
   # - SealedSecret.postgres.yaml
   # - Cluster.yaml
+  - ServiceAccount.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
