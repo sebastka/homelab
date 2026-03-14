@@ -9,7 +9,7 @@ resources:
   - Namespace.yaml
   - SealedSecret.cloudflare-api-token.yaml
   - ClusterIssuer.le.yaml
-  - ClusterIssuer.karlsenfr.yaml
+  # - ClusterIssuer.karlsenfr.yaml
   # - GrafanaDashboard.yaml
 
 helmCharts:
