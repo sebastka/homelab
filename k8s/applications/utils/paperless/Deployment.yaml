@@ -78,6 +78,7 @@ spec:
             - {name: paperless-data, mountPath: /usr/src/paperless/data}
             - {name: paperless-media, mountPath: /usr/src/paperless/media}
             - {name: paperless-consume, mountPath: /usr/src/paperless/consume}
+            - {name: paperless-export, mountPath: /usr/src/paperless/export}
             - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
@@ -101,6 +102,7 @@ spec:
             - {name: paperless-data, mountPath: /usr/src/paperless/data}
             - {name: paperless-media, mountPath: /usr/src/paperless/media}
             - {name: paperless-consume, mountPath: /usr/src/paperless/consume}
+            - {name: paperless-export, mountPath: /usr/src/paperless/export}
             - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
@@ -124,6 +126,7 @@ spec:
             - {name: paperless-data, mountPath: /usr/src/paperless/data}
             - {name: paperless-media, mountPath: /usr/src/paperless/media}
             - {name: paperless-consume, mountPath: /usr/src/paperless/consume}
+            - {name: paperless-export, mountPath: /usr/src/paperless/export}
             - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
@@ -149,6 +152,7 @@ spec:
             - {name: paperless-data, mountPath: /usr/src/paperless/data}
             - {name: paperless-media, mountPath: /usr/src/paperless/media}
             - {name: paperless-consume, mountPath: /usr/src/paperless/consume}
+            - {name: paperless-export, mountPath: /usr/src/paperless/export}
             - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
@@ -200,7 +204,8 @@ spec:
         - {name: paperless-tmp-volume, emptyDir: {}}
         - {name: paperless-cache-volume, emptyDir: {}}
         - {name: tika-tmp-volume, emptyDir: {}}
-        - {name: paperless-consume, persistentVolumeClaim: {claimName: longhorn-paperless-consume-pvc}}
+        - {name: paperless-consume, emptyDir: {}}
+        - {name: paperless-export, emptyDir: {}}
         - {name: paperless-data, persistentVolumeClaim: {claimName: longhorn-paperless-data-pvc}}
         - {name: paperless-media, persistentVolumeClaim: {claimName: longhorn-paperless-media-pvc}}
         - {name: paperless-scripts-volume, configMap: {name: paperless-scripts}}
