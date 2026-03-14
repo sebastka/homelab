@@ -44,15 +44,15 @@ spec:
     #     namespaces:
     #       from: All
 
-    - name: tls-wc-karlsen-fr
-      protocol: TLS
-      port: 443
-      hostname: '*.karlsen.fr'
-      tls:
-        mode: Passthrough
-      allowedRoutes:
-        namespaces:
-          from: All
+    # - name: tls-wc-karlsen-fr
+    #   protocol: TLS
+    #   port: 443
+    #   hostname: '*.karlsen.fr'
+    #   tls:
+    #     mode: Passthrough
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
 
     - name: http
       protocol: HTTP
