@@ -154,8 +154,8 @@ applicationSet:
     serviceMonitor:
       enabled: true
   resources:
-    requests: {memory: 64Mi}
-    limits: {memory: 64Mi}
+    requests: {memory: 128Mi}
+    limits: {memory: 128Mi}
 
 notifications:
   enabled: false
