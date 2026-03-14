@@ -61,61 +61,45 @@ trace:
 nginx:
   replicas: 1
   revisionHistoryLimit: 1
+  resources:
+    requests: {memory: 64Mi}
+    limits: {memory: 64Mi}
 
 portal:
   replicas: 1
   revisionHistoryLimit: 1
   resources:
-    requests:
-      # cpu: 100m
-      memory: 256Mi
-    limits:
-      # cpu: 100m
-      memory: 256Mi
+    requests: {memory: 256Mi}
+    limits: {memory: 256Mi}
 
 core:
   replicas: 1
   revisionHistoryLimit: 1
   resources:
-    requests:
-      # cpu: 100m
-      memory: 256Mi
-    limits:
-      # cpu: 100m
-      memory: 256Mi
+    requests: {memory: 256Mi}
+    limits: {memory: 256Mi}
 
 jobservice:
   replicas: 1
   revisionHistoryLimit: 1
   resources:
-    requests:
-      # cpu: 100m
-      memory: 512Mi
-    limits:
-      # cpu: 100m
-      memory: 512Mi
+    requests: {memory: 512Mi}
+    limits: {memory: 512Mi}
 
 registry:
   replicas: 1
   revisionHistoryLimit: 1
-  resources:
-    requests:
-      # cpu: 100m
-      memory: 256Mi
-    limits:
-      # cpu: 100m
-      memory: 256Mi
+  registry:
+    resources:
+      requests: {memory: 256Mi}
+      limits: {memory: 256Mi}
 
 trivy:
   enabled: true
   debugMode: true
   resources:
-    requests:
-      # cpu: 100m
-      memory: 512Mi
-    limits:
-      # cpu: 100m
-      memory: 512Mi
+    requests: {memory: 512Mi}
+    limits: {memory: 512Mi}
 
 database:
   type: external
@@ -130,6 +114,9 @@ database:
 # https://github.com/goharbor/harbor-helm/issues/2207
 redis:
   type: internal
+  resources:
+    requests: {memory: 32Mi}
+    limits: {memory: 32Mi}
   # external:
   #   addr: redis01.hera.home.karlsen.fr:6379
   #   username: harbor
