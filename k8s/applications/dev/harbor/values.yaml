@@ -112,9 +112,10 @@ database:
 # https://github.com/goharbor/harbor-helm/issues/2207
 redis:
   type: internal
-  resources:
-    requests: {memory: 32Mi}
-    limits: {memory: 32Mi}
+  internal:
+    resources:
+      requests: {memory: 32Mi}
+      limits: {memory: 32Mi}
   # external:
   #   addr: redis01.hera.home.karlsen.fr:6379
   #   username: harbor
