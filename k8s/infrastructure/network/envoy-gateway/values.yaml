@@ -20,4 +20,4 @@ config:
       backend:
         type: Redis
         redis:
-          url: redis://valkey:6379
+          url: redis://valkey.envoy-gateway-system.svc.cluster.local:6379
