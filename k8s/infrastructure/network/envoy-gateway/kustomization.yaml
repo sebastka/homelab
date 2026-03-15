@@ -7,7 +7,7 @@ resources:
   - Namespace.yaml
   - GatewayClass.yaml
   - valkey.yaml
-  - CiliumNetworkPolicy.yaml
+  # - CiliumNetworkPolicy.yaml
   # - Service.admin.yaml
   # - HTTPRoute.admin.yaml
 

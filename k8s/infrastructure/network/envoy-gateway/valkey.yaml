@@ -40,8 +40,6 @@ spec:
           resources:
             requests: {memory: 64Mi}
             limits: {memory: 64Mi}
-          ports:
-            - {protocol: TCP, name: redis, containerPort: 6379}
           # env:
           #   - {name: VALKEY_EXTRA_FLAGS, value: '--save 60 1 --loglevel warning'}
 ---
@@ -54,8 +52,10 @@ metadata:
     app.kubernetes.io/name: valkey
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: valkey
   ports:
     - name: redis
       protocol: TCP
       port: 6379
-      targetPort: redis
+      targetPort: 6379
