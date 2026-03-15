@@ -24,8 +24,6 @@ persistence:
     jobservice:
       jobLog:
         existingClaim: harbor-joblog-pvc
-    redis:
-      existingClaim: harbor-redis-pvc
     trivy:
       existingClaim: harbor-trivy-pvc
 
