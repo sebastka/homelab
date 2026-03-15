@@ -50,6 +50,8 @@ kind: Service
 metadata:
   name: valkey
   namespace: envoy-gateway-system
+  labels:
+    app.kubernetes.io/name: valkey
 spec:
   type: ClusterIP
   ports:
