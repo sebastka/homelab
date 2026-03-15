@@ -6,6 +6,7 @@ namespace: envoy-gateway-system
 resources:
   - Namespace.yaml
   - GatewayClass.yaml
+  - valkey.yaml
   # - Service.admin.yaml
   # - HTTPRoute.admin.yaml
 

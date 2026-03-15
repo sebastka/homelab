@@ -13,3 +13,11 @@ certgen:
     resources:
       requests: {memory: 256Mi}
       limits: {memory: 256Mi}
+
+config:
+  envoyGateway:
+    rateLimit:
+      backend:
+        type: Redis
+        redis:
+          url: redis://valkey:6379
