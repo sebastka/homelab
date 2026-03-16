@@ -2,12 +2,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: karlsen-fr-certificate
+  name: wc-karlsen-org-certificate
   namespace: gateway
 spec:
-  secretName: karlsen-fr-certificate
+  secretName: wc-karlsen-org-certificate
   dnsNames:
-    - karlsen.fr
+    - '*.karlsen.org'
   issuerRef:
     group: cert-manager.io
     kind: ClusterIssuer

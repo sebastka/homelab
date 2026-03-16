@@ -61,18 +61,18 @@ spec:
         namespaces:
           from: All
 
-    - name: https-talmox-hera-home-karlsen-fr
-      protocol: HTTPS
-      port: 443
-      hostname: talmox.hera.home.karlsen.fr
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: talmox-hera-home-karlsen-fr-certificate
+    # - name: https-talmox-hera-home-karlsen-fr
+    #   protocol: HTTPS
+    #   port: 443
+    #   hostname: talmox.hera.home.karlsen.fr
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
+    #   tls:
+    #     mode: Terminate
+    #     certificateRefs:
+    #       - kind: Secret
+    #         name: talmox-hera-home-karlsen-fr-certificate
     - name: https-wc-talmox-hera-home-karlsen-fr
       protocol: HTTPS
       port: 443
@@ -84,4 +84,4 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: talmox-hera-home-karlsen-fr-certificate
+            name: wc-talmox-hera-home-karlsen-fr-certificate

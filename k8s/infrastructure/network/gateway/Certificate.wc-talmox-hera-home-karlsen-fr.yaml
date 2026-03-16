@@ -2,12 +2,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: karlsen-fr-certificate
+  name: wc-talmox-hera-home-karlsen-fr-certificate
   namespace: gateway
 spec:
-  secretName: karlsen-fr-certificate
+  secretName: wc-talmox-hera-home-karlsen-fr-certificate
   dnsNames:
-    - karlsen.fr
+    - '*.talmox.hera.home.karlsen.fr'
   issuerRef:
     group: cert-manager.io
     kind: ClusterIssuer

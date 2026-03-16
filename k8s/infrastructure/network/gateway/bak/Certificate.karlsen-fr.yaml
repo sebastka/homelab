@@ -8,6 +8,7 @@ spec:
   secretName: karlsen-fr-certificate
   dnsNames:
     - karlsen.fr
+    - '*.karlsen.fr'
   issuerRef:
     group: cert-manager.io
     kind: ClusterIssuer

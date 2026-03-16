@@ -1,3 +1,5 @@
+# Back up certs:
+# grep secretName Certificate.*.yaml | cut -d':' -f3 | while read secret; do kubectl -n gateway get -o yaml secret "$secret" | yq 'del(.metadata.resourceVersion, .metadata.uid)' > "Secret.${secret}.yaml"; done
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -8,11 +10,17 @@ resources:
   # - Secret.karlsen-app-certificate.yaml
   # - Secret.karlsen-fr-certificate.yaml
   # - Secret.karlsen-org-certificate.yaml
-  # - Secret.talmox-hera-home-karlsen-fr-certificate.yaml
+  # - Secret.wc-karlsen-app-certificate.yaml
+  # - Secret.wc-karlsen-fr-certificate.yaml
+  # - Secret.wc-karlsen-org-certificate.yaml
+  # - Secret.wc-talmox-hera-home-karlsen-fr-certificate.yaml
+  - Certificate.karlsen-app.yaml
   - Certificate.karlsen-fr.yaml
   - Certificate.karlsen-org.yaml
-  - Certificate.karlsen-app.yaml
-  - Certificate.talmox-hera-home-karlsen-fr.yaml
+  - Certificate.wc-karlsen-app.yaml
+  - Certificate.wc-karlsen-fr.yaml
+  - Certificate.wc-karlsen-org.yaml
+  - Certificate.wc-talmox-hera-home-karlsen-fr.yaml
   - Gateway.internal.yaml
   - Gateway.default.yaml
   - HTTPRoute.https-upgrade.yaml
