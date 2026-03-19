@@ -20,7 +20,7 @@ resources:
 helmCharts:
   - name: harbor
     repo: https://helm.goharbor.io
-    version: 1.18.2  # renovate: github-releases=goharbor/harbor-helm
+    version: 1.18.3  # renovate: github-releases=goharbor/harbor-helm
     releaseName: harbor
     namespace: harbor
     includeCRDs: true
