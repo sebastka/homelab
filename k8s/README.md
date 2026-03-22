@@ -7,8 +7,6 @@
 2. Install Cilium:
   - `kustomize build --enable-helm infrastructure/network/cilium | kubectl apply --server-side -f -`
   - `kubectl apply --server-side -f infrastructure/network/cilium/CiliumL2AnnouncementPolicy.yaml -f infrastructure/network/cilium/CiliumLoadBalancerIPPool.yaml`
-<!-- 3. Install Envoy Gateway:
-  - `kustomize build --enable-helm infrastructure/network/envoy-gateway | kubectl apply --server-side -f -` -->
 4. Install Sealed Secrets:
   - `kubectl apply --server-side -f infrastructure/controllers/sealed-secrets/Namespace.yaml -f infrastructure/controllers/sealed-secrets/Secret.certs.yaml`
   - `kustomize build --enable-helm infrastructure/controllers/sealed-secrets | kubectl apply --server-side -f -`
