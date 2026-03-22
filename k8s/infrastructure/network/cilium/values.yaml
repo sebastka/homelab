@@ -74,7 +74,7 @@ loadBalancer:
   standalone: true
   # https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#maglev-consistent-hashing
   algorithm: maglev
-  mode: snat
+  mode: dsr  # snat
   dsrDispatch: opt
   # acceleration: native
   l7:
@@ -92,11 +92,13 @@ ipv4NativeRoutingCIDR: 10.244.0.0/16
 autoDirectNodeRoutes: true
 
 gatewayAPI:
-  enabled: false
-  # enableAlpn: true
-  # enableAppProtocol: true
-  # gatewayClass:
-  #   create: "true"
+  enabled: true
+  enableProxyProtocol: true
+  enableAlpn: true
+  enableAppProtocol: true
+  # xffNumTrustedHops: 1
+  gatewayClass:
+    create: "true"
 
 envoy:
   enabled: true
