@@ -4,13 +4,11 @@
 
 - Add two physical nodes and use Talos bare metal
 - Migrate from Terraform to OpenTofu;
-- Use Istio?
-- Set up SSO on gateways / httproutes
-- Investigate instabilitiy issues ([3416](https://github.com/falcosecurity/falco/issues/3416#issuecomment-2646106723), [12726](https://github.com/siderolabs/talos/issues/12726))
-- Check namespace security violations
+- SSO on HTTPRoutes: Cilium or Envoy Gateway?
 
 ## Projects to test
 
+- Kyverno
 - Invidious / Viewtube
 - NextCloud / OwnCloud
 - Immich
