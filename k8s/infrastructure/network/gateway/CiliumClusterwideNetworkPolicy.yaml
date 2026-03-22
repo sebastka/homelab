@@ -16,9 +16,9 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumClusterwideNetworkPolicy 
 metadata:
-  name: allow-lan
+  name: allow-lan-http
 spec:
-  description: Allow traffic from the local network
+  description: Allow all incomming HTTP and HTTPS traffic from the local network
   # enableDefaultDeny: {egress: false, ingress: true}
   endpointSelector:
     matchExpressions:
@@ -27,20 +27,25 @@ spec:
   ingress:
     - fromCIDRSet:
         - cidr: 192.168.0.0/24  # Physical machines
+      toPorts:
+        - ports:
+            - {port: '80', protocol: TCP}
+            - {port: '443', protocol: TCP}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumClusterwideNetworkPolicy 
 metadata:
-  name: allow-all
+  name: allow-all-http
 spec:
-  description: Allow all incoming traffic
+  description: Allow all incoming HTTP and HTTPS traffic
   # enableDefaultDeny: {egress: false, ingress: true}
   endpointSelector:
-    matchExpressions:
-      - key: reserved:ingress
-        operator: Exists
     matchLabels:
-      fr.karlen/ingress-policy: allow-all
+      fr.karlen/ingress-policy: allow-all-http
   ingress:
     - fromCIDRSet:
         - cidr: 0.0.0.0/0
+      toPorts:
+        - ports:
+            - {port: '80', protocol: TCP}
+            - {port: '443', protocol: TCP}

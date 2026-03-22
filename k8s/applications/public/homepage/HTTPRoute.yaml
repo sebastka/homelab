@@ -5,7 +5,7 @@ metadata:
   name: web
   namespace: homepage
   labels:
-    fr.karlen/ingress-policy: allow-all
+    fr.karlen/ingress-policy: allow-all-http
 spec:
   parentRefs:
     - {namespace: gateway, name: default, sectionName: https-karlsen-fr}
