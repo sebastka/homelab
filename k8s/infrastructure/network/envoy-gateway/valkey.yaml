@@ -33,6 +33,7 @@ spec:
         - name: valkey
           # Dockerfile: https://github.com/valkey-io/valkey-container/blob/mainline/9.0/alpine/Dockerfile
           image: index.docker.io/valkey/valkey:9.0.3-alpine3.23
+          args: [--save, ""]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
