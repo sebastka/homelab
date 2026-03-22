@@ -77,15 +77,11 @@ repoServer:
     runAsGroup: 999
     # fsGroup: 999
     # fsGroupChangePolicy: OnRootMismatch
-    seccompProfile:
-      type: RuntimeDefault
+    seccompProfile: {type: RuntimeDefault}
   volumes:
-    - name: custom-tools
-      emptyDir: {}
+    - {name: custom-tools, emptyDir: {}}
   volumeMounts:
-    - mountPath: /usr/local/bin/kustomize
-      name: custom-tools
-      subPath: kustomize
+    - {mountPath: /usr/local/bin/kustomize, name: custom-tools, subPath: kustomize}
   initContainers:
     - name: install-tools
       image: alpine:latest
@@ -112,8 +108,7 @@ repoServer:
 redis:
   metrics:
     enabled: true
-    serviceMonitor:
-      enabled: true
+    serviceMonitor: {enabled: true}
   resources:
     requests: {memory: 64Mi}
     limits: {memory: 64Mi}
@@ -121,8 +116,7 @@ redis:
 server:
   metrics:
     enabled: true
-    serviceMonitor:
-      enabled: true
+    serviceMonitor: {enabled: true}
   resources:
     requests: {memory: 128Mi}
     limits: {memory: 128Mi}
@@ -140,13 +134,6 @@ server:
   # To be fixed
   grpcroute:
     enabled: false
-    # labels: {}
-    # annotations: {}
-    parentRefs:
-      - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
-    hostnames: [argocd.talmox.hera.home.karlsen.fr]
-    rules:
-      - matches: [headers: [{name: Content-Type, value: application/grpc}]]
 
 applicationSet:
   metrics:
