@@ -1,0 +1,29 @@
+# https://github.com/cilium/cilium/discussions/43932
+# https://docs.cilium.io/en/latest/network/servicemesh/default-deny-ingress-policy/
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy 
+metadata:
+  name: deny-ingress
+spec:
+  description: Block all incoming traffic
+  # enableDefaultDeny: {egress: false, ingress: true}
+  endpointSelector: {}
+  ingress:
+    - fromEntities:
+        - cluster
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy 
+metadata:
+  name: allow-lan
+spec:
+  description: Allow traffic from the local network
+  # enableDefaultDeny: {egress: false, ingress: true}
+  endpointSelector:
+    matchExpressions:
+      - key: reserved:ingress
+        operator: Exists
+  ingress:
+    - fromCIDRSet:
+        - cidr: 192.168.0.0/24  # Physical machines

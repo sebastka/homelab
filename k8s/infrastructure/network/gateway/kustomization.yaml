@@ -24,5 +24,4 @@ resources:
   - Gateway.internal.yaml
   - Gateway.default.yaml
   - HTTPRoute.https-upgrade.yaml
-  - ClientTrafficPolicy.yaml
-  - BackendTrafficPolicy.yaml
+  - CiliumClusterwideNetworkPolicy.yaml
