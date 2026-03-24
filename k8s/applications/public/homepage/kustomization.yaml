@@ -9,6 +9,7 @@ labels:
     pairs:
       app.kubernetes.io/name: homepage
       fr.karlen/ingress-policy: allow-all-http
+      ingress-policy: allow-all-http
 
 generatorOptions:
   disableNameSuffixHash: true
