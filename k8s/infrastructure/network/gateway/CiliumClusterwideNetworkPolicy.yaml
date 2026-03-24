@@ -40,11 +40,14 @@ spec:
   description: Allow all incoming HTTP and HTTPS traffic
   # enableDefaultDeny: {egress: false, ingress: true}
   endpointSelector:
+    matchExpressions:
+      - key: reserved:ingress
+        operator: Exists
     matchLabels:
       fr.karlen/ingress-policy: allow-all-http
   ingress:
-    - fromCIDRSet:
-        - cidr: 0.0.0.0/0
+    - fromEntities:
+        - world
       toPorts:
         - ports:
             - {port: '80', protocol: TCP}
