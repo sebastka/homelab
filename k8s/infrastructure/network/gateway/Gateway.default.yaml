@@ -27,12 +27,12 @@ spec:
     #     namespaces:
     #       from: All
 
-    # - name: ldap
-    #   protocol: TCP
-    #   port: 389
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
+    - name: ldap
+      protocol: TCP
+      port: 389
+      allowedRoutes:
+        namespaces:
+          from: All
 
     # - name: ldaps
     #   protocol: TLS
