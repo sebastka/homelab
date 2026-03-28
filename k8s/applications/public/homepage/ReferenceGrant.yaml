@@ -8,4 +8,4 @@ spec:
   from:
     - {namespace: gateway, group: gateway.envoyproxy.io, kind: SecurityPolicy}
   to:
-    - {group: gateway.networking.k8s.io, kind: HTTPRoute}
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
