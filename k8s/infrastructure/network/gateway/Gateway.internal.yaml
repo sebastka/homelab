@@ -20,68 +20,20 @@ spec:
   #   - type: IPAddress
   #     value: 192.168.2.1
   listeners:
-    # - name: ssh
-    #   protocol: TCP
-    #   port: 22
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
-
-    # - name: ldap
-    #   protocol: TCP
-    #   port: 389
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
-
-    # - name: ldaps
-    #   protocol: TLS
-    #   port: 636
-    #   hostname: '*.karlsen.fr'
-    #   tls:
-    #     mode: Passthrough
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
-
-    # - name: tls-wc-karlsen-fr
-    #   protocol: TLS
-    #   port: 443
-    #   hostname: '*.karlsen.fr'
-    #   tls:
-    #     mode: Passthrough
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
-
     - name: http
       protocol: HTTP
       port: 80
-      allowedRoutes:
-        namespaces:
-          from: All
+      allowedRoutes: {namespaces: {from: All}}
 
     # - name: https-talmox-hera-home-karlsen-fr
     #   protocol: HTTPS
     #   port: 443
     #   hostname: talmox.hera.home.karlsen.fr
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
-    #   tls:
-    #     mode: Terminate
-    #     certificateRefs:
-    #       - kind: Secret
-    #         name: talmox-hera-home-karlsen-fr-certificate
+    #   allowedRoutes: {namespaces: {from: All}}
+    #   tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: talmox-hera-home-karlsen-fr-certificate}]}
     - name: https-wc-talmox-hera-home-karlsen-fr
       protocol: HTTPS
       port: 443
       hostname: '*.talmox.hera.home.karlsen.fr'
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: wc-talmox-hera-home-karlsen-fr-certificate
+      allowedRoutes: {namespaces: {from: All}}
+      tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: wc-talmox-hera-home-karlsen-fr-certificate}]}

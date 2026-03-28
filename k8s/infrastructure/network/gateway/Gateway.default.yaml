@@ -23,115 +23,67 @@ spec:
     # - name: ssh
     #   protocol: TCP
     #   port: 22
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
+    #   allowedRoutes: {namespaces: {from: All}}
 
     - name: ldap
       protocol: TCP
       port: 389
-      allowedRoutes:
-        namespaces:
-          from: All
+      allowedRoutes: {kinds: [{kind: TCPRoute}]}
 
     # - name: ldaps
     #   protocol: TLS
     #   port: 636
     #   hostname: '*.karlsen.fr'
-    #   tls:
-    #     mode: Passthrough
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
+    #   allowedRoutes: {namespaces: {from: All}}
+    #   tls: {mode: Passthrough}
 
     # - name: tls-wc-karlsen-fr
     #   protocol: TLS
     #   port: 443
     #   hostname: '*.karlsen.fr'
-    #   tls:
-    #     mode: Passthrough
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
+    #   allowedRoutes: {namespaces: {from: All}}
+    #   tls: {mode: Passthrough}
 
     - name: http
       protocol: HTTP
       port: 80
-      allowedRoutes:
-        namespaces:
-          from: All
+      allowedRoutes: {namespaces: {from: All}}
 
     - name: https-karlsen-fr
       protocol: HTTPS
       port: 443
       hostname: karlsen.fr
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: karlsen-fr-certificate
+      allowedRoutes: {namespaces: {from: All}}
+      tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: karlsen-fr-certificate}]}
     - name: https-wc-karlsen-fr
       protocol: HTTPS
       port: 443
       hostname: '*.karlsen.fr'
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: wc-karlsen-fr-certificate
+      allowedRoutes: {namespaces: {from: All}}
+      tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: wc-karlsen-fr-certificate}]}
 
     - name: https-karlsen-org
       protocol: HTTPS
       port: 443
       hostname: karlsen.org
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: karlsen-org-certificate
+      allowedRoutes: {namespaces: {from: All}}
+      tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: karlsen-org-certificate}]}
     - name: https-wc-karlsen-org
       protocol: HTTPS
       port: 443
       hostname: '*.karlsen.org'
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: wc-karlsen-org-certificate
+      allowedRoutes: {namespaces: {from: All}}
+      tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: wc-karlsen-org-certificate}]}
 
     - name: https-karlsen-app
       protocol: HTTPS
       port: 443
       hostname: karlsen.app
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: karlsen-app-certificate
+      allowedRoutes: {namespaces: {from: All}}
+      tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: karlsen-app-certificate}]}
     - name: https-wc-karlsen-app
       protocol: HTTPS
       port: 443
       hostname: '*.karlsen.app'
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: wc-karlsen-app-certificate
+      allowedRoutes: {namespaces: {from: All}}
+      tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: wc-karlsen-app-certificate}]}
