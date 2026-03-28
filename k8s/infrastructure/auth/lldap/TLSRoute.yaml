@@ -6,9 +6,7 @@ metadata:
   namespace: lldap
 spec:
   parentRefs:
-    - {namespace: gateway, name: internal, sectionName: ldaps}
-    # - {namespace: gateway, name: external, sectionName: ldaps}
-  hostnames:
-    - ldap.karlsen.fr
+    - {namespace: gateway, name: default, sectionName: ldaps}
+  hostnames: [ldap.karlsen.fr]
   rules:
     - backendRefs: [{name: lldap, kind: Service, port: 636}]

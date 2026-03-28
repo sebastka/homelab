@@ -17,7 +17,7 @@ spec:
       port: 389
       targetPort: ldap
 
-    # - name: ldaps
-    #   protocol: TCP
-    #   port: 636
-    #   targetPort: ldaps
+    - name: ldaps
+      protocol: TCP
+      port: 636
+      targetPort: ldaps
