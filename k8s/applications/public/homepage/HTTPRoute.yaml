@@ -4,6 +4,8 @@ kind: HTTPRoute
 metadata:
   name: web
   namespace: homepage
+  labels:
+    fr.karlsen/ingress-policy: allow-all-http
 spec:
   parentRefs:
     - {namespace: gateway, name: default, sectionName: https-karlsen-fr}
