@@ -28,7 +28,7 @@ spec:
     - name: ldap
       protocol: TCP
       port: 389
-      allowedRoutes: {kinds: [{kind: TCPRoute}]}
+      allowedRoutes: {namespaces: {from: All}, kinds: [{kind: TCPRoute}]}
 
     # - name: ldaps
     #   protocol: TLS
