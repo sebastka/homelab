@@ -1,0 +1,49 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: gateway
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: Gateway, name: internal}
+    - {group: gateway.networking.k8s.io, kind: Gateway, name: default}
+  authorization:
+    defaultAction: Deny
+    rules:
+      - action: Allow
+        principal:
+          clientCIDRs:
+            - 192.168.0.0/24  # Physical machines
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-all-http
+  namespace: gateway
+spec:
+  targetSelectors:
+    - kind: HTTPRoute
+      matchLabels:
+        fr.karlsen/ingress-policy: allow-all-http
+  authorization:
+    defaultAction: Allow
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-oidc-http
+  namespace: gateway
+spec:
+  targetSelectors:
+    - kind: HTTPRoute
+      matchLabels:
+        fr.karlsen/ingress-policy: allow-oidc-http
+  authorization:
+    defaultAction: Deny
+    rules:
+      - action: Allow
+        principal:
+          clientCIDRs:
+            - 192.168.0.0/24  # Physical machines
+  # oidc: {}
