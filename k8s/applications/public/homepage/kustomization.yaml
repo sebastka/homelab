@@ -25,3 +25,4 @@ resources:
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
+  - ReferenceGrant.yaml
