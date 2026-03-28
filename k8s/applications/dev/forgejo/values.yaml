@@ -70,7 +70,6 @@ gitea:
       DOMAIN: git.karlsen.fr
       ROOT_URL: https://git.karlsen.fr
       START_SSH_SERVER: 'true'
-      SSH_SERVER_USE_PROXY_PROTOCOL: 'true'
       SSH_CREATE_AUTHORIZED_KEYS_FILE: 'true'
     database:
       DB_TYPE: mysql
