@@ -47,9 +47,9 @@ spec:
           volumeMounts:
             # - {name: tmp-volume, mountPath: /tmp}
             - {name: lldap-config, mountPath: /data/lldap_config.toml, subPath: lldap_config.toml, readOnly: true}
-            - {name: cert-volume, mountPath: /key.ldap-karlsen-fr.pem, subPath: tls.key, readOnly: true}
-            - {name: cert-volume, mountPath: /cert.ldap-karlsen-fr.pem, subPath: tls.crt, readOnly: true}
+            # - {name: cert-volume, mountPath: /key.ldap-karlsen-fr.pem, subPath: tls.key, readOnly: true}
+            # - {name: cert-volume, mountPath: /cert.ldap-karlsen-fr.pem, subPath: tls.crt, readOnly: true}
       volumes:
         # - {name: tmp-volume, emptyDir: {}}
         - {name: lldap-config, configMap: {name: lldap-config}}
-        - {name: cert-volume, secret: {secretName: ldap-karlsen-fr-certificate}}
+        # - {name: cert-volume, secret: {secretName: ldap-karlsen-fr-certificate}}

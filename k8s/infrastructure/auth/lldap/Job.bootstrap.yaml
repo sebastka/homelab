@@ -42,8 +42,8 @@ spec:
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: lldap-config-volume, mountPath: /data/lldap_config.toml, subPath: lldap_config.toml, readOnly: true}
-            - {name: cert-volume, mountPath: /key.ldap-karlsen-fr.pem, subPath: tls.key, readOnly: true}
-            - {name: cert-volume, mountPath: /cert.ldap-karlsen-fr.pem, subPath: tls.crt, readOnly: true}
+            # - {name: cert-volume, mountPath: /key.ldap-karlsen-fr.pem, subPath: tls.key, readOnly: true}
+            # - {name: cert-volume, mountPath: /cert.ldap-karlsen-fr.pem, subPath: tls.crt, readOnly: true}
             - {name: bootstrap-schemas-volume, mountPath: /bootstrap/group-schemas/group-schemas.json, subPath: group-schemas.json, readOnly: true}
             - {name: bootstrap-schemas-volume, mountPath: /bootstrap/group-configs/groups.json, subPath: groups.json, readOnly: true}
             - {name: bootstrap-schemas-volume, mountPath: /bootstrap/user-schemas/user-schemas.json, subPath: user-schemas.json, readOnly: true}
@@ -51,5 +51,5 @@ spec:
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: lldap-config-volume, configMap: {name: lldap-config}}
-        - {name: cert-volume, secret: {secretName: ldap-karlsen-fr-certificate}}
+        # - {name: cert-volume, secret: {secretName: ldap-karlsen-fr-certificate}}
         - {name: bootstrap-schemas-volume, secret: {secretName: bootstrap-schemas}}
