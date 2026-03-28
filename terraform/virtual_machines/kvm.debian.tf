@@ -3,6 +3,7 @@ resource "proxmox_vm_qemu" "debian" {
   full_clone = true
 
   name               = "debian.${var.pve.domain}"
+  description        = "Debian test VM"
   tags               = "debian"
   target_nodes       = [var.pve.name]
   qemu_os            = "l26"
