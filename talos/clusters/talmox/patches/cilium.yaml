@@ -6,10 +6,8 @@ cluster:
   network:
     cni:
       name: none
-  # proxy:
-  #   disabled: true
-  # extraManifests:
-  #   - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml  # Required by Cilium for Gateway API support
+  proxy:
+    disabled: true
 machine:
   features:
     hostDNS:

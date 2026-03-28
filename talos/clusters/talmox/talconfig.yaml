@@ -22,7 +22,6 @@ patches:
   - '@./patches/longhorn.yaml'
   - '@./patches/metrics.yaml'
   - '@./patches/oidc.yaml'
-  - '@./patches/prometheus.yaml'
   - '@./patches/resources.yaml'
   - '@./patches/tpm-disk-encryption.yaml'
 

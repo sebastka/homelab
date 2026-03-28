@@ -6,15 +6,11 @@ kind: VolumeConfig
 name: STATE
 encryption:
   provider: luks2
-  keys:
-    - nodeID: {}
-      slot: 0
+  keys: [{nodeID: {}, slot: 0}]
 ---
 apiVersion: v1alpha1
 kind: VolumeConfig
 name: EPHEMERAL
 encryption:
   provider: luks2
-  keys:
-    - nodeID: {}
-      slot: 0
+  keys: [{nodeID: {}, slot: 0}]

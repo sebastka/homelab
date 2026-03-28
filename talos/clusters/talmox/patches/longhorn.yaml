@@ -7,33 +7,22 @@
 ---
 machine:
   kernel:
-    modules:
-      - name: nvme_tcp
-      - name: vfio_pci
-      # - name: uio_pci_generic
-  sysctls:
-    vm.nr_hugepages: "1024"
+    modules: [{name: nvme_tcp}, {name: vfio_pci}]  # uio_pci_generic
+  sysctls: {vm.nr_hugepages: "1024"}
   kubelet:
     extraMounts:
       - source: /var/mnt/longhorn-data
         destination: /var/lib/longhorn
         type: bind
-        options:
-          - bind
-          - rshared
-          - rw
+        options: [bind, rshared, rw]
 ---
 apiVersion: v1alpha1
 kind: UserVolumeConfig
 name: longhorn-data  # label: u-longhorn-data
 provisioning:
-  diskSelector:
-    match: 'disk.size > 50u * GiB'
+  diskSelector: {match: 'disk.size > 50u * GiB'}
   minSize: 1GiB
-filesystem:
-  type: ext4
+filesystem: {type: ext4}
 encryption:
   provider: luks2
-  keys:
-    - nodeID: {}
-      slot: 0
+  keys: [{nodeID: {}, slot: 0}]
