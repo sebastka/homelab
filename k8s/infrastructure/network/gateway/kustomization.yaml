@@ -25,4 +25,5 @@ resources:
   - Gateway.default.yaml
   - ClientTrafficPolicy.yaml
   - SecurityPolicy.yaml
+  - BackendTrafficPolicy.yaml
   - HTTPRoute.https-upgrade.yaml
