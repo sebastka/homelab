@@ -39,7 +39,7 @@ spec:
             limits: {memory: 128Mi}
           ports:
             - {name: ldap, containerPort: 3890}
-            - {name: ldaps, containerPort: 6360}
+            # - {name: ldaps, containerPort: 6360}
             - {name: http, containerPort: 17170}
           envFrom:
             - configMapRef: {name: lldap-env}
