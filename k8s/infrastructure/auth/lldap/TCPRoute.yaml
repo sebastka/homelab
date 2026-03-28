@@ -7,5 +7,6 @@ metadata:
 spec:
   parentRefs:
     - {namespace: gateway, name: default, sectionName: ldap}
+    - {namespace: gateway, name: default, sectionName: ldaps}
   rules:
     - backendRefs: [{name: lldap, kind: Service, port: 389}]
