@@ -3,15 +3,19 @@
 1. Install CRDs:
   - `kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/heads/main/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml`
   - `kubectl apply --server-side -f https://github.com/grafana/grafana-operator/releases/download/v5.22.2/crds.yaml`
-  - `kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.0/experimental-install.yaml`
+  - Gateway API ([See Envoy Compatibility Matrix](https://gateway.envoyproxy.io/news/releases/matrix/)): `kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/experimental-install.yaml`
 2. Install Cilium:
   - `kustomize build --enable-helm infrastructure/network/cilium | kubectl apply --server-side -f -`
   - `kubectl apply --server-side -f infrastructure/network/cilium/CiliumL2AnnouncementPolicy.yaml -f infrastructure/network/cilium/CiliumLoadBalancerIPPool.yaml`
+3. Install Envoy Gateway:
+  - `kustomize build --enable-helm infrastructure/network/envoy-gateway | kubectl apply --server-side -f -`
+  - `kubectl apply --server-side -f infrastructure/network/envoy-gateway/EnvoyProxy.yaml -f infrastructure/network/envoy-gateway/GatewayClass.yaml`
 4. Install Sealed Secrets:
   - `kubectl apply --server-side -f infrastructure/controllers/sealed-secrets/Namespace.yaml -f infrastructure/controllers/sealed-secrets/Secret.certs.yaml`
   - `kustomize build --enable-helm infrastructure/controllers/sealed-secrets | kubectl apply --server-side -f -`
 5. Install cert-manager:
   - `kustomize build --enable-helm infrastructure/controllers/cert-manager | kubectl apply --server-side -f -`
+  - `kubectl apply --server-side -f infrastructure/controllers/cert-manager/ClusterIssuer.le.yaml`
 6. Set up Gateway:
   - (Optional: restore saved certificates) `kubectl apply --server-side -f infrastructure/network/gateway/Namespace.yaml; for f in infrastructure/network/gateway/Secret.*-certificate.yaml; do kubectl apply --server-side -f "$f"; done`
   - `kubectl apply --server-side -k infrastructure/network/gateway`
