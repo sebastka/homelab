@@ -1,3 +1,5 @@
+# Cross namespace attachment?
+# - https://github.com/envoyproxy/gateway/issues/5143
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
@@ -22,28 +24,23 @@ metadata:
   name: allow-all-http
   namespace: gateway
 spec:
-  targetSelectors:
-    - kind: HTTPRoute
-      matchLabels:
-        fr.karlsen/ingress-policy: allow-all-http
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: https-upgrade}
   authorization:
     defaultAction: Allow
----
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
-metadata:
-  name: allow-oidc-http
-  namespace: gateway
-spec:
-  targetSelectors:
-    - kind: HTTPRoute
-      matchLabels:
-        fr.karlsen/ingress-policy: allow-oidc-http
-  authorization:
-    defaultAction: Deny
-    rules:
-      - action: Allow
-        principal:
-          clientCIDRs:
-            - 192.168.0.0/24  # Physical machines
-  # oidc: {}
+# ---
+# apiVersion: gateway.envoyproxy.io/v1alpha1
+# kind: SecurityPolicy
+# metadata:
+#   name: allow-oidc-http
+#   namespace: gateway
+# spec:
+#   targetRefs: {}
+#   authorization:
+#     defaultAction: Deny
+#     rules:
+#       - action: Allow
+#         principal:
+#           clientCIDRs:
+#             - 192.168.0.0/24  # Physical machines
+#   # oidc: {}
