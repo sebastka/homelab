@@ -4,8 +4,6 @@ kind: HTTPRoute
 metadata:
   name: https-upgrade
   namespace: gateway
-  labels:
-    fr.karlsen/ingress-policy: allow-all-http
 spec:
   parentRefs:
     - {namespace: gateway, kind: Gateway, name: internal, sectionName: http}
