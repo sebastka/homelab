@@ -29,13 +29,3 @@ module "virtual_machines" {
 
   pve = var.pve
 }
-
-module "talos" {
-  source = "./talos"
-
-  providers = {
-    proxmox = proxmox
-  }
-
-  pve = var.pve
-}
