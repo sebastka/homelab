@@ -28,14 +28,13 @@ spec:
     - name: ldap
       protocol: TCP
       port: 389
-      allowedRoutes: {namespaces: {from: All}, kinds: [{kind: TCPRoute}]}
-
-    # - name: ldaps
-    #   protocol: TLS
-    #   port: 636
-    #   hostname: '*.karlsen.fr'
-    #   allowedRoutes: {namespaces: {from: All}}
-    #   tls: {mode: Passthrough}
+      allowedRoutes: {namespaces: {from: All}}
+    - name: ldaps
+      protocol: TLS
+      hostname: '*.karlsen.fr'
+      port: 636
+      allowedRoutes: {namespaces: {from: All}}
+      tls: {mode: Passthrough}
 
     # - name: tls-wc-karlsen-fr
     #   protocol: TLS
