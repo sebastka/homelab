@@ -33,8 +33,6 @@ kind: HTTPRoute
 metadata:
   name: web
   namespace: whoami
-  labels:
-    fr.karlsen/ingress-policy: allow-all-http
 spec:
   parentRefs:
     - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
