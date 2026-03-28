@@ -39,6 +39,7 @@ spec:
               git -C /karlsenfr clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git .
               rm -rf /karlsenfr/.git /karlsenfr/.nojekyll /karlsenfr/README.md
               # Other tlds (org|app) and karlsen.fr:
+              cp -a /karlsenfr/.well-known /other/
               printf -- '<!DOCTYPE html><html lang="en"><head><title>Karlsen.fr</title><meta http-equiv="refresh" content="0; URL=https://www.karlsen.fr"></head></html>' >/other/index.html
               # WKD: openpgpkey.karlsen.fr
               mkdir -p /openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
