@@ -34,7 +34,8 @@ spec:
       hostname: '*.karlsen.fr'
       port: 636
       allowedRoutes: {namespaces: {from: All}}
-      tls: {mode: Passthrough}
+      # tls: {mode: Passthrough}
+      tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: wc-karlsen-fr-certificate}]}
 
     # - name: tls-wc-karlsen-fr
     #   protocol: TLS
