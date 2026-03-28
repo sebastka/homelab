@@ -167,7 +167,7 @@ reply_to="Postmaster <postmaster@karlsen.fr>"
 [ldaps_options]
 ## Whether to enable LDAPS.
 #enabled=true
-enabled=true
+enabled=false
 ## Port on which to listen.
 #port=6360
 port=6360
