@@ -17,7 +17,7 @@ resources:
   - SealedSecret.forgejo-gpg.yaml
   - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
-  # - TCPRoute.yaml
+  - TCPRoute.yaml
 
 helmCharts:
   - name: forgejo
