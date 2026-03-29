@@ -13,6 +13,8 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/infrastructure/controllers/*
+          - path: k8s/infrastructure/controllers/node-feature-discovery
+            exclude: true
           - path: k8s/infrastructure/controllers/intel-device-plugins
             exclude: true
   template:
