@@ -12,8 +12,6 @@ spec:
       server: '*'
     - namespace: kube-system
       server: '*'
-    - name: security-profiles-operator
-      server: '*'
     - namespace: sealed-secrets
       server: '*'
     - namespace: databases-backup
