@@ -4,7 +4,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: allow-all-http
+  name: allow-all-http-ssh
   namespace: forgejo
 spec:
   targetRefs:
