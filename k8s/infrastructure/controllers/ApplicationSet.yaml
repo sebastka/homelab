@@ -17,6 +17,8 @@ spec:
             exclude: true
           - path: k8s/infrastructure/controllers/intel-device-plugins/*
             exclude: true
+          - path: k8s/infrastructure/controllers/intel-device-plugins
+            exclude: true
   template:
     metadata:
       name: '{{ path.basename }}'
