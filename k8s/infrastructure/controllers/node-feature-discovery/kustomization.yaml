@@ -5,6 +5,7 @@ namespace: nfd
 
 resources:
   - Namespace.yaml
+  - https://raw.githubusercontent.com/intel/intel-device-plugins-for-kubernetes/refs/heads/release-0.35/deployments/nfd/overlays/node-feature-rules/node-feature-rules.yaml
 
 # https://github.com/kubernetes-sigs/node-feature-discovery
 helmCharts:
