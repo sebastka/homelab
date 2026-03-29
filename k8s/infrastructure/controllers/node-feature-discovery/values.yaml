@@ -10,7 +10,7 @@ master:
 worker:
   config:
     core:
-      sleepInterval: 0s
+      sleepInterval: 60s
   resources:
     requests: {memory: 128Mi}
     limits: {memory: 128Mi}
