@@ -18,7 +18,7 @@ spec:
       server: '*'
     - namespace: cert-manager
       server: '*'
-    - namespace: node-feature-discovery
+    - namespace: nfd
       server: '*'
     - namespace: intel-device-plugins
       server: '*'
