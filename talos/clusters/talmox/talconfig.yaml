@@ -77,7 +77,7 @@ nodes:
             - siderolabs/iscsi-tools
             - siderolabs/qemu-guest-agent
             - siderolabs/util-linux-tools
-            - siderolabs/xe
+            # - siderolabs/xe
             # - siderolabs/i915
             # - siderolabs/cloudflared
 
@@ -105,4 +105,17 @@ nodes:
     nodeLabels:
       topology.kubernetes.io/region: *x-label-topology-region
       topology.kubernetes.io/zone: t03
-    schematic: *x-schematic
+    schematic:
+      customization:
+        bootloader: sd-boot
+        extraKernelArgs:
+          - -lockdown
+          - -lockdown=integrity
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/iscsi-tools
+            - siderolabs/qemu-guest-agent
+            - siderolabs/util-linux-tools
+            # - siderolabs/xe
+            - siderolabs/i915
+            # - siderolabs/cloudflared
