@@ -20,10 +20,10 @@ spec:
       server: '*'
     - namespace: cert-manager
       server: '*'
-    - namespace: node-feature-discovery
-      server: '*'
-    - namespace: intel-device-plugins
-      server: '*'
+    # - namespace: node-feature-discovery
+    #   server: '*'
+    # - namespace: intel-device-plugins
+    #   server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
