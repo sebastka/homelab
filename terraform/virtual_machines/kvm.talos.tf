@@ -1,7 +1,7 @@
 locals {
   current_status = "running" # running | stopped
   talos_image    = "local:iso/nocloud-amd64-secureboot.iso"
-  current_image  = local.talos_image
+  current_image  = "" # local.talos_image
 
   talos_nodes = {
     "t01" = { pve_node: "hera", hwaddr = "bc:24:11:10:fe:09", gpu = false }
@@ -12,6 +12,7 @@ locals {
 
 resource "proxmox_vm_qemu" "talos_nodes" {
   for_each = local.talos_nodes
+  vmid = 150 + tonumber(substr(each.key, -1, 2))
 
   name               = "${each.key}.${var.pve.domain}"
   description        = "Talos Kubernetes Node"
@@ -71,7 +72,7 @@ resource "proxmox_vm_qemu" "talos_nodes" {
         mapping {
           mapping_id  = "iGPU"
           pcie        = true
-          primary_gpu = true
+          # primary_gpu = true
           rombar      = true
         }
       }

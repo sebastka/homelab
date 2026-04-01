@@ -17,7 +17,7 @@ spec:
         app.kubernetes.io/name: jellyfin
     spec:
       nodeSelector:
-        topology.kubernetes.io/zone: t03
+        intel.feature.node.kubernetes.io/gpu: 'true'
       serviceAccountName: jellyfin
       securityContext:
         runAsNonRoot: true
@@ -36,8 +36,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 12Gi}  # gpu.intel.com/i915: 1000m  # "xe" supported?
-            limits: {memory: 12Gi}  # gpu.intel.com/i915: 1000m  # "xe" supported?
+            requests: {memory: 12Gi, gpu.intel.com/xe: 1}
+            limits: {memory: 12Gi, gpu.intel.com/xe: 1}
           envFrom:
             - configMapRef: {name: jellyfin-env}
           ports:

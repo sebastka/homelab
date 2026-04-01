@@ -70,8 +70,8 @@ nodes:
       customization:
         bootloader: sd-boot
         extraKernelArgs:
-          - -lockdown
-          - -lockdown=integrity
+          - lockdown
+          - lockdown=integrity
         systemExtensions:
           officialExtensions:
             - siderolabs/iscsi-tools
@@ -109,13 +109,15 @@ nodes:
       customization:
         bootloader: sd-boot
         extraKernelArgs:
-          - -lockdown
-          - -lockdown=integrity
+          - lockdown
+          - lockdown=integrity
+          - xe.force_probe=7d51
+          - i915.force_probe=!7d51
         systemExtensions:
           officialExtensions:
             - siderolabs/iscsi-tools
             - siderolabs/qemu-guest-agent
             - siderolabs/util-linux-tools
-            # - siderolabs/xe
+            - siderolabs/xe
             - siderolabs/i915
             # - siderolabs/cloudflared
