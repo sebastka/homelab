@@ -19,7 +19,6 @@ configMapGenerator:
 
 resources:
   - Namespace.yaml
-  - SealedSecret.dhi-io-registry.yaml
   - SealedSecret.stork-secrets.yaml
   - ServiceAccount.yaml
   - Deployment.yaml
