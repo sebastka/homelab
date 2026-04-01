@@ -25,7 +25,7 @@ spec:
       containers:
         - name: glance
           # Dockerfile: https://github.com/glanceapp/glance/blob/main/Dockerfile
-          image: docker.io/glanceapp/glance:latest
+          image: docker.io/glanceapp/glance:v0.8.4
           command: [/app/glance]
           args: ['--config', '/glance.yaml']
           securityContext:

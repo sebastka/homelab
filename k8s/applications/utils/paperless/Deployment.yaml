@@ -25,7 +25,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       initContainers:
         - name: paperless-custom-init
-          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
           command: ['/bin/sh', '-c']
           args:
             - |
@@ -60,7 +60,7 @@ spec:
       containers:
         - name: paperless-consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
           command: [python3, "manage.py", "document_consumer"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -84,7 +84,7 @@ spec:
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
         - name: paperless-scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
           command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -108,7 +108,7 @@ spec:
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
         - name: paperless-task-queue
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
           command: [celery, "--app", "paperless", "worker", "--loglevel", "INFO"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -132,7 +132,7 @@ spec:
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
         - name: paperless-webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
           command: [granian, "--interface", "asginl", "--ws", "paperless.asgi:application"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -158,7 +158,7 @@ spec:
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
         - name: gotenberg
           # Dockerfile: https://github.com/gotenberg/gotenberg/blob/main/build/Dockerfile
-          image: index.docker.io/gotenberg/gotenberg:latest
+          image: index.docker.io/gotenberg/gotenberg:8.29
           args:
             - gotenberg
             - --chromium-disable-javascript=true
@@ -174,7 +174,7 @@ spec:
             limits: {memory: 256Mi}
         - name: tika
           # Dockerfile: https://github.com/apache/tika-docker/blob/main/minimal/Dockerfile
-          image: index.docker.io/apache/tika:latest
+          image: index.docker.io/apache/tika:3.3.0.0-full
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true

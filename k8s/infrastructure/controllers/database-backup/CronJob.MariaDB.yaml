@@ -27,7 +27,7 @@ spec:
             seccompProfile: {type: RuntimeDefault}
           containers:
             - name: mariadb-backup
-              image: mariadb:latest
+              image: mariadb:12.2.2-noble
               command: ['/bin/sh', '-c']
               args:
                 - |

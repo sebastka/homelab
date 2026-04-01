@@ -84,7 +84,7 @@ repoServer:
     - {mountPath: /usr/local/bin/kustomize, name: custom-tools, subPath: kustomize}
   initContainers:
     - name: install-tools
-      image: alpine:latest
+      image: alpine:3.23.3
       command: ["/bin/sh", "-c"]
       args:
         - |
