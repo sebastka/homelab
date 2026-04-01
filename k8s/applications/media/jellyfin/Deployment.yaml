@@ -30,7 +30,7 @@ spec:
       containers:
         - name: jellyfin
           # Dockerfile: https://hub.docker.com/r/jellyfin/jellyfin/dockerfile
-          image: ghcr.io/jellyfin/jellyfin:10.11.6
+          image: ghcr.io/jellyfin/jellyfin:10.11.7
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
