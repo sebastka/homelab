@@ -26,7 +26,7 @@ spec:
       authorizationEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/authorize
       tokenEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
       issuer: https://karlsen-xzy0yv.zitadel.cloud
-    redirectURL: https://karlsen.app/oidc-callback
+    redirectURL: https://glance.karlsen.app/oidc-callback
     # refreshToken: true
     # resources: []
     scopes: [openid, profile, email]
