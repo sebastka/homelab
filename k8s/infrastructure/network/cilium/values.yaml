@@ -20,6 +20,9 @@ securityContext:
 cgroup:
   autoMount:
     enabled: false
+    resources:
+      requests: {memory: 128Mi}
+      limits: {memory: 128Mi}
   hostRoot: /sys/fs/cgroup
 
 operator:
@@ -84,7 +87,7 @@ cni:
   # exclusive: false  # Use with Istio
   resources:
     requests: {memory: 64Mi}
-    limits: {memory: 64Mi}      
+    limits: {memory: 64Mi}
 
 # https://docs.cilium.io/en/stable/network/concepts/routing/
 routingMode: native
@@ -176,12 +179,6 @@ ingressController:
 #       resources:
 #         requests: {memory: 256Mi}
 #         limits: {memory: 256Mi}
-
-cgroup:
-  autoMount:
-    resources:
-      requests: {memory: 128Mi}
-      limits: {memory: 128Mi}
 
 # mTLS
 authentication:
