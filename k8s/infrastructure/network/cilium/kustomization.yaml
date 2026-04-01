@@ -2,17 +2,17 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-helmCharts:
-  - name: cilium
-    repo: oci://quay.io/cilium/charts
-    version: 1.19.1  # renovate: github-releases=cilium/cilium
-    releaseName: cilium
-    namespace: kube-system
-    includeCRDs: true
-    valuesFile: values.yaml
-
 resources:
   - CiliumLoadBalancerIPPool.yaml
   - CiliumL2AnnouncementPolicy.yaml
   # - GrafanaDashboard.cilium.yaml
   # - GrafanaDashboard.cilium-operator.yaml
+
+helmCharts:
+  - name: cilium
+    repo: oci://quay.io/cilium/charts
+    version: 1.19.2  # renovate: github-releases=cilium/cilium
+    releaseName: cilium
+    namespace: kube-system
+    includeCRDs: true
+    valuesFile: values.yaml
