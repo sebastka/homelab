@@ -5,6 +5,9 @@
   ],
   "prHourlyLimit": 10,
   "minimumReleaseAge": "24h",
+  "kubernetes": {
+    "fileMatch": ["(^|/)k8s/.+\\.yaml$"]
+  },
   "customManagers": [
     {
       "customType": "regex",
