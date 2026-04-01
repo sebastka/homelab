@@ -17,3 +17,5 @@ resources:
   - Service.web.yaml
   - Service.torrent.yaml
   - HTTPRoute.yaml
+  - SealedSecret.oidc.yaml
+  - SecurityPolicy.yaml
