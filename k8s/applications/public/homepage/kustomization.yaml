@@ -21,7 +21,6 @@ configMapGenerator:
 
 resources:
   - Namespace.yaml
-  - SealedSecret.dhi-io-registry.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
