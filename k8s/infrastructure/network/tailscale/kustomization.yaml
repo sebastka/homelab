@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: tailscale
+
+resources:
+  - Namespace.yaml
+  - BitwardenSecret.operator-oauth.yaml
+  - Connector.yaml
+
+helmCharts:
+  - name: tailscale-operator
+    repo: https://pkgs.tailscale.com/helmcharts
+    version: 1.94.2
+    releaseName: tailscale
+    namespace: tailscale
+    includeCRDs: true
+    valuesFile: values.yaml

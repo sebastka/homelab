@@ -1,0 +1,11 @@
+---
+apiVersion: tailscale.com/v1alpha1
+kind: Connector
+metadata:
+  name: controller
+  namespace: tailscale
+spec:
+  replicas: 1
+  subnetRouter:
+    advertiseRoutes:
+      - 192.168.0.0/16

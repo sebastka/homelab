@@ -18,6 +18,8 @@ spec:
       server: '*'
     - namespace: gateway
       server: '*'
+    - namespace: tailscale
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

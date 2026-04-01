@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=
+# https://artifacthub.io/packages/helm/tailscale/tailscale-operator?modal=values
+---
+
+installCRDs: true
+
+operatorConfig:
+  resources:
+    requests: {memory: 100Mi}
+    limits: {memory: 100Mi}
+
+ingressClass:
+  enabled: false
