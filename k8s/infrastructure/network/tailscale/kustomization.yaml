@@ -5,7 +5,7 @@ namespace: tailscale
 
 resources:
   - Namespace.yaml
-  - BitwardenSecret.operator-oauth.yaml
+  - SealedSecret.operator-oauth.yaml
   - Connector.yaml
 
 helmCharts:
