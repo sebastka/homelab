@@ -16,3 +16,5 @@ resources:
   - Service.identd.yaml
   - HTTPRoute.yaml
   - PersistentVolumeClaim.yaml
+  - SealedSecret.oidc.yaml
+  - SecurityPolicy.yaml
