@@ -20,6 +20,6 @@ resources:
   - Deployment.tika.yaml
   - Deployment.valkey.yaml
   - Services.yaml
-  - HTTPRoute.yaml
-  - SealedSecret.oidc.yaml
-  - SecurityPolicy.yaml
+  # - HTTPRoute.yaml
+  # - SealedSecret.oidc.yaml
+  # - SecurityPolicy.yaml
