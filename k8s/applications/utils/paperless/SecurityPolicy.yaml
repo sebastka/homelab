@@ -1,0 +1,30 @@
+# Cross namespace attachment?
+# - https://github.com/envoyproxy/gateway/issues/5143
+# OIDC:
+# - https://gateway.envoyproxy.io/docs/tasks/security/oidc/
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-sso
+  namespace: paperless
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  oidc:
+    clientIDRef: {namespace: paperless, kind: Secret, name: oidc}
+    clientSecret: {namespace: paperless, kind: Secret, name: oidc}
+    cookieConfig: {sameSite: Lax}
+    cookieDomain: karlsen.app
+    # cookieNames: {accessToken: access-token, idToken: id-token}
+    # forwardAccessToken: false
+    # logoutPath: /logout
+    # passThroughAuthHeader: false
+    provider:
+      authorizationEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/authorize
+      tokenEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
+      issuer: https://karlsen-xzy0yv.zitadel.cloud
+    redirectURL: https://paperless.karlsen.app/oidc-callback
+    # refreshToken: true
+    # resources: []
+    scopes: [openid, profile, email]

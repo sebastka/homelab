@@ -24,3 +24,5 @@ resources:
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
+  - SealedSecret.oidc.yaml
+  - SecurityPolicy.yaml
