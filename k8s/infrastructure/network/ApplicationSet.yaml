@@ -13,6 +13,10 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/infrastructure/network/*
+          - path: k8s/infrastructure/network/tailscale
+            exclude: true
+          - path: k8s/infrastructure/network/tailscale/*
+            exclude: true
   template:
     metadata:
       name: '{{ path.basename }}'
