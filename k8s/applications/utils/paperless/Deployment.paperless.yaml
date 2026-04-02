@@ -9,11 +9,19 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: paperless
+      app.kubernetes.io/version: '2.20.13'
+      app.kubernetes.io/component: document-management
+      app.kubernetes.io/part-of: paperless
+      # app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       namespace: paperless
       labels:
         app.kubernetes.io/name: paperless
+        app.kubernetes.io/version: '2.20.13'
+        app.kubernetes.io/component: document-management
+        app.kubernetes.io/part-of: paperless
+        # app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccountName: paperless
       securityContext:
@@ -55,10 +63,10 @@ spec:
             requests: {memory: 64Mi}
             limits: {memory: 64Mi}
           volumeMounts:
-            - {name: paperless-scripts-volume, mountPath: /scripts/extra_settings.py, subPath: extra_settings.py, readOnly: true}
+            - {name: scripts-volume, mountPath: /scripts/extra_settings.py, subPath: extra_settings.py, readOnly: true}
             - {name: customizations-volume, mountPath: /customizations}
       containers:
-        - name: paperless-consumer
+        - name: paperless-consume-volumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
           command: [python3, "manage.py", "document_consumer"]
@@ -73,15 +81,15 @@ spec:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           volumeMounts:
-            - {name: paperless-tmp-volume, mountPath: /tmp}
-            - {name: paperless-cache-volume, mountPath: /var/cache}
-            - {name: paperless-data, mountPath: /usr/src/paperless/data}
-            - {name: paperless-media, mountPath: /usr/src/paperless/media}
-            - {name: paperless-consume, mountPath: /usr/src/paperless/consume}
-            - {name: paperless-export, mountPath: /usr/src/paperless/export}
-            - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /var/cache}
+            - {name: scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
+            - {name: paperless-consume-volume, mountPath: /usr/src/paperless/consume}
+            - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
+            - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
         - name: paperless-scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
@@ -97,15 +105,15 @@ spec:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           volumeMounts:
-            - {name: paperless-tmp-volume, mountPath: /tmp}
-            - {name: paperless-cache-volume, mountPath: /var/cache}
-            - {name: paperless-data, mountPath: /usr/src/paperless/data}
-            - {name: paperless-media, mountPath: /usr/src/paperless/media}
-            - {name: paperless-consume, mountPath: /usr/src/paperless/consume}
-            - {name: paperless-export, mountPath: /usr/src/paperless/export}
-            - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /var/cache}
+            - {name: scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
+            - {name: paperless-consume-volume, mountPath: /usr/src/paperless/consume}
+            - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
+            - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
         - name: paperless-task-queue
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
@@ -121,15 +129,15 @@ spec:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           volumeMounts:
-            - {name: paperless-tmp-volume, mountPath: /tmp}
-            - {name: paperless-cache-volume, mountPath: /var/cache}
-            - {name: paperless-data, mountPath: /usr/src/paperless/data}
-            - {name: paperless-media, mountPath: /usr/src/paperless/media}
-            - {name: paperless-consume, mountPath: /usr/src/paperless/consume}
-            - {name: paperless-export, mountPath: /usr/src/paperless/export}
-            - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /var/cache}
+            - {name: scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
+            - {name: paperless-consume-volume, mountPath: /usr/src/paperless/consume}
+            - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
+            - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
         - name: paperless-webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
@@ -147,67 +155,21 @@ spec:
           ports:
             - {name: http, containerPort: 8000}
           volumeMounts:
-            - {name: paperless-tmp-volume, mountPath: /tmp}
-            - {name: paperless-cache-volume, mountPath: /var/cache}
-            - {name: paperless-data, mountPath: /usr/src/paperless/data}
-            - {name: paperless-media, mountPath: /usr/src/paperless/media}
-            - {name: paperless-consume, mountPath: /usr/src/paperless/consume}
-            - {name: paperless-export, mountPath: /usr/src/paperless/export}
-            - {name: paperless-scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /var/cache}
+            - {name: scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
-        - name: gotenberg
-          # Dockerfile: https://github.com/gotenberg/gotenberg/blob/main/build/Dockerfile
-          image: index.docker.io/gotenberg/gotenberg:8.29
-          args:
-            - gotenberg
-            - --chromium-disable-javascript=true
-            - --chromium-allow-list=file:///tmp/.*
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: {drop: [ALL]}
-            runAsUser: 1000
-            runAsGroup: 1000
-          resources:
-            requests: {memory: 256Mi}
-            limits: {memory: 256Mi}
-        - name: tika
-          # Dockerfile: https://github.com/apache/tika-docker/blob/main/minimal/Dockerfile
-          image: index.docker.io/apache/tika:3.3.0.0-full
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: {drop: [ALL]}
-            runAsUser: 35002
-            runAsGroup: 35002
-          resources:
-            requests: {memory: 256Mi}
-            limits: {memory: 256Mi}
-          volumeMounts:
-            - {name: tika-tmp-volume, mountPath: /tmp}
-        - name: valkey
-          # Dockerfile: https://github.com/valkey-io/valkey-container/blob/mainline/9.0/alpine/Dockerfile
-          image: index.docker.io/valkey/valkey:9.0.3-alpine3.23
-          args: [--save, ""]
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: {drop: [ALL]}
-            runAsUser: 999
-            runAsGroup: 1000
-          resources:
-            requests: {memory: 64Mi}
-            limits: {memory: 64Mi}
-          # env:
-          #   - {name: VALKEY_EXTRA_FLAGS, value: '--save 60 1 --loglevel warning'}
+            - {name: paperless-consume-volume, mountPath: /usr/src/paperless/consume}
+            - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
+            - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
       volumes:
-        - {name: paperless-tmp-volume, emptyDir: {}}
-        - {name: paperless-cache-volume, emptyDir: {}}
-        - {name: tika-tmp-volume, emptyDir: {}}
-        - {name: paperless-consume, emptyDir: {}}
-        - {name: paperless-export, emptyDir: {}}
-        - {name: paperless-data, persistentVolumeClaim: {claimName: longhorn-paperless-data-pvc}}
-        - {name: paperless-media, persistentVolumeClaim: {claimName: longhorn-paperless-media-pvc}}
-        - {name: paperless-scripts-volume, configMap: {name: paperless-scripts}}
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: cache-volume, emptyDir: {}}
         - {name: customizations-volume, emptyDir: {}}
+        - {name: scripts-volume, configMap: {name: paperless-scripts}}
+        - {name: paperless-consume-volume, emptyDir: {}}
+        - {name: paperless-export-volume, emptyDir: {}}
+        - {name: paperless-data-volume, persistentVolumeClaim: {claimName: longhorn-paperless-data-volume-pvc}}
+        - {name: paperless-media-volume, persistentVolumeClaim: {claimName: longhorn-paperless-media-volume-pvc}}

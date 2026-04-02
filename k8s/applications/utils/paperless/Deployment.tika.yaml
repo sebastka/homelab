@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tika
+  namespace: paperless
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tika
+      app.kubernetes.io/version: 3.3.0.0
+      app.kubernetes.io/component: content-extraction
+      app.kubernetes.io/part-of: paperless
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: paperless
+      labels:
+        app.kubernetes.io/name: tika
+        app.kubernetes.io/version: 3.3.0.0
+        app.kubernetes.io/component: content-extraction
+        app.kubernetes.io/part-of: paperless
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: tika
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 35002
+        runAsGroup: 35002
+        fsGroup: 35002
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: tika
+          # Dockerfile: https://github.com/apache/tika-docker/blob/main/minimal/Dockerfile
+          image: index.docker.io/apache/tika:3.3.0.0-full
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 256Mi}
+            limits: {memory: 256Mi}
+          volumeMounts:
+            - {name: tika-tmp-volume, mountPath: /tmp}
+          ports:
+            - {name: tika, protocol: TCP, containerPort: 9998}
+      volumes:
+        - {name: tika-tmp-volume, emptyDir: {}}

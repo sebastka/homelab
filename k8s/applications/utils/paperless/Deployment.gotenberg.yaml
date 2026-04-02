@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gotenberg
+  namespace: paperless
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gotenberg
+      app.kubernetes.io/version: '8.29'
+      app.kubernetes.io/component: document-conversion
+      app.kubernetes.io/part-of: paperless
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: paperless
+      labels:
+        app.kubernetes.io/name: gotenberg
+        app.kubernetes.io/version: '8.29'
+        app.kubernetes.io/component: document-conversion
+        app.kubernetes.io/part-of: paperless
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: gotenberg
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: gotenberg
+          # Dockerfile: https://github.com/gotenberg/gotenberg/blob/main/build/Dockerfile
+          image: index.docker.io/gotenberg/gotenberg:8.29
+          args:
+            - gotenberg
+            - --chromium-disable-javascript=true
+            - --chromium-allow-list=file:///tmp/.*
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 256Mi}
+            limits: {memory: 256Mi}
+          ports:
+            - {name: gotenberg, protocol: TCP, containerPort: 3000}

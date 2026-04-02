@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: paperless
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tika
+  namespace: paperless
+spec:
+  type: ClusterIP
+  ports:
+    - name: tika
+      protocol: TCP
+      port: 9998
+      targetPort: tika
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gotenberg
+  namespace: paperless
+spec:
+  type: ClusterIP
+  ports:
+    - name: gotenberg
+      protocol: TCP
+      port: 3000
+      targetPort: gotenberg
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: valkey
+  namespace: paperless
+spec:
+  type: ClusterIP
+  ports:
+    - name: valkey
+      protocol: TCP
+      port: 6379
+      targetPort: valkey
