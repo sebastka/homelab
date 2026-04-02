@@ -6,6 +6,8 @@ metadata:
   namespace: paperless
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: paperless
   ports:
     - name: http
       protocol: TCP
@@ -19,6 +21,8 @@ metadata:
   namespace: paperless
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: tika
   ports:
     - name: tika
       protocol: TCP
@@ -32,6 +36,8 @@ metadata:
   namespace: paperless
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: gotenberg
   ports:
     - name: gotenberg
       protocol: TCP
@@ -45,6 +51,8 @@ metadata:
   namespace: paperless
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: valkey
   ports:
     - name: valkey
       protocol: TCP
