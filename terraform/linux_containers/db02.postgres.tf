@@ -12,7 +12,7 @@ resource "proxmox_lxc" "db02" {
   swap                 = 0
   ignore_unpack_errors = false
   onboot               = true
-  startup              = "up=10"
+  startup              = "up=0"
   start                = true
   ssh_public_keys      = join("\n", var.ssh_authorized_keys)
   unprivileged         = true
