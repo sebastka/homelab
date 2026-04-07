@@ -10,17 +10,17 @@
 # Remove claimRef from PVs:
 ## for vol in data export consume media; do kubectl patch pv "longhorn-paperless-${vol}-pv" --type=json -p '[{"op": "remove", "path": "/spec/claimRef"}]'; done
 
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: longhorn-paperless-data-pvc
-  namespace: paperless
-spec:
-  accessModes: [ReadWriteOnce]
-  resources: {requests: {storage: 5Gi}}
-  storageClassName: longhorn-static
-  volumeName: longhorn-paperless-data-pv
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: longhorn-paperless-data-pvc
+#   namespace: paperless
+# spec:
+#   accessModes: [ReadWriteOnce]
+#   resources: {requests: {storage: 5Gi}}
+#   storageClassName: longhorn-static
+#   volumeName: longhorn-paperless-data-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
