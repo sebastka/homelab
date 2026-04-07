@@ -5,21 +5,19 @@ set -eu
 main()
 {
     export CLUSTER_NAME="$1"
+    export TALOS_CONFIG_HOME="$XDG_CONFIG_HOME/talos/$CLUSTER_NAME"
     [ -f "./clusters/${CLUSTER_NAME}/cluster.env" ] || return 1
     set -a; . "./clusters/${CLUSTER_NAME}/cluster.env"; set +a
     
     talos_generate
     talos_apply
     talos_bootstrap
-    talos_kubeconfig
+    talos_get_kubeconfig
+    sealed_secret_write_keys
 }
 
 talos_generate()
 {
-    # Extracting the Sealed Secrets controller certificate and key from the SOPS encrypted secret file
-    export SEALED_SECRETS_CRT="$(sops -d "./clusters/${CLUSTER_NAME}/talsecret.sops.enc.yaml" | yq -r '.certs.sealedsecrets.crt')"
-    export SEALED_SECRETS_KEY="$(sops -d "./clusters/${CLUSTER_NAME}/talsecret.sops.enc.yaml" | yq -r '.certs.sealedsecrets.key')"
-
     printf 'Generating Talos configuration...\n'
     rm -rf "$TALOS_CONFIG_HOME"
     talhelper genconfig \
@@ -75,6 +73,17 @@ talos_kubeconfig()
         --talosconfig "$TALOS_CONFIG_HOME/config.yaml"
 
     ln -sf "$CLUSTER_NAME/config.yaml" "$XDG_CONFIG_HOME/kube/config"
+}
+
+# Such that secrets can be sealed/unsealed locally
+sealed_secret_write_keys()
+{
+    for type in key crt; do
+        sops -d "./clusters/${CLUSTER_NAME}/talsecret.sops.enc.yaml" \
+            | yq -r ".certs.sealedsecrets.${type}" \
+            | base64 -d \
+            >"$TALOS_CONFIG_HOME/seal.${type}"
+    done
 }
 
 main "$@"

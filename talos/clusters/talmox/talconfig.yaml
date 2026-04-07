@@ -25,26 +25,6 @@ patches:
   - '@./patches/resources.yaml'
   - '@./patches/tpm-disk-encryption.yaml'
 
-inlineManifests:
-  - name: sealed-secrets
-    contents: |
-      apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: sealed-secrets
-      ---
-      apiVersion: v1
-      kind: Secret
-      type: kubernetes.io/tls
-      metadata:
-        name: sealed-secrets-key
-        namespace: sealed-secrets
-        labels:
-          sealedsecrets.bitnami.com/sealed-secrets-key: active
-      data:
-        tls.crt: ${SEALED_SECRETS_CRT}
-        tls.key: ${SEALED_SECRETS_KEY}
-
 nodes:
   - hostname: t01.${CLUSTER_DOMAIN}
     ipAddress: 192.168.1.201
