@@ -17,11 +17,8 @@ metadata:
   name: longhorn-paperless-data-pvc
   namespace: paperless
 spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 500Mi
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 5Gi}}
   storageClassName: longhorn-static
   volumeName: longhorn-paperless-data-pv
 ---
@@ -31,10 +28,7 @@ metadata:
   name: longhorn-paperless-media-pvc
   namespace: paperless
 spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 5Gi}}
   storageClassName: longhorn-static
   volumeName: longhorn-paperless-media-pv
