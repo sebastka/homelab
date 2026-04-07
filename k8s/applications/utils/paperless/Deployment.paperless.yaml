@@ -43,10 +43,10 @@ spec:
             requests: {memory: 256Mi}
             limits: {memory: 256Mi}
           volumeMounts:
-            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
+            # - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
             - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
       volumes:
-        - {name: paperless-data-volume, persistentVolumeClaim: {claimName: longhorn-paperless-data-volume-pvc}}
+        # - {name: paperless-data-volume, persistentVolumeClaim: {claimName: longhorn-paperless-data-volume-pvc}}
         - {name: paperless-media-volume, persistentVolumeClaim: {claimName: longhorn-paperless-media-volume-pvc}}
       # initContainers:
       #   - name: paperless-custom-init
