@@ -16,7 +16,7 @@ resource "proxmox_vm_qemu" "nixos" {
   vm_state           = "stopped"
   scsihw             = "virtio-scsi-single"
   memory             = 6096
-  balloon            = 4096
+  balloon            = 0
 
   startup_shutdown {
     shutdown_timeout = 300
