@@ -60,7 +60,7 @@ talos_bootstrap()
     sleep 30
 }
 
-talos_kubeconfig()
+talos_get_kubeconfig()
 {
     printf -- 'Press enter to retrieve the kubeconfig file...'
     read keypress
