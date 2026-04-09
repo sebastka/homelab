@@ -51,6 +51,7 @@ spec:
               # MTA-STS:
               mkdir -p /mta-sts/.well-known
               printf -- 'version: STSv1\nmode: testing\nmx: mx.domeneshop.no\nmax_age: 86400\n' >/mta-sts/.well-known/mta-sts.txt
+              cp /other/index.html /mta-sts/index.html
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
