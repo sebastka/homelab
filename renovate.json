@@ -4,7 +4,7 @@
     "config:recommended"
   ],
   "prHourlyLimit": 10,
-  "minimumReleaseAge": "24h",
+  "minimumReleaseAge": "1 day",
   "kubernetes": {
     "managerFilePatterns": [
       "/(^|/)k8s/.+\\.yaml$/"
