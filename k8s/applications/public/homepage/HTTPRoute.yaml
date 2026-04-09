@@ -20,6 +20,7 @@ spec:
     - karlsen.app
     - www.karlsen.app
     - openpgpkey.karlsen.fr
+    - mta-sts.karlsen.fr
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: web, kind: Service, port: 80}]

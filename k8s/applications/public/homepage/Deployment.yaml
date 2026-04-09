@@ -30,19 +30,27 @@ spec:
           args:
             - |
               set -eux
+
               # Clean up volumes
-              for d in karlsenfr other openpgpkey; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
+              for d in karlsenfr other openpgpkey mta-sts; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
+
               # Homepage: www.karlsen.fr
               git -C /karlsenfr clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git .
               rm -rf /karlsenfr/.git /karlsenfr/.nojekyll /karlsenfr/README.md
+
               # Other tlds (org|app) and karlsen.fr:
               cp -a /karlsenfr/.well-known /other/
               printf -- '<!DOCTYPE html><html lang="en"><head><title>Karlsen.fr</title><meta http-equiv="refresh" content="0; URL=https://www.karlsen.fr"></head></html>' >/other/index.html
+
               # WKD: openpgpkey.karlsen.fr
               mkdir -p /openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
               cp /other/index.html /openpgpkey/index.html
               cp /karlsenfr/.well-known/openpgpkey/hu/* /openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
               touch /openpgpkey/.well-known/openpgpkey/karlsen.fr/policy
+
+              # MTA-STS:
+              mkdir -p /mta-sts/.well-known
+              printf -- 'version: STSv1\nmode: testing\nmx: mx.domeneshop.no\nmax_age: 86400\n' >/mta-sts/.well-known/mta-sts.txt
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -54,6 +62,7 @@ spec:
             - {name: karlsenfr-volume, mountPath: /karlsenfr}
             - {name: other-volume, mountPath: /other}
             - {name: openpgpkey-volume, mountPath: /openpgpkey}
+            - {name: mtasts-volume, mountPath: /mta-sts}
       containers:
         - name: nginx
           # Dockerfile: https://github.com/nginx/docker-nginx-unprivileged/blob/main/Dockerfile-alpine-slim.template
@@ -74,11 +83,13 @@ spec:
             - {name: karlsenfr-volume, mountPath: /karlsenfr, readOnly: true}
             - {name: other-volume, mountPath: /other, readOnly: true}
             - {name: openpgpkey-volume, mountPath: /openpgpkey, readOnly: true}
+            - {name: mtasts-volume, mountPath: /mta-sts, readOnly: true}
             - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: 'nginx.custom.conf', readOnly: true}
             - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/sites.conf, subPath: 'sites.conf', readOnly: true}
       volumes:
         - {name: karlsenfr-volume, emptyDir: {}}
         - {name: other-volume, emptyDir: {}}
         - {name: openpgpkey-volume, emptyDir: {}}
+        - {name: mtasts-volume, emptyDir: {}}
         - {name: tmp-volume, emptyDir: {}}
         - {name: nginx-config-volume, configMap: {name: nginx-config}}
