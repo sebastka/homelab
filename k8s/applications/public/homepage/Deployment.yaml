@@ -36,7 +36,7 @@ spec:
 
               # Homepage: www.karlsen.fr
               git -C /karlsenfr clone --depth 1 --branch master --single-branch https://github.com/sebastka/sebastka.github.io.git .
-              rm -rf /karlsenfr/.git /karlsenfr/.nojekyll /karlsenfr/README.md
+              rm -rf /karlsenfr/.git /karlsenfr/bin /karlsenfr/.nojekyll /karlsenfr/README.md
 
               # Other tlds (org|app) and karlsen.fr:
               cp -a /karlsenfr/.well-known /other/
