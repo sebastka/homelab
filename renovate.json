@@ -6,13 +6,17 @@
   "prHourlyLimit": 10,
   "minimumReleaseAge": "24h",
   "kubernetes": {
-    "fileMatch": ["(^|/)k8s/.+\\.yaml$"]
+    "managerFilePatterns": [
+      "/(^|/)k8s/.+\\.yaml$/"
+    ]
   },
   "customManagers": [
     {
       "customType": "regex",
       "description": "Apply an explicit forgejo digest field match",
-      "fileMatch": ["values\\.ya?ml"],
+      "managerFilePatterns": [
+        "/values\\.ya?ml/"
+      ],
       "matchStrings": ["(?<depName>forgejo\\/forgejo)\\n(?<indentation>\\s+)tag: (?<currentValue>[^@].*?)\\n\\s+digest: (?<currentDigest>sha256:[a-f0-9]+)"],
       "datasourceTemplate": "docker",
       "packageNameTemplate": "code.forgejo.org/{{depName}}",
