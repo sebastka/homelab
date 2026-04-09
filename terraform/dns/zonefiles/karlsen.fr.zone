@@ -1,6 +1,6 @@
 ;;
 ;; Domain:     karlsen.fr.
-;; Exported:   2026-03-21 12:30:57
+;; Exported:   2026-04-09 09:19:05
 ;;
 ;; This file is intended for use for informational and archival
 ;; purposes ONLY and MUST be edited before use on a production
@@ -24,16 +24,14 @@
 ;;
 ;; Use at your own risk.
 ;; SOA Record
-karlsen.fr	3600	IN	SOA	bethany.ns.cloudflare.com. dns.cloudflare.com. 2052576285 10000 2400 604800 3600
+karlsen.fr	3600	IN	SOA	bethany.ns.cloudflare.com. dns.cloudflare.com. 2052739294 10000 2400 604800 3600
 
 ;; NS Records
 karlsen.fr.	86400	IN	NS	bethany.ns.cloudflare.com.
 karlsen.fr.	86400	IN	NS	sevki.ns.cloudflare.com.
 
 ;; A Records
-karlsen.fr.	300	IN	A	188.124.156.176 ; Helios / enp1s0 cf_tags=cf-proxied:false
-stun.karlsen.fr.	1	IN	A	188.124.156.176 ; Helios / enp1s0 cf_tags=cf-proxied:false
-turn.karlsen.fr.	1	IN	A	188.124.156.176 ; Helios / enp1s0 cf_tags=cf-proxied:false
+karlsen.fr.	1	IN	A	84.214.173.185 ; Helios / enp1s0 cf_tags=cf-proxied:false
 
 ;; CAA Records
 karlsen.fr.	1	IN	CAA	128 issue "letsencrypt.org"
@@ -44,6 +42,7 @@ autoconfig.karlsen.fr.	1	IN	CNAME	autoconfig.domeneshop.no. ; cf_tags=cf-proxied
 git.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false
 ldap.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false
 matrix.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false
+mta-sts.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false
 openpgpkey.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false
 www.karlsen.fr.	1	IN	CNAME	karlsen.fr. ; cf_tags=cf-proxied:false
 
@@ -64,3 +63,5 @@ _carddavs._tcp.karlsen.fr.	3600	IN	TXT	"path=/"
 _dmarc.karlsen.fr.	3600	IN	TXT	"v=DMARC1; p=reject; adkim=s; aspf=s; fo=1; sp=reject; rua=mailto:dmarc@domeneshop.no,mailto:4cedcb540e0d4d4f86f0c698addc94c9@dmarc-reports.cloudflare.net;"
 ds202503._domainkey.karlsen.fr.	3600	IN	TXT	"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtqyfNLO5WTCU3/HZJKUvqKnchF0nEFsw2/CtTTHWbdNB+CVMhjSIMvFn/SksgzeGkUMYt0LUs+1BytMXq9lC4w2CXt8WGAMubdEY4ZYcOhTZJqmnVVvIfa7mV0muPZZJJC0yfSu9BAzCbnvR4jyTWdZZkq480h7EnVCIL5JW+4w0GkIuMN4t9RvYL6DuaSn" "zK4kSwWTMPC0Tm73U5/xvIVihdM2clZEP0GSXzFEzN7bFUfzFTf9fY6z61C4pitbhYE+AWuSilL9tpMhlwlzXLv1uiDFfmfSIRMmtqYWaen2dlTAz/j22H6McPg6Pj/+5oNCDyIFIjc/RV6kr1D9DCQIDAQAB"
 karlsen.fr.	1	IN	TXT	"v=spf1 include:_spf.domeneshop.no -all"
+_mta-sts.karlsen.fr.	1	IN	TXT	"v=STSv1; id=1775725941;"
+_smtp._tls.karlsen.fr.	1	IN	TXT	"v=TLSRPTv1; rua=mailto:tlsrpt@karlsen.fr"
