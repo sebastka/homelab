@@ -21,7 +21,7 @@ resources:
 helmCharts:
   - name: grafana-operator
     repo: oci://ghcr.io/grafana/helm-charts
-    version: 5.22.1  # renovate: github-releases=grafana/grafana-operator
+    version: 5.22.2  # renovate: github-releases=grafana/grafana-operator
     releaseName: grafana-operator
     namespace: grafana
     includeCRDs: true
