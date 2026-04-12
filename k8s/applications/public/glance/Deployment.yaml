@@ -9,11 +9,19 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: glance
+      app.kubernetes.io/version: v0.8.4
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: glance
+      # app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       namespace: glance
       labels:
         app.kubernetes.io/name: glance
+        app.kubernetes.io/version: v0.8.4
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: glance
+        # app.kubernetes.io/managed-by: kustomize
     spec:
       securityContext:
         runAsNonRoot: true

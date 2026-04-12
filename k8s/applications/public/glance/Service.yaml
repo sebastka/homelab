@@ -6,6 +6,8 @@ metadata:
   namespace: glance
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: glance
   ports:
     - name: http
       protocol: TCP
