@@ -6,6 +6,8 @@ metadata:
   namespace: opentogethertube
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: opentogethertube
   ports:
     - name: http
       protocol: TCP

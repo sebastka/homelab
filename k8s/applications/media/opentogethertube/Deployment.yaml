@@ -10,11 +10,19 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: opentogethertube
+      app.kubernetes.io/version: latest
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: opentogethertube
+      # app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       namespace: opentogethertube
       labels:
         app.kubernetes.io/name: opentogethertube
+        app.kubernetes.io/version: latest
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: opentogethertube
+        # app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccountName: opentogethertube
       securityContext:
