@@ -6,6 +6,8 @@ metadata:
   namespace: homepage
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: homepage
   ports:
     - name: http
       protocol: TCP
