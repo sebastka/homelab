@@ -5,10 +5,7 @@ metadata:
   name: synapse-data-pvc
   namespace: synapse
 spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 5Gi}}
   storageClassName: longhorn-static
   volumeName: synapse-data-pv
