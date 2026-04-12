@@ -9,12 +9,19 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: whoami
+      app.kubernetes.io/version: '1.11.0'
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: whoami
+      app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       namespace: whoami
       labels:
         app.kubernetes.io/name: whoami
-        app.kubernetes.io/version: v1
+        app.kubernetes.io/version: '1.11.0'
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: whoami
+        app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccountName: whoami
       securityContext:
@@ -37,4 +44,4 @@ spec:
             requests: {memory: 12Mi}
             limits: {memory: 12Mi}
           ports:
-            - {name: http, containerPort: 8080}
+            - {name: http, protocol: TCP, containerPort: 8080}
