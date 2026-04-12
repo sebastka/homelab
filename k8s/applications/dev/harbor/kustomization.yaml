@@ -5,12 +5,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: harbor
 
-labels:
-  - includeSelectors: true
-    includeTemplates: true
-    pairs:
-      app.kubernetes.io/name: harbor
-
 resources:
   - Namespace.yaml
   - SealedSecret.harbor-secrets.yaml

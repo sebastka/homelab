@@ -6,12 +6,10 @@ metadata:
   namespace: harbor
   labels:
     app.kubernetes.io/name: harbor
+    app.kubernetes.io/component: registry
 spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 10Gi}}
   storageClassName: longhorn-static
   volumeName: harbor-registry-pv
 ---
@@ -22,12 +20,10 @@ metadata:
   namespace: harbor
   labels:
     app.kubernetes.io/name: harbor
+    app.kubernetes.io/component: jobservice
 spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 1Gi}}
   storageClassName: longhorn-static
   volumeName: harbor-joblog-pv
 ---
@@ -38,11 +34,9 @@ metadata:
   namespace: harbor
   labels:
     app.kubernetes.io/name: harbor
+    app.kubernetes.io/component: trivy
 spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 5Gi}}
   storageClassName: longhorn-static
   volumeName: harbor-trivy-pv
