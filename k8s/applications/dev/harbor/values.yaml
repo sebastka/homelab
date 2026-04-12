@@ -24,6 +24,8 @@ persistence:
     jobservice:
       jobLog:
         existingClaim: harbor-joblog-pvc
+    redis:
+      accessmode: ReadWriteOncePod
     trivy:
       existingClaim: harbor-trivy-pvc
 
