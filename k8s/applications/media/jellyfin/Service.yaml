@@ -6,6 +6,8 @@ metadata:
   namespace: jellyfin
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: jellyfin
   ports:
     - name: http
       protocol: TCP

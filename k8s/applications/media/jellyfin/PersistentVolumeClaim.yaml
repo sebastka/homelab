@@ -4,12 +4,11 @@ kind: PersistentVolumeClaim
 metadata:
   name: jellyfin-config-pvc
   namespace: jellyfin
+  labels:
+    app.kubernetes.io/name: jellyfin
 spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 5Gi}}
   storageClassName: longhorn-static
   volumeName: jellyfin-config-pv
 ---
@@ -18,11 +17,10 @@ kind: PersistentVolumeClaim
 metadata:
   name: jellyfin-media-pvc
   namespace: jellyfin
+  labels:
+    app.kubernetes.io/name: jellyfin
 spec:
-  accessModes:
-    - ReadOnlyMany
-  resources:
-    requests:
-      storage: 1Gi
+  accessModes: [ReadOnlyMany]
+  resources: {requests: {storage: 1Gi}}
   storageClassName: nfs-static
   volumeName: jellyfin-media-pv

@@ -4,11 +4,11 @@ kind: PersistentVolume
 metadata:
   name: jellyfin-media-pv
   namespace: jellyfin
+  labels:
+    app.kubernetes.io/name: jellyfin
 spec:
-  accessModes:
-    - ReadOnlyMany
-  capacity:
-    storage: 1Gi
+  accessModes: [ReadOnlyMany]
+  capacity: {storage: 1Gi}
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs-static
   nfs:
