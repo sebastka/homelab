@@ -132,21 +132,52 @@ pages:
 
           - type: releases
             cache: 1d
-            # Without authentication the Github API allows for up to 60 requests per hour. You can create a
-            # read-only token from your Github account settings and use it here to increase the limit.
-            # token: ...
             repositories:
-              - cilium/cilium
               - siderolabs/talos
-              - jellyfin/jellyfin
-              - element-hq/synapse
-              - paperless-ngx/paperless-ngx
+              # Infrastructure
+              ## auth
               - authelia/authelia
+              - lldap/lldap
+              ## controllers
               - argoproj/argo-helm
               - cert-manager/cert-manager
+              - cert-manager/trust-manager
+              - intel/intel-device-plugins-for-kubernetes
+              - kubernetes-sigs/node-feature-discovery
+              - bitnami-labs/sealed-secrets
+              ## databases
+              - cloudnative-pg/charts
+              ## monitoring
+              - grafana/grafana-operator
+              - kubernetes-sigs/headlamp
+              - prometheus-community/helm-charts
+              - kubernetes-sigs/metrics-server
+              - portainer/portainer
+              # - ISC stork?
+              ## network
+              - cilium/cilium
+              - envoyproxy/gateway
+              - tailscale/tailscale
+              ## storage
+              - longhorn/longhorn
+              # Applications
+              ## dev
+              # - Forgejo?
+              - goharbor/harbor-helm
+              ## media
+              - jellyfin/jellyfin
+              - dyc3/opentogethertube
+              ## public
               - glanceapp/glance
-              # - immich-app/immich
-              # - syncthing/syncthing
+              - element-hq/synapse
+              ## utils
+              # - home-operations deluge?
+              - paperless-ngx/paperless-ngx
+              - dockerhub:searxng/searxng
+              - thelounge/thelounge
+              # To be deployed
+              - immich-app/immich
+              - syncthing/syncthing
 
   # Add more pages here:
   # - name: Your page name
