@@ -5,10 +5,8 @@ metadata:
   name: deluge-downloads-pv
   namespace: deluge
 spec:
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: 1Gi
+  accessModes: [ReadWriteOncePod]
+  capacity: {storage: 1Gi}
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs-static
   nfs:

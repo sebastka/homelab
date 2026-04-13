@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deluge
+  name: deluged
   namespace: deluge
 spec:
   replicas: 1
@@ -10,13 +10,22 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app.kubernetes.io/name: homepage
+      app.kubernetes.io/name: deluged
+      app.kubernetes.io/version: '2.2.0'
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: deluge
+      # app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       namespace: deluge
       labels:
-        app.kubernetes.io/name: deluge
+        app.kubernetes.io/name: deluged
+        app.kubernetes.io/version: '2.2.0'
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: deluge
+        # app.kubernetes.io/managed-by: kustomize
     spec:
+      serviceAccountName: deluged
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -37,34 +46,15 @@ spec:
             requests: {memory: 512Mi}
             limits: {memory: 512Mi}
           ports:
+            - {name: daemon, containerPort: 58846, protocol: TCP}
             - {name: torrent-tcp, containerPort: 6881, protocol: TCP}
             - {name: torrent-udp, containerPort: 6881, protocol: UDP}
           env:
             - {name: TZ, value: Europe/Oslo}
             - {name: DELUGE_BIN, value: deluged}
           volumeMounts:
-            - {name: config-volume, mountPath: /config}
-            - {name: downloads-volume, mountPath: /downloads}
-        - name: deluge-web
-          # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
-          image: ghcr.io/home-operations/deluge:2.2.0
-          imagePullPolicy: Always
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
-          resources:
-            requests: {memory: 128Mi}
-            limits: {memory: 128Mi}
-          ports:
-            - {name: http, containerPort: 8112}
-          env:
-            - {name: TZ, value: Europe/Oslo}
-            - {name: DELUGE_BIN, value: deluge-web}
-          volumeMounts:
-            - {name: config-volume, mountPath: /config}
+            - {name: deluge-daemon-config-volume, mountPath: /config}
             - {name: downloads-volume, mountPath: /downloads}
       volumes:
-        - {name: config-volume, persistentVolumeClaim: {claimName: deluge-config-pvc}}
+        - {name: deluge-daemon-config-volume, persistentVolumeClaim: {claimName: deluge-daemon-config-pvc}}
         - {name: downloads-volume, persistentVolumeClaim: {claimName: deluge-downloads-pvc}}

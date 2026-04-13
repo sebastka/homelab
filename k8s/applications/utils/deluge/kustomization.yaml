@@ -13,9 +13,10 @@ resources:
   - Namespace.yaml
   - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
-  - Deployment.yaml
-  - Service.web.yaml
-  - Service.torrent.yaml
+  - ServiceAccounts.yaml
+  - Deployment.deluged.yaml
+  - Deployment.deluge-web.yaml
+  - Services.yaml
   - HTTPRoute.yaml
   - SealedSecret.oidc.yaml
   - SecurityPolicy.yaml
