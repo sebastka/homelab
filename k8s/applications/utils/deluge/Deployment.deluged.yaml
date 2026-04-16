@@ -42,8 +42,9 @@ spec:
           args:
             - |
               set -eu
-              rm -f /config/core.conf
-              # cp /tmp/core.conf /config/core.conf
+              rm -f /config/core.conf /config/auth
+              mkdir -p /config/plugins/.python-eggs
+              cp /tmp/core.conf /config/core.conf
               printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
                 >/config/auth
           securityContext:
@@ -63,6 +64,12 @@ spec:
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
           image: ghcr.io/home-operations/deluge:2.2.0
           imagePullPolicy: Always
+          command:
+            - /usr/bin/deluged
+            - --config /config
+            - --loglevel info
+            - --pidfile /tmp/deluged.pid
+            - --do-not-daemonize
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -76,11 +83,13 @@ spec:
             - {name: torrent-udp, containerPort: 6881, protocol: UDP}
           env:
             - {name: TZ, value: Europe/Oslo}
-            - {name: DELUGE_BIN, value: deluged}
+            # - {name: DELUGE_BIN, value: deluged}
           volumeMounts:
             - {name: deluged-config-volume, mountPath: /config}
             - {name: downloads-volume, mountPath: /downloads}
+            - {name: tmp-volume, mountPath: /tmp}
       volumes:
         - {name: deluged-config-volume, persistentVolumeClaim: {claimName: deluged-config-pvc}}
         - {name: deluged-core-conf-volume, configMap: {name: deluged-core-conf}}
         - {name: downloads-volume, persistentVolumeClaim: {claimName: deluge-downloads-pvc}}
+        - {name: tmp-volume, emptyDir: {}}

@@ -111,6 +111,12 @@ spec:
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
           image: ghcr.io/home-operations/deluge:2.2.0
           imagePullPolicy: Always
+          command:
+            - /usr/bin/deluge-web
+            - --config /config
+            - --loglevel info
+            - --pidfile /tmp/deluge-web.pid
+            - --do-not-daemonize
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -122,8 +128,10 @@ spec:
             - {name: http, containerPort: 8112}
           env:
             - {name: TZ, value: Europe/Oslo}
-            - {name: DELUGE_BIN, value: deluge-web}
+            # - {name: DELUGE_BIN, value: deluge-web}
           volumeMounts:
             - {name: deluge-web-config-volume, mountPath: /config}
+            - {name: tmp-volume, mountPath: /tmp}
       volumes:
         - {name: deluge-web-config-volume, emptyDir: {}}
+        - {name: tmp-volume, emptyDir: {}}
