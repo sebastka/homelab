@@ -45,9 +45,11 @@ spec:
               printf -- '%s:%s:10\n' "$DELUGE_USERNAME" "$DELUGE_PASSWORD" \
                 >/config/auth
           securityContext:
-            allowPrivilegeEscalation: false
+            allowPrivilegeEscalation: true
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
+            runAsUser: 0
+            runAsGroup: 0
           resources:
             requests: {memory: 24Mi}
             limits: {memory: 24Mi}
