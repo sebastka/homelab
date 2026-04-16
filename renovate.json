@@ -5,6 +5,9 @@
   ],
   "prHourlyLimit": 10,
   "minimumReleaseAge": "1 day",
+  "ignorePaths": [
+    "k8s/infrastructure/monitoring/stork/*"
+  ],
   "kubernetes": {
     "managerFilePatterns": [
       "/(^|/)k8s/.+\\.yaml$/"
