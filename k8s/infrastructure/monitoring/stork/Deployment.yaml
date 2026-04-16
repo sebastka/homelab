@@ -88,3 +88,11 @@ spec:
             - {name: usr-lib-stork-server-volume, mountPath: /usr/lib/stork-server, readOnly: true}
             - {name: usr-share-stork-volume, mountPath: /usr/share/stork, readOnly: true}
             - {name: usr-share-man-man8-volume, mountPath: /usr/share/man/man8, readOnly: true}
+      volumes:
+        - {name: etc-initd-volume, emptyDir: {}}
+        - {name: etc-stork-volume, emptyDir: {}}
+        - {name: lib-systemd-system-volume, emptyDir: {}}
+        - {name: usr-bin-volume, emptyDir: {}}
+        - {name: usr-lib-stork-server-volume, emptyDir: {}}
+        - {name: usr-share-stork-volume, emptyDir: {}}
+        - {name: usr-share-man-man8-volume, emptyDir: {}}
