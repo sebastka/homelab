@@ -51,7 +51,7 @@ spec:
               env | grep '^STORK_' >/etc/stork/server.env
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 24Mi}
