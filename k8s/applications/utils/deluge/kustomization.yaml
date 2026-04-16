@@ -5,8 +5,11 @@ namespace: deluge
 
 configMapGenerator:
   - namespace: deluge
-    name: deluged-core-conf
-    files: [core.conf=assets/core.conf]
+    name: deluged-conf
+    files:
+      - core.conf=assets/core.conf
+      - autoadd.conf=assets/autoadd.conf
+      - label.conf=assets/label.conf
 
 resources:
   - Namespace.yaml

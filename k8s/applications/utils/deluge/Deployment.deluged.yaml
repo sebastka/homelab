@@ -57,7 +57,9 @@ spec:
           envFrom:
             - secretRef: {name: deluge-credentials}
           volumeMounts:
-            - {name: deluged-core-conf-volume, mountPath: /tmp/core.conf, subPath: core.conf}
+            - {name: deluged-conf-volume, mountPath: /tmp/core.conf, subPath: core.conf}
+            - {name: deluged-conf-volume, mountPath: /tmp/autoadd.conf, subPath: autoadd.conf}
+            - {name: deluged-conf-volume, mountPath: /tmp/label.conf, subPath: label.conf}
             - {name: deluged-config-volume, mountPath: /config}
       containers:
         - name: deluged
@@ -89,7 +91,7 @@ spec:
             - {name: downloads-volume, mountPath: /downloads}
             - {name: tmp-volume, mountPath: /tmp}
       volumes:
-        - {name: deluged-core-conf-volume, configMap: {name: deluged-core-conf}}
+        - {name: deluged-conf-volume, configMap: {name: deluged-conf}}
         - {name: deluged-config-volume, persistentVolumeClaim: {claimName: deluged-config-pvc}}
         - {name: downloads-volume, persistentVolumeClaim: {claimName: deluge-downloads-pvc}}
         - {name: tmp-volume, emptyDir: {}}
