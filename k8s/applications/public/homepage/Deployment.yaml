@@ -75,7 +75,7 @@ spec:
       containers:
         - name: nginx
           # Dockerfile: https://github.com/nginx/docker-nginx-unprivileged/blob/main/Dockerfile-alpine-slim.template
-          image: nginxinc/nginx-unprivileged:1.29.5-alpine-slim
+          image: nginxinc/nginx-unprivileged:1.29.8-alpine-slim
           command: [nginx]
           args: ['-c', '/etc/nginx/nginx.custom.conf', '-g', 'daemon off;']
           securityContext:
