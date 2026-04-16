@@ -28,9 +28,9 @@ spec:
       serviceAccountName: deluge-web
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsUser: 65534
+        runAsGroup: 65533
+        fsGroup: 65533
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:

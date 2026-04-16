@@ -28,9 +28,9 @@ spec:
       serviceAccountName: deluged
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsUser: 65534
+        runAsGroup: 65533
+        fsGroup: 65533
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:
@@ -82,5 +82,4 @@ spec:
       volumes:
         - {name: deluged-config-volume, persistentVolumeClaim: {claimName: deluged-config-pvc}}
         - {name: deluged-core-conf-volume, configMap: {name: deluged-core-conf}}
-        - {name: deluged-certs-volume, secret: {secretName: deluged-certs}}
         - {name: downloads-volume, persistentVolumeClaim: {claimName: deluge-downloads-pvc}}
