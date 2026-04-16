@@ -3,10 +3,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: deluge
 
-configMapGenerator:
-  - namespace: deluge
-    name: deluged-core-conf
-    files: [core.conf=assets/deluged.core.conf]
+# configMapGenerator:
+#   - namespace: deluge
+#     name: deluged-core-conf
+#     files: [core.conf=assets/deluged.core.conf]
 
 resources:
   - Namespace.yaml

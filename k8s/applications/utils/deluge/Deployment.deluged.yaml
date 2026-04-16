@@ -42,9 +42,8 @@ spec:
           args:
             - |
               set -eu
-              rm -f /config/core.conf /config/auth
+              rm -f /config/auth
               mkdir -p /config/plugins/.python-eggs
-              cp /tmp/core.conf /config/core.conf
               printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
                 >/config/auth
           securityContext:
@@ -58,7 +57,6 @@ spec:
             - secretRef: {name: deluge-credentials}
           volumeMounts:
             - {name: deluged-config-volume, mountPath: /config}
-            - {name: deluged-core-conf-volume, mountPath: /tmp/core.conf, subPath: core.conf, readOnly: true}
       containers:
         - name: deluged
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
@@ -90,6 +88,5 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
       volumes:
         - {name: deluged-config-volume, persistentVolumeClaim: {claimName: deluged-config-pvc}}
-        - {name: deluged-core-conf-volume, configMap: {name: deluged-core-conf}}
         - {name: downloads-volume, persistentVolumeClaim: {claimName: deluge-downloads-pvc}}
         - {name: tmp-volume, emptyDir: {}}
