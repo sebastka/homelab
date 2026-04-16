@@ -28,9 +28,9 @@ spec:
       serviceAccountName: deluged
       securityContext:
         runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65533
-        fsGroup: 65533
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:
