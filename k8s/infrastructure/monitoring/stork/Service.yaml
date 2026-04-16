@@ -6,6 +6,8 @@ metadata:
   namespace: stork
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: stork
   ports:
     - name: http
       protocol: TCP
