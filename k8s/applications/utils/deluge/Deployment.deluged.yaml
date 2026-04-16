@@ -43,9 +43,8 @@ spec:
             - |
               set -eu
               rm -f /config/auth
-              sed -i 
               mkdir -p /config/plugins/.python-eggs
-              sed -i 's/"allow_remote": false/"allow_remote": true/' /config/core.conf
+              cp /tmp/core.conf /config/core.conf
               printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
                 >/config/auth
           securityContext:
@@ -58,6 +57,7 @@ spec:
           envFrom:
             - secretRef: {name: deluge-credentials}
           volumeMounts:
+            - {name: deluged-core-conf-volume, mountPath: /tmp/core.conf, subPath: core.conf}
             - {name: deluged-config-volume, mountPath: /config}
       containers:
         - name: deluged
@@ -89,6 +89,7 @@ spec:
             - {name: downloads-volume, mountPath: /downloads}
             - {name: tmp-volume, mountPath: /tmp}
       volumes:
+        - {name: deluged-core-conf-volume, configMap: {name: deluged-core-conf}}
         - {name: deluged-config-volume, persistentVolumeClaim: {claimName: deluged-config-pvc}}
         - {name: downloads-volume, persistentVolumeClaim: {claimName: deluge-downloads-pvc}}
         - {name: tmp-volume, emptyDir: {}}
