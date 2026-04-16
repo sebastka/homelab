@@ -42,7 +42,7 @@ spec:
           args:
             - |
               set -eu
-              printf -- '%s:%s:10\n' "$DELUGE_USERNAME" "$DELUGE_PASSWORD" \
+              printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
                 >/config/auth
           securityContext:
             allowPrivilegeEscalation: false

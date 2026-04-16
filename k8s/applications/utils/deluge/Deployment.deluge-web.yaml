@@ -42,7 +42,55 @@ spec:
           args:
             - |
               set -eu
-              jq -n "{ file: 3, format: 1 }, {hosts: [[ \"60fd37b1be6940388eae58b4628680c2\", \"daemon\", 58846, \"$DELUGE_USERNAME\", \"$DELUGE_PASSWORD\"]]}" \
+
+              # Generate web.conf for deuge-web interface configuration
+              jq -n \
+                --arg DELUGE_WEB_PASSWORD_SALT "$DELUGE_WEB_PASSWORD_SALT" \
+                --arg DELUGE_WEB_PASSWORD_SHA1 "$DELUGE_WEB_PASSWORD_SHA1" \
+                '{
+                  file: 2,
+                  format: 1
+                }, {
+                  base: "/",
+                  cert: "ssl/daemon.cert",
+                  pkey: "ssl/daemon.pkey",
+                  default_daemon: "",
+                  enabled_plugins: [],
+                  first_login: false,
+                  https: false,
+                  interface: "0.0.0.0",
+                  language: "",
+                  port: 8112,
+                  pwd_salt: $DELUGE_WEB_PASSWORD_SALT,
+                  pwd_sha1: $DELUGE_WEB_PASSWORD_SHA1,
+                  session_timeout: 3600,
+                  sessions: {},
+                  show_session_speed: true,
+                  show_sidebar: true,
+                  sidebar_multiple_filters: true,
+                  sidebar_show_zero: true,
+                  theme: "gray"
+                }' \
+                >/config/web.conf
+
+              # Generate hostlist.conf for deluge-web to connect to deluged
+              jq -n \
+                --arg DELUGED_USERNAME "$DELUGED_USERNAME" \
+                --arg DELUGED_PASSWORD "$DELUGED_PASSWORD" \
+                '{
+                  file: 3,
+                  format: 1
+                },{
+                  hosts: [
+                    [
+                      "60fd37b1be6940388eae58b4628680c2",
+                      "daemon",
+                      58846,
+                      $DELUGED_USERNAME,
+                      $DELUGED_PASSWORD
+                    ]
+                  ]
+                }' \
                 >/config/hostlist.conf
           securityContext:
             allowPrivilegeEscalation: false
