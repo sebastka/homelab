@@ -42,6 +42,7 @@ spec:
           args:
             - |
               set -eu
+              cp /tmp/core.conf /config/core.conf
               printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
                 >/config/auth
           securityContext:
@@ -55,6 +56,7 @@ spec:
             - secretRef: {name: deluge-credentials}
           volumeMounts:
             - {name: deluged-config-volume, mountPath: /config}
+            - {name: deluged-core-conf-volume, mountPath: /tmp/core.conf, subPath: core.conf, readOnly: true}
       containers:
         - name: deluged
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
@@ -76,7 +78,6 @@ spec:
             - {name: DELUGE_BIN, value: deluged}
           volumeMounts:
             - {name: deluged-config-volume, mountPath: /config}
-            - {name: deluged-core-conf-volume, mountPath: /config/core.conf, subPath: core.conf}
             - {name: deluged-certs-volume, mountPath: /config/ssl/daemon.cert, subPath: daemon.cert, readOnly: true}
             - {name: deluged-certs-volume, mountPath: /config/ssl/daemon.pkey, subPath: daemon.pkey, readOnly: true}
             - {name: downloads-volume, mountPath: /downloads}
