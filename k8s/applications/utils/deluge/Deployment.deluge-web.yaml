@@ -113,9 +113,9 @@ spec:
           imagePullPolicy: Always
           command:
             - /usr/bin/deluge-web
-            - --config /config
-            - --loglevel info
-            - --pidfile /tmp/deluge-web.pid
+            - --config=/config
+            - --loglevel=info
+            - --pidfile=/tmp/deluge-web.pid
             - --do-not-daemonize
           securityContext:
             allowPrivilegeEscalation: false
