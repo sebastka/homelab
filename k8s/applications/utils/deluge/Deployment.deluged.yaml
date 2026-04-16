@@ -42,9 +42,9 @@ spec:
           args:
             - |
               set -eu
-              rm -f /config/auth
               mkdir -p /config/plugins/.python-eggs
-              cp /tmp/core.conf /config/core.conf
+              rm -f /config/auth /config/core.conf /config/autoadd.conf /config/label.conf
+              cp /tmp/core.conf /config/autoadd.conf /config/label.conf /config/
               printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
                 >/config/auth
           securityContext:
