@@ -18,34 +18,73 @@ spec:
     spec:
       serviceAccountName: stork
       securityContext:
-        # runAsNonRoot: true
-        # runAsUser: 100
-        # runAsGroup: 101
-        # fsGroup: 101
+        runAsNonRoot: true
+        runAsUser: 100
+        runAsGroup: 101
+        fsGroup: 101
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
-      containers:
-        - name: stork
-          image: index.docker.io/library/alpine:3.23.3
+      initContainers:
+        - name: stork-installer
+          image: alpine:3.23.3
           command: ['/bin/sh', '-c']
           args:
             - |
               set -eux
-              # https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh
+
+              # Clean up volumes
+              for d in etc-initd-volume \
+                      etc-stork-volume \
+                      lib-systemd-system-volume \
+                      usr-bin-volume \
+                      usr-lib-stork-server-volume \
+                      usr-share-stork-volume \
+                      usr-share-man-man8-volume;
+              do
+                [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }
+              done
+
+              # Install Stork (https://dl.cloudsmith.io/public/isc/stork/setup.alpine.sh)
               wget -O /etc/apk/keys/stork@isc-6914F776A579B428.rsa.pub https://dl.cloudsmith.io/public/isc/stork/rsa.6914F776A579B428.key
               printf -- 'https://dl.cloudsmith.io/public/isc/stork/alpine/v3.23/main\n' >>/etc/apk/repositories
               apk add --no-cache isc-stork-server isc-stork-server-hook-ldap
               env | grep '^STORK_' >/etc/stork/server.env
-              stork-server --use-env-file
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 24Mi}
+            limits: {memory: 24Mi}
+          envFrom:
+            - configMapRef: {name: stork-env}
+            - secretRef: {name: stork-secrets}
+          volumeMounts:
+            - {name: etc-initd-volume, mountPath: /etc/init.d}
+            - {name: etc-stork-volume, mountPath: /etc/stork}
+            - {name: lib-systemd-system-volume, mountPath: /lib/systemd/system}
+            - {name: usr-bin-volume, mountPath: /usr/bin}
+            - {name: usr-lib-stork-server-volume, mountPath: /usr/lib/stork-server}
+            - {name: usr-share-stork-volume, mountPath: /usr/share/stork}
+            - {name: usr-share-man-man8-volume, mountPath: /usr/share/man/man8}
+      containers:
+        - name: stork
+          image: alpine:3.23.3
+          command: ['stork-server', '--use-env-file']
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 128Mi}
             limits: {memory: 128Mi}
           ports:
             - {name: http, containerPort: 8080}
-          envFrom:
-            - configMapRef: {name: stork-env}
-            - secretRef: {name: stork-secrets}
+          volumeMounts:
+            - {name: etc-initd-volume, mountPath: /etc/init.d, readOnly: true}
+            - {name: etc-stork-volume, mountPath: /etc/stork, readOnly: true}
+            - {name: lib-systemd-system-volume, mountPath: /lib/systemd/system, readOnly: true}
+            - {name: usr-bin-volume, mountPath: /usr/bin, readOnly: true}
+            - {name: usr-lib-stork-server-volume, mountPath: /usr/lib/stork-server, readOnly: true}
+            - {name: usr-share-stork-volume, mountPath: /usr/share/stork, readOnly: true}
+            - {name: usr-share-man-man8-volume, mountPath: /usr/share/man/man8, readOnly: true}
