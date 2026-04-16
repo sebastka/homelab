@@ -43,6 +43,14 @@ spec:
             - |
               set -eu
 
+              # Clean up volumes
+              for d in config; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
+
+              # Copy certificates
+              mkdir -p /config/ssl
+              cp /ssl/daemon.cert /config/ssl/daemon.cert
+              cp /ssl/daemon.pkey /config/ssl/daemon.pkey
+
               # Generate web.conf for deuge-web interface configuration
               jq -n \
                 --arg DELUGE_WEB_PASSWORD_SALT "$DELUGE_WEB_PASSWORD_SALT" \
@@ -103,6 +111,8 @@ spec:
             - secretRef: {name: deluge-credentials}
           volumeMounts:
             - {name: deluge-web-config-volume, mountPath: /config}
+            - {name: deluged-certs-volume, mountPath: /ssl/daemon.cert, subPath: daemon.cert, readOnly: true}
+            - {name: deluged-certs-volume, mountPath: /ssl/daemon.pkey, subPath: daemon.pkey, readOnly: true}
       containers:
         - name: deluge-web
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
@@ -122,8 +132,6 @@ spec:
             - {name: DELUGE_BIN, value: deluge-web}
           volumeMounts:
             - {name: deluge-web-config-volume, mountPath: /config}
-            - {name: deluged-certs-volume, mountPath: /config/ssl/daemon.cert, subPath: daemon.cert, readOnly: true}
-            - {name: deluged-certs-volume, mountPath: /config/ssl/daemon.pkey, subPath: daemon.pkey, readOnly: true}
       volumes:
         - {name: deluge-web-config-volume, emptyDir: {}}
         - {name: deluged-certs-volume, secret: {secretName: deluged-certs}}
