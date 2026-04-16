@@ -43,8 +43,8 @@ spec:
             - |
               set -eu
               mkdir -p /config/plugins/.python-eggs
-              rm -f /config/auth /config/core.conf /config/autoadd.conf /config/label.conf
-              cp /tmp/core.conf /tmp/autoadd.conf /tmp/label.conf /config/
+              rm -f /config/auth /config/core.conf /config/autoadd.conf # /config/label.conf
+              cp /tmp/core.conf /tmp/autoadd.conf /config/
               printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
                 >/config/auth
           securityContext:
@@ -59,7 +59,7 @@ spec:
           volumeMounts:
             - {name: deluged-conf-volume, mountPath: /tmp/core.conf, subPath: core.conf}
             - {name: deluged-conf-volume, mountPath: /tmp/autoadd.conf, subPath: autoadd.conf}
-            - {name: deluged-conf-volume, mountPath: /tmp/label.conf, subPath: label.conf}
+            # - {name: deluged-conf-volume, mountPath: /tmp/label.conf, subPath: label.conf}
             - {name: deluged-config-volume, mountPath: /config}
       containers:
         - name: deluged
