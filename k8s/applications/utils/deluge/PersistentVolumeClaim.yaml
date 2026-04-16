@@ -13,17 +13,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: deluge-web-config-pvc
-  namespace: deluge
-spec:
-  accessModes: [ReadWriteOncePod]
-  resources: {requests: {storage: 1Gi}}
-  storageClassName: longhorn-static
-  volumeName: deluge-web-config-pv
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: deluge-downloads-pvc
   namespace: deluge
 spec:
