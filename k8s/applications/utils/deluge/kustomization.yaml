@@ -3,14 +3,20 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: deluge
 
+configMapGenerator:
+  - namespace: deluge
+    name: deluged-core-conf
+    files: [core.conf=assets/deluged-core.conf]
+
 resources:
   - Namespace.yaml
   - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
   - ServiceAccounts.yaml
+  - SealedSecret.deluged-auth.yaml
+  - SealedSecret.oidc.yaml
   - Deployment.deluged.yaml
   - Deployment.deluge-web.yaml
   - Services.yaml
   - HTTPRoute.yaml
-  - SealedSecret.oidc.yaml
   - SecurityPolicy.yaml

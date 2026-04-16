@@ -51,6 +51,6 @@ spec:
             - {name: TZ, value: Europe/Oslo}
             - {name: DELUGE_BIN, value: deluge-web}
           volumeMounts:
-            - {name: deluge-client-config-volume, mountPath: /config}
+            - {name: deluge-web-config-volume, mountPath: /config}
       volumes:
-        - {name: deluge-client-config-volume, persistentVolumeClaim: {claimName: deluge-client-config-pvc}}
+        - {name: deluge-web-config-volume, persistentVolumeClaim: {claimName: deluge-web-config-pvc}}

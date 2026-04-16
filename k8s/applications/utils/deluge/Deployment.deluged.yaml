@@ -53,8 +53,12 @@ spec:
             - {name: TZ, value: Europe/Oslo}
             - {name: DELUGE_BIN, value: deluged}
           volumeMounts:
-            - {name: deluge-daemon-config-volume, mountPath: /config}
+            - {name: deluged-config-volume, mountPath: /config}
+            - {name: deluged-core-conf-volume, mountPath: /config/core.conf, subPath: core.conf, readOnly: true}
+            - {name: deluged-auth-volume, mountPath: /config/auth, subPath: auth, readOnly: true}
             - {name: downloads-volume, mountPath: /downloads}
       volumes:
-        - {name: deluge-daemon-config-volume, persistentVolumeClaim: {claimName: deluge-daemon-config-pvc}}
+        - {name: deluged-config-volume, persistentVolumeClaim: {claimName: deluged-config-pvc}}
+        - {name: deluged-core-conf-volume, configMap: {name: deluged-core-conf}}
+        - {name: deluged-auth-volume, secret: {secretName: deluged-auth}}
         - {name: downloads-volume, persistentVolumeClaim: {claimName: deluge-downloads-pvc}}
