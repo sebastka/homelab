@@ -42,7 +42,7 @@ spec:
           args:
             - |
               set -eu
-              rm /config/core.conf
+              rm -f /config/core.conf
               # cp /tmp/core.conf /config/core.conf
               printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
                 >/config/auth
