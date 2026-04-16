@@ -78,8 +78,6 @@ spec:
             - {name: DELUGE_BIN, value: deluged}
           volumeMounts:
             - {name: deluged-config-volume, mountPath: /config}
-            - {name: deluged-certs-volume, mountPath: /config/ssl/daemon.cert, subPath: daemon.cert, readOnly: true}
-            - {name: deluged-certs-volume, mountPath: /config/ssl/daemon.pkey, subPath: daemon.pkey, readOnly: true}
             - {name: downloads-volume, mountPath: /downloads}
       volumes:
         - {name: deluged-config-volume, persistentVolumeClaim: {claimName: deluged-config-pvc}}
