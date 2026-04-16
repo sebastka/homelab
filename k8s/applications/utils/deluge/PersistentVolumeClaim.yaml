@@ -2,24 +2,24 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: deluge-daemon-config-pvc
+  name: deluged-config-pvc
   namespace: deluge
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 1Gi}}
   storageClassName: longhorn-static
-  volumeName: deluge-daemon-config-pv
+  volumeName: deluged-config-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: deluge-client-config-pvc
+  name: deluge-web-config-pvc
   namespace: deluge
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 1Gi}}
   storageClassName: longhorn-static
-  volumeName: deluge-client-config-pv
+  volumeName: deluge-web-config-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
