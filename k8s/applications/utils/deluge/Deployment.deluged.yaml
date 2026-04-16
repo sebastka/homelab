@@ -54,7 +54,7 @@ spec:
           envFrom:
             - secretRef: {name: deluge-credentials}
           volumeMounts:
-            - {name: deluge-web-config-volume, mountPath: /config}
+            - {name: deluged-config-volume, mountPath: /config}
       containers:
         - name: deluged
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
