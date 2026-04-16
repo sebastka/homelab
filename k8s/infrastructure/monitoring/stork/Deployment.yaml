@@ -53,6 +53,9 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
             capabilities: {drop: [ALL]}
+            runAsNonRoot: false
+            runAsUser: 0
+            runAsGroup: 0
           resources:
             requests: {memory: 24Mi}
             limits: {memory: 24Mi}
