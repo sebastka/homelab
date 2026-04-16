@@ -42,11 +42,11 @@ spec:
           args:
             - |
               set -eu
-              rm -f /var/lib/deluge/core.conf /var/lib/deluge/auth
-              mkdir -p /var/lib/deluge/plugins/.python-eggs
-              cp /tmp/core.conf /var/lib/deluge/core.conf
+              rm -f /config/core.conf /config/auth
+              mkdir -p /config/plugins/.python-eggs
+              cp /tmp/core.conf /config/core.conf
               printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
-                >/var/lib/deluge/auth
+                >/config/auth
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -57,7 +57,7 @@ spec:
           envFrom:
             - secretRef: {name: deluge-credentials}
           volumeMounts:
-            - {name: deluged-config-volume, mountPath: /var/lib/deluge}
+            - {name: deluged-config-volume, mountPath: /config}
             - {name: deluged-core-conf-volume, mountPath: /tmp/core.conf, subPath: core.conf, readOnly: true}
       containers:
         - name: deluged
@@ -66,7 +66,7 @@ spec:
           imagePullPolicy: Always
           command: 
             - /usr/bin/deluged
-            - --config=/var/lib/deluge
+            - --config=/config
             - --loglevel=info
             - --pidfile=/tmp/deluged.pid
             - --do-not-daemonize
@@ -85,7 +85,7 @@ spec:
             - {name: TZ, value: Europe/Oslo}
             # - {name: DELUGE_BIN, value: deluged}
           volumeMounts:
-            - {name: deluged-config-volume, mountPath: /var/lib/deluge}
+            - {name: deluged-config-volume, mountPath: /config}
             - {name: downloads-volume, mountPath: /downloads}
             - {name: tmp-volume, mountPath: /tmp}
       volumes:
