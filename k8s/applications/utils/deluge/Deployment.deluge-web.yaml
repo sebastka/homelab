@@ -46,6 +46,8 @@ spec:
               # Clean up volumes
               for d in config; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
 
+              mkdir -p /config/plugins/.python-eggs
+
               # Generate web.conf for deuge-web interface configuration
               jq -n \
                 --arg DELUGE_WEB_PASSWORD_SALT "$DELUGE_WEB_PASSWORD_SALT" \
