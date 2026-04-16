@@ -43,7 +43,9 @@ spec:
             - |
               set -eu
               rm -f /config/auth
+              sed -i 
               mkdir -p /config/plugins/.python-eggs
+              sed -i 's/"allow_remote": false/"allow_remote": true/' /config/core.conf
               printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
                 >/config/auth
           securityContext:
