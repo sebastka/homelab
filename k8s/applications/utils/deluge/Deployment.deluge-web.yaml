@@ -44,7 +44,7 @@ spec:
               set -eu
 
               # Clean up volumes
-              for d in config; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
+              for d in var/lib/deluge; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
 
               # Generate web.conf for deuge-web interface configuration
               jq -n \
@@ -74,7 +74,7 @@ spec:
                   sidebar_show_zero: true,
                   theme: "gray"
                 }' \
-                >/config/web.conf
+                >/var/lib/deluge/web.conf
 
               # Generate hostlist.conf for deluge-web to connect to deluged
               jq -n \
@@ -94,7 +94,7 @@ spec:
                     ]
                   ]
                 }' \
-                >/config/hostlist.conf
+                >/var/lib/deluge/hostlist.conf
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -105,7 +105,7 @@ spec:
           envFrom:
             - secretRef: {name: deluge-credentials}
           volumeMounts:
-            - {name: deluge-web-config-volume, mountPath: /config}
+            - {name: deluge-web-config-volume, mountPath: /var/lib/deluge}
       containers:
         - name: deluge-web
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
@@ -113,7 +113,7 @@ spec:
           imagePullPolicy: Always
           command:
             - /usr/bin/deluge-web
-            - --config=/config
+            - --config=/var/lib/deluge
             - --loglevel=info
             - --pidfile=/tmp/deluge-web.pid
             - --do-not-daemonize
@@ -130,7 +130,7 @@ spec:
             - {name: TZ, value: Europe/Oslo}
             # - {name: DELUGE_BIN, value: deluge-web}
           volumeMounts:
-            - {name: deluge-web-config-volume, mountPath: /config}
+            - {name: deluge-web-config-volume, mountPath: /var/lib/deluge}
             - {name: tmp-volume, mountPath: /tmp}
       volumes:
         - {name: deluge-web-config-volume, emptyDir: {}}
