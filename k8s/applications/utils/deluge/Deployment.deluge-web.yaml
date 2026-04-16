@@ -60,7 +60,7 @@ spec:
                   format: 1
                 }, {
                   base: "/",
-                  https: true,
+                  https: false,
                   cert: "ssl/daemon.cert",
                   pkey: "ssl/daemon.pkey",
                   default_daemon: "",
