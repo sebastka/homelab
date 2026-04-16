@@ -33,6 +33,28 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: deluge-web-init
+          # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
+          image: ghcr.io/home-operations/deluge:2.2.0
+          imagePullPolicy: Always
+          command: ['/bin/sh', '-c']
+          args:
+            - |
+              set -eu
+              jq -n "{ file: 3, format: 1 }, {hosts: [[ \"60fd37b1be6940388eae58b4628680c2\", \"daemon\", 58846, \"$DELUGE_USERNAME\", \"$DELUGE_PASSWORD\"]]}" \
+                >/config/hostlist.conf
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 24Mi}
+            limits: {memory: 24Mi}
+          envFrom:
+            - secretRef: {name: deluge-credentials}
+          volumeMounts:
+            - {name: deluge-web-config-volume, mountPath: /config}
       containers:
         - name: deluge-web
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
@@ -52,5 +74,8 @@ spec:
             - {name: DELUGE_BIN, value: deluge-web}
           volumeMounts:
             - {name: deluge-web-config-volume, mountPath: /config}
+            - {name: deluged-certs-volume, mountPath: /config/ssl/daemon.cert, subPath: daemon.cert, readOnly: true}
+            - {name: deluged-certs-volume, mountPath: /config/ssl/daemon.pkey, subPath: daemon.pkey, readOnly: true}
       volumes:
-        - {name: deluge-web-config-volume, persistentVolumeClaim: {claimName: deluge-web-config-pvc}}
+        - {name: deluge-web-config-volume, emptyDir: {}}
+        - {name: deluged-certs-volume, secret: {secretName: deluged-certs}}

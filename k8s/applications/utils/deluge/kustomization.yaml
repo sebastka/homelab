@@ -13,8 +13,9 @@ resources:
   - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
   - ServiceAccounts.yaml
-  - SealedSecret.deluged-auth.yaml
   - SealedSecret.oidc.yaml
+  - SealedSecret.deluged-certs.yaml
+  - SealedSecret.deluge-credentials.yaml
   - Deployment.deluged.yaml
   - Deployment.deluge-web.yaml
   - Services.yaml
