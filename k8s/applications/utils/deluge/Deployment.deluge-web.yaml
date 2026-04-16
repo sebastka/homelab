@@ -52,12 +52,12 @@ spec:
                   format: 1
                 }, {
                   base: "/",
+                  https: true,
                   cert: "ssl/daemon.cert",
                   pkey: "ssl/daemon.pkey",
                   default_daemon: "",
                   enabled_plugins: [],
                   first_login: false,
-                  https: false,
                   interface: "0.0.0.0",
                   language: "",
                   port: 8112,
