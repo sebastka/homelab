@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: metube
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - {namespace: metube, name: metube-env, envs: [assets/metube.env]}
+
+resources:
+  - Namespace.yaml
+  - ServiceAccount.yaml
+  - PersistentVolume.yaml
+  - PersistentVolumeClaim.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - HTTPRoute.yaml
+  - SealedSecret.oidc.yaml
+  - SecurityPolicy.yaml

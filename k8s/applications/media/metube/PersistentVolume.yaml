@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: metube-downloads-pv
+spec:
+  accessModes: [ReadWriteOncePod]
+  capacity: {storage: 1Gi}
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: longhorn-static
+  volumeMode: Filesystem

@@ -14,6 +14,8 @@ spec:
       server: '*'
     - namespace: opentogethertube
       server: '*'
+    - namespace: metube
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

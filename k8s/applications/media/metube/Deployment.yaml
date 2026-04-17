@@ -1,0 +1,75 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: metube
+  namespace: metube
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: metube
+      app.kubernetes.io/version: '2026.04.16'
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: metube
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: metube
+      labels:
+        app.kubernetes.io/name: metube
+        app.kubernetes.io/version: '2026.04.16'
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: metube
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: metube
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: metube
+          # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
+          image: ghcr.io/alexta69/metube:2026.04.16
+          command: [python3, app/main.py]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 768Mi}
+            limits: {memory: 768Mi}
+          envFrom:
+            - configMapRef: {name: metube-env}
+          ports:
+            - {name: http, containerPort: 8081}
+          volumeMounts:
+            - {name: downloads-volume, mountPath: /downloads}
+            - {name: state-volume, mountPath: /state}
+            - {name: tmp-volume, mountPath: /tmp}
+        - name: bgutils-pot
+          # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
+          image: ghcr.io/alexta69/metube:2026.04.16
+          command: [bgutil-pot, server]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 256Mi}
+            limits: {memory: 256Mi}
+          envFrom:
+            - configMapRef: {name: metube-env}
+          volumeMounts:
+            - {name: downloads-volume, mountPath: /downloads}
+            - {name: state-volume, mountPath: /state}
+            - {name: tmp-volume, mountPath: /tmp}
+      volumes:
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: state-volume, emptyDir: {}}
+        - {name: downloads-volume, persistentVolumeClaim: {claimName: metube-downloads-pvc}}
