@@ -16,6 +16,8 @@ spec:
       server: '*'
     - namespace: metube
       server: '*'
+    - namespace: vert
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

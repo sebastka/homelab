@@ -1,0 +1,56 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: vert
+  namespace: vert
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vert
+      app.kubernetes.io/version: rolling
+      app.kubernetes.io/component: frontend
+      app.kubernetes.io/part-of: vert
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: vert
+      labels:
+        app.kubernetes.io/name: vert
+        app.kubernetes.io/version: rolling
+        app.kubernetes.io/component: frontend
+        app.kubernetes.io/part-of: vert
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: vert
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: vert
+          # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/vert/Dockerfile
+          image: ghcr.io/sebastka/vert:2026.4.17
+          command: [nginx]
+          args: ['-c', '/etc/nginx/nginx.custom.conf', '-g', 'daemon off;']
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 156Mi}
+            limits: {memory: 156Mi}
+          ports:
+            - {name: http, containerPort: 8080}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: 'nginx.custom.conf', readOnly: true}
+            - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/sites.conf, subPath: 'sites.conf', readOnly: true}
+      volumes:
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: nginx-config-volume, configMap: {name: nginx-config}}
