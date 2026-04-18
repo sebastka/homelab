@@ -11,22 +11,22 @@ spec:
   rules:
     - matches: [path: {type: Exact, value: /api/room/generate}]
       backendRefs: [{name: web, kind: Service, port: 80}]
-      filters:
-        - type: ResponseHeaderModifier
-          responseHeaderModifier:
-            add:
-              # - {name: Access-Control-Allow-Origin, value: '*'}
-              - {name: Content-Security-Policy, value: "default-src 'self'; script-src 'self' 'unsafe-eval'; script-src-elem 'self' 'unsafe-eval' https:; style-src-elem 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https:; connect-src 'self' https://karlsen-xzy0yv.zitadel.cloud; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
-              - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
-              - {name: X-Content-Type-Options, value: nosniff}
-              - {name: X-Frame-Options, value: DENY}
-              - {name: Cross-Origin-Resource-Policy, value: cross-origin}
-              - {name: Cross-Origin-Embedder-Policy, value: unsafe-none}
-              - {name: Cross-Origin-Opener-Policy, value: unsafe-none}
-              - {name: Referrer-Policy, value: no-referrer}
-              - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
-              # - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
-              # - {name: Reporting-Endpoints, value: ''}
+      # filters:
+      #   - type: ResponseHeaderModifier
+      #     responseHeaderModifier:
+      #       add:
+      #         # - {name: Access-Control-Allow-Origin, value: '*'}
+      #         - {name: Content-Security-Policy, value: "default-src 'self'; script-src 'self' 'unsafe-eval'; script-src-elem 'self' 'unsafe-eval' https:; style-src-elem 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https:; connect-src 'self' https://karlsen-xzy0yv.zitadel.cloud; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
+      #         - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
+      #         - {name: X-Content-Type-Options, value: nosniff}
+      #         - {name: X-Frame-Options, value: DENY}
+      #         - {name: Cross-Origin-Resource-Policy, value: cross-origin}
+      #         - {name: Cross-Origin-Embedder-Policy, value: unsafe-none}
+      #         - {name: Cross-Origin-Opener-Policy, value: unsafe-none}
+      #         - {name: Referrer-Policy, value: no-referrer}
+      #         - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
+      #         # - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
+      #         # - {name: Reporting-Endpoints, value: ''}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -37,22 +37,22 @@ spec:
   parentRefs:
     - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
   hostnames: [ott.karlsen.app]
-  rules:
-    - matches: [path: {type: PathPrefix, value: /}]
-      backendRefs: [{name: web, kind: Service, port: 80}]
-      filters:
-        - type: ResponseHeaderModifier
-          responseHeaderModifier:
-            add:
-              # - {name: Access-Control-Allow-Origin, value: '*'}
-              - {name: Content-Security-Policy, value: "default-src 'self'; script-src 'self' 'unsafe-eval'; script-src-elem 'self' 'unsafe-eval' https:; style-src-elem 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https:; connect-src 'self' https://karlsen-xzy0yv.zitadel.cloud; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
-              - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
-              - {name: X-Content-Type-Options, value: nosniff}
-              - {name: X-Frame-Options, value: DENY}
-              - {name: Cross-Origin-Resource-Policy, value: cross-origin}
-              - {name: Cross-Origin-Embedder-Policy, value: unsafe-none}
-              - {name: Cross-Origin-Opener-Policy, value: unsafe-none}
-              - {name: Referrer-Policy, value: no-referrer}
-              - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
-              # - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
-              # - {name: Reporting-Endpoints, value: ''}
+  # rules:
+  #   - matches: [path: {type: PathPrefix, value: /}]
+  #     backendRefs: [{name: web, kind: Service, port: 80}]
+  #     filters:
+  #       - type: ResponseHeaderModifier
+  #         responseHeaderModifier:
+  #           add:
+  #             # - {name: Access-Control-Allow-Origin, value: '*'}
+  #             - {name: Content-Security-Policy, value: "default-src 'self'; script-src 'self' 'unsafe-eval'; script-src-elem 'self' 'unsafe-eval' https:; style-src-elem 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https:; connect-src 'self' https://karlsen-xzy0yv.zitadel.cloud; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
+  #             - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
+  #             - {name: X-Content-Type-Options, value: nosniff}
+  #             - {name: X-Frame-Options, value: DENY}
+  #             - {name: Cross-Origin-Resource-Policy, value: cross-origin}
+  #             - {name: Cross-Origin-Embedder-Policy, value: unsafe-none}
+  #             - {name: Cross-Origin-Opener-Policy, value: unsafe-none}
+  #             - {name: Referrer-Policy, value: no-referrer}
+  #             - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
+  #             # - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
+  #             # - {name: Reporting-Endpoints, value: ''}
