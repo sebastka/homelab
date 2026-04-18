@@ -15,7 +15,7 @@ spec:
     clientIDRef: {namespace: vert, kind: Secret, name: oidc}
     clientSecret: {namespace: vert, kind: Secret, name: oidc}
     cookieConfig: {sameSite: Lax}
-    cookieDomain: karlsen.app
+    cookieDomain: vert.karlsen.app
     # cookieNames: {accessToken: access-token, idToken: id-token}
     # forwardAccessToken: false
     # logoutPath: /logout
