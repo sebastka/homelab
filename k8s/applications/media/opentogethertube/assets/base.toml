@@ -29,7 +29,7 @@ metrics = false
 
 [redis]
 # url = ""
-host = "127.0.0.1"
+host = "valkey"
 # port = ""
 # username = ""
 # password = ""
