@@ -12,7 +12,6 @@ configMapGenerator:
 resources:
   - Namespace.yaml
   - ServiceAccount.yaml
-  # - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
   - Deployment.yaml
   - Service.yaml
