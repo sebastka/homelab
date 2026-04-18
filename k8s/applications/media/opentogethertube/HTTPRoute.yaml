@@ -27,6 +27,24 @@ spec:
               - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
               # - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
               # - {name: Reporting-Endpoints, value: ''}
+    - matches: [path: {type: Exact, value: /api/user/register}]
+      backendRefs: [{name: web, kind: Service, port: 80}]
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              # - {name: Access-Control-Allow-Origin, value: '*'}
+              - {name: Content-Security-Policy, value: "default-src 'self'; script-src 'self' 'unsafe-eval'; script-src-elem 'self' 'unsafe-eval' https:; style-src-elem 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src 'self' https:; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
+              - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
+              - {name: X-Content-Type-Options, value: nosniff}
+              - {name: X-Frame-Options, value: DENY}
+              - {name: Cross-Origin-Resource-Policy, value: same-origin}
+              - {name: Cross-Origin-Embedder-Policy, value: unsafe-none}
+              - {name: Cross-Origin-Opener-Policy, value: same-origin}
+              - {name: Referrer-Policy, value: no-referrer}
+              - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
+              # - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
+              # - {name: Reporting-Endpoints, value: ''}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
