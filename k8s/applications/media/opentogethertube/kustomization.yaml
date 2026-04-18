@@ -13,7 +13,6 @@ configMapGenerator:
 resources:
   - Namespace.yaml
   - SealedSecret.opentogethertube-secrets.yaml
-  - SealedSecret.oidc.yaml
   # - SealedSecret.postgres.yaml
   # - Cluster.yaml
   - ServiceAccount.yaml

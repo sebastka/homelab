@@ -6,32 +6,6 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: allow-sso
-  namespace: opentogethertube
-spec:
-  targetRefs:
-    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web-api-room-generate}
-  oidc:
-    clientIDRef: {namespace: opentogethertube, kind: Secret, name: oidc}
-    clientSecret: {namespace: opentogethertube, kind: Secret, name: oidc}
-    cookieConfig: {sameSite: Lax}
-    cookieDomain: ott.karlsen.app
-    # cookieNames: {accessToken: __Host-access_token, idToken: __Host-id-token}
-    # forwardAccessToken: false
-    # logoutPath: /logout
-    # passThroughAuthHeader: false
-    provider:
-      authorizationEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/authorize
-      tokenEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
-      issuer: https://karlsen-xzy0yv.zitadel.cloud
-    redirectURL: https://ott.karlsen.app/oidc-callback
-    # refreshToken: true
-    # resources: []
-    scopes: [openid, profile, email]
----
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
-metadata:
   name: allow-all-http
   namespace: opentogethertube
 spec:
@@ -39,3 +13,13 @@ spec:
     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
   authorization:
     defaultAction: Allow
+# ---
+# Just use default policy: only allow local traffic.
+# apiVersion: gateway.envoyproxy.io/v1alpha1
+# kind: SecurityPolicy
+# metadata:
+#   name: allow-sso
+#   namespace: opentogethertube
+# spec:
+#   targetRefs:
+#     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web-api-room-generate}
