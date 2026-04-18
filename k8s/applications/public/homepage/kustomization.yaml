@@ -15,6 +15,7 @@ configMapGenerator:
 
 resources:
   - Namespace.yaml
+  - ServiceAccount.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
