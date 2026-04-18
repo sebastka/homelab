@@ -25,8 +25,12 @@ resources:
 
 persistence:
   enabled: true
-  create: false
+  create: true
   claimName: forgejo-shared-storage-pvc
+  size: 10Gi
+  accessModes: [ReadWriteOncePod]
+  storageClass: longhorn-static
+  volumeName: forgejo-shared-storage-pv
 
 initContainers:
   resources:

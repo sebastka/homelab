@@ -9,7 +9,6 @@ resources:
   - Namespace.yaml
   - SealedSecret.forgejo-appini.yaml
   - SealedSecret.forgejo-gpg.yaml
-  - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
   - TCPRoute.yaml
   - SecurityPolicy.yaml
