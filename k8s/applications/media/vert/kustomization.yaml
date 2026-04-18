@@ -7,7 +7,6 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - {namespace: vertd, name: vertd-env, envs: [assets/vertd.env]}
   - name: nginx-config
     namespace: homepage
     files:
