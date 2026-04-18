@@ -28,4 +28,3 @@ spec:
       protocol: TCP
       port: 80
       targetPort: valkey
-valkey
