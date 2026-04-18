@@ -9,3 +9,4 @@ spec:
   persistentVolumeReclaimPolicy: Delete
   storageClassName: longhorn-static
   volumeMode: Filesystem
+  csi: {fsType: ext4}
