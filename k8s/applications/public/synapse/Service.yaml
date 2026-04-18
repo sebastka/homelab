@@ -6,6 +6,8 @@ metadata:
   namespace: synapse
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: synapse
   ports:
     - name: http
       protocol: TCP
