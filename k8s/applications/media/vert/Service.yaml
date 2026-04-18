@@ -13,18 +13,3 @@ spec:
       protocol: TCP
       port: 80
       targetPort: http
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: vertd-web
-  namespace: vert
-spec:
-  type: ClusterIP
-  selector:
-    app.kubernetes.io/name: vertd
-  ports:
-    - name: http
-      protocol: TCP
-      port: 80
-      targetPort: http

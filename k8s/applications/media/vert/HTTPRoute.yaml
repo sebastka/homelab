@@ -16,7 +16,7 @@ spec:
           responseHeaderModifier:
             add:
               # - {name: Access-Control-Allow-Origin, value: '*'}
-              # - {name: Content-Security-Policy, value: "default-src 'self'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
+              - {name: Content-Security-Policy, value: "default-src 'self'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
               - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
               - {name: X-Content-Type-Options, value: nosniff}
               - {name: X-Frame-Options, value: DENY}
@@ -27,32 +27,3 @@ spec:
               - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
               # - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
               # - &RE {name: Reporting-Endpoints, value: ''}
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: vertd-web
-  namespace: vert
-spec:
-  parentRefs:
-    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
-  hostnames: [vertd.karlsen.app]
-  rules:
-    - matches: [path: {type: PathPrefix, value: /}]
-      backendRefs: [{name: vertd-web, kind: Service, port: 80}]
-      # filters:
-      #   - type: ResponseHeaderModifier
-      #     responseHeaderModifier:
-      #       add:
-      #         # - {name: Access-Control-Allow-Origin, value: '*'}
-      #         # - {name: Content-Security-Policy, value: "default-src 'self'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
-      #         - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
-      #         - {name: X-Content-Type-Options, value: nosniff}
-      #         - {name: X-Frame-Options, value: DENY}
-      #         - {name: Cross-Origin-Resource-Policy, value: same-origin}
-      #         - {name: Cross-Origin-Embedder-Policy, value: require-corp}
-      #         - {name: Cross-Origin-Opener-Policy, value: same-origin}
-      #         - {name: Referrer-Policy, value: no-referrer}
-      #         - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
-      #         # - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
-      #         # - &RE {name: Reporting-Endpoints, value: ''}
