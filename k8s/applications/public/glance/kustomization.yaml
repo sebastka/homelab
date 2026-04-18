@@ -9,8 +9,7 @@ generatorOptions:
 configMapGenerator:
   - name: glance-config
     namespace: glance
-    files:
-      - glance.yaml=assets/glance.yaml
+    files: [glance.yaml=assets/glance.yaml]
 
 resources:
   - Namespace.yaml
