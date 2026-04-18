@@ -9,4 +9,10 @@ spec:
   persistentVolumeReclaimPolicy: Delete
   storageClassName: longhorn
   volumeMode: Filesystem
-  csi: {driver: driver.longhorn.io, fsType: ext4, volumeHandle: metube-downloads-pv}
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeHandle: metube-downloads-pv
+    volumesAttributes:
+      dataLocality: best-effort
+      fsType: ext4
