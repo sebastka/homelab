@@ -9,7 +9,7 @@ spec:
     - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
   hostnames: [ott.karlsen.app]
   rules:
-    - matches: [path: {type: PathPrefix, value: /api/room/generate}]
+    - matches: [path: {type: Exact, value: /api/room/generate}]
       backendRefs: [{name: web, kind: Service, port: 80}]
       filters:
         - type: ResponseHeaderModifier
