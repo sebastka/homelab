@@ -24,3 +24,4 @@ resources:
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
+  - SecurityPolicy.yaml
