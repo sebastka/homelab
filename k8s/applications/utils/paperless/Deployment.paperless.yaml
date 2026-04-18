@@ -31,23 +31,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
-      containers:
-        - name: debug
-          image: alpine:edge
-          command: ["sleep", "infinity"]
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: {drop: [ALL]}
-          resources:
-            requests: {memory: 256Mi}
-            limits: {memory: 256Mi}
-          volumeMounts:
-            # - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
-            - {name: paperless-media-volume, mountPath: /mnt}
-      volumes:
-        - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-volume-pvc}}
-        - {name: paperless-media-volume, persistentVolumeClaim: {claimName: paperless-media-volume-pvc}}
       # initContainers:
       #   - name: paperless-custom-init
       #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
@@ -82,31 +65,31 @@ spec:
       #     volumeMounts:
       #       - {name: scripts-volume, mountPath: /scripts/extra_settings.py, subPath: extra_settings.py, readOnly: true}
       #       - {name: customizations-volume, mountPath: /customizations}
-      # containers:
-      #   - name: paperless-consume-volumer
-      #     # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-      #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
-      #     command: [python3, "manage.py", "document_consumer"]
-      #     securityContext:
-      #       allowPrivilegeEscalation: false
-      #       readOnlyRootFilesystem: true
-      #       capabilities: {drop: [ALL]}
-      #     resources:
-      #       requests: {memory: 256Mi}
-      #       limits: {memory: 256Mi}
-      #     envFrom:
-      #       - configMapRef: {name: paperless-env}
-      #       - secretRef: {name: paperless-secrets}
-      #     volumeMounts:
-      #       - {name: tmp-volume, mountPath: /tmp}
-      #       - {name: cache-volume, mountPath: /var/cache}
-      #       - {name: scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
-      #       - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
-      #       # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
-      #       - {name: paperless-consume-volume, mountPath: /usr/src/paperless/consume}
-      #       - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
-      #       - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
-      #       - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
+      containers:
+        - name: paperless-consume-volumer
+          # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
+          command: [python3, "manage.py", "document_consumer"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 256Mi}
+            limits: {memory: 256Mi}
+          envFrom:
+            - configMapRef: {name: paperless-env}
+            - secretRef: {name: paperless-secrets}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /var/cache}
+            - {name: scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+            # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
+            - {name: paperless-consume-volume, mountPath: /usr/src/paperless/consume}
+            - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
+            - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
       #   - name: paperless-scheduler
       #     # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
       #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
@@ -181,12 +164,12 @@ spec:
       #       - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
       #       - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
       #       - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
-      # volumes:
-      #   - {name: tmp-volume, emptyDir: {}}
-      #   - {name: cache-volume, emptyDir: {}}
-      #   - {name: customizations-volume, emptyDir: {}}
-      #   - {name: scripts-volume, configMap: {name: paperless-scripts}}
-      #   - {name: paperless-consume-volume, emptyDir: {}}
-      #   - {name: paperless-export-volume, emptyDir: {}}
-      #   - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-volume-pvc}}
-      #   - {name: paperless-media-volume, persistentVolumeClaim: {claimName: paperless-media-volume-pvc}}
+      volumes:
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: cache-volume, emptyDir: {}}
+        - {name: customizations-volume, emptyDir: {}}
+        - {name: scripts-volume, configMap: {name: paperless-scripts}}
+        - {name: paperless-consume-volume, emptyDir: {}}
+        - {name: paperless-export-volume, emptyDir: {}}
+        - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-volume-pvc}}
+        - {name: paperless-media-volume, persistentVolumeClaim: {claimName: paperless-media-volume-pvc}}
