@@ -7,6 +7,6 @@ spec:
   accessModes: [ReadWriteOncePod]
   capacity: {storage: 1Gi}
   persistentVolumeReclaimPolicy: Delete
-  storageClassName: longhorn-static
+  storageClassName: longhorn
   volumeMode: Filesystem
   csi: {driver: driver.longhorn.io, fsType: ext4, volumeHandle: metube-downloads-pv}
