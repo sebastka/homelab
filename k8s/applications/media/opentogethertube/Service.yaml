@@ -26,5 +26,5 @@ spec:
   ports:
     - name: valkey
       protocol: TCP
-      port: 80
+      port: 6379
       targetPort: valkey
