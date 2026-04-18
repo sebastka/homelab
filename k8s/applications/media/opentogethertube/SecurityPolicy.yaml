@@ -22,4 +22,4 @@ spec:
 #   namespace: opentogethertube
 # spec:
 #   targetRefs:
-#     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web-api-room-generate}
+#     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web-protected}
