@@ -14,7 +14,7 @@ spec:
   oidc:
     clientIDRef: {namespace: metube, kind: Secret, name: oidc}
     clientSecret: {namespace: metube, kind: Secret, name: oidc}
-    cookieConfig: {sameSite: Strict}
+    cookieConfig: {sameSite: Lax}
     cookieDomain: metube.karlsen.app
     # cookieNames: {accessToken: __Host-access_token, idToken: __Host-id-token}
     # forwardAccessToken: false
