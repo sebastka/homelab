@@ -81,7 +81,7 @@ enabled = false
 # expire_after = 7200
 
 [users]
-enable_registration = true
+enable_registration = false
 
 [video.sponsorblock]
 enable = true
