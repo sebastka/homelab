@@ -46,8 +46,8 @@ spec:
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
             - {name: paperless-media-volume, mountPath: /mnt}
       volumes:
-        # - {name: paperless-data-volume, persistentVolumeClaim: {claimName: longhorn-paperless-data-volume-pvc}}
-        - {name: paperless-media-volume, persistentVolumeClaim: {claimName: longhorn-paperless-media-volume-pvc}}
+        - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-volume-pvc}}
+        - {name: paperless-media-volume, persistentVolumeClaim: {claimName: paperless-media-volume-pvc}}
       # initContainers:
       #   - name: paperless-custom-init
       #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
@@ -188,5 +188,5 @@ spec:
       #   - {name: scripts-volume, configMap: {name: paperless-scripts}}
       #   - {name: paperless-consume-volume, emptyDir: {}}
       #   - {name: paperless-export-volume, emptyDir: {}}
-      #   - {name: paperless-data-volume, persistentVolumeClaim: {claimName: longhorn-paperless-data-volume-pvc}}
-      #   - {name: paperless-media-volume, persistentVolumeClaim: {claimName: longhorn-paperless-media-volume-pvc}}
+      #   - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-volume-pvc}}
+      #   - {name: paperless-media-volume, persistentVolumeClaim: {claimName: paperless-media-volume-pvc}}

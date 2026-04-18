@@ -13,21 +13,21 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: longhorn-paperless-data-pvc
+  name: paperless-data-pvc
   namespace: paperless
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
   storageClassName: longhorn-static
-  volumeName: longhorn-paperless-data-pv
+  volumeName: paperless-data-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: longhorn-paperless-media-pvc
+  name: paperless-media-pvc
   namespace: paperless
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
   storageClassName: longhorn-static
-  volumeName: longhorn-paperless-media-pv
+  volumeName: paperless-media-pv
