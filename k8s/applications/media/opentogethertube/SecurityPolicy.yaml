@@ -15,7 +15,7 @@ spec:
     clientIDRef: {namespace: opentogethertube, kind: Secret, name: oidc}
     clientSecret: {namespace: opentogethertube, kind: Secret, name: oidc}
     cookieConfig: {sameSite: Lax}
-    cookieDomain: opentogethertube.karlsen.app
+    cookieDomain: ott.karlsen.app
     # cookieNames: {accessToken: __Host-access_token, idToken: __Host-id-token}
     # forwardAccessToken: false
     # logoutPath: /logout
@@ -24,7 +24,7 @@ spec:
       authorizationEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/authorize
       tokenEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
       issuer: https://karlsen-xzy0yv.zitadel.cloud
-    redirectURL: https://opentogethertube.karlsen.app/oidc-callback
+    redirectURL: https://ott.karlsen.app/oidc-callback
     # refreshToken: true
     # resources: []
     scopes: [openid, profile, email]
