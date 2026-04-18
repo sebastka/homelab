@@ -15,7 +15,7 @@ spec:
     clientIDRef: {namespace: glance, kind: Secret, name: oidc}
     clientSecret: {namespace: glance, kind: Secret, name: oidc}
     cookieConfig: {sameSite: Lax}
-    cookieDomain: karlsen.app
+    cookieDomain: glance.karlsen.app
     # cookieNames: {accessToken: access-token, idToken: id-token}
     # forwardAccessToken: false
     # logoutPath: /logout
