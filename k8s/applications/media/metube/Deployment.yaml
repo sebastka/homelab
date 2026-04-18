@@ -10,7 +10,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: metube
-      app.kubernetes.io/version: '2026.04.16'
+      app.kubernetes.io/version: '2026.04.18'
       app.kubernetes.io/component: server
       app.kubernetes.io/part-of: metube
       # app.kubernetes.io/managed-by: kustomize
@@ -19,7 +19,7 @@ spec:
       namespace: metube
       labels:
         app.kubernetes.io/name: metube
-        app.kubernetes.io/version: '2026.04.16'
+        app.kubernetes.io/version: '2026.04.18'
         app.kubernetes.io/component: server
         app.kubernetes.io/part-of: metube
         # app.kubernetes.io/managed-by: kustomize
@@ -35,7 +35,7 @@ spec:
       containers:
         - name: metube
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
-          image: ghcr.io/alexta69/metube:2026.04.16
+          image: ghcr.io/alexta69/metube:2026.04.18
           command: [python3, app/main.py]
           securityContext:
             allowPrivilegeEscalation: false
@@ -54,7 +54,7 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
         - name: bgutils-pot
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
-          image: ghcr.io/alexta69/metube:2026.04.16
+          image: ghcr.io/alexta69/metube:2026.04.18
           command: [bgutil-pot, server]
           securityContext:
             allowPrivilegeEscalation: false
