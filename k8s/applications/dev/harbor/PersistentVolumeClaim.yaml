@@ -30,6 +30,20 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: harbor-redis-pvc
+  namespace: harbor
+  labels:
+    app.kubernetes.io/name: harbor
+    app.kubernetes.io/component: redis
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 1Gi}}
+  storageClassName: longhorn-static
+  volumeName: harbor-redis-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: harbor-trivy-pvc
   namespace: harbor
   labels:
