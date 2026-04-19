@@ -28,3 +28,14 @@ spec:
     # refreshToken: true
     # resources: []
     scopes: [openid, profile, email]
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-all-http
+  namespace: socket
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: socket}
+  authorization:
+    defaultAction: Allow
