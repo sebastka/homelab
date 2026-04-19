@@ -13,9 +13,11 @@
 4. Install Sealed Secrets:
   - `kubectl apply --server-side -f infrastructure/controllers/sealed-secrets/Namespace.yaml -f infrastructure/controllers/sealed-secrets/Secret.certs.yaml`
   - `kustomize build --enable-helm infrastructure/controllers/sealed-secrets | kubectl apply --server-side -f -`
-5. Install cert-manager:
+5. Install cert-manager and trust-manager:
   - `kustomize build --enable-helm infrastructure/controllers/cert-manager | kubectl apply --server-side -f -`
   - `kubectl apply --server-side -f infrastructure/controllers/cert-manager/ClusterIssuer.le.yaml`
+  - `cmctl -n cert-manager approve trust-manager-1`
+  - `cmctl -n cert-manager approve trust-domain-root-ca-1`
 6. Set up Gateway:
   - (Optional: restore saved certificates) `kubectl apply --server-side -f infrastructure/network/gateway/Namespace.yaml; for f in infrastructure/network/gateway/Secret.*-certificate.yaml; do kubectl apply --server-side -f "$f"; done`
   - `kubectl apply --server-side -k infrastructure/network/gateway`
