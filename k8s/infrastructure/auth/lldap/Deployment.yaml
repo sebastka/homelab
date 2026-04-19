@@ -9,11 +9,19 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: lldap
+      app.kubernetes.io/version: 2026-02-27-alpine-rootless
+      app.kubernetes.io/component: ldap-server
+      app.kubernetes.io/part-of: lldap
+      # app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       namespace: lldap
       labels:
         app.kubernetes.io/name: lldap
+        app.kubernetes.io/version: 2026-02-27-alpine-rootless
+        app.kubernetes.io/component: ldap-server
+        app.kubernetes.io/part-of: lldap
+        # app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccountName: lldap
       securityContext:

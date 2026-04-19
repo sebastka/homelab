@@ -6,6 +6,8 @@ metadata:
   namespace: lldap
 spec:
   type: ClusterIP
+  selector:
+    app.kubernetes.io/name: lldap
   ports:
     - name: http
       protocol: TCP
