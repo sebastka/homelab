@@ -27,9 +27,9 @@ spec:
       serviceAccountName: metube
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:
@@ -41,7 +41,7 @@ spec:
             - |
               set -eux
               mkdir -p /mnt/persistent/downloads/audio /mnt/persistent/state /mnt/persistent/temp
-              chown -R 1000:1000 /mnt/persistent/downloads /mnt/persistent/state /mnt/persistent/temp
+              chown -R $(id -u):$(id -g) /mnt/persistent/downloads /mnt/persistent/state /mnt/persistent/temp
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
