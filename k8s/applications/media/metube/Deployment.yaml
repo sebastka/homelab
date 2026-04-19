@@ -40,7 +40,7 @@ spec:
           args:
             - |
               set -eux
-              mkdir -p /mnt/persistent/downloads /mnt/persistent/state /mnt/persistent/temp
+              mkdir -p /mnt/persistent/downloads/audio /mnt/persistent/state /mnt/persistent/temp
               chown -R 1000:1000 /mnt/persistent/downloads /mnt/persistent/state /mnt/persistent/temp
           securityContext:
             allowPrivilegeEscalation: false
