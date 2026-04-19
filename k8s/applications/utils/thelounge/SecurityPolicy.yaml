@@ -15,7 +15,7 @@ spec:
     clientIDRef: {namespace: thelounge, kind: Secret, name: oidc}
     clientSecret: {namespace: thelounge, kind: Secret, name: oidc}
     cookieConfig: {sameSite: Lax}
-    cookieDomain: karlsen.app
+    cookieDomain: thelounge.karlsen.app
     # cookieNames: {accessToken: access-token, idToken: id-token}
     # forwardAccessToken: false
     # logoutPath: /logout
