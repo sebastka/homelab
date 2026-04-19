@@ -9,7 +9,8 @@ resources:
   - Namespace.yaml
   - SealedSecret.cloudflare-api-token.yaml
   - ClusterIssuer.le.yaml
-  # - ClusterIssuer.karlsenfr.yaml
+  - cluster-ca.yaml
+  - Bundle.karlsen-fr-ca-bundle.yaml
   # - GrafanaDashboard.yaml
 
 helmCharts:
@@ -19,4 +20,12 @@ helmCharts:
     releaseName: cert-manager
     namespace: cert-manager
     includeCRDs: true
-    valuesFile: values.yaml
+    valuesFile: values.cert-manager.yaml
+
+  - name: trust-manager
+    repo: oci://quay.io/jetstack/charts
+    version: v0.22.1  # renovate: github-releases=cert-manager/trust-manager
+    releaseName: trust-manager
+    namespace: cert-manager
+    includeCRDs: true
+    valuesFile: values.trust-manager.yaml

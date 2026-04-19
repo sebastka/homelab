@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cert-manager/trust-manager/refs/heads/main/deploy/charts/trust-manager/values.schema.json
+# https://artifacthub.io/packages/helm/cert-manager/trust-manager?modal=values
+---
+
+crds:
+  enabled: true
+  keep: false
+
+app:
+  trust:
+    namespace: cert-manager
+
+defaultPackage:
+  enabled: true
+
+secretTargets:
+  enabled: true
+  authorizedSecrets: [ karsen-fr-ca-bundle ]
+
+resources:
+  requests: {memory: 32Mi}
+  limits: {memory: 32Mi}

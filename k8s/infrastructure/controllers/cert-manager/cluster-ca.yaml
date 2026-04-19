@@ -1,0 +1,27 @@
+# https://a-cup-of.coffee/blog/spiffe/
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: trust-domain-root-ca
+  namespace: cert-manager
+spec:
+  isCA: true
+  commonName: trust-domain-root-ca
+  secretName: trust-domain-root-ca-secret
+  privateKey: {algorithm: ECDSA, size: 521}
+  issuerRef: {group: cert-manager.io, kind: ClusterIssuer, name: selfsigned-issuer}    
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: trust-domain-root
+spec:
+  ca: {secretName: trust-domain-root-ca-secret}

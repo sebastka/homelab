@@ -12,6 +12,10 @@ config:
 extraArgs:
   - --dns01-recursive-nameservers=8.8.8.8:53,8.8.4.4:53
 
+disableAutoApproval: true
+approveSignerNames:
+  - clusterissuers.cert-manager.io/cloudflare-dns01-issuer
+
 resources:
   requests: {memory: 64Mi}
   limits: {memory: 64Mi}
