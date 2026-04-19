@@ -39,7 +39,7 @@ spec:
           command: [/bin/sh, '-c']
           args:
             - |
-              set -eu
+              set -eux
               mkdir -p /persistent/downloads /persistent/state /persistent/temp
               chown -R 1000:1000 /persistent/downloads /persistent/state /persistent/temp
           securityContext:
