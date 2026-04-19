@@ -49,9 +49,7 @@ spec:
           ports:
             - {name: http, containerPort: 8081}
           volumeMounts:
-            - {name: downloads-volume, mountPath: /downloads}
-            - {name: state-volume, mountPath: /state}
-            - {name: tmp-volume, mountPath: /tmp}
+            - {name: persistent-volume, mountPath: /persistent}
         - name: bgutils-pot
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
           image: ghcr.io/alexta69/metube:2026.04.18
@@ -66,10 +64,6 @@ spec:
           envFrom:
             - configMapRef: {name: metube-env}
           volumeMounts:
-            - {name: downloads-volume, mountPath: /downloads}
-            - {name: state-volume, mountPath: /state}
-            - {name: tmp-volume, mountPath: /tmp}
+            - {name: persistent-volume, mountPath: /persistent}
       volumes:
-        - {name: tmp-volume, emptyDir: {}}
-        - {name: state-volume, emptyDir: {}}
-        - {name: downloads-volume, persistentVolumeClaim: {claimName: metube-downloads-pvc}}
+        - {name: persistent-volume, persistentVolumeClaim: {claimName: metube-persistent-pvc}}
