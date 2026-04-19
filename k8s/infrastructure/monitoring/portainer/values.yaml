@@ -17,10 +17,7 @@ ingress:
 
 persistence:
   enabled: true
-  # size: "2Gi"
-  # annotations: {}
-  # storageClass: longhorn
-  existingClaim: longhorn-portainer-pvc
+  existingClaim: portainer-pvc
 
 resources:
   requests: {memory: 256Mi}
