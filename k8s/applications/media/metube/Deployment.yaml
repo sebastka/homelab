@@ -89,6 +89,8 @@ spec:
             - {name: TZ, value: Europe/Oslo}
           envFrom:
             - configMapRef: {name: metube-env}
+          ports:
+            - {name: http-bgutils, containerPort: 4416}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: persistent-volume, mountPath: /mnt/persistent}
