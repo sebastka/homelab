@@ -73,6 +73,7 @@ spec:
           ports:
             - {name: http, containerPort: 8081}
           volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
             - {name: persistent-volume, mountPath: /mnt/persistent}
         - name: bgutils-pot
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
