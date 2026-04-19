@@ -14,7 +14,8 @@ resources:
   - Namespace.yaml
   - ServiceAccount.yaml
   - PersistentVolumeClaim.yaml
-  - Deployment.yaml
+  - Deployment.metube.yaml
+  - Deployment.bgutils-pot.yaml
   - Service.yaml
   - HTTPRoute.yaml
   - SealedSecret.oidc.yaml

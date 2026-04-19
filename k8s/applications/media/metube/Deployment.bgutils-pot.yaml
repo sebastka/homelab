@@ -1,0 +1,54 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: bgutils-pot
+  namespace: metube
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: bgutils-pot
+      app.kubernetes.io/version: '2026.04.18'
+      app.kubernetes.io/component: ytdlp-plugin
+      app.kubernetes.io/part-of: metube
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: metube
+      labels:
+        app.kubernetes.io/name: bgutils-pot
+        app.kubernetes.io/version: '2026.04.18'
+        app.kubernetes.io/component: ytdlp-plugin
+        app.kubernetes.io/part-of: metube
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: bgutils-pot
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: bgutils-pot
+          # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
+          image: ghcr.io/alexta69/metube:2026.04.18
+          command: [bgutil-pot, server]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 48Mi}
+            limits: {memory: 48Mi}
+          env:
+            - {name: TZ, value: Europe/Oslo}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 4416}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+      volumes:
+        - {name: tmp-volume, emptyDir: {}}
