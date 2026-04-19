@@ -32,6 +32,25 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: init-dirs
+          # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
+          image: ghcr.io/alexta69/metube:2026.04.18
+          command: [/bin/sh, '-c']
+          args:
+            - |
+              # Create directories and set permissions
+              mkdir -p /persistent/downloads /persistent/state /persistent/temp && \
+              chown -R 1000:1000 /persistent
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 24Mi}
+            limits: {memory: 24Mi}
+          volumeMounts:
+            - {name: persistent-volume, mountPath: /persistent}
       containers:
         - name: metube
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
