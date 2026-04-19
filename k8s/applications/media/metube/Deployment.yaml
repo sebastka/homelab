@@ -49,6 +49,8 @@ spec:
           resources:
             requests: {memory: 24Mi}
             limits: {memory: 24Mi}
+          env:
+            - {name: TZ, value: Europe/Oslo}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: persistent-volume, mountPath: /mnt/persistent}
@@ -64,6 +66,8 @@ spec:
           resources:
             requests: {memory: 768Mi}
             limits: {memory: 768Mi}
+          env:
+            - {name: TZ, value: Europe/Oslo}
           envFrom:
             - configMapRef: {name: metube-env}
           ports:
@@ -81,6 +85,8 @@ spec:
           resources:
             requests: {memory: 256Mi}
             limits: {memory: 256Mi}
+          env:
+            - {name: TZ, value: Europe/Oslo}
           envFrom:
             - configMapRef: {name: metube-env}
           volumeMounts:
