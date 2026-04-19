@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: paperless
-      app.kubernetes.io/version: '2.20.13'
+      app.kubernetes.io/version: '2.20.14'
       app.kubernetes.io/component: document-management
       app.kubernetes.io/part-of: paperless
       # app.kubernetes.io/managed-by: kustomize
@@ -18,7 +18,7 @@ spec:
       namespace: paperless
       labels:
         app.kubernetes.io/name: paperless
-        app.kubernetes.io/version: '2.20.13'
+        app.kubernetes.io/version: '2.20.14'
         app.kubernetes.io/component: document-management
         app.kubernetes.io/part-of: paperless
         # app.kubernetes.io/managed-by: kustomize
@@ -33,7 +33,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       # initContainers:
       #   - name: paperless-custom-init
-      #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
+      #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
       #     command: ['/bin/sh', '-c']
       #     args:
       #       - |
@@ -68,7 +68,7 @@ spec:
       containers:
         - name: paperless-consume-volumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
           command: [python3, "manage.py", "document_consumer"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -92,7 +92,7 @@ spec:
             - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
       #   - name: paperless-scheduler
       #     # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-      #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
+      #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
       #     command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO"]
       #     securityContext:
       #       allowPrivilegeEscalation: false
@@ -116,7 +116,7 @@ spec:
       #       - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
       #   - name: paperless-task-queue
       #     # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-      #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
+      #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
       #     command: [celery, "--app", "paperless", "worker", "--loglevel", "INFO"]
       #     securityContext:
       #       allowPrivilegeEscalation: false
@@ -140,7 +140,7 @@ spec:
       #       - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
       #   - name: paperless-webserver
       #     # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-      #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
+      #     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
       #     command: [granian, "--interface", "asginl", "--ws", "paperless.asgi:application"]
       #     securityContext:
       #       allowPrivilegeEscalation: false
