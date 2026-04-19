@@ -50,6 +50,7 @@ spec:
             requests: {memory: 24Mi}
             limits: {memory: 24Mi}
           volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
             - {name: persistent-volume, mountPath: /mnt/persistent}
       containers:
         - name: metube
@@ -83,6 +84,8 @@ spec:
           envFrom:
             - configMapRef: {name: metube-env}
           volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
             - {name: persistent-volume, mountPath: /mnt/persistent}
       volumes:
+        - {name: tmp-volume, emptyDir: {}}
         - {name: persistent-volume, persistentVolumeClaim: {claimName: metube-persistent-pvc}}
