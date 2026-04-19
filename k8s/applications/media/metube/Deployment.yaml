@@ -40,8 +40,8 @@ spec:
           args:
             - |
               set -eux
-              mkdir -p /persistent/downloads /persistent/state /persistent/temp
-              chown -R 1000:1000 /persistent/downloads /persistent/state /persistent/temp
+              mkdir -p /mnt/persistent/downloads /mnt/persistent/state /mnt/persistent/temp
+              chown -R 1000:1000 /mnt/persistent/downloads /mnt/persistent/state /mnt/persistent/temp
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -50,7 +50,7 @@ spec:
             requests: {memory: 24Mi}
             limits: {memory: 24Mi}
           volumeMounts:
-            - {name: persistent-volume, mountPath: /persistent}
+            - {name: persistent-volume, mountPath: /mnt/persistent}
       containers:
         - name: metube
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
@@ -68,7 +68,7 @@ spec:
           ports:
             - {name: http, containerPort: 8081}
           volumeMounts:
-            - {name: persistent-volume, mountPath: /persistent}
+            - {name: persistent-volume, mountPath: /mnt/persistent}
         - name: bgutils-pot
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
           image: ghcr.io/alexta69/metube:2026.04.18
@@ -83,6 +83,6 @@ spec:
           envFrom:
             - configMapRef: {name: metube-env}
           volumeMounts:
-            - {name: persistent-volume, mountPath: /persistent}
+            - {name: persistent-volume, mountPath: /mnt/persistent}
       volumes:
         - {name: persistent-volume, persistentVolumeClaim: {claimName: metube-persistent-pvc}}
