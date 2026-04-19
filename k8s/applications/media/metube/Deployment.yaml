@@ -52,7 +52,6 @@ spec:
           env:
             - {name: TZ, value: Europe/Oslo}
           volumeMounts:
-            - {name: tmp-volume, mountPath: /tmp}
             - {name: persistent-volume, mountPath: /mnt/persistent}
       containers:
         - name: metube
