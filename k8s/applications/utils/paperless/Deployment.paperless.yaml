@@ -171,5 +171,5 @@ spec:
         - {name: scripts-volume, configMap: {name: paperless-scripts}}
         - {name: paperless-consume-volume, emptyDir: {}}
         - {name: paperless-export-volume, emptyDir: {}}
-        - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-volume-pvc}}
-        - {name: paperless-media-volume, persistentVolumeClaim: {claimName: paperless-media-volume-pvc}}
+        - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-pvc}}
+        - {name: paperless-media-volume, persistentVolumeClaim: {claimName: paperless-media-pvc}}
