@@ -24,11 +24,8 @@ prometheus:
         spec:
           storageClassName: longhorn-static
           volumeName: prometheus-data-pv
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 20G
+          accessModes: [ReadWriteOncePod]
+          resources: {requests: {storage: 20Gi}}
 
 prometheusOperator:
   resources:
