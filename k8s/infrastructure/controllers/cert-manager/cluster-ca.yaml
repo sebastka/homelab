@@ -1,4 +1,6 @@
 # https://a-cup-of.coffee/blog/spiffe/
+# cmctl -n cert-manager approve trust-manager-1
+# cmctl -n cert-manager approve trust-domain-root-ca-1
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
