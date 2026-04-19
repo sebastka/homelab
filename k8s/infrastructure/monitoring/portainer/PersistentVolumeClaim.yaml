@@ -11,9 +11,7 @@ metadata:
   labels:
     app.kubernetes.io/name: portainer
 spec:
-  accessModes: [ReadWriteOnce]
-  resources:
-    requests:
-      storage: 500Mi
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 500Mi}}
   storageClassName: longhorn-static
   volumeName: longhorn-portainer-pv
