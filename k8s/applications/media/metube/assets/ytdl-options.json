@@ -1,0 +1,9 @@
+{
+    "extractor_args": {
+        "youtubepot-bgutilhttp": {
+            "base_url": [
+                "http://localhost:4416"
+            ]
+        }
+    }
+}

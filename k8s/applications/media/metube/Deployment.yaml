@@ -74,6 +74,7 @@ spec:
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: persistent-volume, mountPath: /mnt/persistent}
+            - {name: ytdl-options, mountPath: /mnt/ytdl-options.json, subPath: ytdl-options.json}
         - name: bgutils-pot
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
           image: ghcr.io/alexta69/metube:2026.04.18
@@ -97,3 +98,4 @@ spec:
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: persistent-volume, persistentVolumeClaim: {claimName: metube-persistent-pvc}}
+        - {name: ytdl-options, configMap: {name: ytdl-options}}

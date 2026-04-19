@@ -8,6 +8,7 @@ generatorOptions:
 
 configMapGenerator:
   - {namespace: metube, name: metube-env, envs: [assets/metube.env]}
+  - {namespace: metube, name: ytdl-options, files: [ytdl-options.json=assets/ytdl-options.json]}
 
 resources:
   - Namespace.yaml
