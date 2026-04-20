@@ -1,0 +1,175 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/authelia/authelia/refs/heads/master/docs/static/schemas/latest/json-schema/configuration.json
+# https://github.com/authelia/authelia/blob/master/config.template.yml
+---
+
+# Miscellaneous:
+# - https://www.authelia.com/configuration/miscellaneous/introduction/#default_2fa_method
+# certificates_directory: '/config/certificates/'
+theme: 'light'
+default_2fa_method: totp
+
+# https://www.authelia.com/configuration/miscellaneous/server/
+server:
+  disable_healthcheck: true  # Required for readonly root fs
+  address: tcp4://0.0.0.0:9091/
+
+# https://www.authelia.com/configuration/miscellaneous/logging/
+log:
+  level: info
+
+# https://www.authelia.com/configuration/telemetry/introduction/
+telemetry:
+  metrics:
+    enabled: true
+    address: tcp4://:9959/metrics
+
+# https://www.authelia.com/configuration/definitions/introduction/
+# definitions: {}
+
+# https://www.authelia.com/configuration/identity-validation/introduction/
+identity_validation:
+  reset_password:
+    jwt_algorithm: HS512
+    # jwt_secret: AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET
+
+# https://www.authelia.com/configuration/second-factor/time-based-one-time-password/
+# totp: {}
+
+# https://www.authelia.com/configuration/second-factor/webauthn/
+webauthn:
+  disable: true
+
+# https://www.authelia.com/configuration/miscellaneous/ntp/
+# ntp: {}
+
+# https://www.authelia.com/configuration/second-factor/duo/
+duo_api:
+  disable: true
+
+# https://www.authelia.com/configuration/first-factor/ldap/
+authentication_backend:
+  # password_change: {disable: true}
+  # password_reset: {disable: true}
+  ldap:
+    address: ldap://lldap.lldap.svc.cluster.local
+    implementation: lldap
+    base_dn: DC=karlsen,DC=fr
+    user: UID=lldap-admin,OU=people,dc=karlsen,dc=fr
+    # password: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
+    attributes:
+      extra:
+        argocd: {multi_valued: true, value_type: string}
+        grafana: {multi_valued: true, value_type: string}
+
+# https://www.authelia.com/configuration/security/password-policy/
+# password_policy: {}
+
+access_control:
+  default_policy: deny
+  rules:
+    - domain_regex: '^.*\.karlsen.(fr|org|app)$'
+      policy: two_factor
+
+session:
+  # secret: AUTHELIA_SESSION_SECRET
+  cookies:
+    - domain: karlsen.fr
+      authelia_url: https://auth.karlsen.fr
+      default_redirection_url: https://www.karlsen.fr
+      # name: __Host-authelia_session
+      same_site: strict
+    - domain: karlsen.org
+      authelia_url: https://auth.karlsen.org
+      default_redirection_url: https://www.karlsen.org
+      # name: __Host-authelia_session
+      same_site: strict
+    - domain: karlsen.app
+      authelia_url: https://auth.karlsen.app
+      default_redirection_url: https://www.karlsen.app
+      # name: __Host-authelia_session
+      same_site: strict
+  # name: __Host-authelia-session
+  same_site: strict
+  redis: {host: valkey}
+
+# https://www.authelia.com/configuration/security/regulation/
+# regulation: {}
+
+storage:
+  # encryption_key: AUTHELIA_STORAGE_ENCRYPTION_KEY
+  mysql:
+    address: tcp://db01.hera.home.karlsen.fr:3306
+    database: authelia
+    username: authelia
+    # password: AUTHELIA_STORAGE_MYSQL_PASSWORD
+
+# https://www.authelia.com/configuration/notifications/introduction/
+notifier:
+  # disable_startup_check: true
+  smtp:
+    address: submissions://smtp.domeneshop.no:465
+    # username: AUTHELIA_NOTIFIER_SMTP_USERNAME
+    # password: AUTHELIA_NOTIFIER_SMTP_PASSWORD
+    sender: Authelia <noreply@karlsen.fr>
+    identifier: smtp.domeneshop.no
+    disable_html_emails: true
+
+# https://www.authelia.com/configuration/identity-providers/introduction/
+identity_providers:
+  oidc:
+    # hmac_secret: AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET
+    jwks:
+      - key_id: default
+        algorithm: RS256
+        use: sig
+        key: {{ secret "/secrets/jwk-rsa/tls.key" | mindent 10 "|" | msquote }}
+        certificate_chain: {{ secret "/secrets/jwk-rsa/tls.crt" | mindent 10 "|" | msquote }}
+      - key_id: ecdsa256
+        algorithm: ES256
+        use: sig
+        key: {{ secret "/secrets/jwk-ecdsa/tls.key" | mindent 10 "|" | msquote }}
+        certificate_chain: {{ secret "/secrets/jwk-ecdsa/tls.crt" | mindent 10 "|" | msquote }}
+    cors:
+      allowed_origins_from_client_redirect_uris: true
+      endpoints: [userinfo, authorization, token, revocation, introspection]
+    claims_policies:
+      argocd_policy:
+        custom_claims: {argocd_claim: {attribute: argocd}}
+        # Argo CD requires the claims other than `groups` to be in the ID Token https://github.com/argoproj/argo-cd/issues/23768
+        id_token: [email, email_verified, alt_emails, name, preferred_username, argocd_claim]
+      grafana:
+        custom_claims: {grafana: {attribute: grafana}}
+      legacy:
+        # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
+        id_token: [email, email_verified, alt_emails, name, preferred_username, groups]
+      username_email:
+        id_token: [email, email_verified, alt_emails, name, preferred_username]
+    scopes:
+      argocd_scope:
+        claims: [argocd_claim]
+      grafana:
+        claims: [grafana]
+    clients:
+        # https://www.authelia.com/integration/openid-connect/frequently-asked-questions/#how-do-i-generate-a-client-identifier-or-client-secret
+        # Client ID: docker run --rm authelia/authelia:latest authelia crypto rand --length 72 --charset rfc3986
+        # Client secret: docker run --rm authelia/authelia:latest authelia crypto hash generate pbkdf2 --variant sha512 --random --random.length 72 --random.charset rfc3986
+      - client_id: argocd
+        client_secret: {{ secret "/secrets/client-secrets/argocd" }}
+        client_name: Argo CD
+        public: false
+        authorization_policy: two_factor
+        claims_policy: argocd_policy
+        pre_configured_consent_duration: 3 months
+        require_pkce: false
+        redirect_uris:
+          - https://argocd.talmox.hera.home.karlsen.fr/auth/callback
+          - https://argocd.talmox.hera.home.karlsen.fr/applications
+        response_types: [code]
+        scopes: [openid, email, profile, offline_access, argocd_scope]
+        grant_types: [authorization_code, refresh_token]
+        userinfo_signed_response_alg: none
+        id_token_signed_response_alg: ES256
+        access_token_signed_response_alg: ES256
+
+# https://www.authelia.com/configuration/miscellaneous/privacy-policy/
+# privacy_policy: {}
