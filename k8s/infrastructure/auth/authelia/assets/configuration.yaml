@@ -185,7 +185,7 @@ identity_providers:
         # logout_uris: https://mas.karlsen.fr/upstream/backchannel-logout/01KPNSVGCRHBYC9MY7A9P40ZPQ
         response_types: [code]
         # response_modes: [query]
-        scopes: [openid, email, profile, groups, offline_access]
+        scopes: [openid, email, profile, groups]
         grant_types: [authorization_code]
         token_endpoint_auth_method: client_secret_basic
         userinfo_signed_response_alg: none
