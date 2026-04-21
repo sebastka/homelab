@@ -20,3 +20,4 @@ resources:
   - Deployment.authelia.yaml
   - Service.yaml
   - HTTPRoute.yaml
+  - SecurityPolicy.yaml
