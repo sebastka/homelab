@@ -48,8 +48,6 @@ spec:
                 .email.smtp_user = strenv(EMAIL_SMTP_USER) |
                 .email.smtp_pass = strenv(EMAIL_SMTP_PASS)' \
                 /mnt/homeserver.yaml >/config/homeserver.yaml
-
-                cat /config/homeserver.yaml
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -85,7 +83,7 @@ spec:
             - {name: data-volume, mountPath: /data}
             - {name: tmp-volume, mountPath: /tmp}
             - {name: log-volume, mountPath: /var/log}
-            - {name: config-volume, mountPath: /config, readOnly: true}
+            - {name: config-volume, mountPath: /custom-config, readOnly: true}
             - {name: synapse-config-volume, mountPath: /karlsen.fr.log.config, subPath: karlsen.fr.log.config, readOnly: true}
             - {name: synapse-secrets-volume, mountPath: /karlsen.fr.signing.key, subPath: karlsen.fr.signing.key, readOnly: true}
             - {name: synapse-secrets-volume, mountPath: /secrets/mas-shared.key, subPath: mas-shared.key, readOnly: true}
