@@ -137,6 +137,6 @@ email:
 matrix_authentication_service:
   enabled: true
   endpoint: https://mas.karlsen.fr
-  secret_file: /secrets/mas-shared.key
+  secret_path: /secrets/mas-shared.key
 
 # vim:ft=yaml
