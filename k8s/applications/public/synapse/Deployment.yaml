@@ -38,8 +38,8 @@ spec:
           command: ['/bin/sh', '-c']
           args:
             - |
-              set -eu
-              rm -f /config/homeserver.yaml
+              set -eux
+              rm -f /generated-config/homeserver.yaml
               yq eval-all '
                 .database.args.password = strenv(DATABASE_ARGS_PASSWORD) |
                 .registration_shared_secret = strenv(REGISTRATION_SHARED_SECRET)
@@ -47,7 +47,7 @@ spec:
                 .form_secret = strenv(FORM_SECRET) |
                 .email.smtp_user = strenv(EMAIL_SMTP_USER) |
                 .email.smtp_pass = strenv(EMAIL_SMTP_PASS)' \
-                /mnt/homeserver.yaml >/config/homeserver.yaml
+                /mnt/homeserver.yaml >/generated-config/homeserver.yaml
               sleep infinity
           securityContext:
             allowPrivilegeEscalation: false
@@ -59,7 +59,7 @@ spec:
           envFrom:
             - secretRef: {name: synapse-secrets}
           volumeMounts:
-            - {name: config-volume, mountPath: /config}
+            - {name: generated-config-volume, mountPath: /generated-config}
             - {name: synapse-config-volume, mountPath: /mnt/homeserver.yaml, subPath: homeserver.yaml, readOnly: true}
       containers:
         - name: synapse
@@ -84,7 +84,7 @@ spec:
             - {name: data-volume, mountPath: /data}
             - {name: tmp-volume, mountPath: /tmp}
             - {name: log-volume, mountPath: /var/log}
-            - {name: config-volume, mountPath: /custom-config, readOnly: true}
+            - {name: generated-config-volume, mountPath: /generated-config, readOnly: true}
             - {name: synapse-config-volume, mountPath: /karlsen.fr.log.config, subPath: karlsen.fr.log.config, readOnly: true}
             - {name: synapse-secrets-volume, mountPath: /karlsen.fr.signing.key, subPath: karlsen.fr.signing.key, readOnly: true}
             - {name: synapse-secrets-volume, mountPath: /secrets/mas-shared.key, subPath: mas-shared.key, readOnly: true}
@@ -92,6 +92,6 @@ spec:
         - {name: data-volume, persistentVolumeClaim: {claimName: synapse-data-pvc}}
         - {name: tmp-volume, emptyDir: {}}
         - {name: log-volume, emptyDir: {}}
-        - {name: config-volume, emptyDir: {}}
+        - {name: generated-config-volume, emptyDir: {}}
         - {name: synapse-config-volume, configMap: {name: synapse-config}}
         - {name: synapse-secrets-volume, secret: {secretName: synapse-secrets}}
