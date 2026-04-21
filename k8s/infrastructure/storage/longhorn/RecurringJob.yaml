@@ -10,9 +10,33 @@ spec:
   cron: 00 5 * * *
   concurrency: 1
   retain: 7
-  groups:
-    - group1
+  groups: [group1]
+  parameters:
+    full-backup-interval: '1'
   labels:
     backup-schedule: daily
     retention-policy: weekly
-  # backupTargetName: nfs-backup-target  # Should be available in Longhorn 1.13
+  # "backupTargetName" Should be available in Longhorn 1.13:
+  # - https://github.com/longhorn/longhorn/issues/11421
+  # backupTargetName: nfs-backup-target-group1
+---
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: backup-group2-recurring-job
+  namespace: longhorn-system
+spec:
+  name: backup-group2-recurring-job
+  task: backup
+  cron: 00 4 * * *
+  concurrency: 1
+  retain: 7
+  groups: [group2]
+  parameters:
+    full-backup-interval: '7'
+  labels:
+    backup-schedule: daily
+    retention-policy: weekly
+  # "backupTargetName" Should be available in Longhorn 1.13:
+  # - https://github.com/longhorn/longhorn/issues/11421
+  # backupTargetName: nfs-backup-target-group2
