@@ -134,9 +134,9 @@ email:
   validation_token_lifetime: 15m
   invite_client_location: https://element.karlsen.app
 
-matrix_authentication_service:
-  enabled: true
-  endpoint: https://mas.karlsen.fr
-  secret_path: /secrets/mas-shared.key
+# matrix_authentication_service:
+#   enabled: true
+#   endpoint: https://mas.karlsen.fr
+#   secret_path: /secrets/mas-shared.key
 
 # vim:ft=yaml
