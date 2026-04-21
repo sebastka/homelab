@@ -6,6 +6,8 @@ namespace: longhorn-system
 resources:
   - Namespace.yaml
   - HTTPRoute.yaml
+  - SealedSecret.longhorn-crypto-secret.yaml
+  - StorageClass.longhorn-static-encrypted.yaml
   - BackupTarget.yaml
   - RecurringJob.yaml
   # - GrafanaDashboard.control-plane.yaml
