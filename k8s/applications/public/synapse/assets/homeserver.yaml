@@ -91,8 +91,8 @@ max_spider_size: 10M
 # turn_allow_guests: true
 
 ## Registration ##
-enable_registration: false
-# enable_registration_without_verification: false
+enable_registration: true
+enable_registration_without_verification: false
 # registration_shared_secret:  # In secret
 bcrypt_rounds: 12
 allow_guest_access: false

@@ -38,7 +38,7 @@ spec:
           command: ['/bin/sh', '-c']
           args:
             - |
-              set -eux
+              set -eu
               rm -f /generated-config/homeserver.yaml
               yq eval '
                 .database.args.password = strenv(DATABASE_ARGS_PASSWORD) |
@@ -63,7 +63,7 @@ spec:
       containers:
         - name: synapse
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
-          image: index.docker.io/matrixdotorg/synapse:v1.151.0
+          image: matrixdotorg/synapse:v1.151.0
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
