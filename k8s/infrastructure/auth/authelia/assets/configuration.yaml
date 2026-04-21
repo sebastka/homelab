@@ -188,9 +188,9 @@ identity_providers:
         scopes: [openid, email, profile, groups]
         grant_types: [authorization_code]
         token_endpoint_auth_method: client_secret_basic
-        # userinfo_signed_response_alg: none
-        # id_token_signed_response_alg: RS256
-        # access_token_signed_response_alg: RS256
+        userinfo_signed_response_alg: none
+        id_token_signed_response_alg: RS256
+        access_token_signed_response_alg: RS256
 
 # https://www.authelia.com/configuration/miscellaneous/privacy-policy/
 # privacy_policy: {}
