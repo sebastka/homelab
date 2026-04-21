@@ -48,6 +48,7 @@ spec:
                 .email.smtp_user = strenv(EMAIL_SMTP_USER) |
                 .email.smtp_pass = strenv(EMAIL_SMTP_PASS)' \
                 /mnt/homeserver.yaml >/config/homeserver.yaml
+              sleep infinity
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
