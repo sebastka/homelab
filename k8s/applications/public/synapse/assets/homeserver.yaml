@@ -33,7 +33,7 @@ database:
   name: psycopg2
   args:
     user: synapse
-    # password:  # In secrets.yaml
+    # password:  # In secret
     database: synapse
     host: db02.hera.home.karlsen.fr
     cp_min: 5
@@ -93,7 +93,7 @@ max_spider_size: 10M
 ## Registration ##
 enable_registration: false
 # enable_registration_without_verification: false
-# registration_shared_secret:  # In secrets.yaml
+# registration_shared_secret:  # In secret
 bcrypt_rounds: 12
 allow_guest_access: false
 enable_group_creation: true
@@ -105,8 +105,8 @@ report_stats: true
 ## API Configuration ##
 app_service_config_files: []
 
-# macaroon_secret_key:  # In secrets.yaml
-# form_secret:  # In secrets.yaml
+# macaroon_secret_key:  # In secret
+# form_secret:  # In secret
 
 ## Signing Keys ##
 signing_key_path: /karlsen.fr.signing.key
@@ -122,8 +122,8 @@ trusted_key_servers:
 email:
   smtp_host: smtp.domeneshop.no
   smtp_port: 465
-  smtp_user: karlsenfr1
-  # smtp_pass:  # In secrets.yaml
+  # smtp_user:  # In secret
+  # smtp_pass:  # In secret
   force_tls: true
   enable_tls: true
   notif_from: 'Matrix / Karlsen.fr <noreply@karlsen.fr>'
