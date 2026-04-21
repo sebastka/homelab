@@ -18,7 +18,7 @@ spec:
     retention-policy: weekly
   # "backupTargetName" Should be available in Longhorn 1.13:
   # - https://github.com/longhorn/longhorn/issues/11421
-  # backupTargetName: nfs-backup-target-group1
+  # backupTargetName: nfs-backup-target
 ---
 apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
@@ -39,4 +39,4 @@ spec:
     retention-policy: weekly
   # "backupTargetName" Should be available in Longhorn 1.13:
   # - https://github.com/longhorn/longhorn/issues/11421
-  # backupTargetName: nfs-backup-target-group2
+  # backupTargetName: nfs-backup-target
