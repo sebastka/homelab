@@ -44,6 +44,7 @@ spec:
               yq eval '
                 .database.args.password = strenv(DATABASE_ARGS_PASSWORD) |
                 .registration_shared_secret = strenv(REGISTRATION_SHARED_SECRET) |
+                .recaptcha_private_key = strenv(RECAPTCHA_PRIVATE_KEY) |
                 .macaroon_secret_key = strenv(MACAROON_SECRET_KEY) |
                 .form_secret = strenv(FORM_SECRET) |
                 .email.smtp_user = strenv(EMAIL_SMTP_USER) |

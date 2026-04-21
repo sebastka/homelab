@@ -79,10 +79,10 @@ url_preview_enabled: false
 max_spider_size: 10M
 
 ## Captcha ##
-# recaptcha_public_key: "YOUR_PUBLIC_KEY"
+recaptcha_public_key: 6LcEjMMsAAAAADAOTbQN8CLUek_FLKV1cYsDtZT0
 # recaptcha_private_key:  # In secrets.yaml
-# enable_registration_captcha: False
-# recaptcha_siteverify_api: "https://www.google.com/recaptcha/api/siteverify"
+enable_registration_captcha: true
+recaptcha_siteverify_api: "https://www.google.com/recaptcha/api/siteverify"
 
 ## Turn ##
 # turn_uris: [ "turn:turn.cloudflare.com?transport=udp", "turn:turn.cloudflare.com?transport=tcp" ]
@@ -91,8 +91,10 @@ max_spider_size: 10M
 # turn_allow_guests: true
 
 ## Registration ##
-enable_registration: false
+enable_registration: true
 enable_registration_without_verification: false
+enable_room_list_search: true
+restrict_public_rooms_to_local_users: false
 # registration_shared_secret:  # In secret
 bcrypt_rounds: 12
 allow_guest_access: false
