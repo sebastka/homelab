@@ -66,7 +66,7 @@ spec:
             - {name: scripts-volume, mountPath: /scripts/extra_settings.py, subPath: extra_settings.py, readOnly: true}
             - {name: customizations-volume, mountPath: /customizations}
       containers:
-        - name: paperless-consume-volumer
+        - name: paperless-consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
           command: [python3, "manage.py", "document_consumer"]
