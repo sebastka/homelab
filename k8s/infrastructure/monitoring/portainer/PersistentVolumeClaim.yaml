@@ -13,5 +13,5 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 1Gi}}
-  storageClassName: longhorn-static
+  storageClassName: longhorn-encrypted
   volumeName: portainer-data-pv
