@@ -60,6 +60,7 @@ spec:
             - {name: jwk-ecdsa-volume, mountPath: /secrets/jwk-ecdsa/tls.key, subPath: tls.key, readOnly: true}
             - {name: jwk-ecdsa-volume, mountPath: /secrets/jwk-ecdsa/tls.crt, subPath: tls.crt, readOnly: true}
             - {name: client-secrets-volume, mountPath: /secrets/client-secrets/argocd, subPath: argocd, readOnly: true}
+            - {name: client-secrets-volume, mountPath: /secrets/client-secrets/mas, subPath: mas, readOnly: true}
       volumes:
         - {name: authelia-config-volume, configMap: {name: authelia-configuration}}
         - {name: jwk-ecdsa-volume, secret: {secretName: jwk-ecdsa}}
