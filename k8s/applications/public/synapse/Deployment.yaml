@@ -38,11 +38,17 @@ spec:
           command: ['/bin/sh', '-c']
           args:
             - |
-              set -eux
-              # Clean up volumes
-              for d in merged-config; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
-              # Merge configmap and secret
-              yq eval-all '. as $item ireduce ({}; . * $item)' /config/homeserver.yaml /config/secrets.yaml >/merged-config/homeserver.yaml
+              set -eu
+              rm -f /config/homeserver.yaml
+              yq eval-all '
+                .database.args.password = strenv(DATABASE_ARGS_PASSWORD) |
+                .turn_shared_secret = strenv(TURN_SHARED_SECRET) |
+                .registration_shared_secret = strenv(REGISTRATION_SHARED_SECRET)
+                .macaroon_secret_key = strenv(MACAROON_SECRET_KEY) |
+                .form_secret = strenv(FORM_SECRET) |
+                .email.smtp_user = strenv(EMAIL_SMTP_USER) |
+                .email.smtp_pass = strenv(EMAIL_SMTP_PASS)' \
+                /mnt/homeserver.yaml >/config/homeserver.yaml
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -50,10 +56,11 @@ spec:
           resources:
             requests: {memory: 24Mi}
             limits: {memory: 24Mi}
+          envFrom:
+            - secretRef: {name: synapse-secrets}
           volumeMounts:
-            - {name: merged-config-volume, mountPath: /merged-config}
-            - {name: synapse-config-volume, mountPath: /config/homeserver.yaml, subPath: homeserver.yaml, readOnly: true}
-            - {name: synapse-secrets-volume, mountPath: /config/secrets.yaml, subPath: secrets.yaml, readOnly: true}
+            - {name: config-volume, mountPath: /config}
+            - {name: synapse-config-volume, mountPath: /mnt/homeserver.yaml, subPath: homeserver.yaml, readOnly: true}
       containers:
         - name: synapse
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
@@ -73,16 +80,17 @@ spec:
             - configMapRef: {name: run-env}
             # - configMapRef: {name: generate-env}
           volumeMounts:
+            - {name: data-volume, mountPath: /data}
             - {name: tmp-volume, mountPath: /tmp}
             - {name: log-volume, mountPath: /var/log}
-            - {name: data-volume, mountPath: /data}
-            - {name: merged-config-volume, mountPath: /merged-config, readOnly: true}
+            - {name: config-volume, mountPath: /config, readOnly: true}
             - {name: synapse-config-volume, mountPath: /karlsen.fr.log.config, subPath: karlsen.fr.log.config, readOnly: true}
             - {name: synapse-secrets-volume, mountPath: /karlsen.fr.signing.key, subPath: karlsen.fr.signing.key, readOnly: true}
+            - {name: synapse-secrets-volume, mountPath: /secrets/mas-shared.key, subPath: mas-shared.key, readOnly: true}
       volumes:
+        - {name: data-volume, persistentVolumeClaim: {claimName: synapse-data-pvc}}
         - {name: tmp-volume, emptyDir: {}}
         - {name: log-volume, emptyDir: {}}
-        - {name: merged-config-volume, emptyDir: {}}
-        - {name: data-volume, persistentVolumeClaim: {claimName: synapse-data-pvc}}
+        - {name: config-volume, emptyDir: {}}
         - {name: synapse-config-volume, configMap: {name: synapse-config}}
         - {name: synapse-secrets-volume, secret: {secretName: synapse-secrets}}

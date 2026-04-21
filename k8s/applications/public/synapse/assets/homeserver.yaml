@@ -85,10 +85,10 @@ max_spider_size: 10M
 # recaptcha_siteverify_api: "https://www.google.com/recaptcha/api/siteverify"
 
 ## Turn ##
-turn_uris: ['turn:turn.karlsen.fr?transport=udp', 'turn:turn.karlsen.fr?transport=tcp']
-# turn_shared_secret:  # In secrets.yaml
-turn_user_lifetime: 1h
-turn_allow_guests: true
+# turn_uris: [ "turn:turn.cloudflare.com?transport=udp", "turn:turn.cloudflare.com?transport=tcp" ]
+# turn_shared_secret: ""
+# turn_user_lifetime: 86400000
+# turn_allow_guests: true
 
 ## Registration ##
 enable_registration: false
@@ -133,5 +133,10 @@ email:
   client_base_url: https://element.karlsen.app
   validation_token_lifetime: 15m
   invite_client_location: https://element.karlsen.app
+
+matrix_authentication_service:
+  enabled: true
+  endpoint: https://mas.karlsen.fr
+  secret_file: /secrets/mas-shared.key
 
 # vim:ft=yaml
