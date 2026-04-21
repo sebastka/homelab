@@ -32,6 +32,7 @@ spec:
         fsGroup: 991
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
+      hostAliases: [{ip: 192.168.0.3, hostnames: [auth.karlsen.fr, mas.karlsen.fr]}]
       initContainers:
         - name: config-merger
           image: mikefarah/yq:4.53.2
