@@ -1,5 +1,6 @@
 # yaml-language-server: $schema=
 # https://github.com/longhorn/charts/blob/v1.11.x/charts/longhorn/values.yaml
+# https://github.com/longhorn/longhorn/tree/master/chart
 # https://joshrnoll.com/installing-longhorn-on-talos-with-helm/
 # https://www.johanneskueber.com/posts/longhorn_uservolumes_talos/
 ---
@@ -9,9 +10,13 @@ defaultSettings:
   defaultDataLocality: best-effort
   defaultDataPath: /var/mnt/longhorn-data
   allowCollectingLonghornUsageMetrics: false
-  upgradeChecker: false
   replicaAutoBalance: best-effort
-  systemManagedCSIComponentsResourceLimits: '{"csi-attacher":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"csi-provisioner":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"csi-resizer":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"csi-snapshotter":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"longhorn-csi-plugin":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"node-driver-registrar":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}},"longhorn-liveness-probe":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi"}}}'
+  systemManagedCSIComponentsResourceLimits: '{"csi-attacher":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi"}},"csi-provisioner":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi"}},"csi-resizer":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi"}},"csi-snapshotter":{"requests":{"memory":"1Gi"},"limits":{"memory":"1Gi"}},"longhorn-csi-plugin":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi"}},"node-driver-registrar":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi"}},"longhorn-liveness-probe":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi"}}}'
+  freezeFilesystemForSnapshot: true
+  snapshotDataIntegrity: enabled
+  snapshotDataIntegrityCronjob: '0 3 * * *'  # Default: '0 0 */7 * *'
+  snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: true
+  backupCompressionMethod: gzip
 
 longhornManager:
   resources:
