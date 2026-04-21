@@ -10,7 +10,7 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 10Gi}}
-  storageClassName: longhorn-static
+  storageClassName: longhorn-encrypted
   volumeName: harbor-registry-pv
 ---
 apiVersion: v1
@@ -24,7 +24,7 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 1Gi}}
-  storageClassName: longhorn-static
+  storageClassName: longhorn-encrypted
   volumeName: harbor-joblog-pv
 ---
 apiVersion: v1
@@ -38,7 +38,7 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 1Gi}}
-  storageClassName: longhorn-static
+  storageClassName: longhorn-encrypted
   volumeName: harbor-redis-pv
 ---
 apiVersion: v1
@@ -52,5 +52,5 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
-  storageClassName: longhorn-static
+  storageClassName: longhorn-encrypted
   volumeName: harbor-trivy-pv
