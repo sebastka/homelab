@@ -14,8 +14,6 @@ spec:
       server: '*'
     - namespace: synapse
       server: '*'
-    - namespace: glance
-      server: '*'
     - namespace: slink
       server: '*'
   clusterResourceWhitelist:
