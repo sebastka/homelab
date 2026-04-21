@@ -42,7 +42,6 @@ spec:
               rm -f /config/homeserver.yaml
               yq eval-all '
                 .database.args.password = strenv(DATABASE_ARGS_PASSWORD) |
-                .turn_shared_secret = strenv(TURN_SHARED_SECRET) |
                 .registration_shared_secret = strenv(REGISTRATION_SHARED_SECRET)
                 .macaroon_secret_key = strenv(MACAROON_SECRET_KEY) |
                 .form_secret = strenv(FORM_SECRET) |
