@@ -181,7 +181,7 @@ identity_providers:
         require_pkce: false
         redirect_uris:
           - https://mas.karlsen.fr/upstream/callback/01KPNSVGCRHBYC9MY7A9P40ZPQ
-        logout_uris: https://mas.karlsen.fr/upstream/backchannel-logout/01KPNSVGCRHBYC9MY7A9P40ZPQ
+        # logout_uris: https://mas.karlsen.fr/upstream/backchannel-logout/01KPNSVGCRHBYC9MY7A9P40ZPQ
         response_types: [code]
         response_modes: [query]
         scopes: [openid, email, profile, offline_access]
