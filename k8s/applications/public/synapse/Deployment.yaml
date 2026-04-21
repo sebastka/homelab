@@ -40,15 +40,14 @@ spec:
             - |
               set -eux
               rm -f /generated-config/homeserver.yaml
-              yq eval-all '
+              yq eval '
                 .database.args.password = strenv(DATABASE_ARGS_PASSWORD) |
-                .registration_shared_secret = strenv(REGISTRATION_SHARED_SECRET)
+                .registration_shared_secret = strenv(REGISTRATION_SHARED_SECRET) |
                 .macaroon_secret_key = strenv(MACAROON_SECRET_KEY) |
                 .form_secret = strenv(FORM_SECRET) |
                 .email.smtp_user = strenv(EMAIL_SMTP_USER) |
                 .email.smtp_pass = strenv(EMAIL_SMTP_PASS)' \
                 /mnt/homeserver.yaml >/generated-config/homeserver.yaml
-              sleep infinity
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -65,7 +64,6 @@ spec:
         - name: synapse
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
           image: index.docker.io/matrixdotorg/synapse:v1.151.0
-          command: [sleep, infinity]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
