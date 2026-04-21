@@ -66,6 +66,7 @@ spec:
         - name: synapse
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
           image: index.docker.io/matrixdotorg/synapse:v1.151.0
+          command: [sleep, infinity]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
