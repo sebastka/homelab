@@ -6,6 +6,7 @@ ignore: |
   **/charts
   Secret.*.yaml
   *.enc.yaml
+  values.default.yaml
 
 rules:
   line-length: disable
