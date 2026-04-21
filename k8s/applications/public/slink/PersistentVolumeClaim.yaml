@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: slink-app-pvc
+  namespace: slink
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 1Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: slink-app-pv

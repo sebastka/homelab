@@ -16,6 +16,8 @@ spec:
       server: '*'
     - namespace: glance
       server: '*'
+    - namespace: slink
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

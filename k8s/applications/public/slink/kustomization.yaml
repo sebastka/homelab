@@ -1,0 +1,22 @@
+# https://docs.slinkapp.io/getting-started/02-quick-start/
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: slink
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - {namespace: slink, name: slink-env, envs: [assets/slink.env]}
+
+resources:
+  - Namespace.yaml
+  - ServiceAccount.yaml
+  - SealedSecret.slink-admin.yaml
+  - SealedSecret.slink-secrets.yaml
+  - PersistentVolumeClaim.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - HTTPRoute.yaml
+  - SecurityPolicy.yaml

@@ -1,0 +1,80 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slink
+  namespace: slink
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: slink
+      app.kubernetes.io/version: v1.10.6
+      app.kubernetes.io/component: image-hoster
+      app.kubernetes.io/part-of: slink
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: slink
+      labels:
+        app.kubernetes.io/name: slink
+        app.kubernetes.io/version: v1.10.6
+        app.kubernetes.io/component: image-hoster
+        app.kubernetes.io/part-of: slink
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: slink
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: slink-init
+          # Dockerfile: https://github.com/andrii-kryvoviaz/slink/blob/main/docker/Dockerfile.prod
+          image: anirdev/slink:v1.10.6
+          command: [/bin/sh, -c]
+          args:
+            - |
+              set -eux
+              rm -rf /app/var/data/keys
+              mkdir -p /app/var/data/keys
+              printf -- '%s\n' "$JWT_PASSPHRASE" >/app/var/data/keys/passphrase
+              printf -- '%s\n' "$MERCURE_JWT_SECRET" >/app/var/data/keys/mercure_secret
+              printf -- '%s\n' "$APP_SECRET" >/app/var/data/keys/app_secret
+              printf -- '%s\n' "$PRIVATE_PEM" | base64 -d >/app/var/data/keys/private.pem
+              printf -- '%s\n' "$PUBLIC_PEM" | base64 -d >/app/var/data/keys/public.pem
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 24Mi}
+            limits: {memory: 24Mi}
+          envFrom:
+            - secretRef: {name: slink-secrets}
+          volumeMounts:
+            - {name: slink-app-volume, mountPath: /app}
+      containers:
+        - name: slink
+          # Dockerfile: https://github.com/andrii-kryvoviaz/slink/blob/main/docker/Dockerfile.prod
+          # image: anirdev/slink:v1.10.6
+          image: anirdev/slink:nightly  # Until andrii-kryvoviaz/slink/#181 is released
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 512Mi}
+            limits: {memory: 512Mi}
+          envFrom:
+            - configMapRef: {name: slink-env}
+            - secretRef: {name: slink-admin}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 3000}
+          volumeMounts:
+            - {name: slink-app-volume, mountPath: /app}
+      volumes:
+        - {name: slink-app-volume, persistentVolumeClaim: {claimName: slink-app-pvc}}
