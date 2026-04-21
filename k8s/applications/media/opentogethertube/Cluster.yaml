@@ -7,7 +7,7 @@ metadata:
 spec:
   instances: 2
   storage:
-    storageClass: longhorn-static
+    storageClass: longhorn-encrypted
     size: 2Gi
   imageName: ghcr.io/cloudnative-pg/postgresql:18.3-minimal-trixie
   monitoring: {enablePodMonitor: true}
