@@ -18,7 +18,7 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
-  storageClassName: longhorn-static
+  storageClassName: longhorn-encrypted
   volumeName: paperless-data-pv
 ---
 apiVersion: v1
@@ -29,5 +29,5 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
-  storageClassName: longhorn-static
+  storageClassName: longhorn-encrypted
   volumeName: paperless-media-pv
