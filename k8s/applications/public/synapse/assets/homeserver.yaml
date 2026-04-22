@@ -136,24 +136,24 @@ email:
   validation_token_lifetime: 15m
   invite_client_location: https://element.karlsen.app
 
-# matrix_authentication_service:
-#   enabled: true
-#   endpoint: https://mas.karlsen.fr
-#   secret_path: /secrets/mas-shared.key
+matrix_authentication_service:
+  enabled: true
+  endpoint: https://mas.karlsen.fr
+  secret_path: /secrets/mas-shared.key
 
 # Experimental features
-# experimental_features:
-#   # Enable QR code login (requires Synapse 1.106+)
-#   # Transfers crypto identity without needing password/passphrase
-#   msc4108_enabled: true
-#   msc3882_enabled: true
+experimental_features:
+  # Enable QR code login (requires Synapse 1.106+)
+  # Transfers crypto identity without needing password/passphrase
+  msc4108_enabled: true
+  msc3882_enabled: true
 
-#   # Bridge encryption features (experimental)
-#   # NOTE: As of Synapse 1.144.0, MSC4190 has compatibility issues with MAS
-#   # Keep these enabled for future compatibility, but bridges should disable encryption for now
-#   msc4190_enabled: true
-#   msc3202_device_masquerading: true
-#   msc3202_transaction_extensions: true
-#   msc2409_to_device_messages_enabled: true
+  # Bridge encryption features (experimental)
+  # NOTE: As of Synapse 1.144.0, MSC4190 has compatibility issues with MAS
+  # Keep these enabled for future compatibility, but bridges should disable encryption for now
+  msc4190_enabled: true
+  msc3202_device_masquerading: true
+  msc3202_transaction_extensions: true
+  msc2409_to_device_messages_enabled: true
 
 # vim:ft=yaml
