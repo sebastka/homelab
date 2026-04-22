@@ -92,6 +92,7 @@ max_spider_size: 10M
 
 ## Registration ##
 # enable_registration: true
+registration_requires_token: true
 # enable_registration_without_verification: false
 enable_room_list_search: true
 restrict_public_rooms_to_local_users: false
