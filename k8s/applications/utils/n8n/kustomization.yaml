@@ -14,7 +14,7 @@ helmCharts:
 
 resources:
   - Namespace.yaml
-  - Secret.oidc.yaml
+  - SealedSecret.oidc.yaml
   - SealedSecret.n8n-secrets.yaml
   - Deployment.valkey.yaml
   - ServiceAccount.yaml
