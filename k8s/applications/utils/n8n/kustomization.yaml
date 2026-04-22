@@ -1,0 +1,23 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: n8n
+
+helmCharts:
+  - name: n8n
+    repo: oci://ghcr.io/n8n-io/n8n-helm-chart
+    version: 1.4.0  # renovate: github-releases=n8n-io/n8n-hosting
+    releaseName: n8n
+    namespace: n8n
+    includeCRDs: true
+    valuesFile: values.yaml
+
+resources:
+  - Namespace.yaml
+  - Secret.oidc.yaml
+  - SealedSecret.n8n-secrets.yaml
+  - Deployment.valkey.yaml
+  - ServiceAccount.yaml
+  - Service.yaml
+  - HTTPRoute.yaml
+  - SecurityPolicy.yaml

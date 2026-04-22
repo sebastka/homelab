@@ -1,0 +1,41 @@
+# Cross namespace attachment?
+# - https://github.com/envoyproxy/gateway/issues/5143
+# OIDC:
+# - https://gateway.envoyproxy.io/docs/tasks/security/oidc/
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-sso
+  namespace: n8n
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: protected}
+  oidc:
+    clientIDRef: {namespace: n8n, kind: Secret, name: oidc}
+    clientSecret: {namespace: n8n, kind: Secret, name: oidc}
+    cookieConfig: {sameSite: Lax}
+    cookieDomain: n8n.karlsen.app
+    # cookieNames: {accessToken: access-token, idToken: id-token}
+    # forwardAccessToken: false
+    # logoutPath: /logout
+    # passThroughAuthHeader: false
+    provider:
+      authorizationEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/authorize
+      tokenEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
+      issuer: https://karlsen-xzy0yv.zitadel.cloud
+    redirectURL: https://n8n.karlsen.app/oidc-callback
+    # refreshToken: true
+    # resources: []
+    scopes: [openid, profile, email]
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: webhook
+  namespace: n8n
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: webhook}
+  authorization:
+    defaultAction: Allow

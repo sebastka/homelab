@@ -10,13 +10,15 @@ spec:
   destinations:
     - namespace: argocd
       server: '*'
-    - namespace: searxng
+    - namespace: deluge
       server: '*'
     - namespace: glance
       server: '*'
+    - namespace: n8n
+      server: '*'
     - namespace: paperless
       server: '*'
-    - namespace: deluge
+    - namespace: searxng
       server: '*'
     - namespace: thelounge
       server: '*'

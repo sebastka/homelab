@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/n8n-io/n8n-hosting/refs/heads/main/charts/n8n/values.schema.json
+# https://github.com/n8n-io/n8n-hosting/blob/main/charts/n8n/values.yaml
+# https://github.com/n8n-io/n8n-hosting/tree/main/charts/n8n
+---
+
+queueMode:
+  enabled: true
+  workerReplicaCount: 1
+  # Worker concurrency (number of jobs each worker can handle simultaneously)
+  workerConcurrency: 10
+
+# Load balancer must route /webhook/* to webhook processor service
+webhookProcessor:
+  enabled: true
+  replicaCount: 1
+  # Disable webhook processing in main process when webhook processors are enabled
+  disableProductionWebhooksOnMainProcess: true
+
+multiMain:
+  enabled: false
+  replicas: 2
+  antiAffinity:
+    type: preferred
+  topologySpreadConstraints:
+    enabled: false
+    maxSkew: 1
+    whenUnsatisfiable: ScheduleAnyway
+
+taskRunners:
+  enabled: true
+  mode: external
+  authToken:
+    existingSecret: n8n-secrets
+    existingSecretKey: N8N_RUNNERS_AUTH_TOKEN
+  resources:
+    requests: {memory: 512Mi}
+    limits: {memory: 512Mi}
+
+strategy: {type: Recreate}
+
+ingress: {enabled: false}
+
+persistence: {enabled: false}
+# extraVolumeMounts: [{name: n8n-data-volume, mountPath: /home/node/.n8n}]
+# extraVolumes: [{name: n8n-data-volume, persistentVolumeClaim: {claimName: n8n}}]
+
+resources:
+  main:
+    requests: {memory: 512Mi}
+    limits: {memory: 512Mi}
+  worker:
+    requests: {memory: 512Mi}
+    limits: {memory: 512Mi}
+  webhookProcessor:
+    requests: {memory: 512Mi}
+    limits: {memory: 512Mi}
+
+networkPolicy: {enabled: false}
+  
+config:
+  timezone: Europe/Oslo
+  # extraEnv: []
+  # extraEnvFrom: []
+
+# Enterprise license required for multi-main setup
+license:
+  enabled: true
+  # activationKey:
+  existingSecret:
+    name: n8n-secrets
+    key: N8N_LICENCE_ACTIVATIONKEY
+
+secretRefs:
+  existingSecret: n8n-secrets
+
+database:
+  type: postgresdb
+  useExternal: true
+  host: db02.hera.home.karlsen.fr
+  port: 5432
+  database: n8n
+  schema: public
+  user: n8n
+  passwordSecret:
+    name: n8n-secrets
+    key: N8N_DATABASE_PASSWORD
+
+redis:
+  enabled: true
+  useExternal: true
+  host: valkey
+  port: 6379
