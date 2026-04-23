@@ -16,7 +16,7 @@ spec:
           responseHeaderModifier:
             add:
               # - {name: Access-Control-Allow-Origin, value: '*'}
-              - {name: Content-Security-Policy, value: "default-src 'self'; frame-ancestors 'none'; form-action 'none'; base-uri 'none'; script-src 'self' 'unsafe-eval'; script-src-elem 'self' 'unsafe-inline' data:; style-src-elem 'self' 'unsafe-inline';"}
+              - {name: Content-Security-Policy, value: "default-src 'self'; frame-ancestors 'none'; form-action 'none'; base-uri 'none'; script-src 'self' 'unsafe-eval'; script-src-elem 'self' 'unsafe-inline' data: https://*.n8n.io; style-src-elem 'self' 'unsafe-inline'; connect-src 'self' https://*.n8n.io;"}
               - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
               - {name: X-Content-Type-Options, value: nosniff}
               - {name: X-Frame-Options, value: DENY}
