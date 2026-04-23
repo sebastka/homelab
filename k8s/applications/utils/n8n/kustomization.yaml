@@ -7,7 +7,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - {namespace: n8n, name: n8n-env, envs=[assets/n8n.env]}
+  - {namespace: n8n, name: n8n-env, envs: [assets/n8n.env]}
 
 helmCharts:
   - name: n8n
