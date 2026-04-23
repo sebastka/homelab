@@ -7,5 +7,5 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 1Gi}}
-  storageClassName: longhorn-encrypted
+  storageClassName: longhorn-static
   volumeName: slink-app-pv

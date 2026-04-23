@@ -7,5 +7,5 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
-  storageClassName: longhorn-encrypted
+  storageClassName: longhorn-static
   volumeName: synapse-data-pv
