@@ -1,17 +1,18 @@
+# https://longhorn.io/docs/archives/1.3.0/advanced-resources/security/volume-encryption/
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: longhorn-encrypted
-provisioner: driver.longhorn.io
-allowVolumeExpansion: true
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
 parameters:
+  backupTargetName: nfs-backup-target
+  dataEngine: v1
+  data-locality: best-effort
+  encrypted: 'true'
+  fromBackup: ''
+  fsType: ext4
   numberOfReplicas: '2'
   staleReplicaTimeout: '30'
-  encrypted: 'true'
-  data-locality: 'best-effort'
   # Reference the encryption secret for provisioning (volume creation)
   csi.storage.k8s.io/provisioner-secret-name: longhorn-crypto-secret
   csi.storage.k8s.io/provisioner-secret-namespace: longhorn-system
@@ -21,3 +22,7 @@ parameters:
   # Reference the encryption secret for publishing (pod mount operations)
   csi.storage.k8s.io/node-publish-secret-name: longhorn-crypto-secret
   csi.storage.k8s.io/node-publish-secret-namespace: longhorn-system
+allowVolumeExpansion: true
+provisioner: driver.longhorn.io
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
