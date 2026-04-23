@@ -20,8 +20,8 @@ defaultSettings:
 
 longhornManager:
   resources:
-    requests: {memory: 4Gi}
-    limits: {memory: 4Gi}
+    requests: {memory: 8Gi}
+    limits: {memory: 8Gi}
 
 persistence:
   reclaimPolicy: Retain
