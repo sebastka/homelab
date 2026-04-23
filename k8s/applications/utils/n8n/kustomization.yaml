@@ -3,6 +3,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: n8n
 
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - {namespace: n8n, name: n8n-env, envs=[assets/n8n.env]}
+
 helmCharts:
   - name: n8n
     repo: oci://ghcr.io/n8n-io/n8n-helm-chart

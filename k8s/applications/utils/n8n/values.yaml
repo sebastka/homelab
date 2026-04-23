@@ -60,7 +60,7 @@ networkPolicy: {enabled: false}
 config:
   timezone: Europe/Oslo
   # extraEnv: []
-  # extraEnvFrom: []
+  extraEnvFrom: [configMapRef: {name: n8n-env}]
 
 # Enterprise license required for multi-main setup
 license:
