@@ -1,3 +1,6 @@
+# backupTargetName in RecurringJob?
+# - https://github.com/longhorn/longhorn/issues/11421
+# - https://github.com/longhorn/longhorn/pull/10965
 ---
 apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
@@ -16,9 +19,6 @@ spec:
   labels:
     backup-schedule: daily
     retention-policy: weekly
-  # "backupTargetName" Should be available in Longhorn 1.13:
-  # - https://github.com/longhorn/longhorn/issues/11421
-  # backupTargetName: nfs-backup-target
 ---
 apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
@@ -37,6 +37,3 @@ spec:
   labels:
     backup-schedule: daily
     retention-policy: weekly
-  # "backupTargetName" Should be available in Longhorn 1.13:
-  # - https://github.com/longhorn/longhorn/issues/11421
-  # backupTargetName: nfs-backup-target
