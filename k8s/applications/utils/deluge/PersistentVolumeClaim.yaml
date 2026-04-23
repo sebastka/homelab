@@ -7,7 +7,7 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 1Gi}}
-  storageClassName: longhorn-encrypted
+  storageClassName: longhorn-static
   volumeName: deluged-config-pv
 ---
 apiVersion: v1

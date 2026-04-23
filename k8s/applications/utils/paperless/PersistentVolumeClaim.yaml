@@ -1,14 +1,4 @@
 # https://juliushinze.de/posts/paperless-on-k8s/
-
-# For each of data, export, consume, media do the following:
-## 1. Restore volume:        Longhorn UI -> Backups -> Restore latest backup -> Name: longhorn-paperless-XXX-pv
-## 2. Create PV from volume: Longhorn UI -> Volumes -> longhorn-paperless-XXX-pv -> Create PV/PVC -> Create PV only
-
-# Run the following command to update labels for RecurringJob:
-## for vol in data export consume media; do kubectl -n longhorn-system label "volume/longhorn-paperless-${vol}-pv" recurring-job-group.longhorn.io/group1=enabled; kubectl -n longhorn-system label "volume/longhorn-paperless-${vol}-pv" recurring-job-group.longhorn.io/default-; done
-
-# Remove claimRef from PVs:
-## for vol in data export consume media; do kubectl patch pv "longhorn-paperless-${vol}-pv" --type=json -p '[{"op": "remove", "path": "/spec/claimRef"}]'; done
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -18,7 +8,7 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
-  storageClassName: longhorn-encrypted
+  storageClassName: longhorn-static
   volumeName: paperless-data-pv
 ---
 apiVersion: v1
@@ -29,5 +19,5 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
-  storageClassName: longhorn-encrypted
+  storageClassName: longhorn-static
   volumeName: paperless-media-pv
