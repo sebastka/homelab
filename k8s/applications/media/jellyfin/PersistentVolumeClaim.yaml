@@ -9,7 +9,7 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
-  storageClassName: longhorn-encrypted
+  storageClassName: longhorn-static
   volumeName: jellyfin-config-pv
 ---
 apiVersion: v1
