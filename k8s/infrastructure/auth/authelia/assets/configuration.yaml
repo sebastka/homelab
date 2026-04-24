@@ -178,9 +178,9 @@ identity_providers:
         scopes: [openid, email, profile, groups, forgejo] 
         response_types: [code]
         grant_types: [authorization_code]
-        access_token_signed_response_alg: RS256
+        access_token_signed_response_alg: none
         userinfo_signed_response_alg: none
-        token_endpoint_auth_method: client_secret_post
+        token_endpoint_auth_method: client_secret_basic
 
       - client_id: mas
         # https://element-hq.github.io/matrix-authentication-service/setup/sso.html#general-configuration
