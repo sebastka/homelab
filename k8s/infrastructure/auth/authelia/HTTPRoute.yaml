@@ -15,7 +15,7 @@ spec:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
             add:
-              - {name: Access-Control-Allow-Origin, value: 'https://git.karlsen.fr'}
+              # - {name: Access-Control-Allow-Origin, value: '*'}
               - {name: Content-Security-Policy, value: "default-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; style-src-elem 'self' 'unsafe-inline';"}
               - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
               - {name: X-Content-Type-Options, value: nosniff}
