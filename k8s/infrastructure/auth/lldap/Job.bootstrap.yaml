@@ -32,9 +32,6 @@ spec:
                   --arg LLDAP_SEBASTIAN_PASSWORD "$LLDAP_SEBASTIAN_PASSWORD" \
                   -f /mnt/schemas/users.jq \
                   >/mnt/generated-schemas/users.json
-              
-              # Temp:
-              cat /mnt/generated-schemas/users.json | jq
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
