@@ -29,7 +29,7 @@ persistence:
   claimName: forgejo-shared-storage-pvc
   size: 10Gi
   accessModes: [ReadWriteOncePod]
-  storageClass: longhorn-static
+  storageClass: longhorn-encrypted
   volumeName: forgejo-shared-storage-pv
 
 initContainers:
