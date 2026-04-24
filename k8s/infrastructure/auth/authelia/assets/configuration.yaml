@@ -141,7 +141,7 @@ identity_providers:
       username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
     scopes:
       argocd_scope: {claims: [argocd_claim]}
-      forgejo: {claims: [sshpubkey]}
+      forgejo: {claims: [forgejo]}
       grafana: {claims: [grafana]}
     clients:
         # https://www.authelia.com/integration/openid-connect/frequently-asked-questions/#how-do-i-generate-a-client-identifier-or-client-secret
