@@ -10,11 +10,18 @@ configMapGenerator:
   - {namespace: lldap, name: lldap-config, files: [lldap_config.toml=assets/lldap_config.toml]}
   - {namespace: lldap, name: lldap-env, envs: [assets/lldap.env]}
   - {namespace: lldap, name: bootstrap-env, envs: [assets/bootstrap.env]}
+  - namespace: lldap
+    name: bootstrap-schemas
+    files:
+      - group-schemas.json=assets/group-schemas.json
+      - groups.json=assets/groups.json
+      - user-schemas.json=assets/user-schemas.json
+      - users.jq=assets/users.jq
 
 resources:
   - Namespace.yaml
   - SealedSecret.lldap-secrets.yaml
-  - SealedSecret.bootstrap-schemas.yaml
+  - SealedSecret.bootstrap-secrets.yaml
   - ServiceAccount.yaml
   - Job.bootstrap.yaml
   - Deployment.yaml

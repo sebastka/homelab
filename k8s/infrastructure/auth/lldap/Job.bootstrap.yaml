@@ -19,6 +19,31 @@ spec:
         fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: init-schemas
+          # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/jq/Dockerfile
+          image: ghcr.io/sebastka/jq:2026-4-24  # renovate: docker=ghcr.io/sebastka/jq
+          command: [/bin/sh, -c]
+          args:
+            - |
+              set -eu
+              rm -rf /mnt/generated-schemas/* /mnt/generated-schemas/.[!.]*
+              jq -n \
+                  --arg LLDAP_SEBASTIAN_PASSWORD "$LLDAP_SEBASTIAN_PASSWORD" \
+                  -f /mnt/schemas/users.jq \
+                  >/mnt/generated-schemas/users.json
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 24Mi}
+            limits: {memory: 24Mi}
+          envFrom:
+            - secretRef: {name: bootstrap-secrets}
+          volumeMounts:
+            - {name: generated-schemas-volume, mountPath: /mnt/generated-schemas}
+            - {name: bootstrap-schemas-volume, mountPath: /mnt/schemas/users.jq, subPath: users.jq, readOnly: true}
       containers:
         - name: lldap-bootstrap
           # Dockerfile: https://github.com/lldap/lldap/blob/main/Dockerfile
@@ -31,7 +56,6 @@ spec:
           resources:
             requests: {memory: 128Mi}
             limits: {memory: 128Mi}
-          # ports: []
           envFrom:
             - configMapRef: {name: lldap-env}
             - secretRef: {name: lldap-secrets}
@@ -42,14 +66,12 @@ spec:
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: lldap-config-volume, mountPath: /data/lldap_config.toml, subPath: lldap_config.toml, readOnly: true}
-            # - {name: cert-volume, mountPath: /key.ldap-karlsen-fr.pem, subPath: tls.key, readOnly: true}
-            # - {name: cert-volume, mountPath: /cert.ldap-karlsen-fr.pem, subPath: tls.crt, readOnly: true}
             - {name: bootstrap-schemas-volume, mountPath: /bootstrap/group-schemas/group-schemas.json, subPath: group-schemas.json, readOnly: true}
             - {name: bootstrap-schemas-volume, mountPath: /bootstrap/group-configs/groups.json, subPath: groups.json, readOnly: true}
             - {name: bootstrap-schemas-volume, mountPath: /bootstrap/user-schemas/user-schemas.json, subPath: user-schemas.json, readOnly: true}
-            - {name: bootstrap-schemas-volume, mountPath: /bootstrap/user-configs/users.json, subPath: users.json, readOnly: true}
+            - {name: generated-schemas-volume, mountPath: /bootstrap/user-configs/users.json, subPath: users.json, readOnly: true}
       volumes:
         - {name: tmp-volume, emptyDir: {}}
+        - {name: generated-schemas-volume, emptyDir: {}}
         - {name: lldap-config-volume, configMap: {name: lldap-config}}
-        # - {name: cert-volume, secret: {secretName: ldap-karlsen-fr-certificate}}
-        - {name: bootstrap-schemas-volume, secret: {secretName: bootstrap-schemas}}
+        - {name: bootstrap-schemas-volume, configMap: {name: bootstrap-schemas}}

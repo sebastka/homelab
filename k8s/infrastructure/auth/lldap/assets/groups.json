@@ -1,0 +1,4 @@
+{"name": "k8s:administrators", "displayName": "Kubernetes Administrators"}
+{"name": "k8s:users", "displayName": "Kubernetes Users"}
+{"name": "forgejo:administrators", "displayName": "Forgejo Administrators"}
+{"name": "forgejo:users", "displayName": "Forgejo Users"}
