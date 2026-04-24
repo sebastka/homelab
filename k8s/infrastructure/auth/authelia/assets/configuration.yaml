@@ -134,7 +134,7 @@ identity_providers:
       endpoints: [userinfo, authorization, token, revocation, introspection]
     claims_policies:
       argocd_policy: {custom_claims: {argocd_claim: {attribute: argocd}}, id_token: [email, email_verified, alt_emails, name, preferred_username, argocd_claim]}  # Argo CD requires the claims other than `groups` to be in the ID Token https://github.com/argoproj/argo-cd/issues/23768
-      forgejo: {custom_claims: {sshpubkey: {}}}
+      forgejo: {custom_claims: {forgejo: {attribute: sshpubkey}}}
       grafana: {custom_claims: {grafana: {attribute: grafana}}}
       legacy: {id_token: [email, email_verified, alt_emails, name, preferred_username, groups]}  # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
       username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
