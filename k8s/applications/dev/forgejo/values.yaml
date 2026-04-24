@@ -3,7 +3,18 @@
 # https://forgejo.org/docs/latest/admin/config-cheat-sheet
 
 # Init oidc:
-# - forgejo admin auth add-oauth --provider=openidConnect --name=authelia --key=forgejo --secret=XXX --auto-discover-url=https://auth.karlsen.fr/.well-known/openid-configuration --scopes='openid email profile groups forgejo' --attribute-ssh-public-key=sshpubkey
+# forgejo admin auth add-oauth \
+#   --name=authelia \
+#   --provider=openidConnect \
+#   --key=forgejo \
+#   --secret=$SECRET \
+#   --auto-discover-url=https://auth.karlsen.fr/.well-known/openid-configuration \
+#   --icon-url=https://auth.karlsen.fr/favicon.ico \
+#   --skip-local-2fa \
+#   --scopes='openid email profile groups forgejo' \
+#   --attribute-ssh-public-key=sshpubkey \
+#   --admin-group='forgejo:administrators' \
+#   --allow-username-change=false
 ---
 
 global:
