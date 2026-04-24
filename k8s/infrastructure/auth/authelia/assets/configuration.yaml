@@ -133,22 +133,15 @@ identity_providers:
       allowed_origins_from_client_redirect_uris: true
       endpoints: [userinfo, authorization, token, revocation, introspection]
     claims_policies:
-      argocd_policy:
-        custom_claims: {argocd_claim: {attribute: argocd}}
-        # Argo CD requires the claims other than `groups` to be in the ID Token https://github.com/argoproj/argo-cd/issues/23768
-        id_token: [email, email_verified, alt_emails, name, preferred_username, argocd_claim]
-      grafana:
-        custom_claims: {grafana: {attribute: grafana}}
-      legacy:
-        # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
-        id_token: [email, email_verified, alt_emails, name, preferred_username, groups]
-      username_email:
-        id_token: [email, email_verified, alt_emails, name, preferred_username]
+      argocd_policy: {custom_claims: {argocd_claim: {attribute: argocd}}, id_token: [email, email_verified, alt_emails, name, preferred_username, argocd_claim]}  # Argo CD requires the claims other than `groups` to be in the ID Token https://github.com/argoproj/argo-cd/issues/23768
+      forgejo: {custom_claims: {sshpubkey: {}}}
+      grafana: {custom_claims: {grafana: {attribute: grafana}}}
+      legacy: {id_token: [email, email_verified, alt_emails, name, preferred_username, groups]}  # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
+      username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
     scopes:
-      argocd_scope:
-        claims: [argocd_claim]
-      grafana:
-        claims: [grafana]
+      argocd_scope: {claims: [argocd_claim]}
+      forgejo: {claims: [sshpubkey]}
+      grafana: {claims: [grafana]}
     clients:
         # https://www.authelia.com/integration/openid-connect/frequently-asked-questions/#how-do-i-generate-a-client-identifier-or-client-secret
         # Client ID: docker run --rm authelia/authelia:latest authelia crypto rand --length 72 --charset rfc3986
@@ -170,6 +163,23 @@ identity_providers:
         userinfo_signed_response_alg: none
         id_token_signed_response_alg: ES256
         access_token_signed_response_alg: ES256
+
+      - client_id: forgejo
+        client_name: Forgejo
+        client_secret: {{ secret "/secrets/client-secrets/forgejo" }}
+        public: false
+        authorization_policy: two_factor
+        claims_policy: forgejo
+        require_pkce: true
+        pkce_challenge_method: S256
+        redirect_uris:
+          - 'https://git.karlsen.fr/user/oauth2/authelia/callback'
+        scopes: [openid, email, profile, groups, forgejo] 
+        response_types: [code]
+        grant_types: [authorization_code]
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        token_endpoint_auth_method: client_secret_basic
 
       - client_id: mas
         # https://element-hq.github.io/matrix-authentication-service/setup/sso.html#general-configuration
