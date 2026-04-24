@@ -1,6 +1,9 @@
 # yaml-language-server: $schema=
 # https://artifacthub.io/packages/helm/forgejo-helm/forgejo?modal=values
 # https://forgejo.org/docs/latest/admin/config-cheat-sheet
+
+# Init oidc:
+# - forgejo admin auth add-oauth --provider=openidConnect --name=authelia --key=forgejo --secret=XXX --auto-discover-url=https://auth.karlsen.fr/.well-known/openid-configuration --scopes='openid email profile groups forgejo' --attribute-ssh-public-key=sshpubkey
 ---
 
 global:
@@ -98,11 +101,24 @@ gitea:
       REGISTER_EMAIL_CONFIRM: 'true'
       REGISTER_MANUAL_CONFIRM: 'true'
       DISABLE_REGISTRATION: 'true'
+      ALLOW_ONLY_EXTERNAL_REGISTRATION: 'true'
+      SHOW_REGISTRATION_BUTTON: 'false'
       ENABLE_NOTIFY_MAIL: 'true'
-      ENABLE_INTERNAL_SIGNIN: 'true'
+      ENABLE_INTERNAL_SIGNIN: 'false'
       DEFAULT_KEEP_EMAIL_PRIVATE: 'true'
     mailer:
       ENABLED: 'true'
+      PROTOCOL: smtps
+      SMTP_PORT: '465' 
+    openid:
+      ENABLE_OPENID_SIGNIN: 'true'
+      ENABLE_OPENID_SIGNUP: 'true'
+      WHITELISTED_URIS: auth.karlsen.fr
+    oauth2_client:
+      OPENID_CONNECT_SCOPES: email profile groups forgejo
+      USERNAME: sub
+      UPDATE_AVATAR: 'true'
+      ACCOUNT_LINKING: 'disable'
     cache:
       ADAPTER: memory
     session:
