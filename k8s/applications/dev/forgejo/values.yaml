@@ -3,6 +3,9 @@
 # https://forgejo.org/docs/latest/admin/config-cheat-sheet
 ---
 
+global:
+  hostAliases: [{ip: 192.168.0.3, hostnames: [auth.karlsen.fr]}]
+
 service:
   http:
     type: ClusterIP
