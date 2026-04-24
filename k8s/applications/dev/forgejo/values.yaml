@@ -20,8 +20,8 @@ tcpRoute:
   enabled: false
 
 resources:
-  requests: {memory: 128Mi}
-  limits: {memory: 128Mi}
+  requests: {memory: 512Mi}
+  limits: {memory: 512Mi}
 
 persistence:
   enabled: true
