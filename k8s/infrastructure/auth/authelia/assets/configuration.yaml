@@ -60,6 +60,7 @@ authentication_backend:
       extra:
         argocd: {multi_valued: true, value_type: string}
         grafana: {multi_valued: true, value_type: string}
+        sshpubkey: {multi_valued: true, value_type: string}
 
 # https://www.authelia.com/configuration/security/password-policy/
 # password_policy: {}
