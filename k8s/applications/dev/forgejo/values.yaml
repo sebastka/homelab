@@ -7,10 +7,9 @@
 #   --name=authelia \
 #   --provider=openidConnect \
 #   --key=forgejo \
-#   --secret=$SECRET \
+#   --secret='' \
 #   --auto-discover-url=https://auth.karlsen.fr/.well-known/openid-configuration \
-#   --icon-url=https://auth.karlsen.fr/favicon.ico \
-#   --skip-local-2fa \
+#   --skip-local-2fa=true \
 #   --scopes='openid email profile groups forgejo' \
 #   --attribute-ssh-public-key=sshpubkey \
 #   --admin-group='forgejo:administrators' \
