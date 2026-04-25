@@ -10,7 +10,7 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 10Gi}}
-  storageClassName: longhorn-static
+  storageClassName: longhorn-encrypted
   volumeName: harbor-registry-pv
 ---
 apiVersion: v1
@@ -24,22 +24,8 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 1Gi}}
-  storageClassName: longhorn-static
+  storageClassName: longhorn-encrypted
   volumeName: harbor-joblog-pv
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: harbor-redis-pvc
-  namespace: harbor
-  labels:
-    app.kubernetes.io/name: harbor
-    app.kubernetes.io/component: redis
-spec:
-  accessModes: [ReadWriteOncePod]
-  resources: {requests: {storage: 1Gi}}
-  storageClassName: longhorn-static
-  volumeName: harbor-redis-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -52,5 +38,5 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
-  storageClassName: longhorn-static
+  storageClassName: longhorn-encrypted
   volumeName: harbor-trivy-pv

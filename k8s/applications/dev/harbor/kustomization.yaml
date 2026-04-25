@@ -9,6 +9,9 @@ resources:
   - Namespace.yaml
   - SealedSecret.harbor-secrets.yaml
   - PersistentVolumeClaim.yaml
+  - ServiceAccounts.yaml
+  - Deployment.valkey.yaml
+  - Services.yaml
   - HTTPRoute.yaml
 
 helmCharts:

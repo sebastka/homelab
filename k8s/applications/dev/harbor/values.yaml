@@ -4,8 +4,7 @@
 
 expose:
   type: clusterIP
-  tls:
-    enabled: false
+  tls: {enabled: false}
   # route:
   #   parentRefs:
   #     - {namespace: gateway, name: internal, sectionName: https-wc-karlsen-app}
@@ -24,8 +23,8 @@ persistence:
     jobservice:
       jobLog:
         existingClaim: harbor-joblog-pvc
-    redis:
-      existingClaim: harbor-redis-pvc
+    # redis:
+    #   existingClaim: harbor-redis-pvc
     trivy:
       existingClaim: harbor-trivy-pvc
 
@@ -36,10 +35,8 @@ internalTLS:
   enabled: false
 
 ipFamily:
-  ipv6:
-    enabled: false
-  ipv4:
-    enabled: true
+  ipv6: {enabled: false}
+  ipv4: {enabled: true}
 
 # imagePullSecrets:
 #   - name: docker-registry-secret
@@ -113,13 +110,13 @@ database:
 # 2207 - Using 'redis.external.existingSecret' causes nil pointer exception
 # https://github.com/goharbor/harbor-helm/issues/2207
 redis:
-  type: internal
-  internal:
-    resources:
-      requests: {memory: 32Mi}
-      limits: {memory: 32Mi}
-  # external:
-  #   addr: redis01.hera.home.karlsen.fr:6379
+  type: external
+  # internal:
+  #   resources:
+  #     requests: {memory: 32Mi}
+  #     limits: {memory: 32Mi}
+  external:
+    addr: valkey:6379
   #   username: harbor
   #   password:
   #   # existingSecret: harbor-secrets  # REDIS_USERNAME - REDIS_PASSWORD
@@ -128,9 +125,5 @@ exporter:
   replicas: 1
   revisionHistoryLimit: 1
   resources:
-    requests:
-      # cpu: 100m
-      memory: 256Mi
-    limits:
-      # cpu: 100m
-      memory: 256Mi
+    requests: {memory: 256Mi}
+    limits: {memory: 256Mi}
