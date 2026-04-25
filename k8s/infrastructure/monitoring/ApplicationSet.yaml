@@ -13,10 +13,9 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/infrastructure/monitoring/*
-          - path: k8s/infrastructure/monitoring/grafana
-            exclude: true
-          - path: k8s/infrastructure/monitoring/kube-prometheus-stack
-            exclude: true
+          - {path: k8s/infrastructure/monitoring/grafana, exclude: true}
+          - {path: k8s/infrastructure/monitoring/kube-prometheus-stack, exclude: true}
+          - {path: k8s/infrastructure/monitoring/stork, exclude: true}
   template:
     metadata:
       name: '{{ path.basename }}'
