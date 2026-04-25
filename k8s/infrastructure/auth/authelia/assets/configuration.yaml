@@ -182,6 +182,21 @@ identity_providers:
         userinfo_signed_response_alg: none
         token_endpoint_auth_method: client_secret_basic
 
+      # - client_id: harbor
+      #   client_name: Harbor
+      #   client_secret: {{ secret "/secrets/client-secrets/harbor" }}
+      #   public: false
+      #   authorization_policy: two_factor
+      #   require_pkce: false
+      #   redirect_uris:
+      #     - https://harbor.karlsen.app/c/oidc/callback
+      #   scopes: [openid, offline_access, email, profile, groups] 
+      #   response_types: [code]
+      #   grant_types: [authorization_code, refresh_token]
+      #   access_token_signed_response_alg: none
+      #   userinfo_signed_response_alg: none
+      #   token_endpoint_auth_method: client_secret_basic
+
       - client_id: mas
         # https://element-hq.github.io/matrix-authentication-service/setup/sso.html#general-configuration
         client_secret: {{ secret "/secrets/client-secrets/mas" }}
@@ -199,6 +214,22 @@ identity_providers:
         userinfo_signed_response_alg: none
         id_token_signed_response_alg: RS256
         access_token_signed_response_alg: RS256
+
+      - client_id: portainer
+        client_name: Portainer
+        client_secret: {{ secret "/secrets/client-secrets/portainer" }}
+        public: false
+        authorization_policy: two_factor
+        require_pkce: false
+        pkce_challenge_method: ''
+        redirect_uris:
+          - https://portainer.talmox.hera.home.karlsen.fr
+        scopes: [openid, email, profile, groups]
+        response_types: [code]
+        grant_types: [authorization_code]
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        token_endpoint_auth_method: client_secret_post
 
 # https://www.authelia.com/configuration/miscellaneous/privacy-policy/
 # privacy_policy: {}
