@@ -13,6 +13,7 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/applications/public/*
+          - {path: k8s/applications/public/slink, exclude: true}
   template:
     metadata:
       name: '{{ path.basename }}'
