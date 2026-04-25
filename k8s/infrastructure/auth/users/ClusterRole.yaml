@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: oidc-viewer
+  name: cluster-reader
 rules:
   - apiGroups: [""]
     resources: ["pods", "services", "nodes"]
