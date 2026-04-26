@@ -1,0 +1,22 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: n8n-db
+  namespace: cnpg-database
+spec:
+  instances: 1
+  postgresql: {parameters: {timezone: Europe/Oslo}}
+  bootstrap:
+    initdb:
+      database: n8n
+      owner: n8n
+      secret: {name: n8n-db-credentials}
+  managed: {services: {disabledDefaultServices: [ro, r]}}
+  storage:
+    size: 5Gi
+    pvcTemplate:
+      accessModes: [ReadWriteOncePod]
+      storageClassName: longhorn-encrypted
+      volumeMode: Filesystem
+      volumeName: n8n-db-pv
