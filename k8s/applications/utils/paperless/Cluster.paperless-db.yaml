@@ -1,0 +1,22 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: paperless-db
+  namespace: cnpg-database
+spec:
+  instances: 1
+  postgresql: {parameters: {timezone: Europe/Oslo}}
+  bootstrap:
+    initdb:
+      database: paperless
+      owner: paperless
+      secret: {name: paperless-db-credentials}
+  managed: {services: {disabledDefaultServices: [ro, r]}}
+  storage:
+    size: 2Gi
+    pvcTemplate:
+      accessModes: [ReadWriteOncePod]
+      storageClassName: longhorn-encrypted
+      volumeMode: Filesystem
+      volumeName: paperless-db-pv

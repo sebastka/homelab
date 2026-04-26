@@ -1,7 +1,7 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: paperless
+# namespace: paperless
 
 generatorOptions:
   disableNameSuffixHash: true
@@ -13,7 +13,9 @@ configMapGenerator:
 resources:
   - Namespace.yaml
   - SealedSecret.paperless-secrets.yaml
+  - SealedSecret.paperless-db-credentials.yaml
   - PersistentVolumeClaim.yaml
+  - Cluster.paperless-db.yaml
   - ServiceAccounts.yaml
   - Deployment.paperless.yaml
   - Deployment.gotenberg.yaml
