@@ -35,7 +35,7 @@ spec:
       containers:
         - name: bgutils-pot
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
-          image: ghcr.io/alexta69/metube:2026.04.21
+          image: ghcr.io/alexta69/metube:2026.04.26
           command: [bgutil-pot, server]
           securityContext:
             allowPrivilegeEscalation: false
