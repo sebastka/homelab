@@ -9,15 +9,25 @@ metadata:
   namespace: thelounge
 spec:
   replicas: 1
+  strategy: {type: Recreate}
   selector:
     matchLabels:
       app.kubernetes.io/name: thelounge
+      app.kubernetes.io/version: 4.4.3
+      app.kubernetes.io/component: irc-client
+      app.kubernetes.io/part-of: thelounge
+      # app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       namespace: thelounge
       labels:
         app.kubernetes.io/name: thelounge
+        app.kubernetes.io/version: 4.4.3
+        app.kubernetes.io/component: irc-client
+        app.kubernetes.io/part-of: thelounge
+        # app.kubernetes.io/managed-by: kustomize
     spec:
+      serviceAccount: thelounge
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

@@ -5,9 +5,9 @@ namespace: thelounge
 
 resources:
   - Namespace.yaml
+  - ServiceAccount.yaml
   - Deployment.yaml
-  - Service.http.yaml
-  - Service.identd.yaml
+  - Service.yaml
   - HTTPRoute.yaml
   - PersistentVolumeClaim.yaml
   - SealedSecret.oidc.yaml
