@@ -7,17 +7,6 @@ metadata:
   namespace: paperless
 spec:
   accessModes: [ReadWriteOncePod]
-  resources: {requests: {storage: 5Gi}}
-  storageClassName: longhorn-static
+  resources: {requests: {storage: 20Gi}}
+  storageClassName: longhorn-encrypted
   volumeName: paperless-data-pv
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: paperless-media-pvc
-  namespace: paperless
-spec:
-  accessModes: [ReadWriteOncePod]
-  resources: {requests: {storage: 5Gi}}
-  storageClassName: longhorn-static
-  volumeName: paperless-media-pv

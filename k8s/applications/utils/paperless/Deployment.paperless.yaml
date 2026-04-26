@@ -88,8 +88,8 @@ spec:
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
             - {name: paperless-consume-volume, mountPath: /usr/src/paperless/consume}
             - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
-            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
-            - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
         - name: paperless-scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
@@ -112,8 +112,8 @@ spec:
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
             - {name: paperless-consume-volume, mountPath: /usr/src/paperless/consume}
             - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
-            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
-            - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
         - name: paperless-task-queue
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
@@ -136,8 +136,8 @@ spec:
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
             - {name: paperless-consume-volume, mountPath: /usr/src/paperless/consume}
             - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
-            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
-            - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
         - name: paperless-webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
@@ -162,8 +162,8 @@ spec:
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
             - {name: paperless-consume-volume, mountPath: /usr/src/paperless/consume}
             - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
-            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data}
-            - {name: paperless-media-volume, mountPath: /usr/src/paperless/media}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: cache-volume, emptyDir: {}}
@@ -172,4 +172,3 @@ spec:
         - {name: paperless-consume-volume, emptyDir: {}}
         - {name: paperless-export-volume, emptyDir: {}}
         - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-pvc}}
-        - {name: paperless-media-volume, persistentVolumeClaim: {claimName: paperless-media-pvc}}
