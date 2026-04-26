@@ -1,0 +1,22 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: lldap-db
+  namespace: cnpg-database
+spec:
+  instances: 1
+  postgresql: {parameters: {timezone: Europe/Oslo}}
+  bootstrap:
+    initdb:
+      database: lldap
+      owner: lldap
+      secret: {name: lldap-db-credentials}
+  managed: {services: {disabledDefaultServices: [ro, r]}}
+  storage:
+    size: 1Gi
+    pvcTemplate:
+      accessModes: [ReadWriteOncePod]
+      storageClassName: longhorn-encrypted
+      volumeMode: Filesystem
+      volumeName: lldap-db-pv
