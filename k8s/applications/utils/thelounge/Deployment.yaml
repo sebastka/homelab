@@ -51,6 +51,6 @@ spec:
             - {name: identd-tcp, containerPort: 9001, protocol: TCP}
             - {name: identd-udp, containerPort: 9001, protocol: UDP}
           volumeMounts:
-            - {name: opt-thelounge, mountPath: /var/opt/thelounge}
+            - {name: thelounge-data-volume, mountPath: /var/opt/thelounge, subPath: thelounge}
       volumes:
-        - {name: opt-thelounge, persistentVolumeClaim: {claimName: thelounge-data-pvc}}
+        - {name: thelounge-data-volume, persistentVolumeClaim: {claimName: thelounge-data-pvc}}
