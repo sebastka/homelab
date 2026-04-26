@@ -7,4 +7,4 @@ resources:
   - Namespace.yaml
   - ServiceAccount.yaml
   - Deployment.yaml
-  - PersistentVolumeClaim.yaml
+  # - PersistentVolumeClaim.yaml

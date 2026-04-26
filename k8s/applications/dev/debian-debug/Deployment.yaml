@@ -35,13 +35,11 @@ spec:
         - name: debian-debug
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/debian-debug/Dockerfile
           image: ghcr.io/sebastka/debian-debug:2026.4.26
-          command: [sleep, infinity]
-          # command: [/bin/sh, -c]
-          # args:
-          #   - |
-          #     set -eux
-          #     rsync -a --omit-dir-times /mnt/from/ /mnt/to/
-          #     while [ ! -f /tmp/stop ]; do sleep 10; done
+          command: [/bin/sh, -c]
+          args:
+            - |
+              set -eux
+              while [ ! -f /tmp/stop ]; do sleep 15; done
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -51,9 +49,9 @@ spec:
             limits: {memory: 128Mi}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
-            - {name: from-volume, mountPath: /mnt/from, readOnly: true}
-            - {name: to-volume, mountPath: /mnt/to}
+            # - {name: from-volume, mountPath: /mnt/from, readOnly: true}
+            # - {name: to-volume, mountPath: /mnt/to}
       volumes:
         - {name: tmp-volume, emptyDir: {}}
-        - {name: from-volume, persistentVolumeClaim: {claimName: from-pvc}}
-        - {name: to-volume, persistentVolumeClaim: {claimName: to-pvc}}
+      #   - {name: from-volume, persistentVolumeClaim: {claimName: from-pvc}}
+      #   - {name: to-volume, persistentVolumeClaim: {claimName: to-pvc}}
