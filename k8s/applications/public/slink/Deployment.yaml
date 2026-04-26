@@ -34,7 +34,7 @@ spec:
       initContainers:
         - name: slink-init
           # Dockerfile: https://github.com/andrii-kryvoviaz/slink/blob/main/docker/Dockerfile.prod
-          image: anirdev/slink:v1.10.6
+          image: anirdev/slink:v1.11.0
           command: [/bin/sh, -c]
           args:
             - |
