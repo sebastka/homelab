@@ -1,0 +1,20 @@
+volume_name,pv_name,groups
+deluged-config-pv,deluged-config-pv,group1
+jellyfin-config-pv,jellyfin-config-pv,group1
+# forgejo-shared-storage-pv,forgejo-shared-storage-pv,group1
+# harbor-db-pv,harbor-joblog-pv,group1
+# harbor-joblog-pv,harbor-joblog-pv,group1
+# harbor-registry-pv,harbor-registry-pv,group1
+# harbor-trivy-pv,harbor-trivy-pv,group1
+metube-persistent-pv,metube-persistent-pv,group1
+n8n-db-pv,n8n-db-pv,group1
+ott-db-pv,ott-db-pv,group1
+paperless-data-pv,paperless-data-pv,group1
+paperless-db-pv,paperless-db-pv,group1
+portainer-data-pv,portainer-data-pv,group1
+stork-db-pv,stork-db-pv,group1
+synapse-data-pv,synapse-data-pv,group1
+synapse-db-pv,synapse-db-pv,group1
+# slink-app-pv,slink-app-pv,group1
+thelounge-data-pv,thelounge-data-pv,group1
+zabbix-db-pv,zabbix-db-pv,group1
