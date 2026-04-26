@@ -42,8 +42,8 @@ spec:
             readOnlyRootFilesystem: false
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 128Mi}
-            limits: {memory: 128Mi}
+            requests: {memory: 256Mi}
+            limits: {memory: 256Mi}
           envFrom:
             - secretRef: {name: zabbix-secrets}
             - configMapRef: {name: zabbix-env}
