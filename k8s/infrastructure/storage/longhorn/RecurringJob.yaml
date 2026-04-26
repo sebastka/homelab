@@ -14,8 +14,8 @@ spec:
   concurrency: 1
   retain: 7
   groups: [group1]
-  parameters:
-    full-backup-interval: '1'
+  # parameters:
+  #   full-backup-interval: '7'
   labels:
     backup-schedule: daily
     retention-policy: weekly
