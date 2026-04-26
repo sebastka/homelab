@@ -35,12 +35,13 @@ spec:
         - name: debian-debug
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/debian-debug/Dockerfile
           image: ghcr.io/sebastka/debian-debug:2026.4.24
-          command: [/bin/sh, -c]
-          args:
-            - |
-              set -eux
-              rsync -a --omit-dir-times /mnt/from/ /mnt/to/
-              while [ ! -f /tmp/stop ]; do sleep 10; done
+          command: [sleep, infinity]
+          # command: [/bin/sh, -c]
+          # args:
+          #   - |
+          #     set -eux
+          #     rsync -a --omit-dir-times /mnt/from/ /mnt/to/
+          #     while [ ! -f /tmp/stop ]; do sleep 10; done
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
