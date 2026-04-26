@@ -8,7 +8,7 @@ resources:
 
 helmCharts:
   - name: cloudnative-pg
-    repo: https://cloudnative-pg.github.io/charts
+    repo: oci://ghcr.io/cloudnative-pg/charts
     version: 0.28.0  # renovate: github-releases=cloudnative-pg/charts
     releaseName: cloudnative-pg
     namespace: cnpg-system
