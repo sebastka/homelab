@@ -9,7 +9,5 @@ resources:
   - ServiceAccount.yaml
   - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
-  - SealedSecret.postgres-secrets.yaml
   - SealedSecret.mariadb-secrets.yaml
-  - CronJob.Postgres.yaml
   - CronJob.MariaDB.yaml
