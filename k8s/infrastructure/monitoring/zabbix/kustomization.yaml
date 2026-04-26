@@ -1,0 +1,23 @@
+# https://kb.isc.org/docs/zabbix-quickstart-guide#debian-apt-compatible
+# https://github.com/isc-projects/zabbix/tree/master/docker
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# namespace: zabbix
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - {namespace: zabbix, name: zabbix-env, envs: [assets/zabbix.env]}
+
+resources:
+  - Namespace.yaml
+  - SealedSecret.zabbix-db-credentials.yaml
+  - SealedSecret.zabbix-secrets.yaml
+  - Cluster.zabbix-db.yaml
+  - ServiceAccount.yaml
+  - Deployment.backend.yaml
+  - Deployment.frontend.yaml
+  - Service.yaml
+  - HTTPRoute.yaml

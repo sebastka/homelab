@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: zabbix
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: backend
+      app.kubernetes.io/version: '7.4.9'
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: zabbix
+    # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: zabbix
+      labels:
+        app.kubernetes.io/name: backend
+        app.kubernetes.io/version: '7.4.9'
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: zabbix
+      # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: backend
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1997
+        runAsGroup: 1995
+        fsGroup: 1995
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+        sysctls:
+          - {name: net.ipv4.ping_group_range, value: '0 1995'}
+      containers:
+        - name: backend
+          # Dockerfile: https://github.com/zabbix/zabbix-docker/blob/7.4/Dockerfiles/server-pgsql/alpine/Dockerfile
+          image: zabbix/zabbix-server-pgsql:alpine-7.4.9
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 128Mi}
+            limits: {memory: 128Mi}
+          envFrom:
+            - secretRef: {name: zabbix-secrets}
+          ports:
+            - {name: zabbix-server, protocol: TCP, containerPort: 10051}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: var-lib-volume, mountPath: /var/lib/zabbix}
+      volumes:
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: var-lib-volume, emptyDir: {}}
