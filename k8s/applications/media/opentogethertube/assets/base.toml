@@ -20,10 +20,10 @@ level = "info"
 [db]
 mode = "postgres"
 # url = "postgresql://user:password@localhost:5432/ott"
-host = "db02.hera.home.karlsen.fr"
+host = "ott-db-rw.cnpg-database.svc.cluster.local"
 port = 5432
-name = "opentogethertube"
-user = "opentogethertube"
+name = "ott"
+user = "ott"
 # password = "" # POSTGRES_PASSWORD
 metrics = false
 
