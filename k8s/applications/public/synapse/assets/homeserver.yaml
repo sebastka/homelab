@@ -35,7 +35,7 @@ database:
     user: synapse
     # password:  # In secret
     database: synapse
-    host: db02.hera.home.karlsen.fr
+    host: synapse-db-rw.cnpg-database.svc.cluster.local 
     cp_min: 5
     cp_max: 10
 

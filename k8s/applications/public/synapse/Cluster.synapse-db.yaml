@@ -1,0 +1,22 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: synapse-db
+  namespace: cnpg-database
+spec:
+  instances: 1
+  postgresql: {parameters: {timezone: Europe/Oslo}}
+  bootstrap:
+    initdb:
+      database: synapse
+      owner: synapse
+      secret: {name: synapse-db-credentials}
+  managed: {services: {disabledDefaultServices: [ro, r]}}
+  storage:
+    size: 1Gi
+    pvcTemplate:
+      accessModes: [ReadWriteOncePod]
+      storageClassName: longhorn-encrypted
+      volumeMode: Filesystem
+      volumeName: synapse-db-pv
