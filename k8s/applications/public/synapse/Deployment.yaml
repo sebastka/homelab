@@ -81,7 +81,7 @@ spec:
             - configMapRef: {name: run-env}
             # - configMapRef: {name: generate-env}
           volumeMounts:
-            - {name: data-volume, mountPath: /data}
+            - {name: data-volume, mountPath: /data, subPath: synapse-data}
             - {name: tmp-volume, mountPath: /tmp}
             - {name: log-volume, mountPath: /var/log}
             - {name: generated-config-volume, mountPath: /generated-config, readOnly: true}
