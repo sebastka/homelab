@@ -91,7 +91,7 @@ max_spider_size: 10M
 # turn_allow_guests: true
 
 ## Registration ##
-# enable_registration: true
+enable_registration: false
 registration_requires_token: true
 # enable_registration_without_verification: false
 enable_room_list_search: true
