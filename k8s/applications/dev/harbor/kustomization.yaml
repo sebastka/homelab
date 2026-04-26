@@ -7,7 +7,9 @@ namespace: harbor
 
 resources:
   - Namespace.yaml
+  - SealedSecret.harbor-db-credentials.yaml
   - SealedSecret.harbor-secrets.yaml
+  - Cluster.harbor-db.yaml
   - PersistentVolumeClaim.yaml
   - ServiceAccounts.yaml
   - Deployment.valkey.yaml
