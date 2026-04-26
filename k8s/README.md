@@ -32,6 +32,7 @@
 Kube overview:
 - `watch -n 5 kubectl get nodes -o wide`
 - `watch -n 5 kubectl get deployments -o wide -A`
+- `watch -n 5 kubectl get daemonsets.apps -o wide -A`
 - `watch -n 5 kubectl get pods -o wide -A`
 - `watch -n 5 kubectl get svc -o wide -A`
 
