@@ -5,6 +5,8 @@ metadata:
   name: jellyfin-config-pvc
   namespace: jellyfin
   labels:
+    app.kubernetes.io/name: jellyfin
+    recurring-job.longhorn.io/source: enabled
     recurring-job-group.longhorn.io/group1: enabled
 spec:
   accessModes: [ReadWriteOncePod]

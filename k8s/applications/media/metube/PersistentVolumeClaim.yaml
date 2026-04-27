@@ -5,6 +5,8 @@ metadata:
   name: metube-persistent-pvc
   namespace: metube
   labels:
+    app.kubernetes.io/name: metube
+    recurring-job.longhorn.io/source: enabled
     recurring-job-group.longhorn.io/group1: enabled
 spec:
   accessModes: [ReadWriteOncePod]

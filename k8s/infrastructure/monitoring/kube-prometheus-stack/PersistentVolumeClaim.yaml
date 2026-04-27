@@ -1,16 +1,16 @@
-# https://juliushinze.de/posts/paperless-on-k8s/
+# Make sure this matches the volumeClaimTemplate in values.yaml
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: paperless-data-pvc
-  namespace: paperless
+  name: prometheus-data-pvc
+  namespace: kube-prometheus-stack
   labels:
-    app.kubernetes.io/name: paperless
+    app.kubernetes.io/name: kube-prometheus-stack
     recurring-job.longhorn.io/source: enabled
     recurring-job-group.longhorn.io/group1: enabled
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 20Gi}}
   storageClassName: longhorn-encrypted
-  volumeName: paperless-data-pv
+  volumeName: prometheus-data-pv

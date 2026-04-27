@@ -6,6 +6,7 @@ namespace: kube-prometheus-stack
 resources:
   - Namespace.yaml
   - HTTPRoute.yaml
+  - PersistentVolumeClaim.yaml
 
 helmCharts:
   - name: kube-prometheus-stack

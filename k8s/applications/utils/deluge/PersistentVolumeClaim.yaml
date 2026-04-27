@@ -5,6 +5,8 @@ metadata:
   name: deluged-config-pvc
   namespace: deluge
   labels:
+    app.kubernetes.io/name: deluged
+    recurring-job.longhorn.io/source: enabled
     recurring-job-group.longhorn.io/group1: enabled
 spec:
   accessModes: [ReadWriteOncePod]

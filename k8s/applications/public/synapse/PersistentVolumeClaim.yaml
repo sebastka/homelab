@@ -5,6 +5,8 @@ metadata:
   name: synapse-data-pvc
   namespace: synapse
   labels:
+    app.kubernetes.io/name: synapse
+    recurring-job.longhorn.io/source: enabled
     recurring-job-group.longhorn.io/group1: enabled
 spec:
   accessModes: [ReadWriteOncePod]
