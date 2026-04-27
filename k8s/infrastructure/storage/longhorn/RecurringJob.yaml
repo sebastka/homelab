@@ -10,12 +10,12 @@ metadata:
 spec:
   name: backup-group1-recurring-job
   task: backup
-  cron: 00 5 * * *
-  concurrency: 1
   retain: 7
-  groups: [group1]
+  concurrency: 1
+  cron: 00 5 * * *
   # parameters:
   #   full-backup-interval: '7'
-  labels:
-    backup-schedule: daily
-    retention-policy: weekly
+  groups: [group1]
+  # labels:
+  #   backup-schedule: daily
+  #   retention-policy: weekly
