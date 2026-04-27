@@ -5,6 +5,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: paperless-data-pvc
   namespace: paperless
+  labels:
+    recurring-job-group.longhorn.io/group1: enabled
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 20Gi}}
