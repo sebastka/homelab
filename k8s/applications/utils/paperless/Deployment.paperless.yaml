@@ -34,7 +34,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       initContainers:
         - name: paperless-custom-init
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: ['/bin/sh', '-c']
           args:
             - |
@@ -69,7 +69,7 @@ spec:
       containers:
         - name: paperless-consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: [python3, "manage.py", "document_consumer"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -93,7 +93,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
         - name: paperless-scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -117,7 +117,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
         - name: paperless-task-queue
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: [celery, "--app", "paperless", "worker", "--loglevel", "INFO"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -141,7 +141,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
         - name: paperless-webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: [granian, "--interface", "asginl", "--ws", "paperless.asgi:application"]
           securityContext:
             allowPrivilegeEscalation: false
