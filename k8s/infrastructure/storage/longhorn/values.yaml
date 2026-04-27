@@ -17,6 +17,7 @@ defaultSettings:
   snapshotDataIntegrityCronjob: '0 3 * * *'  # Default: '0 0 */7 * *'
   snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: true
   backupCompressionMethod: gzip
+  allowRecurringJobWhileVolumeDetached: true
 
 longhornManager:
   resources:
