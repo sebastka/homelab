@@ -19,21 +19,3 @@ spec:
   labels:
     backup-schedule: daily
     retention-policy: weekly
-# ---
-# apiVersion: longhorn.io/v1beta2
-# kind: RecurringJob
-# metadata:
-#   name: backup-group2-recurring-job
-#   namespace: longhorn-system
-# spec:
-#   name: backup-group2-recurring-job
-#   task: backup
-#   cron: 00 4 * * *
-#   concurrency: 1
-#   retain: 7
-#   groups: [group2]
-#   parameters:
-#     full-backup-interval: '7'
-#   labels:
-#     backup-schedule: daily
-#     retention-policy: weekly
