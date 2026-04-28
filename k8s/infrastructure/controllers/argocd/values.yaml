@@ -31,15 +31,9 @@ configs:
       clientID: argocd
       clientSecret: $oidc:authelia.clientSecret
       cliClientID: argocd-cli
-      requestedScopes: [openid, offline_access]
+      requestedScopes: [openid, email, groups]
       enableUserInfoGroups: true
-      requestedIDTokenClaims:
-        argocd_claim: {essential: true}
-        name: {essential: false}
-        email: {essential: false}
-        preferred_username: {essential: false}
       userInfoPath: /api/oidc/userinfo
-      userInfoCacheExpiration: 5m
     kustomize.buildOptions: --enable-helm
   cmp:
     create: true
@@ -47,7 +41,6 @@ configs:
     server.insecure: true
     controller.diff.server.side: true
   rbac:
-    scopes: '[argocd_claim]'
     policy.csv: |
       g, k8s:admins, role:admin
       g, k8s:users, role:readonly
