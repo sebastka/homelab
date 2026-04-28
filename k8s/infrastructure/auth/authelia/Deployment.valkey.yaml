@@ -5,8 +5,8 @@ metadata:
   name: valkey
   namespace: authelia
 spec:
-  strategy: {type: Recreate}
   replicas: 1
+  strategy: {type: Recreate}
   selector:
     matchLabels:
       app.kubernetes.io/name: valkey
