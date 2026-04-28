@@ -35,7 +35,7 @@ spec:
       initContainers:
         - name: init-dirs
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
-          image: ghcr.io/alexta69/metube:2026.04.26
+          image: ghcr.io/alexta69/metube:2026.04.28
           command: [/bin/sh, '-c']
           args:
             - |
@@ -56,7 +56,7 @@ spec:
       containers:
         - name: metube
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
-          image: ghcr.io/alexta69/metube:2026.04.26
+          image: ghcr.io/alexta69/metube:2026.04.28
           command: [python3, app/main.py]
           securityContext:
             allowPrivilegeEscalation: false
