@@ -149,8 +149,7 @@ identity_providers:
         authorization_policy: two_factor
         require_pkce: false
         pkce_challenge_method: ''
-        redirect_uris:
-          - https://argocd.talmox.hera.home.karlsen.fr/auth/callback
+        redirect_uris: [https://argocd.talmox.hera.home.karlsen.fr/auth/callback]
         scopes: [openid, groups, email]
         response_types: [code]
         grant_types: [authorization_code]
@@ -164,8 +163,7 @@ identity_providers:
         authorization_policy: two_factor
         require_pkce: true
         pkce_challenge_method: S256
-        redirect_uris:
-          - http://localhost:8085/auth/callback
+        redirect_uris: [http://localhost:8085/auth/callback]
         scopes: [openid, offline_access, groups, email]
         response_types: [code]
         grant_types: [authorization_code, refresh_token]
@@ -181,8 +179,7 @@ identity_providers:
         claims_policy: forgejo
         require_pkce: true
         pkce_challenge_method: S256
-        redirect_uris:
-          - https://git.karlsen.fr/user/oauth2/authelia/callback
+        redirect_uris: [https://git.karlsen.fr/user/oauth2/authelia/callback]
         scopes: [openid, email, profile, groups, forgejo]
         response_types: [code]
         grant_types: [authorization_code]
@@ -196,8 +193,7 @@ identity_providers:
       #   public: false
       #   authorization_policy: two_factor
       #   require_pkce: false
-      #   redirect_uris:
-      #     - https://harbor.karlsen.app/c/oidc/callback
+      #   redirect_uris: [https://harbor.karlsen.app/c/oidc/callback]
       #   scopes: [openid, offline_access, email, profile, groups]
       #   response_types: [code]
       #   grant_types: [authorization_code, refresh_token]
@@ -212,8 +208,7 @@ identity_providers:
         authorization_policy: two_factor
         claims_policy: headlamp_policy
         require_pkce: false
-        redirect_uris:
-          - https://headlamp.talmox.hera.home.karlsen.fr/oidc-callback
+        redirect_uris: [https://headlamp.talmox.hera.home.karlsen.fr/oidc-callback]
         scopes: [openid, email, profile, groups]
         response_types: [code]
         grant_types: [authorization_code]
@@ -228,8 +223,7 @@ identity_providers:
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 3 months
-        redirect_uris:
-          - https://mas.karlsen.fr/upstream/callback/01KPNSVGCRHBYC9MY7A9P40ZPQ
+        redirect_uris: [https://mas.karlsen.fr/upstream/callback/01KPNSVGCRHBYC9MY7A9P40ZPQ]
         # logout_uris: https://mas.karlsen.fr/upstream/backchannel-logout/01KPNSVGCRHBYC9MY7A9P40ZPQ
         response_types: [code]
         scopes: [openid, email, profile, groups]
@@ -246,8 +240,7 @@ identity_providers:
         authorization_policy: two_factor
         require_pkce: false
         pkce_challenge_method: ''
-        redirect_uris:
-          - https://portainer.talmox.hera.home.karlsen.fr
+        redirect_uris: [https://portainer.talmox.hera.home.karlsen.fr]
         scopes: [openid, email, profile, groups]
         response_types: [code]
         grant_types: [authorization_code]
