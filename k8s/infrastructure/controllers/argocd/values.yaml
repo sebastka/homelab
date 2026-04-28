@@ -29,7 +29,7 @@ configs:
       name: Authelia
       issuer: https://auth.karlsen.fr
       clientID: argocd
-      clientSecret: $oidc.authelia.clientSecret
+      clientSecret: $oidc:authelia.clientSecret
       cliClientID: argocd-cli
       requestedScopes: [openid, email, groups]
       enableUserInfoGroups: true
