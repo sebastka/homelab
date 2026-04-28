@@ -134,7 +134,7 @@ identity_providers:
       allowed_origins_from_client_redirect_uris: true
       endpoints: [userinfo, authorization, token, revocation, introspection]
     claims_policies:
-      argocd_policy: {custom_claims: {argocd_claim: {attribute: argocd}}, id_token: [email, email_verified, alt_emails, name, preferred_username, argocd_claim]}  # Argo CD requires the claims other than `groups` to be in the ID Token https://github.com/argoproj/argo-cd/issues/23768
+      # argocd_policy: {custom_claims: {argocd_claim: {attribute: argocd}}, id_token: [email, email_verified, alt_emails, name, preferred_username, argocd_claim]}  # Argo CD requires the claims other than `groups` to be in the ID Token https://github.com/argoproj/argo-cd/issues/23768
       forgejo: {custom_claims: {forgejo: {attribute: sshpubkey}}}
       headlamp_policy: {id_token: [email, preferred_username, groups]}
       grafana: {custom_claims: {grafana: {attribute: grafana}}}
@@ -145,27 +145,36 @@ identity_providers:
       forgejo: {claims: [forgejo]}
       grafana: {claims: [grafana]}
     clients:
-        # https://www.authelia.com/integration/openid-connect/frequently-asked-questions/#how-do-i-generate-a-client-identifier-or-client-secret
-        # Client ID: docker run --rm authelia/authelia:latest authelia crypto rand --length 72 --charset rfc3986
-        # Client secret: docker run --rm authelia/authelia:latest authelia crypto hash generate pbkdf2 --variant sha512 --random --random.length 72 --random.charset rfc3986
       - client_id: argocd
-        client_secret: {{ secret "/secrets/client-secrets/argocd" }}
         client_name: Argo CD
+        client_secret: {{ secret "/secrets/client-secrets/argocd" }}
         public: false
         authorization_policy: two_factor
-        claims_policy: argocd_policy
-        pre_configured_consent_duration: 3 months
         require_pkce: false
+        pkce_challenge_method: ''
         redirect_uris:
           - https://argocd.talmox.hera.home.karlsen.fr/auth/callback
-          - https://argocd.talmox.hera.home.karlsen.fr/applications
+        scopes: [openid, groups, email]
         response_types: [code]
-        scopes: [openid, email, profile, offline_access, argocd_scope]
-        grant_types: [authorization_code, refresh_token]
+        grant_types: [authorization_code]
+        access_token_signed_response_alg: none
         userinfo_signed_response_alg: none
-        id_token_signed_response_alg: ES256
-        access_token_signed_response_alg: ES256
-        token_endpoint_auth_method: client_secret_post
+        token_endpoint_auth_method: client_secret_basic
+
+      - client_id: argocd-cli
+        client_name: Argo CD (CLI)
+        public: true
+        authorization_policy: two_factor
+        require_pkce: true
+        pkce_challenge_method: S256
+        redirect_uris:
+          - http://localhost:8085/auth/callback
+        scopes: [openid, offline_access, groups, email]
+        response_types: [code]
+        grant_types: [authorization_code, refresh_token]
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        token_endpoint_auth_method: none
 
       - client_id: forgejo
         client_name: Forgejo
