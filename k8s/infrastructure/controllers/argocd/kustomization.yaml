@@ -14,6 +14,7 @@ resources:
   # - service-monitors/argocd-redis.yaml
   # - service-monitors/argocd-repo-server.yaml
   # - service-monitors/argocd-server.yaml
+  - SealedSecret.oidc.yaml
 
 # OIDC broken from 9.4.3?
 helmCharts:

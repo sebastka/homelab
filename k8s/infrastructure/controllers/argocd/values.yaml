@@ -13,18 +13,33 @@ configs:
   cm:
     create: true
     application.resourceTrackingMethod: annotation+label
-    admin.enabled: false
+    admin.enabled: true
     # https://argo-cd.readthedocs.io/en/latest/operator-manual/user-management/zitadel
     url: https://argocd.talmox.hera.home.karlsen.fr
+    # oidc.config: |
+    #   name: Zitadel
+    #   issuer: https://karlsen-xzy0yv.zitadel.cloud
+    #   redirectURI: https://argocd.talmox.hera.home.karlsen.fr/auth/callback
+    #   clientID: "352479117259590425"
+    #   requestedScopes: ["openid", "profile", "email", "groups"]
+    #   enablePKCEAuthentication: true
+    #   preferredUsernameClaim: preferred_username
+    #   logoutURL: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/end_session
     oidc.config: |
-      name: Zitadel
-      issuer: https://karlsen-xzy0yv.zitadel.cloud
-      redirectURI: https://argocd.talmox.hera.home.karlsen.fr/auth/callback
-      clientID: "352479117259590425"
-      requestedScopes: ["openid", "profile", "email", "groups"]
-      enablePKCEAuthentication: true
-      preferredUsernameClaim: preferred_username
-      logoutURL: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/end_session
+      name: Authelia
+      issuer: https://auth.karlsen.fr
+      clientID: argocd
+      clientSecret: $oidc:authelia.clientSecret
+      cliClientID: argocd-cli
+      requestedScopes: [openid, offline_access]
+      enableUserInfoGroups: true
+      requestedIDTokenClaims:
+        argocd_claim: {essential: true}
+        name: {essential: false}
+        email: {essential: false}
+        preferred_username: {essential: false}
+      userInfoPath: /api/oidc/userinfo
+      userInfoCacheExpiration: 5m
     kustomize.buildOptions: --enable-helm
   cmp:
     create: true
@@ -32,10 +47,10 @@ configs:
     server.insecure: true
     controller.diff.server.side: true
   rbac:
-    scopes: '[groups]'
+    scopes: '[argocd_claim]'
     policy.csv: |
-      g, k8s_administrators, role:admin
-      g, k8s_users, role:readonly
+      g, k8s:admins, role:admin
+      g, k8s:users, role:readonly
     policy.default: ''
 
 crds:
