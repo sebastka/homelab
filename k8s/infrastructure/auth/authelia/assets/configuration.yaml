@@ -67,7 +67,9 @@ authentication_backend:
 access_control:
   default_policy: deny
   rules:
-    - domain_regex: '^.*\.karlsen.(fr|org|app)$'
+    - domain_regex: '^.*\.karlsen\.(fr|app)$'
+      policy: two_factor
+    - domain_regex: '^.*\.talmox\.hera\.home\.karlsen\.fr$'
       policy: two_factor
 
 session:
