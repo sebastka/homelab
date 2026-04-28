@@ -19,7 +19,7 @@ spec:
   commonName: trust-domain-root-ca
   secretName: trust-domain-root-ca-secret
   privateKey: {algorithm: ECDSA, size: 521}
-  issuerRef: {group: cert-manager.io, kind: ClusterIssuer, name: selfsigned-issuer}    
+  issuerRef: {group: cert-manager.io, kind: ClusterIssuer, name: selfsigned-issuer}
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer

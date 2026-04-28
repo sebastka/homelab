@@ -15,7 +15,7 @@ defaultPackage:
 
 secretTargets:
   enabled: true
-  authorizedSecrets: [ karsen-fr-ca-bundle ]
+  authorizedSecrets: [karsen-fr-ca-bundle]
 
 resources:
   requests: {memory: 32Mi}

@@ -136,7 +136,7 @@ identity_providers:
     claims_policies:
       argocd_policy: {custom_claims: {argocd_claim: {attribute: argocd}}, id_token: [email, email_verified, alt_emails, name, preferred_username, argocd_claim]}  # Argo CD requires the claims other than `groups` to be in the ID Token https://github.com/argoproj/argo-cd/issues/23768
       forgejo: {custom_claims: {forgejo: {attribute: sshpubkey}}}
-      headlamp_policy: {id_token: [email, preferred_username, groups]} 
+      headlamp_policy: {id_token: [email, preferred_username, groups]}
       grafana: {custom_claims: {grafana: {attribute: grafana}}}
       legacy: {id_token: [email, email_verified, alt_emails, name, preferred_username, groups]}  # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
       username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
@@ -176,7 +176,7 @@ identity_providers:
         pkce_challenge_method: S256
         redirect_uris:
           - https://git.karlsen.fr/user/oauth2/authelia/callback
-        scopes: [openid, email, profile, groups, forgejo] 
+        scopes: [openid, email, profile, groups, forgejo]
         response_types: [code]
         grant_types: [authorization_code]
         access_token_signed_response_alg: RS256
@@ -191,7 +191,7 @@ identity_providers:
       #   require_pkce: false
       #   redirect_uris:
       #     - https://harbor.karlsen.app/c/oidc/callback
-      #   scopes: [openid, offline_access, email, profile, groups] 
+      #   scopes: [openid, offline_access, email, profile, groups]
       #   response_types: [code]
       #   grant_types: [authorization_code, refresh_token]
       #   access_token_signed_response_alg: none
@@ -207,7 +207,7 @@ identity_providers:
         require_pkce: false
         redirect_uris:
           - https://headlamp.talmox.hera.home.karlsen.fr/oidc-callback
-        scopes: [openid, email, profile, groups] 
+        scopes: [openid, email, profile, groups]
         response_types: [code]
         grant_types: [authorization_code]
         access_token_signed_response_alg: none
