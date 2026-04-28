@@ -165,7 +165,7 @@ identity_providers:
         userinfo_signed_response_alg: none
         id_token_signed_response_alg: ES256
         access_token_signed_response_alg: ES256
-        token_endpoint_auth_method: client_secret_basic
+        token_endpoint_auth_method: client_secret_post
 
       - client_id: forgejo
         client_name: Forgejo
