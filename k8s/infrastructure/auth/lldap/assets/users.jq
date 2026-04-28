@@ -6,6 +6,6 @@
   "firstName": "Sebastian",
   "lastName": "Karlsen",
   "avatar": "",
-  "groups": ["k8s:admin", "forgejo:admin"],
+  "groups": ["k8s:admins", "forgejo:admins"],
   "sshpubkey": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPez8beLkvaGA3EK61rE/EeihTlbiGJJTgPUwgBQ3wiB sebastian@boreas.local"]
 }
