@@ -5,14 +5,7 @@ provider "registry.terraform.io/cloudflare/cloudflare" {
   version     = "5.19.0"
   constraints = ">= 5.0.0"
   hashes = [
-    "h1:+gs8iCqECIlB3L82+Yoiv6QkU7QaoTJWX/oWRl1Fu+s=",
     "h1:/9cWfFsh4Zaa6PSFQqTYv5LEWZUM44G1oGK/ltPB8mg=",
-    "h1:18fPH+2UWukAmtbs+CzHjVys7l95jt2gCUs2N0fdfjM=",
-    "h1:DfwnA214pLOZnVHnUzCqrDYb+mKbZjcfgYVYtDfMP/w=",
-    "h1:Sn5zzjtyc8R6XgfRnWywLSIK+Ql9/155Pp3Bw8f6EDU=",
-    "h1:YL4CNFu4cYBfRFJ0ngT9cR+6Ll6NiAxoPsF9ik+Cg+k=",
-    "h1:d8B13MT3MP7H2a3H+DLqiyT8u8e7If47lMgzfcrU4t8=",
-    "h1:yx6O5g5k8Uw09NPRHTVJNIjOsC2jqHX9U53Zka0jIdE=",
     "zh:1946c61d0aeffd3fed14cc55581f125d798fed14b0c1f9f765fecf46dbf4baff",
     "zh:2b8028e59b93aa6388a74721902d15b2742460353809453dbee13be55f68dd31",
     "zh:4e21ff650e5fc6ab3e592618dcddc02f35ab8a70e146a77de59a124030a1abd9",
