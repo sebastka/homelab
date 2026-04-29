@@ -13,6 +13,9 @@ spec:
       owner: ott
       secret: {name: ott-db-credentials}
   managed: {services: {disabledDefaultServices: [ro, r]}}
+  resources:
+    requests: {memory: 128Mi}
+    limits: {memory: 128Mi}
   storage:
     size: 2Gi
     pvcTemplate:

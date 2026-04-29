@@ -13,6 +13,9 @@ spec:
       owner: lldap
       secret: {name: lldap-db-credentials}
   managed: {services: {disabledDefaultServices: [ro, r]}}
+  resources:
+    requests: {memory: 128Mi}
+    limits: {memory: 128Mi}
   storage:
     size: 1Gi
     pvcTemplate:

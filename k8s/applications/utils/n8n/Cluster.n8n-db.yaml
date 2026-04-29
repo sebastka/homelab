@@ -13,6 +13,9 @@ spec:
       owner: n8n
       secret: {name: n8n-db-credentials}
   managed: {services: {disabledDefaultServices: [ro, r]}}
+  resources:
+    requests: {memory: 128Mi}
+    limits: {memory: 128Mi}
   storage:
     size: 5Gi
     pvcTemplate:

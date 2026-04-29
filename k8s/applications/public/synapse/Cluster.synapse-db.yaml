@@ -13,6 +13,9 @@ spec:
       owner: synapse
       secret: {name: synapse-db-credentials}
   managed: {services: {disabledDefaultServices: [ro, r]}}
+  resources:
+    requests: {memory: 256Mi}
+    limits: {memory: 256Mi}
   storage:
     size: 1Gi
     pvcTemplate:
