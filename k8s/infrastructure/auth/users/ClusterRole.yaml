@@ -4,5 +4,5 @@ kind: ClusterRole
 metadata:
   name: cluster-reader
 rules:
-  - {apiGroups: [], resources: [pods, services, nodes], verbs: [get, list, watch]}
+  - {apiGroups: [""], resources: [pods, services, nodes], verbs: [get, list, watch]}
   - {apiGroups: [apps], resources: [deployments, replicasets], verbs: [get, list, watch]}
