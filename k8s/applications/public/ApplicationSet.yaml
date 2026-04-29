@@ -14,7 +14,6 @@ spec:
         directories:
           - path: k8s/applications/public/*
           - {path: k8s/applications/public/slink, exclude: true}
-          - {path: k8s/applications/public/synapse, exclude: true}
   template:
     metadata:
       name: '{{ path.basename }}'
