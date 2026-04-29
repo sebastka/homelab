@@ -13,8 +13,6 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/applications/media/*
-          - {path: k8s/applications/media/jellyfin, exclude: true}
-          - {path: k8s/applications/media/metube, exclude: true}
           - {path: k8s/applications/media/opentogethertube, exclude: true}
           - {path: k8s/applications/media/vert, exclude: true}
   template:
