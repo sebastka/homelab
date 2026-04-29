@@ -5,7 +5,6 @@ kind: StorageClass
 metadata:
   name: longhorn-encrypted
 parameters:
-  backupTargetName: nfs-backup-target
   dataEngine: v1
   data-locality: best-effort
   encrypted: 'true'
