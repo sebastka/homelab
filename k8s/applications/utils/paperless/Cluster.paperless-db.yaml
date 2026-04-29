@@ -14,8 +14,8 @@ spec:
       secret: {name: paperless-db-credentials}
   managed: {services: {disabledDefaultServices: [ro, r]}}
   resources:
-    requests: {memory: 128Mi}
-    limits: {memory: 128Mi}
+    requests: {memory: 512Mi}
+    limits: {memory: 512Mi}
   storage:
     size: 2Gi
     pvcTemplate:
