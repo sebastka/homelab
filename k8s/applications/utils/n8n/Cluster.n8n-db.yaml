@@ -8,6 +8,12 @@ spec:
   instances: 1
   postgresql: {parameters: {timezone: Europe/Oslo}}
   # bootstrap: {initdb: {database: n8n, owner: n8n, secret: {name: n8n-db-credentials}}}
+  bootstrap:
+    recovery:
+      database: n8n
+      owner: n8n
+      secret: {name: n8n-db-credentials}
+      volumeSnapshots: {storage: {apiGroup: v1, kind: PersistentVolumeClaim, name: n8n-db-restore-pv}}
   managed: {services: {disabledDefaultServices: [ro, r]}}
   resources:
     requests: {memory: 512Mi}
