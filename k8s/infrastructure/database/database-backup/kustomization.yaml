@@ -10,4 +10,6 @@ resources:
   - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
   - SealedSecret.mariadb-secrets.yaml
+  - SealedSecret.postgres-secrets.yaml
   - CronJob.MariaDB.yaml
+  - CronJob.Postgres.yaml

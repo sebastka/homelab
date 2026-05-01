@@ -1,14 +1,14 @@
 # Run:
-# kubectl -n databases-backup create job --from=cronjob/mariadb-backup mariadb-backup
-# kubectl -n databases-backup logs jobs/mariadb-backup
+# kubectl -n databases-backup create job --from=cronjob/postgres-backup postgres-backup
+# kubectl -n databases-backup logs jobs/postgres-backup
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: mariadb-backup
+  name: postgres-backup
   namespace: databases-backup
 spec:
-  schedule: '30 3 * * *'  # 03:30 UTC = 04:30 CET
+  schedule: '0 3 * * *'  # 03:00 UTC = 04:00 CET
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   concurrencyPolicy: Replace
@@ -17,7 +17,7 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          serviceAccountName: mariadb-backup
+          serviceAccountName: postgres-backup
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
@@ -26,23 +26,18 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             seccompProfile: {type: RuntimeDefault}
           containers:
-            - name: mariadb-backup
-              image: mariadb:12.2.2-noble
-              command: ['/bin/sh', '-c']
+            - name: postgres-backup
+              image: postgres:18.3-alpine3.23
+              command: ['/bin/ash', '-c']
               args:
                 - |
                   set -eu
-                  echo "$MARIADB_DB_CSV" | sed 1d | sed '/^$/d' | while IFS=, read username password host port database; do
+                  echo "$POSTGRES_DB_CSV" | sed 1d | sed '/^$/d' | while IFS=, read username password host port database; do
                     filename="${database}.$(date +'%Y-%m-%d--%H-%M-%S')"
 
-                    mariadb-dump --host="$host" --port="$port" --user="$username" --password="$password" "$database" >"/tmp/${filename}.sql"
-                    printf -- '%s - Database "%s" dumped to "/tmp/%s.sql"\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$database" "$filename"
-
-                    xz -6 "/tmp/${filename}.sql"
-                    printf -- '%s - Dump file "/tmp/%s.sql" xz-compressed\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$filename"
-
-                    rsync "/tmp/${filename}.sql.xz" /mnt/backup/mariadb/
-                    printf -- '%s - Dump file "/tmp/%s.sql.xz" moved to backup target. Done\n\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$filename"
+                    export PGPASSWORD="$password"
+                    pg_dump --host="$host" --port="$port" --username="$username" --format=custom --file="/mnt/backup/postgres/${filename}.dump" "$database"
+                    printf -- '%s - Database "%s" dumped to "/mnt/backup/postgres/%s.dump". Done\n\n' "$(date +'%Y-%m-%d %H:%M:%S')" "$database" "$filename"
                   done
               imagePullPolicy: Always
               securityContext:
@@ -53,7 +48,7 @@ spec:
                 requests: {memory: 256Mi}
                 limits: {memory: 256Mi}
               envFrom:
-                - secretRef: {name: mariadb-secrets}
+                - secretRef: {name: postgres-secrets}
               volumeMounts:
                 - {name: tmp-empty, mountPath: /tmp}
                 - {name: backup-target-volume, mountPath: /mnt/backup}
