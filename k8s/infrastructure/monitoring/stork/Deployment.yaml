@@ -40,7 +40,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 128Mi}
-            limits: {memory: 128Mi, cpu: 1}
+            limits: {memory: 128Mi}
           envFrom:
             - configMapRef: {name: stork-env}
             - secretRef: {name: stork-secrets}

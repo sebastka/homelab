@@ -30,20 +30,20 @@ prometheus:
 prometheusOperator:
   resources:
     requests: {memory: 64Mi}
-    limits: {memory: 64Mi, cpu: 1}
+    limits: {memory: 64Mi}
   admissionWebhooks:
     deployment:
       resources:
         requests: {memory: 64Mi}
-        limits: {memory: 64Mi, cpu: 1}
+        limits: {memory: 64Mi}
     patch:
       resources:
         requests: {memory: 64Mi}
-        limits: {memory: 64Mi, cpu: 1}
+        limits: {memory: 64Mi}
   prometheusConfigReloader:
     resources:
       requests: {memory: 64Mi}
-      limits: {memory: 64Mi, cpu: 1}
+      limits: {memory: 64Mi}
 
 # https://github.com/siderolabs/talos/discussions/7214
 kubeControllerManager:
@@ -116,10 +116,10 @@ alertmanager:
   alertmanagerSpec:
     resources:
       requests: {memory: 64Mi}
-      limits: {memory: 64Mi, cpu: 1}
+      limits: {memory: 64Mi}
 
 thanosRuler:
   thanosRulerSpec:
     resources:
       requests: {memory: 64Mi}
-      limits: {memory: 64Mi, cpu: 1}
+      limits: {memory: 64Mi}

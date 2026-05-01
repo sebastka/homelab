@@ -6,13 +6,13 @@ deployment:
   envoyGateway:
     resources:
       requests: {memory: 512Mi}
-      limits: {memory: 512Mi, cpu: 1}
+      limits: {memory: 512Mi}
 
 certgen:
   job:
     resources:
       requests: {memory: 256Mi}
-      limits: {memory: 256Mi, cpu: 1}
+      limits: {memory: 256Mi}
 
 config:
   envoyGateway:

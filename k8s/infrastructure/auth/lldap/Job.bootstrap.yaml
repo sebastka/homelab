@@ -38,7 +38,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 24Mi}
-            limits: {memory: 24Mi, cpu: 100m}
+            limits: {memory: 24Mi}
           envFrom:
             - secretRef: {name: bootstrap-secrets}
           volumeMounts:
@@ -55,7 +55,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 128Mi}
-            limits: {memory: 128Mi, cpu: 500m}
+            limits: {memory: 128Mi}
           envFrom:
             - configMapRef: {name: lldap-env}
             - secretRef: {name: lldap-secrets}

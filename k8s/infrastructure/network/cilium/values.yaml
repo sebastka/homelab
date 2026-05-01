@@ -22,7 +22,7 @@ cgroup:
     enabled: false
     resources:
       requests: {memory: 128Mi}
-      limits: {memory: 128Mi, cpu: 1}
+      limits: {memory: 128Mi}
   hostRoot: /sys/fs/cgroup
 
 operator:
@@ -37,13 +37,13 @@ operator:
     enabled: true
   resources:
     requests: {memory: 256Mi}
-    limits: {memory: 256Mi, cpu: 1}
+    limits: {memory: 256Mi}
 
 # Roll out cilium agent pods automatically when ConfigMap is updated.
 rollOutCiliumPods: true
 resources:
   requests: {memory: 512Mi}
-  limits: {memory: 512Mi, cpu: 1}
+  limits: {memory: 512Mi}
 
 # debug:
 #  enabled: true
@@ -87,7 +87,7 @@ cni:
   # exclusive: false  # Use with Istio
   resources:
     requests: {memory: 64Mi}
-    limits: {memory: 64Mi, cpu: 1}
+    limits: {memory: 64Mi}
 
 # https://docs.cilium.io/en/stable/network/concepts/routing/
 routingMode: native
@@ -116,7 +116,7 @@ envoy:
       envoy: [NET_ADMIN, PERFMON, BPF]
   resources:
     requests: {memory: 256Mi}
-    limits: {memory: 256Mi, cpu: 1}
+    limits: {memory: 256Mi}
 
 hubble:
   enabled: true
@@ -140,7 +140,7 @@ hubble:
     rollOutPods: true
     resources:
       requests: {memory: 256Mi}
-      limits: {memory: 256Mi, cpu: 1}
+      limits: {memory: 256Mi}
     prometheus:
       enabled: true
       port: 9966
@@ -152,11 +152,11 @@ hubble:
     backend:
       resources:
         requests: {memory: 256Mi}
-        limits: {memory: 256Mi, cpu: 1}
+        limits: {memory: 256Mi}
     frontend:
       resources:
         requests: {memory: 256Mi}
-        limits: {memory: 256Mi, cpu: 1}
+        limits: {memory: 256Mi}
 
 ingressController:
   enabled: false
@@ -170,15 +170,15 @@ ingressController:
 #         enabled: true
 #     resources:
 #       requests: {memory: 256Mi}
-#       limits: {memory: 256Mi, cpu: 1}
+#       limits: {memory: 256Mi}
 #     etcd:
 #       resources:
 #         requests: {memory: 256Mi}
-#         limits: {memory: 256Mi, cpu: 1}
+#         limits: {memory: 256Mi}
 #     kvstoremesh:
 #       resources:
 #         requests: {memory: 256Mi}
-#         limits: {memory: 256Mi, cpu: 1}
+#         limits: {memory: 256Mi}
 
 # mTLS
 authentication:
@@ -192,11 +192,11 @@ authentication:
             storageClass: cilium-spire-sc
           resources:
             requests: {memory: 128Mi}
-            limits: {memory: 128Mi, cpu: 1}
+            limits: {memory: 128Mi}
         agent:
           resources:
             requests: {memory: 128Mi}
-            limits: {memory: 128Mi, cpu: 1}
+            limits: {memory: 128Mi}
 
 prometheus:
   metricsService: true
