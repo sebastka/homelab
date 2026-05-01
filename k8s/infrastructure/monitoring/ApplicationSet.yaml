@@ -13,7 +13,6 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/infrastructure/monitoring/*
-          - {path: k8s/infrastructure/monitoring/grafana, exclude: true}
           - {path: k8s/infrastructure/monitoring/headlamp, exclude: true}
           - {path: k8s/infrastructure/monitoring/stork, exclude: true}
           - {path: k8s/infrastructure/monitoring/zabbix, exclude: true}

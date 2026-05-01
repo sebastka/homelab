@@ -39,9 +39,5 @@ spec:
           containers:
             - name: grafana
               env:
-                - name: GF_SECURITY_ADMIN_USER
-                  valueFrom:
-                    secretKeyRef: {key: username, name: admin-credentials}
-                - name: GF_SECURITY_ADMIN_PASSWORD
-                  valueFrom:
-                    secretKeyRef: {key: password, name: admin-credentials}
+                - {name: GF_SECURITY_ADMIN_USER, valueFrom: {secretKeyRef: {name: admin-credentials, key: username}}}
+                - {name: GF_SECURITY_ADMIN_PASSWORD, valueFrom: {secretKeyRef: {name: admin-credentials, key: password}}}
