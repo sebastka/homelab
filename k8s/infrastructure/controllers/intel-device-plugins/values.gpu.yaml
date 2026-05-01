@@ -3,4 +3,4 @@
 ---
 
 name: igpu
-sharedDevNum: 2
+sharedDevNum: 1  # Number of containers that can share the same GPU device
