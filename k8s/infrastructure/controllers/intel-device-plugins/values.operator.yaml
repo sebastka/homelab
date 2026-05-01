@@ -2,6 +2,14 @@
 # https://artifacthub.io/packages/helm/intel/intel-device-plugins-operator?modal=values
 ---
 
+manager:
+  devices:
+    dsa: false
+    gpu: true
+    iaa: false
+    qat: false
+    sgx: false
+
 resources:
   requests: {memory: 128Mi}
   limits: {memory: 128Mi}
