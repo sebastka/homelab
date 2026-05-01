@@ -13,9 +13,7 @@ configMapGenerator:
 
 resources:
   - Namespace.yaml
-  - SealedSecret.stork-db-credentials.yaml
   - SealedSecret.stork-secrets.yaml
-  - Cluster.stork-db.yaml
   - ServiceAccount.yaml
   - Deployment.yaml
   - Service.yaml
