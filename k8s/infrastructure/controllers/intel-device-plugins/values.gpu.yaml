@@ -4,4 +4,3 @@
 
 name: igpu
 sharedDevNum: 2
-nodeFeatureRule: false
