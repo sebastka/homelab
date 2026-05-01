@@ -21,9 +21,7 @@ configMapGenerator:
 resources:
   - Namespace.yaml
   - SealedSecret.lldap-secrets.yaml
-  - SealedSecret.lldap-db-credentials.yaml
   - SealedSecret.bootstrap-secrets.yaml
-  - Cluster.lldap-db.yaml
   - ServiceAccount.yaml
   - Job.bootstrap.yaml
   - Deployment.yaml
