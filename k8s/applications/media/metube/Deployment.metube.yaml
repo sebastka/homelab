@@ -48,7 +48,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 24Mi}
-            limits: {memory: 24Mi}
+            limits: {memory: 24Mi, cpu: 1}
           env:
             - {name: TZ, value: Europe/Oslo}
           volumeMounts:

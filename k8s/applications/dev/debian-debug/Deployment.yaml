@@ -46,7 +46,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 128Mi}
-            limits: {memory: 128Mi}
+            limits: {memory: 128Mi, cpu: 1}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             # - {name: from-volume, mountPath: /mnt/from, readOnly: true}

@@ -44,7 +44,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 156Mi}
-            limits: {memory: 156Mi}
+            limits: {memory: 156Mi, cpu: 1}
           ports:
             - {name: http, containerPort: 8080}
           volumeMounts:

@@ -43,7 +43,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 64Mi}
-            limits: {memory: 64Mi}
+            limits: {memory: 64Mi, cpu: 100m}
           # env:
           #   - {name: VALKEY_EXTRA_FLAGS, value: '--save 60 1 --loglevel warning'}
           ports:

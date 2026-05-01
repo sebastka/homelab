@@ -67,7 +67,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 512Mi}
-            limits: {memory: 512Mi}
+            limits: {memory: 512Mi, cpu: 1}
           envFrom:
             - configMapRef: {name: slink-env}
             - secretRef: {name: slink-admin}

@@ -53,7 +53,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 24Mi}
-            limits: {memory: 24Mi}
+            limits: {memory: 24Mi, cpu: 100m}
           envFrom:
             - secretRef: {name: deluge-credentials}
           volumeMounts:
@@ -78,7 +78,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 512Mi}
-            limits: {memory: 512Mi}
+            limits: {memory: 512Mi, cpu: 1}
           ports:
             - {name: daemon, containerPort: 58846, protocol: TCP}
             - {name: torrent-tcp, containerPort: 6881, protocol: TCP}
