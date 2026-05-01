@@ -51,7 +51,7 @@ spec:
             - {name: client-discovery, protocol: UDP, containerPort: 7359}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
-            - {name: cache-volume, mountPath: /cache}
+            - {name: cache-volume, mountPath: /cache, subPath: jellyfin-cache}
             - {name: config-volume, mountPath: /config, subPath: jellyfin-config}
             - {name: media-volume, mountPath: /mnt/media, readOnly: true}
           startupProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
