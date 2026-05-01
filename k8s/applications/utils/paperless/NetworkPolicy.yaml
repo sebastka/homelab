@@ -11,6 +11,10 @@ spec:
   ingress:
     - from:  # Allow all ingress traffic from within the same namespace
         - podSelector: {}
+    - from:  # Allow ingress from gateway namespace for ingress controller
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: gateway
   egress:
     - to:  # Allow all egress traffic to within the same namespace
         - podSelector: {}
