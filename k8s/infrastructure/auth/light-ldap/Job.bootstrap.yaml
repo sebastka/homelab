@@ -11,7 +11,7 @@ spec:
   template:
     spec:
       restartPolicy: OnFailure
-      serviceAccountName: lldap
+      serviceAccountName: light-ldap
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
