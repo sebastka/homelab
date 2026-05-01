@@ -18,9 +18,7 @@ configMapGenerator:
 
 resources:
   - Namespace.yaml
-  - SealedSecret.synapse-db-credentials.yaml
   - SealedSecret.synapse-secrets.yaml
-  - Cluster.synapse-db.yaml
   - PersistentVolumeClaim.yaml
   - ServiceAccount.yaml
   - Deployment.yaml
