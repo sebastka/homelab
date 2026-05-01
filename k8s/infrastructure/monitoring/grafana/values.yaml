@@ -8,6 +8,9 @@ serviceMonitor:
 dashboard:
   enabled: true
 
+podSecurityContext:
+  securityContext: {seccompProfile: {type: RuntimeDefault}}
+
 resources:
   requests: {memory: 64Mi}
   limits: {memory: 64Mi}
