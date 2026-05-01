@@ -55,8 +55,8 @@ spec:
             - {name: config-volume, mountPath: /config, subPath: jellyfin-config}
             - {name: media-volume, mountPath: /mnt/media, readOnly: true}
           startupProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
-          livenessProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
-          readinessProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
+          livenessProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 10, periodSeconds: 30}
+          readinessProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 10, periodSeconds: 30}
       volumes:
         - {name: tmp-volume, emptyDir: {medium: Memory}}
         - {name: config-volume, persistentVolumeClaim: {claimName: jellyfin-config-pvc}}
