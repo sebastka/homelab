@@ -1,0 +1,35 @@
+---
+# Deny all cross-namespace traffic by default; intra-namespace traffic is unrestricted.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-cross-namespace
+  namespace: paperless
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:  # Allow all ingress traffic from within the same namespace
+        - podSelector: {}
+  egress:
+    - to:  # Allow all egress traffic to within the same namespace
+        - podSelector: {}
+    - to:  # Allow egress to kube-system for DNS resolution
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - {port: 53, protocol: UDP}
+        - {port: 53, protocol: TCP}
+    - to:  # Allow egress to gateway namespace for ingress controller
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: gateway
+    - to:  # Allow egress to cnpg-database namespace for database access
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: cnpg-database
+      ports:
+        - {port: 5432, protocol: TCP}
+    - ports:  # Allow egress to https://, such that the init container can fetch trained data for Tesseract OCR
+        - {port: 443, protocol: TCP}
