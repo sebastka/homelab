@@ -1,7 +1,0 @@
----
-apiVersion: longhorn.io/v1beta2
-kind: Setting
-metadata:
-  name: backup-target
-  namespace: longhorn-system
-value: nfs://file01.hera.home.karlsen.fr:/mnt/nfs/homelab/longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
