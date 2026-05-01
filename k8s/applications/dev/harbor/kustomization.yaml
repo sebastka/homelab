@@ -11,7 +11,7 @@ resources:
   - SealedSecret.harbor-secrets.yaml
   - Cluster.harbor-db.yaml
   - PersistentVolumeClaim.yaml
-  - ServiceAccounts.yaml
+  - ServiceAccount.yaml
   - Deployment.valkey.yaml
   - Services.yaml
   - HTTPRoute.yaml
