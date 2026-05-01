@@ -5,8 +5,8 @@
 
 crds:
   resources:
-    requests: {memory: 4096Mi}
-    limits: {memory: 4096Mi}
+    requests: {memory: 512Mi}
+    limits: {memory: 512Mi}
 
 prometheus:
   prometheusSpec:
@@ -17,8 +17,8 @@ prometheus:
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelector: {}
     resources:
-      requests: {memory: 128Mi}
-      limits: {memory: 128Mi}
+      requests: {memory: 4096Mi}
+      limits: {memory: 4096Mi}
     storageSpec:
       volumeClaimTemplate:
         spec:
