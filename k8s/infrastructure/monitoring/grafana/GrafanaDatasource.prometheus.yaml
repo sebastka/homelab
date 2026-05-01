@@ -13,7 +13,7 @@ spec:
     name: Prometheus
     type: prometheus
     access: proxy
-    url: http://prometheus-operated.kube-prometheus-stack.svc.cluster.local:9090
+    url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
     isDefault: true
     jsonData:
       timeInterval: 30s
