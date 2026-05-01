@@ -16,4 +16,4 @@ spec:
             matchLabels:
               kubernetes.io/metadata.name: envoy-gateway-system
       ports:
-        - {port: http, protocol: TCP}
+        - {port: 8000, protocol: TCP}
