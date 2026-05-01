@@ -23,4 +23,4 @@ resources:
   - Deployment.valkey.yaml
   - Services.yaml
   - HTTPRoute.yaml
-  - NetworkPolicy.yaml
+  # - NetworkPolicy.yaml
