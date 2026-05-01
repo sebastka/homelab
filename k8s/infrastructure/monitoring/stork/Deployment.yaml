@@ -45,4 +45,7 @@ spec:
             - configMapRef: {name: stork-env}
             - secretRef: {name: stork-secrets}
           ports:
-            - {name: http, containerPort: 8080}
+            - {name: http, protocol: TCP, containerPort: 8080}
+          startupProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
