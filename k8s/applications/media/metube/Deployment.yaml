@@ -10,7 +10,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: metube
-      app.kubernetes.io/version: '2026.04.26'
+      app.kubernetes.io/version: 2026.04.28
       app.kubernetes.io/component: server
       app.kubernetes.io/part-of: metube
       # app.kubernetes.io/managed-by: kustomize
@@ -19,7 +19,7 @@ spec:
       namespace: metube
       labels:
         app.kubernetes.io/name: metube
-        app.kubernetes.io/version: '2026.04.26'
+        app.kubernetes.io/version: 2026.04.28
         app.kubernetes.io/component: server
         app.kubernetes.io/part-of: metube
         # app.kubernetes.io/managed-by: kustomize
@@ -78,6 +78,26 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: persistent-volume, mountPath: /mnt/persistent}
             - {name: ytdl-options, mountPath: /mnt/ytdl-options.json, subPath: ytdl-options.json}
+        - name: bgutils-pot
+          # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
+          image: ghcr.io/alexta69/metube:2026.04.28
+          command: [bgutil-pot, server]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 48Mi}
+            limits: {memory: 48Mi}
+          env:
+            - {name: TZ, value: Europe/Oslo}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 4416}
+          startupProbe: {httpGet: {port: 4416, path: /ping}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 4416, path: /ping}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 4416, path: /ping}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: persistent-volume, persistentVolumeClaim: {claimName: metube-persistent-pvc}}

@@ -2,7 +2,7 @@
     "extractor_args": {
         "youtubepot-bgutilhttp": {
             "base_url": [
-                "http://bgutils-pot:80"
+                "http://localhost:4416"
             ]
         }
     }
