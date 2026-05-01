@@ -13,7 +13,8 @@ resources:
   - Namespace.yaml
   - SealedSecret.searxng-secrets.yaml
   - ServiceAccount.yaml
-  - Deployment.yaml
+  - Deployment.searxng.yaml
+  - Deployment.valkey.yaml
   - Service.yaml
   - HTTPRoute.yaml
   - SealedSecret.oidc.yaml

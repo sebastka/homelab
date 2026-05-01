@@ -1,27 +1,27 @@
 ---
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: valkey
-  namespace: opentogethertube
+  namespace: searxng
 spec:
-  strategy: {type: Recreate}
   replicas: 1
+  strategy: {type: Recreate}
   selector:
     matchLabels:
       app.kubernetes.io/name: valkey
       app.kubernetes.io/version: 9.0.3
       app.kubernetes.io/component: key-value-store
-      app.kubernetes.io/part-of: opentogethertube
+      app.kubernetes.io/part-of: searxng
       # app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
-      namespace: opentogethertube
+      namespace: searxng
       labels:
         app.kubernetes.io/name: valkey
         app.kubernetes.io/version: 9.0.3
         app.kubernetes.io/component: key-value-store
-        app.kubernetes.io/part-of: opentogethertube
+        app.kubernetes.io/part-of: searxng
         # app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccountName: valkey
@@ -37,7 +37,6 @@ spec:
           # Dockerfile: https://github.com/valkey-io/valkey-container/blob/mainline/9.0/alpine/Dockerfile
           image: index.docker.io/valkey/valkey:9.0.3-alpine3.23
           args: [--save, ""]
-          lifecycle: {preStop: {exec: {command: [sleep, "30"]}}}
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true

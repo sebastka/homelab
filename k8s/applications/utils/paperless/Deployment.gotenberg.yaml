@@ -48,4 +48,7 @@ spec:
             requests: {memory: 256Mi}
             limits: {memory: 256Mi}
           ports:
-            - {name: gotenberg, protocol: TCP, containerPort: 3000}
+            - {name: http, protocol: TCP, containerPort: 3000}
+          startupProbe: {httpGet: {port: 3000, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 3000, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 3000, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}

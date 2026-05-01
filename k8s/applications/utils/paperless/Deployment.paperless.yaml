@@ -67,7 +67,7 @@ spec:
             - {name: scripts-volume, mountPath: /scripts/extra_settings.py, subPath: extra_settings.py, readOnly: true}
             - {name: customizations-volume, mountPath: /customizations}
       containers:
-        - name: paperless-consumer
+        - name: consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: [python3, "manage.py", "document_consumer"]
@@ -91,7 +91,7 @@ spec:
             - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
-        - name: paperless-scheduler
+        - name: scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO"]
@@ -115,7 +115,7 @@ spec:
             - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
-        - name: paperless-task-queue
+        - name: task-worker
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: [celery, "--app", "paperless", "worker", "--loglevel", "INFO"]
@@ -139,7 +139,7 @@ spec:
             - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
-        - name: paperless-webserver
+        - name: webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: [granian, "--interface", "asginl", "--ws", "paperless.asgi:application"]
@@ -154,7 +154,10 @@ spec:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           ports:
-            - {name: http, containerPort: 8000}
+            - {name: http, protocol: TCP, containerPort: 8000}
+          startupProbe: {httpGet: {port: 8000, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /var/cache}

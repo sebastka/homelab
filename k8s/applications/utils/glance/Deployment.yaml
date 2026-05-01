@@ -46,6 +46,9 @@ spec:
             limits: {memory: 64Mi}
           ports:
             - {name: http, containerPort: 8080}
+          startupProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             - {name: glance-config-volume, mountPath: /glance.yaml, subPath: 'glance.yaml', readOnly: true}
       volumes:

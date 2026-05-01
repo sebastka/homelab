@@ -24,10 +24,10 @@ spec:
   selector:
     app.kubernetes.io/name: tika
   ports:
-    - name: tika
+    - name: http
       protocol: TCP
-      port: 9998
-      targetPort: tika
+      port: 80
+      targetPort: http
 ---
 apiVersion: v1
 kind: Service
@@ -39,10 +39,10 @@ spec:
   selector:
     app.kubernetes.io/name: gotenberg
   ports:
-    - name: gotenberg
+    - name: http
       protocol: TCP
-      port: 3000
-      targetPort: gotenberg
+      port: 80
+      targetPort: http
 ---
 apiVersion: v1
 kind: Service

@@ -48,6 +48,9 @@ spec:
             - {name: TZ, value: Europe/Oslo}
           ports:
             - {name: http, protocol: TCP, containerPort: 4416}
+          startupProbe: {httpGet: {port: 4416, path: /ping}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 4416, path: /ping}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 4416, path: /ping}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
       volumes:

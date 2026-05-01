@@ -56,7 +56,7 @@ spec:
           envFrom:
             - secretRef: {name: slink-secrets}
           volumeMounts:
-            - {name: slink-app-volume, mountPath: /app}
+            - {name: slink-app-volume, mountPath: /app, subPath: slink-app}
       containers:
         - name: slink
           # Dockerfile: https://github.com/andrii-kryvoviaz/slink/blob/main/docker/Dockerfile.prod
@@ -73,7 +73,10 @@ spec:
             - secretRef: {name: slink-admin}
           ports:
             - {name: http, protocol: TCP, containerPort: 3000}
+          startupProbe: {httpGet: {port: 3000, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 3000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 3000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
-            - {name: slink-app-volume, mountPath: /app}
+            - {name: slink-app-volume, mountPath: /app, subPath: slink-app}
       volumes:
         - {name: slink-app-volume, persistentVolumeClaim: {claimName: slink-app-pvc}}

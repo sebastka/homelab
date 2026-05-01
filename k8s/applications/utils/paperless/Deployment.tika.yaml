@@ -43,9 +43,12 @@ spec:
           resources:
             requests: {memory: 256Mi}
             limits: {memory: 256Mi}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 9998}
+          startupProbe: {httpGet: {port: 9998, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 9998, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 9998, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             - {name: tika-tmp-volume, mountPath: /tmp}
-          ports:
-            - {name: tika, protocol: TCP, containerPort: 9998}
       volumes:
         - {name: tika-tmp-volume, emptyDir: {}}

@@ -76,6 +76,9 @@ spec:
           ports:
             - {name: http, containerPort: 18080}
             # - {name: metrics, containerPort: 19090}
+          startupProbe: {httpGet: {port: 18080, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 18080, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 18080, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
           envFrom:
             - configMapRef: {name: common-env}
             - configMapRef: {name: run-env}

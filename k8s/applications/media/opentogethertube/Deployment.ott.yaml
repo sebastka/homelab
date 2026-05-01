@@ -68,6 +68,9 @@ spec:
             - secretRef: {name: opentogethertube-secrets}
           ports:
             - {name: http, containerPort: 3000}
+          startupProbe: {httpGet: {port: 3000, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 3000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 3000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /home/node/.cache}

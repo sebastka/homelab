@@ -48,3 +48,6 @@ spec:
           #   - {name: VALKEY_EXTRA_FLAGS, value: '--save 60 1 --loglevel warning'}
           ports:
             - {name: valkey, protocol: TCP, containerPort: 6379}
+          startupProbe: {tcpSocket: {port: 6379}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {tcpSocket: {port: 6379}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {tcpSocket: {port: 6379}, initialDelaySeconds: 10, periodSeconds: 120}
