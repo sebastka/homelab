@@ -13,9 +13,7 @@ configMapGenerator:
 
 resources:
   - Namespace.yaml
-  - SealedSecret.zabbix-db-credentials.yaml
   - SealedSecret.zabbix-secrets.yaml
-  - Cluster.zabbix-db.yaml
   - ServiceAccount.yaml
   - Deployment.backend.yaml
   - Deployment.frontend.yaml
