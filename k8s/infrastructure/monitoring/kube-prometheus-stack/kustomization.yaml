@@ -1,7 +1,7 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: kube-prometheus-stack
+# namespace: monitoring
 
 resources:
   - Namespace.yaml
@@ -13,6 +13,6 @@ helmCharts:
     repo: oci://ghcr.io/prometheus-community/charts
     version: 84.5.0  # renovate: github-releases=prometheus-community/helm-charts
     releaseName: kube-prometheus-stack
-    namespace: kube-prometheus-stack
+    namespace: monitoring
     includeCRDs: true
     valuesFile: values.yaml
