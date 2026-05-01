@@ -48,7 +48,7 @@ spec:
             - configMapRef: {name: jellyfin-env}
           ports:
             - {name: http, protocol: TCP, containerPort: 8096}
-            - {name: client-discovery, protocol: UDP, containerPort: 7359}
+            - {name: discovery, protocol: UDP, containerPort: 7359}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /cache, subPath: jellyfin-cache}
