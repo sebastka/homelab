@@ -12,6 +12,7 @@ configMapGenerator:
 resources:
   - Namespace.yaml
   - SealedSecret.searxng-secrets.yaml
+  - ServiceAccount.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
