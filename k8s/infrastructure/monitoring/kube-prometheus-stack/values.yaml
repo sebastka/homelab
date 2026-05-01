@@ -5,8 +5,8 @@
 
 crds:
   resources:
-    requests: {memory: 512Mi}
-    limits: {memory: 512Mi}
+    requests: {memory: 1024Mi}
+    limits: {memory: 1024Mi}
 
 prometheus:
   prometheusSpec:
