@@ -101,7 +101,7 @@ trivy:
 database:
   type: external
   external:
-    host: harbor-db-rw.cnpg-database.svc.cluster.local
+    host: db02.hera.home.karlsen.fr
     port: '5432'
     username: harbor
     existingSecret: harbor-secrets  # password
