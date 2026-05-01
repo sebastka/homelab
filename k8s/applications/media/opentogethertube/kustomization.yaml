@@ -12,9 +12,7 @@ configMapGenerator:
 
 resources:
   - Namespace.yaml
-  - SealedSecret.ott-db-credentials.yaml
   - SealedSecret.opentogethertube-secrets.yaml
-  - Cluster.ott-db.yaml
   - ServiceAccount.yaml
   - Deployment.ott.yaml
   - Deployment.valkey.yaml

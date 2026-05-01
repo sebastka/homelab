@@ -20,7 +20,7 @@ level = "info"
 [db]
 mode = "postgres"
 # url = "postgresql://user:password@localhost:5432/ott"
-host = "ott-db-rw.cnpg-database.svc.cluster.local"
+host = "db02.hera.home.karlsen.fr"
 port = 5432
 name = "ott"
 user = "ott"
