@@ -43,7 +43,7 @@ spec:
             matchLabels:
               kubernetes.io/metadata.name: gateway
       ports:
-        - {port: 80, protocol: TCP}
+        - {port: 8000, protocol: TCP}
 ---
 # Paperless pods reach valkey, tika, gotenberg, and postgres.
 apiVersion: networking.k8s.io/v1
