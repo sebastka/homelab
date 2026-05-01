@@ -8,7 +8,7 @@ master:
     limits: {memory: 128Mi}
 
 worker:
-  config: {core: {sleepInterval: 0s}}
+  config: {core: {sleepInterval: 3600s}}
   resources:
     requests: {memory: 128Mi}
     limits: {memory: 128Mi}
