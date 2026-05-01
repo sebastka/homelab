@@ -4,7 +4,10 @@
 # https://joshrnoll.com/installing-longhorn-on-talos-with-helm/
 # https://www.johanneskueber.com/posts/longhorn_uservolumes_talos/
 ---
-# values.yaml
+
+networkPolicies:
+  enabled: true
+
 defaultSettings:
   defaultReplicaCount: 2
   defaultDataLocality: best-effort
