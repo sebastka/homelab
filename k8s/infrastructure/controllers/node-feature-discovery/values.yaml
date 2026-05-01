@@ -9,6 +9,7 @@ master:
 
 worker:
   config: {core: {sleepInterval: 3600s}}
+  securityContext: {seccompProfile: {type: RuntimeDefault}}
   resources:
     requests: {memory: 128Mi}
     limits: {memory: 128Mi}
