@@ -10,4 +10,4 @@ dashboard:
 
 resources:
   requests: {memory: 64Mi}
-  limits: {memory: 64Mi}
+  limits: {memory: 64Mi, cpu: 1}

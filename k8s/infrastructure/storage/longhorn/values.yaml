@@ -11,7 +11,7 @@ defaultSettings:
   defaultDataPath: /var/mnt/longhorn-data
   allowCollectingLonghornUsageMetrics: false
   replicaAutoBalance: best-effort
-  systemManagedCSIComponentsResourceLimits: '{"csi-attacher":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi"}},"csi-provisioner":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi"}},"csi-resizer":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi"}},"csi-snapshotter":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi"}},"longhorn-csi-plugin":{"requests":{"memory":"4096Mi"},"limits":{"memory":"4096Mi"}},"node-driver-registrar":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi"}},"longhorn-liveness-probe":{"requests":{"memory":"64Mi"},"limits":{"memory":"64Mi"}}}'
+  systemManagedCSIComponentsResourceLimits: '{"csi-attacher":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi","cpu":1}},"csi-provisioner":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi","cpu":1}},"csi-resizer":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi","cpu":1}},"csi-snapshotter":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi","cpu":1}},"longhorn-csi-plugin":{"requests":{"memory":"4096Mi"},"limits":{"memory":"4096Mi","cpu":1}},"node-driver-registrar":{"requests":{"memory":"512Mi"},"limits":{"memory":"512Mi","cpu":1}},"longhorn-liveness-probe":{"requests":{"memory":"128Mi"},"limits":{"memory":"128Mi","cpu":1}}}'
   freezeFilesystemForSnapshot: true
   snapshotDataIntegrity: enabled
   snapshotDataIntegrityCronjob: '0 3 * * *'  # Default: '0 0 */7 * *'
@@ -22,7 +22,7 @@ defaultSettings:
 longhornManager:
   resources:
     requests: {memory: 2Gi}
-    limits: {memory: 2Gi}
+    limits: {memory: 2Gi, cpu: 2}
 
 persistence:
   reclaimPolicy: Retain

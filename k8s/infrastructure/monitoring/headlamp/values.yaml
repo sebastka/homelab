@@ -4,12 +4,20 @@
 
 config:
   sessionTTL: null  # 86400 (https://github.com/kubernetes-sigs/headlamp/issues/4883)
+  # oidc:
+  #   clientID: '358737465722334937'
+  #   issuerURL: https://karlsen-xzy0yv.zitadel.cloud
+  #   meUserInfoURL: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/userinfo
+  #   scopes: email
+  #   usePKCE: true
   oidc:
-    clientID: '358737465722334937'
-    issuerURL: https://karlsen-xzy0yv.zitadel.cloud
-    meUserInfoURL: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/userinfo
+    secret:
+      create: false
+      name: oidc
+    clientID: headlamp
+    issuerURL: https://auth.karlsen.fr
     scopes: email
-    usePKCE: true
+
 
   # pluginsDir: "/headlamp/plugins"
   # enableHelm: false
@@ -24,7 +32,7 @@ httproute:
 
 resources:
   requests: {memory: 64Mi}
-  limits: {memory: 64Mi}
+  limits: {memory: 64Mi, cpu: 500m}
 
 pluginsManager:
   enabled: false

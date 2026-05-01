@@ -18,15 +18,15 @@ extraArgs:
 
 resources:
   requests: {memory: 64Mi}
-  limits: {memory: 64Mi}
+  limits: {memory: 64Mi, cpu: 500m}
 webhook:
   resources:
     requests: {memory: 64Mi}
-    limits: {memory: 64Mi}
+    limits: {memory: 64Mi, cpu: 500m}
 cainjector:
   resources:
     requests: {memory: 128Mi}
-    limits: {memory: 128Mi}
+    limits: {memory: 128Mi, cpu: 500m}
 
 prometheus:
   enabled: true

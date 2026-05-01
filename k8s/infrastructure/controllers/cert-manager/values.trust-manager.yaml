@@ -19,4 +19,4 @@ secretTargets:
 
 resources:
   requests: {memory: 32Mi}
-  limits: {memory: 32Mi}
+  limits: {memory: 32Mi, cpu: 500m}

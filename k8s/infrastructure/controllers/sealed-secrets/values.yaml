@@ -5,12 +5,8 @@ namespace: sealed-secrets
 keyrenewperiod: 8766h  # ~ 1 year
 
 resources:
-  requests:
-    # cpu: 10m
-    memory: 32Mi
-  limits:
-    # cpu: 100m
-    memory: 32Mi
+  requests: {memory: 32Mi}
+  limits: {memory: 32Mi, cpu: 500m}
 
 containerSecurityContext:
   allowPrivilegeEscalation: false

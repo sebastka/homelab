@@ -6,23 +6,23 @@ master:
   podSecurityContext: {seccompProfile: {type: RuntimeDefault}}
   resources:
     requests: {memory: 128Mi}
-    limits: {memory: 128Mi}
+    limits: {memory: 128Mi, cpu: 1}
 
 worker:
   config: {core: {sleepInterval: 3600s}}
   podSecurityContext: {seccompProfile: {type: RuntimeDefault}}
   resources:
     requests: {memory: 128Mi}
-    limits: {memory: 128Mi}
+    limits: {memory: 128Mi, cpu: 1}
 
 topologyUpdater:
   podSecurityContext: {seccompProfile: {type: RuntimeDefault}}
   resources:
     requests: {memory: 64Mi}
-    limits: {memory: 64Mi}
+    limits: {memory: 64Mi, cpu: 1}
 
 gc:
   podSecurityContext: {seccompProfile: {type: RuntimeDefault}}
   resources:
     requests: {memory: 64Mi}
-    limits: {memory: 64Mi}
+    limits: {memory: 64Mi, cpu: 1}
