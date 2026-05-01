@@ -26,7 +26,7 @@ prometheus:
         spec:
           storageClassName: longhorn-encrypted
           volumeName: prometheus-data-pv
-          accessModes: [ReadWriteMany]
+          accessModes: [ReadWriteOncePod]
           resources: {requests: {storage: 20Gi}}
 
 prometheusOperator:
