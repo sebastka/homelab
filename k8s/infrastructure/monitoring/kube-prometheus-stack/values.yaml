@@ -17,8 +17,8 @@ prometheus:
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelector: {}
     resources:
-      requests: {memory: 4096Mi}
-      limits: {memory: 4096Mi}
+      requests: {memory: 2048Mi}
+      limits: {memory: 2048Mi}
     storageSpec:
       volumeClaimTemplate:
         spec:
