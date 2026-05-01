@@ -20,10 +20,8 @@ helmCharts:
 
 resources:
   - Namespace.yaml
-  - SealedSecret.n8n-db-credentials.yaml
   - SealedSecret.oidc.yaml
   - SealedSecret.n8n-secrets.yaml
-  - Cluster.n8n-db.yaml
   - Deployment.valkey.yaml
   - ServiceAccount.yaml
   - Service.yaml
