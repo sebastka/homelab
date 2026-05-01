@@ -6,7 +6,6 @@ kind: Kustomization
 resources:
   - Namespace.yaml
   - HTTPRoute.yaml
-  - PersistentVolumeClaim.yaml
 
 helmCharts:
   - name: kube-prometheus-stack
