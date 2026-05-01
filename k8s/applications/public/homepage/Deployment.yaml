@@ -67,7 +67,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 24Mi}
-            limits: {memory: 24Mi, cpu: 100m}
+            limits: {memory: 24Mi}
           volumeMounts:
             - {name: karlsenfr-volume, mountPath: /karlsenfr}
             - {name: other-volume, mountPath: /other}
@@ -85,7 +85,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 12Mi}
-            limits: {memory: 12Mi, cpu: 500m}
+            limits: {memory: 12Mi}
           ports:
             - {name: http, containerPort: 8080}
           volumeMounts:

@@ -62,7 +62,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 512Mi}
-            limits: {memory: 512Mi, cpu: 1}
+            limits: {memory: 512Mi}
           envFrom:
             - configMapRef: {name: opentogethertube-env}
             - secretRef: {name: opentogethertube-secrets}

@@ -43,7 +43,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 6Gi, gpu.intel.com/xe: 1}
-            limits: {memory: 6Gi, cpu: 4, gpu.intel.com/xe: 1}
+            limits: {memory: 6Gi, gpu.intel.com/xe: 1}
           envFrom:
             - configMapRef: {name: jellyfin-env}
           ports:
