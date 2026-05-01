@@ -9,7 +9,7 @@ dashboard:
   enabled: true
 
 podSecurityContext:
-  securityContext: {seccompProfile: {type: RuntimeDefault}}
+  seccompProfile: {type: RuntimeDefault}
 
 resources:
   requests: {memory: 64Mi}
