@@ -48,7 +48,7 @@ spec:
             - configMapRef: {name: jellyfin-env}
           ports:
             - {name: http, protocol: TCP, containerPort: 8096}
-            # - {name: client-discovery, protocol: UDP, containerPort: 7359}
+            - {name: client-discovery, protocol: UDP, containerPort: 7359}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /cache}
@@ -59,6 +59,6 @@ spec:
           readinessProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
       volumes:
         - {name: tmp-volume, emptyDir: {medium: Memory}}
-        - {name: cache-volume, emptyDir: {medium: Memory}}
         - {name: config-volume, persistentVolumeClaim: {claimName: jellyfin-config-pvc}}
+        - {name: cache-volume, persistentVolumeClaim: {claimName: jellyfin-cache-pvc}}
         - {name: media-volume, persistentVolumeClaim: {claimName: jellyfin-media-pvc}}

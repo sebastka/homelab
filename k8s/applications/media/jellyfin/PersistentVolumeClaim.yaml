@@ -17,6 +17,19 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: jellyfin-cache-pvc
+  namespace: jellyfin
+  labels:
+    app.kubernetes.io/name: jellyfin
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 10Gi}}
+  storageClassName: longhorn-static
+  # volumeName:
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: jellyfin-media-pvc
   namespace: jellyfin
   labels:
