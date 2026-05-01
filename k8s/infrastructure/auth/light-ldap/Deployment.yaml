@@ -2,29 +2,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lldap
-  namespace: lldap
+  name: light-ldap
+  namespace: light-ldap
 spec:
   replicas: 1
   strategy: {type: Recreate}
   selector:
     matchLabels:
-      app.kubernetes.io/name: lldap
+      app.kubernetes.io/name: light-ldap
       app.kubernetes.io/version: 2026-02-27-alpine-rootless
       app.kubernetes.io/component: ldap-server
-      app.kubernetes.io/part-of: lldap
+      app.kubernetes.io/part-of: light-ldap
       # app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
-      namespace: lldap
+      namespace: light-ldap
       labels:
-        app.kubernetes.io/name: lldap
+        app.kubernetes.io/name: light-ldap
         app.kubernetes.io/version: 2026-02-27-alpine-rootless
         app.kubernetes.io/component: ldap-server
-        app.kubernetes.io/part-of: lldap
+        app.kubernetes.io/part-of: light-ldap
         # app.kubernetes.io/managed-by: kustomize
     spec:
-      serviceAccountName: lldap
+      serviceAccountName: light-ldap
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
@@ -33,7 +33,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       containers:
-        - name: lldap
+        - name: light-ldap
           # Dockerfile: https://github.com/lldap/lldap/blob/main/Dockerfile
           image: docker.io/lldap/lldap:2026-02-27-alpine-rootless  # renovate: docker=ghcr.io/lldap/lldap
           securityContext:

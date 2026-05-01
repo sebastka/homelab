@@ -12,7 +12,7 @@ spec:
       server: '*'
     - namespace: cnpg-database
       server: '*'
-    - namespace: lldap
+    - namespace: light-ldap
       server: '*'
     - namespace: authelia
       server: '*'

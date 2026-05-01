@@ -1,16 +1,16 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-# namespace: lldap
+# namespace: light-ldap
 
 generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - {namespace: lldap, name: lldap-config, files: [lldap_config.toml=assets/lldap_config.toml]}
-  - {namespace: lldap, name: lldap-env, envs: [assets/lldap.env]}
-  - {namespace: lldap, name: bootstrap-env, envs: [assets/bootstrap.env]}
-  - namespace: lldap
+  - {namespace: light-ldap, name: lldap-config, files: [lldap_config.toml=assets/lldap_config.toml]}
+  - {namespace: light-ldap, name: lldap-env, envs: [assets/lldap.env]}
+  - {namespace: light-ldap, name: bootstrap-env, envs: [assets/bootstrap.env]}
+  - namespace: light-ldap
     name: bootstrap-schemas
     files:
       - group-schemas.json=assets/group-schemas.json
