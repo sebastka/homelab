@@ -10,6 +10,7 @@ resources:
   - StorageClass.longhorn-encrypted.yaml
   - BackupTarget.yaml
   - RecurringJob.yaml
+  - NetworkPolicy.yaml
   # - GrafanaDashboard.control-plane.yaml
   # - GrafanaDashboard.data-plane.yaml
 
