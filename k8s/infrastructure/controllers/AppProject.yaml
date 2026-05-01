@@ -14,8 +14,6 @@ spec:
       server: '*'
     - namespace: sealed-secrets
       server: '*'
-    - namespace: databases-backup
-      server: '*'
     - namespace: cert-manager
       server: '*'
     - namespace: nfd

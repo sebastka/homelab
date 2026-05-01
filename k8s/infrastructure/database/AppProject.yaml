@@ -14,6 +14,8 @@ spec:
       server: '*'
     - namespace: cnpg-database
       server: '*'
+    - namespace: databases-backup
+      server: '*'
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
