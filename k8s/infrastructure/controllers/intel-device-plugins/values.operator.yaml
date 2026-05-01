@@ -4,11 +4,11 @@
 
 manager:
   devices:
-    dsa: false
+    dsa: false  # Intel Data Streaming accelerator
     gpu: true
-    iaa: false
-    qat: false
-    sgx: false
+    iaa: false  # Intel Analytics accelerator
+    qat: false  # Intel QAT adapters
+    sgx: false  # Intel Software Guard Extensions
 
 resources:
   requests: {memory: 128Mi}
