@@ -96,16 +96,3 @@ schedules:
       labelSelector:
         matchLabels:
           backup.velero.io/nightly-hetzner: enabled
-  test-hetzner:
-    disabled: false
-    schedule: 00 20 * * *
-    # useOwnerReferencesInBackup: false
-    template:
-      ttl: 720h  # 30 days
-      storageLocation: hetzner
-      snapshotMoveData: true
-      includedNamespaces: ['*']
-      includedResources: [persistentvolumeclaims]
-      labelSelector:
-        matchLabels:
-          backup.velero.io/nightly-hetzner: enabled
