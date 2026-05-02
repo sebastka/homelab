@@ -68,19 +68,19 @@ nodeAgent:
     requests: {memory: 512Mi}
     limits: {memory: 512Mi}
   podSecurityContext:
-    runAsNonRoot: true
-    runAsUser: 65534
+    # runAsNonRoot: true
+    # runAsUser: 65534
     seccompProfile: {type: RuntimeDefault}
   containerSecurityContext:
     allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
+    # readOnlyRootFilesystem: true
     capabilities: {drop: [ALL]}
-  extraVolumes:
-    - {name: tmp-volume, emptyDir: {}}
-    - {name: nonexistant-volume, emptyDir: {}}  # kopia needs its config dir to be writable. "nonexistant" is the home for user "nobody"
-  extraVolumeMounts:
-    - {name: tmp-volume, mountPath: /tmp}
-    - {name: nonexistant-volume, mountPath: /nonexistant}
+  # extraVolumes:
+  #   - {name: tmp-volume, emptyDir: {}}
+  #   - {name: nonexistant-volume, emptyDir: {}}  # kopia needs its config dir to be writable. "nonexistant" is the home for user "nobody"
+  # extraVolumeMounts:
+  #   - {name: tmp-volume, mountPath: /tmp}
+  #   - {name: nonexistant-volume, mountPath: /nonexistant}
 
 schedules:
   nightly-hetzner:
@@ -98,7 +98,7 @@ schedules:
           backup.velero.io/nightly-hetzner: enabled
   test-hetzner:
     disabled: false
-    schedule: 22 19 * * *
+    schedule: 30 19 * * *
     # useOwnerReferencesInBackup: false
     template:
       ttl: 720h  # 30 days
