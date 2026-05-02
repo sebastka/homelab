@@ -2,6 +2,10 @@
 # https://github.com/backube/volsync/blob/main/helm/volsync/values.yaml
 ---
 
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile: {type: RuntimeDefault}
+
 resources:
   requests: {memory: 512Mi}
   limits: {memory: 512Mi}
