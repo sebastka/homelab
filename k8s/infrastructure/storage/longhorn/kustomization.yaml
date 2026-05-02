@@ -8,9 +8,10 @@ resources:
   - HTTPRoute.yaml
   - SealedSecret.longhorn-crypto.yaml
   - StorageClass.longhorn-encrypted.yaml
+  - VolumeSnapshotClass.yaml
   # - BackupTarget.yaml
   - RecurringJob.yaml
-  - NetworkPolicy.yaml
+  # - NetworkPolicy.yaml
   # - GrafanaDashboard.control-plane.yaml
   # - GrafanaDashboard.data-plane.yaml
 
