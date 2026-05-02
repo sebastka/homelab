@@ -51,7 +51,7 @@ authentication_backend:
   # password_change: {disable: true}
   # password_reset: {disable: true}
   ldap:
-    address: ldap://lldap.lldap.svc.cluster.local
+    address: ldap://light-ldap.light-ldap.svc.cluster.local
     implementation: lldap
     base_dn: DC=karlsen,DC=fr
     user: UID=lldap-admin,OU=people,dc=karlsen,dc=fr
