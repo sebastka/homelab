@@ -1,9 +1,0 @@
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: volsync-manager-argocd
-  namespace: argocd
-roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: volsync-leader-election}
-subjects:
-  - {namespace: argocd, kind: ServiceAccount, name: volsync}

@@ -14,7 +14,7 @@ spec:
       server: '*'
     - namespace: longhorn-system
       server: '*'
-    - namespace: volsync-system
+    - namespace: velero
       server: '*'
   clusterResourceWhitelist:
     - group: '*'

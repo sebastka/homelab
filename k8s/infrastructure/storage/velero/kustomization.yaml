@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: velero
+
+resources:
+  - Namespace.yaml
+  - SealedSecret.hetzner-s3.yaml
+
+helmCharts:
+  - name: velero
+    repo: https://vmware-tanzu.github.io/helm-charts
+    version: 12.0.1  # renovate: github-releases=vmware-tanzu/helm-charts
+    releaseName: velero
+    namespace: velero
+    includeCRDs: true
+    valuesFile: values.yaml
