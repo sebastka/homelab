@@ -63,6 +63,7 @@ configuration:
 deployNodeAgent: true
 nodeAgent:
   disableHostPath: true
+  useScratchEmptyDir: true
   resources:
     requests: {memory: 512Mi}
     limits: {memory: 512Mi}
@@ -95,7 +96,7 @@ schedules:
           backup.velero.io/nightly-hetzner: enabled
   test-hetzner:
     disabled: false
-    schedule: 20 18 * * *
+    schedule: 46 18 * * *
     # useOwnerReferencesInBackup: false
     template:
       ttl: 720h  # 30 days
