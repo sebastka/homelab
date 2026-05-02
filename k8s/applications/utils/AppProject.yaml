@@ -22,6 +22,8 @@ spec:
       server: '*'
     - namespace: searxng
       server: '*'
+    - namespace: sankeymatic
+      server: '*'
     - namespace: thelounge
       server: '*'
   clusterResourceWhitelist:

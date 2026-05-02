@@ -1,0 +1,22 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: sankeymatic 
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: nginx-config
+    namespace: sankeymatic 
+    files:
+      - nginx.custom.conf=assets/nginx.custom.conf
+      - sites.conf=assets/sites.conf
+
+resources:
+  - Namespace.yaml
+  - ServiceAccount.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - HTTPRoute.yaml
+  - SecurityPolicy.yaml

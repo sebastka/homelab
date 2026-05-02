@@ -1,0 +1,85 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sankeymatic
+  namespace: sankeymatic 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sankeymatic 
+      app.kubernetes.io/version: stable
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: sankeymatic 
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: sankeymatic 
+      labels:
+        app.kubernetes.io/name: sankeymatic 
+        app.kubernetes.io/version: stable
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: sankeymatic 
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: sankeymatic 
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: git-cloner
+          image: alpine/git:v2.52.0
+          command: ['/bin/sh', '-c']
+          args:
+            - |
+              set -eux
+
+              # Clean up volumes
+              for d in /tmp /app; do [ ! -d "$d" ] || { rm -rf "$d"/* "$d"/.[!.]*; }; done
+
+              # sankeymatic
+              git -C /tmp clone --depth 1 --branch main --single-branch https://github.com/nowthis/sankeymatic.git
+              mv /tmp/sankeymatic/build/* /app/
+              rm -rf /tmp/sankeymatic
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 24Mi}
+            limits: {memory: 24Mi}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: sankeymatic-volume, mountPath: /app}
+      containers:
+        - name: nginx
+          # Dockerfile: https://github.com/nginx/docker-nginx-unprivileged/blob/main/Dockerfile-alpine-slim.template
+          image: nginxinc/nginx-unprivileged:1.30.0-alpine-slim
+          command: [nginx]
+          args: ['-c', '/etc/nginx/nginx.custom.conf', '-g', 'daemon off;']
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 12Mi}
+            limits: {memory: 12Mi}
+          ports:
+            - {name: http, containerPort: 8080}
+          startupProbe: {httpGet: {port: 8080, path: /, httpHeaders: [{name: Host, value: sankeymatic.karlsen.app}]}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8080, path: /, httpHeaders: [{name: Host, value: sankeymatic.karlsen.app}]}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8080, path: /, httpHeaders: [{name: Host, value: sankeymatic.karlsen.app}]}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: sankeymatic-volume, mountPath: /app, readOnly: true}
+            - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: 'nginx.custom.conf', readOnly: true}
+            - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/sites.conf, subPath: 'sites.conf', readOnly: true}
+      volumes:
+        - {name: sankeymatic-volume, emptyDir: {}}
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: nginx-config-volume, configMap: {name: nginx-config}}
