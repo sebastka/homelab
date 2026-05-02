@@ -12,13 +12,13 @@ upgradeJobResources:
   limits: {memory: 128Mi}
 
 podSecurityContext:
-  runAsNonRoot: true
+  # runAsNonRoot: true
   # runAsUser: 65534
   seccompProfile: {type: RuntimeDefault}
 
 containerSecurityContext:
   allowPrivilegeEscalation: false
-  readOnlyRootFilesystem: true
+  # readOnlyRootFilesystem: true
   capabilities: {drop: [ALL]}
 
 metrics:
