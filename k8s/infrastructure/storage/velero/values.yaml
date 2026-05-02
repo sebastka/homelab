@@ -94,7 +94,7 @@ schedules:
           backup.velero.io/nightly-hetzner: enabled
   test-hetzner:
     disabled: false
-    schedule: 00 18 * * *
+    schedule: 11 18 * * *
     # useOwnerReferencesInBackup: false
     template:
       ttl: 720h  # 30 days
