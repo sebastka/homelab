@@ -39,7 +39,7 @@ spec:
           args:
             - |
               set -eux
-              while [ ! -f /tmp/stop ]; do sleep 15; done
+              while [ ! -f /tmp/stop ]; do sleep 5; done
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
