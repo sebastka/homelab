@@ -55,6 +55,9 @@ configuration:
         region: hel1
         s3Url: https://hel1.your-objectstorage.com
         s3ForcePathStyle: "true"
+  volumeSnapshotLocation:
+    - name: default
+      provider: velero.io/csi
 
 deployNodeAgent: true
 nodeAgent:
