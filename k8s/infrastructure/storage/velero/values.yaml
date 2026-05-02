@@ -13,7 +13,7 @@ upgradeJobResources:
 
 podSecurityContext:
   runAsNonRoot: true
-  runAsUser: 65534
+  # runAsUser: 65534
   seccompProfile: {type: RuntimeDefault}
 
 containerSecurityContext:
