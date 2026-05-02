@@ -13,7 +13,6 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/infrastructure/storage/*
-          - {path: k8s/infrastructure/storage/external-snapshotter, exclude: true}
           - {path: k8s/infrastructure/storage/volsync, exclude: true}
   template:
     metadata:
