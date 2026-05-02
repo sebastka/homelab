@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ntfy-data-pvc
+  namespace: ntfy
+  labels:
+    app.kubernetes.io/name: ntfy
+    recurring-job.longhorn.io/source: enabled
+    recurring-job-group.longhorn.io/group1: enabled
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 5Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: ntfy-data-pv

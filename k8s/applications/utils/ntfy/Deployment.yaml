@@ -1,0 +1,93 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ntfy
+  namespace: ntfy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ntfy
+      app.kubernetes.io/version: stable
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: ntfy
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: ntfy
+      labels:
+        app.kubernetes.io/name: ntfy
+        app.kubernetes.io/version: stable
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: ntfy
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: ntfy
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: config-merger
+          image: mikefarah/yq:4.53.2
+          command: ['/bin/sh', '-c']
+          args:
+            - |
+              set -eu
+
+              # Clean up volumes
+              for d in /etc/ntfy; do [ ! -d "$d" ] || { rm -rf "$d"/* "$d"/.[!.]*; }; done
+
+              yq eval '
+                .database-url = strenv(NTFY_DATABASE_URL) |
+                .smtp-sender-addr = strenv(NTFY_SMTP_SENDER_ADDR) |
+                .smtp-sender-from = strenv(NTFY_SMTP_SENDER_FROM) |
+                .smtp-sender-user = strenv(NTFY_SMTP_SENDER_USER) |
+                .smtp-sender-pass = strenv(NTFY_SMTP_SENDER_PASS) |
+                .web-push-public-key = strenv(NTFY_WEB_PUSH_PUBLIC_KEY) |
+                .web-push-private-key = strenv(NTFY_WEB_PUSH_PRIVATE_KEY) |
+                .web-push-email-address = strenv(NTFY_WEB_PUSH_EMAIL_ADDRESS)' \
+                /mnt/server.yaml >/etc/ntfy/server.yml
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 24Mi}
+            limits: {memory: 24Mi}
+          envFrom:
+            - secretRef: {name: ntfy-secrets}
+          volumeMounts:
+            - {name: generated-config-volume, mountPath: /etc/ntfy}
+            - {name: config-volume, mountPath: /mnt/server.yaml, subPath: server.yaml, readOnly: true}
+      containers:
+        - name: ntfy
+          # Dockerfile: https://github.com/binwiederhier/ntfy/blob/main/Dockerfile
+          image: binwiederhier/ntfy:v2.22
+          args: [serve]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          env:
+            - {name: TZ, value: Europe/Oslo}
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 64Mi}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8080}
+            - {name: metrics, protocol: TCP, containerPort: 9090}
+          startupProbe: {httpGet: {port: 8080, path: /v1/health, httpHeaders: [{name: Host, value: ntfy.karlsen.app}]}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8080, path: /v1/health, httpHeaders: [{name: Host, value: ntfy.karlsen.app}]}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8080, path: /v1/health, httpHeaders: [{name: Host, value: ntfy.karlsen.app}]}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            - {name: generated-config-volume, mountPath: /etc/ntfy, readOnly: true}
+            - {name: ntfy-data-volume, mountPath: /var/lib/ntfy/attachments, subPath: attachments}
+      volumes:
+        - {name: generated-config-volume, emptyDir: {}}
+        - {name: config-volume, configMap: {name: ntfy-config}}
+        - {name: ntfy-data-volume, persistentVolumeClaim: {claimName: ntfy-data-pvc}}

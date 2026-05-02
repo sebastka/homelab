@@ -10,13 +10,13 @@ spec:
   destinations:
     - namespace: argocd
       server: '*'
-    - namespace: cnpg-database
-      server: '*'
     - namespace: deluge
       server: '*'
     - namespace: glance
       server: '*'
     - namespace: n8n
+      server: '*'
+    - namespace: ntfy
       server: '*'
     - namespace: paperless
       server: '*'
