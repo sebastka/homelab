@@ -28,11 +28,11 @@ cgroup:
 operator:
   rollOutPods: true
   prometheus:
-    metricsService: true
-    enabled: true
+    metricsService: false
+    enabled: false
     port: 9963
     serviceMonitor:
-      enabled: true
+      enabled: false
   dashboards:
     enabled: true
   resources:
@@ -106,10 +106,10 @@ gatewayAPI:
 envoy:
   enabled: true
   prometheus:
-    enabled: true
+    enabled: false
     port: "9964"
     serviceMonitor:
-      enabled: true
+      enabled: false
   securityContext:
     capabilities:
       keepCapNetBindService: true
@@ -132,7 +132,7 @@ hubble:
     enableOpenMetrics: true
     port: 9965
     serviceMonitor:
-      enabled: true
+      enabled: false
     dashboards:
       enabled: true
   relay:
@@ -142,10 +142,10 @@ hubble:
       requests: {memory: 256Mi}
       limits: {memory: 256Mi}
     prometheus:
-      enabled: true
+      enabled: false
       port: 9966
       serviceMonitor:
-        enabled: true
+        enabled: false
   ui:
     enabled: true
     rollOutPods: true
@@ -164,10 +164,10 @@ ingressController:
 # clustermesh:
 #   apiserver:
 #     metrics:
-#       enabled: true
+#       enabled: false
 #       port: 9962
 #       serviceMonitor:
-#         enabled: true
+#         enabled: false
 #     resources:
 #       requests: {memory: 256Mi}
 #       limits: {memory: 256Mi}
@@ -199,11 +199,11 @@ authentication:
             limits: {memory: 128Mi}
 
 prometheus:
-  metricsService: true
-  enabled: true
+  metricsService: false
+  enabled: false
   port: 9962
   serviceMonitor:
-    enabled: true
+    enabled: false
     trustCRDsExist: true
 
 dashboards:
