@@ -29,6 +29,5 @@ cainjector:
     limits: {memory: 128Mi}
 
 prometheus:
-  enabled: true
-  servicemonitor:
-    enabled: true
+  enabled: false
+  servicemonitor: {enabled: false}

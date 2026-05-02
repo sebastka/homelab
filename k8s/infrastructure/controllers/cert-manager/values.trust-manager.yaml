@@ -9,6 +9,11 @@ crds:
 app:
   trust:
     namespace: cert-manager
+  metrics:
+    service:
+      enabled: true
+      servicemonitor:
+        enabled: false
 
 defaultPackage:
   enabled: true
