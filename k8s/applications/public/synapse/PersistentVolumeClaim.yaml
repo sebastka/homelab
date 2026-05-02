@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/name: synapse
     recurring-job.longhorn.io/source: enabled
     recurring-job-group.longhorn.io/group1: enabled
+    recurring-job-group.longhorn.io/group2: enabled
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
