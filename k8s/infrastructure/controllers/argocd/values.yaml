@@ -31,7 +31,7 @@ configs:
       clientID: argocd
       clientSecret: $oidc:authelia.clientSecret
       cliClientID: argocd-cli
-      requestedScopes: [openid, email, groups]
+      requestedScopes: [openid, email, groups, profile]
       enableUserInfoGroups: true
       userInfoPath: /api/oidc/userinfo
     kustomize.buildOptions: --enable-helm
