@@ -12,7 +12,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: authelia
-      app.kubernetes.io/version: 4.39.13
+      app.kubernetes.io/version: stable
       app.kubernetes.io/component: identity-provider
       app.kubernetes.io/part-of: authelia
       # app.kubernetes.io/managed-by: kustomize
@@ -21,7 +21,7 @@ spec:
       namespace: authelia
       labels:
         app.kubernetes.io/name: authelia
-        app.kubernetes.io/version: 4.39.13
+        app.kubernetes.io/version: stable
         app.kubernetes.io/component: identity-provider
         app.kubernetes.io/part-of: authelia
         # app.kubernetes.io/managed-by: kustomize
