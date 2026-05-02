@@ -81,8 +81,20 @@ nodeAgent:
 schedules:
   nightly-hetzner:
     disabled: false
-    # schedule: 00 4 * * *  # 04:00 UTC / 06:00 CEST
-    schedule: 00 17 * * *
+    schedule: 00 4 * * *  # 04:00 UTC / 06:00 CEST
+    # useOwnerReferencesInBackup: false
+    template:
+      ttl: 720h  # 30 days
+      storageLocation: hetzner
+      snapshotMoveData: true
+      includedNamespaces: ['*']
+      includedResources: [persistentvolumeclaims]
+      labelSelector:
+        matchLabels:
+          backup.velero.io/nightly-hetzner: enabled
+  test-hetzner:
+    disabled: false
+    schedule: 56 17 * * *
     # useOwnerReferencesInBackup: false
     template:
       ttl: 720h  # 30 days
