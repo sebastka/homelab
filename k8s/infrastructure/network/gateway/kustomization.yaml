@@ -23,7 +23,7 @@ resources:
   - Certificate.wc-talmox-hera-home-karlsen-fr.yaml
   - Gateway.internal.yaml
   - Gateway.default.yaml
-  - ClientTrafficPolicy.yaml
+  # - ClientTrafficPolicy.yaml
   - SecurityPolicy.yaml
   - BackendTrafficPolicy.yaml
   - HTTPRoute.https-upgrade.yaml
