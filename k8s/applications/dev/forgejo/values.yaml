@@ -16,9 +16,6 @@
 #   --allow-username-change=false
 ---
 
-global:
-  hostAliases: [{ip: 192.168.0.3, hostnames: [auth.karlsen.fr]}]
-
 service:
   http:
     type: ClusterIP

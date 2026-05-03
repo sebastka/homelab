@@ -10,7 +10,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: frontend
-      app.kubernetes.io/version: '7.4.9'
+      app.kubernetes.io/version: stable
       app.kubernetes.io/component: frontend
       app.kubernetes.io/part-of: zabbix
     # app.kubernetes.io/managed-by: kustomize
@@ -19,13 +19,12 @@ spec:
       namespace: zabbix
       labels:
         app.kubernetes.io/name: frontend
-        app.kubernetes.io/version: '7.4.9'
+        app.kubernetes.io/version: stable
         app.kubernetes.io/component: frontend
         app.kubernetes.io/part-of: zabbix
       # app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccountName: frontend
-      hostAliases: [{ip: 192.168.2.12, hostnames: [zabbix.talmox.hera.home.karlsen.fr]}]
       securityContext:
         runAsNonRoot: true
         runAsUser: 1997
