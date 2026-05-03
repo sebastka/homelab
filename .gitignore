@@ -18,6 +18,7 @@ Secret.*.yaml
 !Secret.*.enc.yaml
 **/thelounge/data
 values.default.yaml
+values.*.default.yaml
 
 # Talos
 talos/temp.json
