@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eu
+set -eux
 
 # ./upgrade.sh <cluster-name> <talos-version>
 main()
@@ -13,13 +13,13 @@ main()
     sed 1d "./clusters/${CLUSTER_NAME}/nodes.csv" | grep -E -v '^#' | grep controlplane | while IFS=, read cluster pve_node role node_name hw_add net_addr; do
         printf -- 'Upgrading control plane node %s (%s) to v%s... Press <enter> to continue:' "$node_name" "$net_addr" "$TALOS_VERSION"
         read keypress </dev/tty
-        talosctl upgrade --nodes "$net_addr" --image "ghcr.io/siderolabs/installer:v${TALOS_VERSION}" --preserve
+        talosctl upgrade --nodes "$net_addr" --image "ghcr.io/siderolabs/installer:v${TALOS_VERSION}"
     done
     
     sed 1d "./clusters/${CLUSTER_NAME}/nodes.csv" | grep -E -v '^#' | grep worker | while IFS=, read cluster pve_node role node_name hw_add net_addr; do
         printf -- 'Upgrading worker node %s (%s) to v%s... Press <enter> to continue:' "$node_name" "$net_addr" "$TALOS_VERSION"
         read keypress </dev/tty
-        talosctl upgrade --nodes "$net_addr" --image "ghcr.io/siderolabs/installer:v${TALOS_VERSION}" --preserve
+        talosctl upgrade --nodes "$net_addr" --image "ghcr.io/siderolabs/installer:v${TALOS_VERSION}"
     done
 }
 

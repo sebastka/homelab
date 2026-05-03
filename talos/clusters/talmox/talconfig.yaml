@@ -6,12 +6,19 @@
 ---
 clusterName: ${CLUSTER_NAME}
 talosVersion: v${TALOS_VERSION}
-kubernetesVersion: v${K8S_VERSION}
-endpoint: https://${CONTROL_PLANE_IP}:6443
-# domain: home.karlsen.fr
-allowSchedulingOnMasters: true
+# kubernetesVersion:  # Follow Talos
+endpoint: https://${TALOS_VIP}:6443
+# domain: cluster.local
 allowSchedulingOnControlPlanes: true
-# additionalApiServerCertSans:
+additionalApiServerCertSans:
+  - ${TALOS_VIP}
+  - ${CONTROL_PLANE_IP}
+  - 192.168.1.202
+  - 192.168.1.203
+  - t01.${CLUSTER_DOMAIN}
+  - t02.${CLUSTER_DOMAIN}
+  - t03.${CLUSTER_DOMAIN}
+
 clusterPodNets: [10.244.0.0/16]
 clusterSvcNets: [10.96.0.0/12]
 # cniConfig:  # Use patch instead
@@ -49,9 +56,6 @@ nodes:
     schematic: &x-schematic
       customization:
         bootloader: sd-boot
-        extraKernelArgs:
-          - lockdown
-          - lockdown=integrity
         systemExtensions:
           officialExtensions:
             - siderolabs/iscsi-tools
@@ -59,7 +63,6 @@ nodes:
             - siderolabs/util-linux-tools
             # - siderolabs/xe
             # - siderolabs/i915
-            # - siderolabs/cloudflared
 
   - hostname: t02.${CLUSTER_DOMAIN}
     ipAddress: 192.168.1.202
@@ -89,8 +92,6 @@ nodes:
       customization:
         bootloader: sd-boot
         extraKernelArgs:
-          - lockdown
-          - lockdown=integrity
           - xe.force_probe=7d51
           - i915.force_probe=!7d51
         systemExtensions:
@@ -100,4 +101,3 @@ nodes:
             - siderolabs/util-linux-tools
             - siderolabs/xe
             - siderolabs/i915
-            # - siderolabs/cloudflared
