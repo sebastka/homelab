@@ -21,3 +21,4 @@ resources:
   - Deployment.valkey.yaml
   - Services.yaml
   - HTTPRoute.yaml
+  - BackendTrafficPolicy.yaml
