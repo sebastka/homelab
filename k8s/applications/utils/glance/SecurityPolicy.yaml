@@ -24,7 +24,7 @@ spec:
       tokenEndpoint: https://auth.karlsen.fr/api/oidc/token
     redirectURL: https://glance.karlsen.app/authelia/openid_connect/callback
     forwardAccessToken: false
-    refreshToken: true
+    refreshToken: false
     passThroughAuthHeader: false
     # resources: []
-    scopes: [openid, offline_access]  # profile, email
+    scopes: [openid, email, profile, groups]  # offline_access
