@@ -197,9 +197,9 @@ identity_providers:
           - https://metube.karlsen.app/authelia/openid_connect/callback
           - https://vert.karlsen.app/authelia/openid_connect/callback
           - https://n8n.karlsen.app/authelia/openid_connect/callback
-        scopes: [openid, email, profile, groups]  # offline_access
+        scopes: [openid, email, profile, groups]
         response_types: [code]
-        grant_types: [authorization_code]  # refresh_token
+        grant_types: [authorization_code]
         access_token_signed_response_alg: none
         userinfo_signed_response_alg: none
         id_token_signed_response_alg: ES256
