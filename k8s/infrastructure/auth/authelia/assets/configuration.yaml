@@ -190,7 +190,7 @@ identity_providers:
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris:
-          - https://glance.karlsen.fr/authelia/openid_connect/callback
+          - https://glance.karlsen.app/authelia/openid_connect/callback
           - https://deluge.karlsen.app/authelia/openid_connect/callback
           - https://searxng.karlsen.app/authelia/openid_connect/callback
           - https://thelounge.karlsen.app/authelia/openid_connect/callback

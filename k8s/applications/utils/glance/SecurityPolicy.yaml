@@ -22,7 +22,7 @@ spec:
       issuer: https://auth.karlsen.fr
       authorizationEndpoint: https://auth.karlsen.fr/api/oidc/authorization
       tokenEndpoint: https://auth.karlsen.fr/api/oidc/token
-    redirectURL: https://glance.karlsen.fr/authelia/openid_connect/callback
+    redirectURL: https://glance.karlsen.app/authelia/openid_connect/callback
     forwardAccessToken: false
     refreshToken: true
     passThroughAuthHeader: false
