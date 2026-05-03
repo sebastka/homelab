@@ -12,19 +12,19 @@ spec:
   targetRefs:
     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: vert-web}
   oidc:
-    clientIDRef: {namespace: vert, kind: Secret, name: oidc}
+    clientID: envoy
     clientSecret: {namespace: vert, kind: Secret, name: oidc}
     cookieConfig: {sameSite: Lax}
     cookieDomain: vert.karlsen.app
     # cookieNames: {accessToken: access-token, idToken: id-token}
-    # forwardAccessToken: false
     # logoutPath: /logout
-    # passThroughAuthHeader: false
     provider:
-      authorizationEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/authorize
-      tokenEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
-      issuer: https://karlsen-xzy0yv.zitadel.cloud
-    redirectURL: https://vert.karlsen.app/oidc-callback
-    # refreshToken: true
+      issuer: https://auth.karlsen.fr
+      authorizationEndpoint: https://auth.karlsen.fr/api/oidc/authorization
+      tokenEndpoint: https://auth.karlsen.fr/api/oidc/token
+    redirectURL: https://vert.karlsen.app/authelia/openid_connect/callback
+    forwardAccessToken: false
+    refreshToken: false
+    passThroughAuthHeader: false
     # resources: []
-    scopes: [openid, profile, email]
+    scopes: [openid, email, profile, groups]  # offline_access

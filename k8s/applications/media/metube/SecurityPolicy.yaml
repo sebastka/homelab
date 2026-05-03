@@ -12,22 +12,22 @@ spec:
   targetRefs:
     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
   oidc:
-    clientIDRef: {namespace: metube, kind: Secret, name: oidc}
+    clientID: envoy
     clientSecret: {namespace: metube, kind: Secret, name: oidc}
     cookieConfig: {sameSite: Lax}
     cookieDomain: metube.karlsen.app
-    # cookieNames: {accessToken: __Host-access_token, idToken: __Host-id-token}
-    # forwardAccessToken: false
+    # cookieNames: {accessToken: access-token, idToken: id-token}
     # logoutPath: /logout
-    # passThroughAuthHeader: false
     provider:
-      authorizationEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/authorize
-      tokenEndpoint: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
-      issuer: https://karlsen-xzy0yv.zitadel.cloud
-    redirectURL: https://metube.karlsen.app/oidc-callback
-    # refreshToken: true
+      issuer: https://auth.karlsen.fr
+      authorizationEndpoint: https://auth.karlsen.fr/api/oidc/authorization
+      tokenEndpoint: https://auth.karlsen.fr/api/oidc/token
+    redirectURL: https://metube.karlsen.app/authelia/openid_connect/callback
+    forwardAccessToken: false
+    refreshToken: false
+    passThroughAuthHeader: false
     # resources: []
-    scopes: [openid, profile, email]
+    scopes: [openid, email, profile, groups]  # offline_access
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
