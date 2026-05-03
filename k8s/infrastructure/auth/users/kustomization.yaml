@@ -1,4 +1,3 @@
-# https://www.safespring.com/blogg/2025/2025-10-zitadel-oidc-configuration/
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization

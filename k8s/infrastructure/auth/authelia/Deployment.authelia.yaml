@@ -70,7 +70,6 @@ spec:
             - {name: client-secrets-volume, mountPath: /secrets/client-secrets/envoy, subPath: envoy, readOnly: true}
             - {name: client-secrets-volume, mountPath: /secrets/client-secrets/harbor, subPath: harbor, readOnly: true}
             - {name: client-secrets-volume, mountPath: /secrets/client-secrets/headlamp, subPath: headlamp, readOnly: true}
-            - {name: client-secrets-volume, mountPath: /secrets/client-secrets/kube_login, subPath: kube_login, readOnly: true}
             - {name: client-secrets-volume, mountPath: /secrets/client-secrets/mas, subPath: mas, readOnly: true}
             - {name: client-secrets-volume, mountPath: /secrets/client-secrets/portainer, subPath: portainer, readOnly: true}
       volumes:
