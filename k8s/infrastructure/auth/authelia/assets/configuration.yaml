@@ -190,13 +190,13 @@ identity_providers:
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris:
-          - https://glance.karlsen.app/oidc-callback
-          - https://deluge.karlsen.app/oidc-callback
-          - https://searxng.karlsen.app/oidc-callback
-          - https://thelounge.karlsen.app/oidc-callback
-          - https://metube.karlsen.app/oidc-callback
-          - https://vert.karlsen.app/oidc-callback
-          - https://n8n.karlsen.app/oidc-callback
+          - https://glance.karlsen.fr/authelia/openid_connect/callback
+          - https://deluge.karlsen.app/authelia/openid_connect/callback
+          - https://searxng.karlsen.app/authelia/openid_connect/callback
+          - https://thelounge.karlsen.app/authelia/openid_connect/callback
+          - https://metube.karlsen.app/authelia/openid_connect/callback
+          - https://vert.karlsen.app/authelia/openid_connect/callback
+          - https://n8n.karlsen.app/authelia/openid_connect/callback
         scopes: [openid, email, profile, groups, offline_access]
         response_types: [code]
         grant_types: [authorization_code, refresh_token]
