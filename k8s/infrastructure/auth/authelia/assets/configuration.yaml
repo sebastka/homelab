@@ -231,8 +231,8 @@ identity_providers:
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 3 months
-        require_pkce: true
-        pkce_challenge_method: S256
+        require_pkce: false
+        pkce_challenge_method: ''
         redirect_uris: [https://portainer.talmox.hera.home.karlsen.fr]
         scopes: [openid, email, profile, groups]
         response_types: [code]
