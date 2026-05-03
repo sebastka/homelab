@@ -10,8 +10,7 @@
     prometheus :9153
 
     hosts {
-        192.168.0.3 auth.karlsen.fr matrix mas.karlsen.fr
-        192.168.2.12 zabbix.talmox.hera.home.karlsen.fr
+        192.168.2.2 auth.karlsen.fr git.karlsen.fr ldap.karlsen.fr mas.karlsen.fr matrix.karlsen.fr mta-sts.karlsen.fr openpgpkey.karlsen.fr www.karlsen.fr
         fallthrough
     }
 
