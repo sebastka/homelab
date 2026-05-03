@@ -14,7 +14,6 @@ configs:
     create: true
     application.resourceTrackingMethod: annotation+label
     admin.enabled: false
-    # https://argo-cd.readthedocs.io/en/latest/operator-manual/user-management/zitadel
     url: https://argocd.talmox.hera.home.karlsen.fr
     oidc.config: |
       name: Authelia
