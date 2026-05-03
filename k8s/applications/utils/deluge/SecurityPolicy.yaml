@@ -16,7 +16,7 @@ spec:
     clientSecret: {namespace: deluge, kind: Secret, name: oidc}
     cookieConfig: {sameSite: Lax}
     cookieDomain: deluge.karlsen.app
-    # cookieNames: {accessToken: access-token, idToken: id-token}
+    cookieNames: {accessToken: oidc-access-token, idToken: oidc-id-token}
     logoutPath: /authelia/logout
     provider:
       issuer: https://auth.karlsen.fr
@@ -27,4 +27,21 @@ spec:
     refreshToken: false
     passThroughAuthHeader: false
     # resources: []
-    scopes: [openid, email, profile, groups]  # offline_access
+    scopes: [openid, email, profile, groups]
+  jwt:
+    providers:
+      - name: authelia
+        issuer: https://auth.karlsen.fr
+        audiences: [envoy]
+        remoteJWKS: {uri: https://auth.karlsen.fr/jwks.json}
+        extractFrom: {cookies: [oidc-id-token]}
+  authorization:
+    defaultAction: Deny
+    rules:
+      - name: allow-homelab-users
+        action: Allow
+        principal:
+          jwt:
+            provider: authelia
+            claims:
+              - {name: groups, valueType: StringArray, values: ['k8s:admins']}
