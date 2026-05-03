@@ -5,7 +5,6 @@ namespace: headlamp
 
 resources:
   - Namespace.yaml
-  - SealedSecret.oidc.yaml
   - HTTPRoute.yaml
 
 helmCharts:

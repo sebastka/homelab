@@ -5,8 +5,7 @@
 config:
   oidc:
     secret: {create: false}
-    externalSecret: {enabled: true, name: oidc}
-    clientID: headlamp
+    clientID: kube_login
     issuerURL: https://auth.karlsen.fr
     scopes: openid profile email groups
     # callbackURL:

@@ -262,7 +262,7 @@ identity_providers:
         claims_policy: embed_id_token_claims
         require_pkce: true
         pkce_challenge_method: S256
-        redirect_uris: [http://localhost:8000, http://localhost:18000]
+        redirect_uris: [http://localhost:8000, http://localhost:18000, https://headlamp.talmox.hera.home.karlsen.fr/oidc-callback]
         scopes: [openid, groups, email, profile]
         response_types: [code]
         grant_types: [authorization_code]
