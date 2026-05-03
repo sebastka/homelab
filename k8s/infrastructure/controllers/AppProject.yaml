@@ -5,21 +5,14 @@ metadata:
   name: controllers
   namespace: argocd
 spec:
-  sourceRepos:
-    - https://github.com/sebastka/homelab.git
+  sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - namespace: argocd
-      server: '*'
-    - namespace: kube-system
-      server: '*'
-    - namespace: sealed-secrets
-      server: '*'
-    - namespace: cert-manager
-      server: '*'
-    - namespace: nfd
-      server: '*'
-    - namespace: intel-device-plugins
-      server: '*'
+    - {namespace: argocd, server: '*'}
+    - {namespace: kube-system, server: '*'}
+    - {namespace: cert-manager, server: '*'}
+    - {namespace: intel-device-plugins, server: '*'}
+    - {namespace: nfd, server: '*'}
+    - {namespace: reloader, server: '*'}
+    - {namespace: sealed-secrets, server: '*'}
   clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - {group: '*', kind: '*'}

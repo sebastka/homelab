@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/stakater/Reloader/refs/heads/master/deployments/kubernetes/chart/reloader/values.schema.json
+# https://github.com/stakater/Reloader/blob/master/deployments/kubernetes/chart/reloader/values.yaml
+---
+
+reloader:
+  deployment:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities: {drop: [ALL]}
+    resources:
+      requests: {memory: 64Mi}
+      limits: {memory: 64Mi}
