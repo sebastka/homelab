@@ -268,7 +268,7 @@ identity_providers:
         grant_types: [authorization_code]
         access_token_signed_response_alg: none
         userinfo_signed_response_alg: none
-        id_token_signed_response_alg: ES256
+        id_token_signed_response_alg: RS256
         token_endpoint_auth_method: none
 
       - client_id: portainer
