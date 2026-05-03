@@ -54,11 +54,6 @@ resources:
 #   secretsNamespace:
 #     name: cilium-secrets
 
-# https://docs.cilium.io/en/latest/network/l2-announcements/#ip-types
-# Deprecated? https://github.com/cilium/cilium/commit/6f33115b861a30c8e21fc99d604afe899772488c
-externalIPs:
-  enabled: true
-
 l2announcements:
   enabled: true
 
@@ -79,7 +74,7 @@ loadBalancer:
   algorithm: maglev
   mode: dsr  # snat
   dsrDispatch: opt
-  # acceleration: native
+  acceleration: native
   l7:
     backend: envoy
 
@@ -96,7 +91,7 @@ autoDirectNodeRoutes: true
 
 gatewayAPI:
   enabled: true
-  enableProxyProtocol: true
+  # enableProxyProtocol: true
   enableAlpn: true
   enableAppProtocol: true
   # xffNumTrustedHops: 1
@@ -161,10 +156,14 @@ hubble:
 ingressController:
   enabled: false
 
+k8sClientRateLimit:
+  qps: 50
+  burst: 100
+
 # clustermesh:
 #   apiserver:
 #     metrics:
-#       enabled: false
+#       enabled: true
 #       port: 9962
 #       serviceMonitor:
 #         enabled: false
