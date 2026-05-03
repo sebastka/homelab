@@ -6,17 +6,14 @@
 - [Navidrome](https://github.com/navidrome/navidrome)
 - [Invidious](https://github.com/iv-org/invidious) / [Viewtube](https://github.com/ViewTube/viewtube)
 - [redlib](https://github.com/redlib-org/redlib/)
-- [NextCloud](https://github.com/nextcloud/server) / [OwnCloud](https://github.com/owncloud/core)
 - [Farside](https://github.com/benbusby/farside)
 - [Immich](https://github.com/immich-app/immich)
 - *arr
 - [RomM](https://github.com/rommapp/romm)
 - Metube -> [Pinchflat](https://github.com/kieraneglin/pinchflat)?
 - [Chaos Mesh](https://github.com/chaos-mesh/chaos-mesh)
-- [Ntfy](https://github.com/binwiederhier/ntfy)
 - [portracker](https://github.com/mostafa-wahied/portracker)
 - [rclone](https://rclone.org/drive/#making-your-own-client-id)
-- [Kite](https://github.com/kite-org/kite)
 
 ## Sources / Inspirations
 
