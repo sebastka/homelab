@@ -150,6 +150,7 @@ identity_providers:
         client_secret: {{ secret "/secrets/client-secrets/argocd" }}
         public: false
         authorization_policy: two_factor
+        pre_configured_consent_duration: 3 months
         claims_policy: argocd
         require_pkce: true
         pkce_challenge_method: S256
@@ -167,10 +168,11 @@ identity_providers:
         public: true
         authorization_policy: two_factor
         pre_configured_consent_duration: 3 months
+        claims_policy: argocd
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris: [http://localhost:8085/auth/callback]
-        scopes: [openid, offline_access, groups, email]
+        scopes: [openid, groups, email, profile, offline_access]
         response_types: [code]
         grant_types: [authorization_code, refresh_token]
         access_token_signed_response_alg: none
