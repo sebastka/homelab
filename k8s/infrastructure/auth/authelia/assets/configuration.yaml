@@ -164,6 +164,7 @@ identity_providers:
 
       - client_id: argocd-cli
         client_name: Argo CD (CLI)
+        # client_secret:
         public: true
         authorization_policy: two_factor
         pre_configured_consent_duration: 3 months
@@ -178,6 +179,31 @@ identity_providers:
         userinfo_signed_response_alg: none
         id_token_signed_response_alg: ES256
         token_endpoint_auth_method: none
+
+      - client_id: envoy
+        client_name: Envoy Gateway
+        client_secret: {{ secret "/secrets/client-secrets/envoy" }}
+        public: false
+        authorization_policy: two_factor
+        pre_configured_consent_duration: 3 months
+        claims_policy: embed_id_token_claims
+        require_pkce: true
+        pkce_challenge_method: S256
+        redirect_uris:
+          - https://glance.karlsen.app/oidc-callback
+          - https://deluge.karlsen.app/oidc-callback
+          - https://searxng.karlsen.app/oidc-callback
+          - https://thelounge.karlsen.app/oidc-callback
+          - https://metube.karlsen.app/oidc-callback
+          - https://vert.karlsen.app/oidc-callback
+          - https://n8n.karlsen.app/oidc-callback
+        scopes: [openid, email, profile, groups, offline_access]
+        response_types: [code]
+        grant_types: [authorization_code, refresh_token]
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        id_token_signed_response_alg: ES256
+        token_endpoint_auth_method: client_secret_basic
 
       - client_id: forgejo
         client_name: Forgejo
@@ -226,6 +252,24 @@ identity_providers:
         userinfo_signed_response_alg: none
         id_token_signed_response_alg: ES256
         token_endpoint_auth_method: client_secret_basic
+
+      # - client_id: kube_login
+      #   client_name: Kubernetes Cluster Access
+      #   client_secret: {{ secret "/secrets/client-secrets/kube_login" }}
+      #   public: false
+      #   authorization_policy: two_factor
+      #   pre_configured_consent_duration: 3 months
+      #   # claims_policy: embed_id_token_claims
+      #   require_pkce: true
+      #   pkce_challenge_method: S256
+      #   redirect_uris: [http://localhost:8000, http://localhost:18000]
+      #   scopes: [openid, groups, email, profile]  # offline_access
+      #   response_types: [code]
+      #   grant_types: [authorization_code]  # refresh_token
+      #   access_token_signed_response_alg: none
+      #   userinfo_signed_response_alg: none
+      #   id_token_signed_response_alg: ES256
+      #   token_endpoint_auth_method: none
 
       - client_id: portainer
         client_name: Portainer
