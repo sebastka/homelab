@@ -6,6 +6,16 @@ config:
   oidc:
     secret: {create: false}
     externalSecret: {enabled: true, name: oidc}
+    clientID: headlamp
+    issuerURL: https://auth.karlsen.fr
+    scopes: openid profile email groups
+    # callbackURL:
+    validatorClientID: headlamp
+    validatorIssuerURL: https://auth.karlsen.fr
+    # useAccessToken:
+    usePKCE: true
+    # useCookie:
+    # meUserInfoURL:
 
   # pluginsDir: "/headlamp/plugins"
   # enableHelm: false
