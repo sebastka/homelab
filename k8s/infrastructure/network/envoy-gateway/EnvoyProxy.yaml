@@ -9,7 +9,7 @@ spec:
     type: Kubernetes
     kubernetes:
       envoyService:
-        externalTrafficPolicy: Local
+        externalTrafficPolicy: Cluster
   # logging:
   #   level:
   #     default: info  # warn
