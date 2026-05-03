@@ -253,23 +253,23 @@ identity_providers:
         id_token_signed_response_alg: ES256
         token_endpoint_auth_method: client_secret_basic
 
-      # - client_id: kube_login
-      #   client_name: Kubernetes Cluster Access
-      #   client_secret: {{ secret "/secrets/client-secrets/kube_login" }}
-      #   public: false
-      #   authorization_policy: two_factor
-      #   pre_configured_consent_duration: 3 months
-      #   # claims_policy: embed_id_token_claims
-      #   require_pkce: true
-      #   pkce_challenge_method: S256
-      #   redirect_uris: [http://localhost:8000, http://localhost:18000]
-      #   scopes: [openid, groups, email, profile]  # offline_access
-      #   response_types: [code]
-      #   grant_types: [authorization_code]  # refresh_token
-      #   access_token_signed_response_alg: none
-      #   userinfo_signed_response_alg: none
-      #   id_token_signed_response_alg: ES256
-      #   token_endpoint_auth_method: none
+      - client_id: kube_login
+        client_name: Kubernetes Cluster Access
+        client_secret: {{ secret "/secrets/client-secrets/kube_login" }}
+        public: false
+        authorization_policy: two_factor
+        pre_configured_consent_duration: 3 months
+        # claims_policy: embed_id_token_claims
+        require_pkce: true
+        pkce_challenge_method: S256
+        redirect_uris: [http://localhost:8000, http://localhost:18000]
+        scopes: [openid, groups, email, profile]  # offline_access
+        response_types: [code]
+        grant_types: [authorization_code]  # refresh_token
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        id_token_signed_response_alg: ES256
+        token_endpoint_auth_method: none
 
       - client_id: portainer
         client_name: Portainer
