@@ -135,9 +135,8 @@ identity_providers:
       allowed_origins_from_client_redirect_uris: true
       endpoints: [userinfo, authorization, token, revocation, introspection]
     claims_policies:
-      argocd: {id_token: [email, preferred_username, groups]}
+      embed_id_token_claims: {id_token: [email, preferred_username, groups]}
       forgejo: {custom_claims: {forgejo: {attribute: sshpubkey}}}
-      headlamp_policy: {id_token: [email, preferred_username, groups]}
       grafana: {custom_claims: {grafana: {attribute: grafana}}}
       legacy: {id_token: [email, email_verified, alt_emails, name, preferred_username, groups]}  # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
       username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
@@ -151,7 +150,7 @@ identity_providers:
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 3 months
-        claims_policy: argocd
+        claims_policy: embed_id_token_claims
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris: [https://argocd.talmox.hera.home.karlsen.fr/auth/callback]
@@ -168,7 +167,7 @@ identity_providers:
         public: true
         authorization_policy: two_factor
         pre_configured_consent_duration: 3 months
-        claims_policy: argocd
+        claims_policy: embed_id_token_claims
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris: [http://localhost:8085/auth/callback]
@@ -216,7 +215,7 @@ identity_providers:
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 3 months
-        claims_policy: headlamp_policy
+        claims_policy: embed_id_token_claims
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris: [https://headlamp.talmox.hera.home.karlsen.fr/oidc-callback]
