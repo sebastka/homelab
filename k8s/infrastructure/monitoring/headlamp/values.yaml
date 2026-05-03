@@ -3,7 +3,9 @@
 ---
 
 config:
-  oidc: {secret: {create: false, name: oidc}}
+  oidc:
+    secret: {create: false}
+    externalSecret: {enabled: true, name: oidc}
 
   # pluginsDir: "/headlamp/plugins"
   # enableHelm: false
