@@ -81,6 +81,11 @@ spec:
             limits: {memory: 256Mi}
           volumeMounts:
             - {name: migrate-tmp-volume, mountPath: /tmp}
+            - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
+            - {name: paperless-consume-volume, mountPath: /usr/src/paperless/consume}
+            - {name: paperless-export-volume, mountPath: /usr/src/paperless/export}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
       containers:
         - name: consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
