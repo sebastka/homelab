@@ -166,6 +166,7 @@ identity_providers:
         client_name: Argo CD (CLI)
         public: true
         authorization_policy: two_factor
+        pre_configured_consent_duration: 3 months
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris: [http://localhost:8085/auth/callback]
