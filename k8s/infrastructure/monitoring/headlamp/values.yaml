@@ -9,7 +9,7 @@ config:
     issuerURL: https://auth.karlsen.fr
     scopes: openid profile email groups
     # callbackURL:
-    validatorClientID: headlamp
+    validatorClientID: kube_login
     validatorIssuerURL: https://auth.karlsen.fr
     # useAccessToken:
     usePKCE: true
