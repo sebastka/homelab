@@ -16,21 +16,13 @@ configs:
     admin.enabled: true
     # https://argo-cd.readthedocs.io/en/latest/operator-manual/user-management/zitadel
     url: https://argocd.talmox.hera.home.karlsen.fr
-    # oidc.config: |
-    #   name: Zitadel
-    #   issuer: https://karlsen-xzy0yv.zitadel.cloud
-    #   redirectURI: https://argocd.talmox.hera.home.karlsen.fr/auth/callback
-    #   clientID: "352479117259590425"
-    #   requestedScopes: ["openid", "profile", "email", "groups"]
-    #   enablePKCEAuthentication: true
-    #   preferredUsernameClaim: preferred_username
-    #   logoutURL: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/end_session
     oidc.config: |
       name: Authelia
       issuer: https://auth.karlsen.fr
       clientID: argocd
       clientSecret: $oidc:authelia.clientSecret
       cliClientID: argocd-cli
+      enablePKCEAuthentication: true
       requestedScopes: [openid, email, groups, profile]
       enableUserInfoGroups: true
       userInfoPath: /api/oidc/userinfo
