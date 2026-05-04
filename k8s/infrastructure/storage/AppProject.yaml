@@ -5,17 +5,11 @@ metadata:
   name: storage
   namespace: argocd
 spec:
-  sourceRepos:
-    - https://github.com/sebastka/homelab.git
+  sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - namespace: argocd
-      server: '*'
-    - namespace: kube-system
-      server: '*'
-    - namespace: longhorn-system
-      server: '*'
-    - namespace: velero
-      server: '*'
+    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
+    - {namespace: kube-system, server: 'https://kubernetes.default.svc'}
+    - {namespace: longhorn-system, server: 'https://kubernetes.default.svc'}
+    - {namespace: velero, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - {group: '*', kind: '*'}

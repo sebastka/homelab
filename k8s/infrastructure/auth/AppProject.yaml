@@ -5,17 +5,12 @@ metadata:
   name: auth
   namespace: argocd
 spec:
-  sourceRepos:
-    - https://github.com/sebastka/homelab.git
+  sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - namespace: argocd
-      server: '*'
-    - namespace: cnpg-database
-      server: '*'
-    - namespace: light-ldap
-      server: '*'
-    - namespace: authelia
-      server: '*'
+    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
+    - {namespace: light-ldap, server: 'https://kubernetes.default.svc'}
+    - {namespace: authelia, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - {group: '', kind: Namespace}
+    - {group: rbac.authorization.k8s.io, kind: ClusterRole}
+    - {group: rbac.authorization.k8s.io, kind: ClusterRoleBinding}

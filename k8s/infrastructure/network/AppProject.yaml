@@ -5,21 +5,13 @@ metadata:
   name: network
   namespace: argocd
 spec:
-  sourceRepos:
-    - https://github.com/sebastka/homelab.git
+  sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - namespace: argocd
-      server: '*'
-    - namespace: kube-system
-      server: '*'
-    - namespace: cilium-secrets
-      server: '*'
-    - namespace: envoy-gateway-system
-      server: '*'
-    - namespace: gateway
-      server: '*'
-    - namespace: tailscale
-      server: '*'
+    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
+    - {namespace: kube-system, server: 'https://kubernetes.default.svc'}
+    - {namespace: cilium-secrets, server: 'https://kubernetes.default.svc'}
+    - {namespace: envoy-gateway-system, server: 'https://kubernetes.default.svc'}
+    - {namespace: gateway, server: 'https://kubernetes.default.svc'}
+    - {namespace: tailscale, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - {group: '*', kind: '*'}

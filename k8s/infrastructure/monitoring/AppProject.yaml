@@ -7,15 +7,15 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd, server: '*'}
-    - {namespace: kube-system, server: '*'}
-    - {namespace: grafana, server: '*'}
-    - {namespace: headlamp, server: '*'}
-    - {namespace: kite-system, server: '*'}
-    - {namespace: metrics-server, server: '*'}
-    - {namespace: monitoring, server: '*'}
-    - {namespace: portainer, server: '*'}
-    - {namespace: stork, server: '*'}
-    - {namespace: zabbix, server: '*'}
+    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
+    - {namespace: kube-system, server: 'https://kubernetes.default.svc'}
+    - {namespace: grafana, server: 'https://kubernetes.default.svc'}
+    - {namespace: headlamp, server: 'https://kubernetes.default.svc'}
+    - {namespace: kite-system, server: 'https://kubernetes.default.svc'}
+    - {namespace: metrics-server, server: 'https://kubernetes.default.svc'}
+    - {namespace: monitoring, server: 'https://kubernetes.default.svc'}
+    - {namespace: portainer, server: 'https://kubernetes.default.svc'}
+    - {namespace: stork, server: 'https://kubernetes.default.svc'}
+    - {namespace: zabbix, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
     - {group: '*', kind: '*'}

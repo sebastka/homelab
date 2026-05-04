@@ -7,12 +7,12 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd, server: '*'}
-    - {namespace: kube-system, server: '*'}
-    - {namespace: cert-manager, server: '*'}
-    - {namespace: intel-device-plugins, server: '*'}
-    - {namespace: nfd, server: '*'}
-    - {namespace: reloader, server: '*'}
-    - {namespace: sealed-secrets, server: '*'}
+    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
+    - {namespace: kube-system, server: 'https://kubernetes.default.svc'}
+    - {namespace: cert-manager, server: 'https://kubernetes.default.svc'}
+    - {namespace: intel-device-plugins, server: 'https://kubernetes.default.svc'}
+    - {namespace: nfd, server: 'https://kubernetes.default.svc'}
+    - {namespace: reloader, server: 'https://kubernetes.default.svc'}
+    - {namespace: sealed-secrets, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
     - {group: '*', kind: '*'}
