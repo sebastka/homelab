@@ -61,7 +61,7 @@ federation_rc_concurrent: 3
 media_store_path: /data/media_store
 max_upload_size: 50M
 max_image_pixels: 32M
-dynamic_thumbnails: false
+dynamic_thumbnails: true
 
 # List of thumbnail to precalculate when an image is uploaded.
 thumbnail_sizes:
