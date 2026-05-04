@@ -25,3 +25,4 @@ resources:
   - Service.yaml
   - HTTPRoute.yaml
   - SecurityPolicy.yaml
+  - BackendTrafficPolicy.yaml
