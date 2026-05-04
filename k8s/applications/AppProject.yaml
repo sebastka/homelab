@@ -5,11 +5,7 @@ metadata:
   name: applications
   namespace: argocd
 spec:
-  sourceRepos:
-    - https://github.com/sebastka/homelab.git
+  sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - namespace: argocd
-      server: '*'
-  clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
+  clusterResourceWhitelist: []

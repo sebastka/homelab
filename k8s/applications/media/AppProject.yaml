@@ -5,21 +5,12 @@ metadata:
   name: media
   namespace: argocd
 spec:
-  sourceRepos:
-    - https://github.com/sebastka/homelab.git
+  sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - namespace: argocd
-      server: '*'
-    - namespace: cnpg-database
-      server: '*'
-    - namespace: jellyfin
-      server: '*'
-    - namespace: opentogethertube
-      server: '*'
-    - namespace: metube
-      server: '*'
-    - namespace: vert
-      server: '*'
+    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
+    - {namespace: jellyfin, server: 'https://kubernetes.default.svc'}
+    - {namespace: metube, server: 'https://kubernetes.default.svc'}
+    - {namespace: opentogethertube, server: 'https://kubernetes.default.svc'}
+    - {namespace: vert, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - {group: '', kind: Namespace}

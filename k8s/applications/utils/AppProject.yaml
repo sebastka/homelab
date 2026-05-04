@@ -5,27 +5,16 @@ metadata:
   name: utils
   namespace: argocd
 spec:
-  sourceRepos:
-    - https://github.com/sebastka/homelab.git
+  sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - namespace: argocd
-      server: '*'
-    - namespace: deluge
-      server: '*'
-    - namespace: glance
-      server: '*'
-    - namespace: n8n
-      server: '*'
-    - namespace: ntfy
-      server: '*'
-    - namespace: paperless
-      server: '*'
-    - namespace: searxng
-      server: '*'
-    - namespace: sankeymatic
-      server: '*'
-    - namespace: thelounge
-      server: '*'
+    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
+    - {namespace: deluge, server: 'https://kubernetes.default.svc'}
+    - {namespace: glance, server: 'https://kubernetes.default.svc'}
+    - {namespace: n8n, server: 'https://kubernetes.default.svc'}
+    - {namespace: ntfy, server: 'https://kubernetes.default.svc'}
+    - {namespace: paperless, server: 'https://kubernetes.default.svc'}
+    - {namespace: searxng, server: 'https://kubernetes.default.svc'}
+    - {namespace: sankeymatic, server: 'https://kubernetes.default.svc'}
+    - {namespace: thelounge, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - {group: '', kind: Namespace}

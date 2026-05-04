@@ -5,19 +5,11 @@ metadata:
   name: dev
   namespace: argocd
 spec:
-  sourceRepos:
-    - https://github.com/sebastka/homelab.git
+  sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - namespace: argocd
-      server: '*'
-    - namespace: cnpg-database
-      server: '*'
-    - namespace: whoami
-      server: '*'
-    - namespace: harbor
-      server: '*'
-    - namespace: forgejo
-      server: '*'
+    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
+    - {namespace: whoami, server: 'https://kubernetes.default.svc'}
+    - {namespace: harbor, server: 'https://kubernetes.default.svc'}
+    - {namespace: forgejo, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - {group: '', kind: Namespace}
