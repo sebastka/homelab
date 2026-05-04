@@ -20,8 +20,7 @@ http:
       resources:
         - name: health
       binds:
-        - host: localhost
-          port: 8081
+        - address: '[::]:8081'
       proxy_protocol: false
   trusted_proxies:
     - 192.168.0.0/16
