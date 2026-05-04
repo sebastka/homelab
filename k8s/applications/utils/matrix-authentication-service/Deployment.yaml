@@ -72,9 +72,9 @@ spec:
             limits: {memory: 128Mi}
           ports:
             - {name: http, protocol: TCP, containerPort: 8080}
-          startupProbe: {httpGet: {port: 8080, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
-          livenessProbe: {httpGet: {port: 8080, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
-          readinessProbe: {httpGet: {port: 8080, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
+          startupProbe: {httpGet: {port: 8081, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8081, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8081, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             - {name: config-volume, mountPath: /config, readOnly: true}
             - {name: mas-secrets, mountPath: /secrets/mas-secrets/matrix_secret, subPath: MATRIX_SECRET, readOnly: true}
