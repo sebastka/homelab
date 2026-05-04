@@ -8,6 +8,7 @@ metadata:
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
+  strategy: {type: Recreate}
   replicas: 1
   selector:
     matchLabels:
