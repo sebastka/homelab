@@ -20,13 +20,9 @@ spec:
         fr.karlsen: controllers
     spec:
       project: controllers
-      source:
-        repoURL: https://github.com/sebastka/homelab.git
-        targetRevision: HEAD
-        path: '{{ path }}'
-      destination:
-        name: in-cluster
-        namespace: argocd
+      sources:
+        - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
+      destination: {name: in-cluster, namespace: argocd}
       syncPolicy:
         syncOptions:
           # - ApplyOutOfSyncOnly

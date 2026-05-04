@@ -14,3 +14,4 @@ spec:
     - {namespace: vert, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
+    - {group: '', kind: PersistentVolume}

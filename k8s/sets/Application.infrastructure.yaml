@@ -4,15 +4,12 @@ kind: Application
 metadata:
   name: infrastructure
   namespace: argocd
+  labels:
+    fr.karlsen: infrastructure
 spec:
-  destination:
-    namespace: argocd
-    name: in-cluster
-  source:
-    path: k8s/infrastructure
-    repoURL: https://github.com/sebastka/homelab.git
-    targetRevision: HEAD
-  sources: []
+  sources:
+    - {repoURL: https://github.com/sebastka/homelab.git, path: k8s/infrastructure, targetRevision: HEAD}
+  destination: {name: in-cluster, namespace: argocd}
   project: app-of-apps
   syncPolicy:
     syncOptions:

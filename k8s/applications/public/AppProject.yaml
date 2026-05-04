@@ -13,3 +13,4 @@ spec:
     - {namespace: synapse, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
+    - {group: '', kind: PersistentVolume}

@@ -20,13 +20,9 @@ spec:
         fr.karlsen: storage
     spec:
       project: storage
-      source:
-        repoURL: https://github.com/sebastka/homelab.git
-        targetRevision: HEAD
-        path: '{{ path }}'
-      destination:
-        name: in-cluster
-        namespace: argocd
+      sources:
+        - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
+      destination: {name: in-cluster, namespace: argocd}
       syncPolicy:
         syncOptions:
           - ServerSideApply=true

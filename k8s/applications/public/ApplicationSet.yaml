@@ -5,7 +5,7 @@ metadata:
   name: public
   namespace: argocd
   labels:
-    fr.karlsen: applications
+    fr.karlsen: public
 spec:
   generators:
     - git:
@@ -18,18 +18,14 @@ spec:
     metadata:
       name: '{{ path.basename }}'
       labels:
-        fr.karlsen: applications
+        fr.karlsen: public
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
       project: public
-      source:
-        repoURL: https://github.com/sebastka/homelab.git
-        targetRevision: HEAD
-        path: '{{ path }}'
-      destination:
-        name: in-cluster
-        namespace: argocd
+      sources:
+        - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
+      destination: {name: in-cluster, namespace: argocd}
       syncPolicy:
         syncOptions:
           - ServerSideApply=true

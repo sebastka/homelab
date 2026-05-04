@@ -24,13 +24,9 @@ spec:
         fr.karlsen: monitoring
     spec:
       project: monitoring
-      source:
-        repoURL: https://github.com/sebastka/homelab.git
-        targetRevision: HEAD
-        path: '{{ path }}'
-      destination:
-        name: in-cluster
-        namespace: argocd
+      sources:
+        - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
+      destination: {name: in-cluster, namespace: argocd}
       syncPolicy:
         syncOptions:
           # - ApplyOutOfSyncOnly

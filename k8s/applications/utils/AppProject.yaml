@@ -18,3 +18,4 @@ spec:
     - {namespace: thelounge, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
+    - {group: '', kind: PersistentVolume}
