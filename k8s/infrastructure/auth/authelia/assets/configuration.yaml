@@ -244,7 +244,7 @@ identity_providers:
         claims_policy: embed_id_token_claims
         require_pkce: false
         pkce_challenge_method: ''
-        redirect_uris: [https://kite.talmox.hera.home.karlsen.fr/auth/oidc/authelia/callback]
+        redirect_uris: [https://kite.talmox.hera.home.karlsen.fr/api/auth/callback]
         scopes: [openid, groups, email, profile]
         response_types: [code]
         grant_types: [authorization_code]
