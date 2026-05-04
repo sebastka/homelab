@@ -295,6 +295,7 @@ identity_providers:
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 3 months
+        # claims_policy: embed_id_token_claims
         require_pkce: false
         pkce_challenge_method: ''
         redirect_uris: [https://portainer.talmox.hera.home.karlsen.fr]
@@ -306,22 +307,26 @@ identity_providers:
         id_token_signed_response_alg: ES256
         token_endpoint_auth_method: client_secret_basic
 
-      - client_id: mas
         # https://element-hq.github.io/matrix-authentication-service/setup/sso.html#general-configuration
-        client_secret: {{ secret "/secrets/client-secrets/mas" }}
+      - client_id: mas
         client_name: Matrix Authentication Service
+        client_secret: {{ secret "/secrets/client-secrets/mas" }}
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 3 months
+        # claims_policy: embed_id_token_claims
+        require_pkce: true
+        pkce_challenge_method: S256
         redirect_uris: [https://mas.karlsen.fr/upstream/callback/01KPNSVGCRHBYC9MY7A9P40ZPQ]
-        # logout_uris: https://mas.karlsen.fr/upstream/backchannel-logout/01KPNSVGCRHBYC9MY7A9P40ZPQ
         response_types: [code]
         scopes: [openid, email, profile, groups]
         grant_types: [authorization_code]
-        token_endpoint_auth_method: client_secret_post
+        access_token_signed_response_alg: none
         userinfo_signed_response_alg: none
-        id_token_signed_response_alg: RS256
-        access_token_signed_response_alg: RS256
+        id_token_signed_response_alg: ES256
+        token_endpoint_auth_method: client_secret_basic
+        backchannel_logout_uri: https://mas.karlsen.fr/upstream/backchannel-logout/01KPNSVGCRHBYC9MY7A9P40ZPQ
+        backchannel_logout_session_required: false
 
       - client_id: tailscale
         client_name: Tailscale
