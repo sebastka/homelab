@@ -9,6 +9,7 @@ spec:
   destinations:
     - {namespace: argocd, server: 'https://kubernetes.default.svc'}
     - {namespace: homepage, server: 'https://kubernetes.default.svc'}
+    - {namespace: element, server: 'https://kubernetes.default.svc'}
     - {namespace: slink, server: 'https://kubernetes.default.svc'}
     - {namespace: synapse, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:

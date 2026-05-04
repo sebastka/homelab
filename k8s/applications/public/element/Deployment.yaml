@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: element
+  namespace: element
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: element
+      app.kubernetes.io/version: v1.12.15
+      app.kubernetes.io/component: matrix-client
+      app.kubernetes.io/part-of: element
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: element
+      labels:
+        app.kubernetes.io/name: element
+        app.kubernetes.io/version: v1.12.15
+        app.kubernetes.io/component: matrix-client
+        app.kubernetes.io/part-of: element
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: element
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: element
+          # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/element/Dockerfile
+          image: vectorim/element-web:v1.12.15
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 128Mi}
+            limits: {memory: 128Mi}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8080}
+          startupProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          env:
+            - {name: TZ, value: Europe/Oslo}
+            - {name: ELEMENT_WEB_PORT, value: '8080'}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: nginx-volume, mountPath: /etc/nginx/conf.d/}
+            - {name: element-config-volume, mountPath: /app/config.json, subPath: config.json, readOnly: true}
+      volumes:
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: nginx-volume, emptyDir: {}}
+        - {name: element-config-volume, configMap: {name: element-config}}

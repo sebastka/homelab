@@ -1,0 +1,29 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web
+  namespace: element
+spec:
+  parentRefs:
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
+  hostnames: [element.karlsen.app]
+  rules:
+    - matches: [path: {type: PathPrefix, value: /}]
+      backendRefs: [{name: web, kind: Service, port: 80}]
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              # - {name: Access-Control-Allow-Origin, value: '*'}
+              - {name: Content-Security-Policy, value: "default-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; script-src 'self' 'wasm-unsafe-eval' 'unsafe-eval'; style-src-elem 'self' 'unsafe-inline'; style-src-attr 'unsafe-inline'; connect-src 'self' https://karlsen.fr https://matrix.karlsen.fr https://mas.karlsen.fr https://call.element.io wss://call.element.io https://api.maptiler.com; img-src 'self' https://matrix.karlsen.fr data:; frame-src 'self' https://call.element.io;"}
+              - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
+              - {name: X-Content-Type-Options, value: nosniff}
+              - {name: X-Frame-Options, value: DENY}
+              - {name: Cross-Origin-Resource-Policy, value: cross-origin}
+              - {name: Cross-Origin-Embedder-Policy, value: unsafe-none}
+              - {name: Cross-Origin-Opener-Policy, value: cross-origin}
+              - {name: Referrer-Policy, value: no-referrer}
+              - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
+              # - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
+              # - {name: Reporting-Endpoints, value: ''}
