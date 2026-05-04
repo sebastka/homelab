@@ -72,6 +72,7 @@ spec:
             limits: {memory: 128Mi}
           ports:
             - {name: http, protocol: TCP, containerPort: 8080}
+            - {name: health, protocol: TCP, containerPort: 8081}
           startupProbe: {httpGet: {port: 8081, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
           livenessProbe: {httpGet: {port: 8081, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {httpGet: {port: 8081, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
