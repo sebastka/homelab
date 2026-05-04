@@ -5,29 +5,17 @@ metadata:
   name: monitoring
   namespace: argocd
 spec:
-  sourceRepos:
-    - https://github.com/sebastka/homelab.git
+  sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - namespace: argocd
-      server: '*'
-    - namespace: kube-system
-      server: '*'
-    - namespace: cnpg-database
-      server: '*'
-    - namespace: metrics-server
-      server: '*'
-    - namespace: grafana
-      server: '*'
-    - namespace: monitoring
-      server: '*'
-    - namespace: portainer
-      server: '*'
-    - namespace: headlamp
-      server: '*'
-    - namespace: stork
-      server: '*'
-    - namespace: zabbix
-      server: '*'
+    - {namespace: argocd, server: '*'}
+    - {namespace: kube-system, server: '*'}
+    - {namespace: grafana, server: '*'}
+    - {namespace: headlamp, server: '*'}
+    - {namespace: kite, server: '*'}
+    - {namespace: metrics-server, server: '*'}
+    - {namespace: monitoring, server: '*'}
+    - {namespace: portainer, server: '*'}
+    - {namespace: stork, server: '*'}
+    - {namespace: zabbix, server: '*'}
   clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - {group: '*', kind: '*'}

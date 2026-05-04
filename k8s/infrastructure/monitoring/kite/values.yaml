@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=
+# https://github.com/kite-org/kite/blob/main/charts/kite/values.yaml
+---
+
+deploymentStrategy:
+  type: Recreate
+
+anonymousUserEnabled: false
+
+host: https://kite.talmox.hera.home.karlsen.fr
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 2000
+  fsGroup: 2000
+  seccompProfile: {type: RuntimeDefault}
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: {drop: [ALL]}
+
+secret:
+  create: false
+  existingSecret: kite-secrets
+
+extraEnvs:
+  - {name: KITE_OAUTH_SECRET, valueFrom: {secretKeyRef: {name: kite-secrets, key: KITE_OAUTH_SECRET}}}
+  - {name: KITE_ADMIN_PASSWORD, valueFrom: {secretKeyRef: {name: kite-secrets, key: KITE_ADMIN_PASSWORD}}}
+
+config:
+  enabled: true
+  superUser: {username: admin, password: "${KITE_ADMIN_PASSWORD}"}
+  clusters:
+    - {name: talmox, inCluster: true, default: true}
+  oauth:
+    - name: authelia
+      clientId: kite
+      clientSecret: "${KITE_OAUTH_SECRET}"
+      issuer: https://auth.karlsen.fr
+      scopes: openid,profile,email,groups
+      enabled: true
+  rbac:
+    roles:
+      - {name: admin, clusters: ['*'], namespaces: ['*'], resources: ['*'], verbs: ['*']}
+    roleMapping:
+      - {name: admin, oidcGroups: [k8s:admins]}
+
+resources:
+  requests: {memory: 128Mi}
+  limits: {memory: 128Mi}
