@@ -37,6 +37,13 @@ securityContext:
   readOnlyRootFilesystem: true
   capabilities: {drop: [ALL]}
 
+volumes:
+  - {name: tmp-volume, emptyDir: {}}
+  - {name: home-config-volume, emptyDir: {}}
+volumeMounts:
+  - {name: tmp-volume, mountPath: /tmp}
+  - {name: home-config-volume, mountPath: /home/headlamp/.config}
+
 httproute:
   enabled: false
 
