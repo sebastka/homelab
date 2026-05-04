@@ -1,0 +1,90 @@
+# https://github.com/element-hq/matrix-authentication-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matrix-authentication-service
+  namespace: matrix-authentication-service
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: matrix-authentication-service
+      app.kubernetes.io/version: stable
+      app.kubernetes.io/component: identity-provider
+      app.kubernetes.io/part-of: matrix-authentication-service
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: matrix-authentication-service
+      labels:
+        app.kubernetes.io/name: matrix-authentication-service
+        app.kubernetes.io/version: stable
+        app.kubernetes.io/component: identity-provider
+        app.kubernetes.io/part-of: matrix-authentication-service
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: matrix-authentication-service
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 991
+        runAsGroup: 991
+        fsGroup: 991
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: config-merger
+          image: mikefarah/yq:4.53.2
+          command: ['/bin/sh', '-c']
+          args:
+            - |
+              set -eu
+              rm -f /config/config.yaml
+              yq eval-all '.database.password = strenv(DATABASE_PASSWORD) | .email.username = strenv(EMAIL_USERNAME) | .email.password = strenv(EMAIL_PASSWORD)' /mnt/config.yaml \
+                >/config/config.yaml
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 24Mi}
+            limits: {memory: 24Mi, cpu: 1}
+          env:
+            - {name: DATABASE_PASSWORD, valueFrom: {secretKeyRef: {name: mas-secrets, key: DATABASE_PASSWORD}}}
+            - {name: EMAIL_USERNAME, valueFrom: {secretKeyRef: {name: mas-secrets, key: EMAIL_USERNAME}}}
+            - {name: EMAIL_PASSWORD, valueFrom: {secretKeyRef: {name: mas-secrets, key: EMAIL_PASSWORD}}}
+          volumeMounts:
+            - {name: config-volume, mountPath: /config}
+            - {name: mas-config-volume, mountPath: /mnt/config.yaml, subPath: config.yaml, readOnly: true}
+      containers:
+        - name: matrix-authentication-service
+          # Dockerfile: https://github.com/element-hq/matrix-authentication-service/blob/main/Dockerfile
+          image: ghcr.io/element-hq/matrix-authentication-service:1.15.0
+          args: [--config, /config/config.yaml]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 128Mi}
+            limits: {memory: 128Mi}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8080}
+          startupProbe: {httpGet: {port: 8080, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8080, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8080, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            - {name: config-volume, mountPath: /config, readOnly: true}
+            - {name: mas-secrets, mountPath: /secrets/mas-secrets/matrix_secret, subPath: MATRIX_SECRET, readOnly: true}
+            - {name: mas-secrets, mountPath: /secrets/mas-secrets/secrets_encryption, subPath: SECRETS_ENCRYPTION, readOnly: true}
+            - {name: mas-secrets, mountPath: /secrets/mas-secrets/secrets_keys_0_key, subPath: SECRETS_KEYS_0_KEY, readOnly: true}
+            - {name: mas-secrets, mountPath: /secrets/mas-secrets/secrets_keys_1_key, subPath: SECRETS_KEYS_1_KEY, readOnly: true}
+            - {name: mas-secrets, mountPath: /secrets/mas-secrets/secrets_keys_2_key, subPath: SECRETS_KEYS_2_KEY, readOnly: true}
+            - {name: mas-secrets, mountPath: /secrets/mas-secrets/secrets_keys_3_key, subPath: SECRETS_KEYS_3_KEY, readOnly: true}
+            - {name: mas-secrets, mountPath: /secrets/mas-secrets/upstream_oauth2_provider_0_client_secret, subPath: UPSTREAM_OAUTH2_PROVIDERS_0_CLIENT_SECRET, readOnly: true}
+      volumes:
+        - {name: config-volume, emptyDir: {}}
+        - {name: mas-config-volume, configMap: {name: mas-config}}
+        - {name: mas-secrets, secret: {secretName: mas-secrets}}

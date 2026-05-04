@@ -1,0 +1,126 @@
+# yaml-language-server: $schema=https://element-hq.github.io/matrix-authentication-service/config.schema.json
+# docker run -it ghcr.io/element-hq/matrix-authentication-service:1.15.0 config generate
+# https://element-hq.github.io/matrix-authentication-service/reference/configuration.html
+---
+
+http:
+  listeners:
+    - name: web
+      resources:
+        - name: discovery
+        - name: human
+        - name: oauth
+        - name: compat
+        - name: graphql
+        - name: assets
+      binds:
+        - address: '[::]:8080'
+      proxy_protocol: false
+    - name: internal
+      resources:
+        - name: health
+      binds:
+        - host: localhost
+          port: 8081
+      proxy_protocol: false
+  trusted_proxies:
+    - 192.168.0.0/16
+    - 172.16.0.0/12
+    - 10.0.0.0/10
+    - 127.0.0.1/8
+    - fd00::/8
+    - ::1/128
+  public_base: https://mas.karlsen.fr
+  # issuer: http://[::]:8080/
+
+database:
+  host: db02.hera.home.karlsen.fr
+  port: 5432
+  ssl_mode: disable
+  # passowrd: strenv(DATABASE_PASSWORD)
+  username: mas
+
+matrix:
+  kind: synapse
+  homeserver: karlsen.fr
+  secret_file: /secrets/mas-secrets/matrix_secret
+  endpoint: https://matrix.karlsen.fr
+
+# templates: {}
+
+# clients: {}
+
+secrets:
+  encryption_file: /secrets/mas-secrets/secrets_encryption
+  keys:
+    - key_file: /secrets/mas-secrets/secrets_keys_0_key
+    - key_file: /secrets/mas-secrets/secrets_keys_1_key
+    - key_file: /secrets/mas-secrets/secrets_keys_2_key
+    - key_file: /secrets/mas-secrets/secrets_keys_3_key
+
+passwords:
+  enabled: false
+  schemes:
+    - version: 1
+      algorithm: bcrypt
+      unicode_normalization: true
+      # Optional, must match the `password_config.pepper` in the Synapse config
+      # secret:
+    - version: 2
+      algorithm: argon2id
+  minimum_complexity: 3
+
+account:
+  email_change_allowed: false
+  displayname_change_allowed: true
+  password_registration_enabled: false
+  # password_registration_email_required: true
+  password_change_allowed: false
+  login_with_email_allowed: false
+  registration_token_required: true
+
+# captcha: {}
+
+# policy: {}
+
+# rate_limiting: {}
+
+# telemetry: {}
+
+email:
+  from: '"Matrix Authentication Service" <no-reply@karlsen.fr>'
+  reply_to: '"Matrix Authentication Service" <postmaster@karlsen.fr>'
+  transport: smtp
+  mode: tls
+  hostname: smtp.domeneshop.no
+  port: 465
+  # username: strenv(EMAIL_USERNAME)
+  # password: strenv(EMAIL_PASSWORD)
+
+upstream_oauth2:
+  providers:
+    - human_name: Authelia
+      id: 01KPNSVGCRHBYC9MY7A9P40ZPQ  # https://ulidgenerator.com/
+      client_id: mas
+      client_secret_file: /secrets/mas-secrets/upstream_oauth2_provider_0_client_secret
+      issuer: https://auth.karlsen.fr
+      token_endpoint_auth_method: client_secret_basic
+      scope: 'openid email profile groups'
+      discovery_mode: oidc
+      fetch_userinfo: true
+      id_token_signed_response_alg: ES256
+      claims_imports:
+        localpart:
+          action: require
+          template: "{{ user.preferred_username }}"
+        displayname:
+          action: suggest
+          template: "{{ user.name }}"
+        email:
+          action: suggest
+          template: "{{ user.email }}"
+          set_email_verification: import
+
+# branding: {}
+
+# experimental: {}

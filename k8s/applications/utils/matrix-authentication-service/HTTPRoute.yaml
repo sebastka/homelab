@@ -1,0 +1,13 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web
+  namespace: matrix-authentication-service
+spec:
+  parentRefs:
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-fr}
+  hostnames: [mas.karlsen.fr]
+  rules:
+    - matches: [path: {type: PathPrefix, value: /}]
+      backendRefs: [{name: web, kind: Service, port: 80}]

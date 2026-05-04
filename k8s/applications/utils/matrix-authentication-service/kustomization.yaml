@@ -1,0 +1,19 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: matrix-authentication-service
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - {namespace: matrix-authentication-service, name: mas-config, files: [config.yaml=assets/config.yaml]}
+
+resources:
+  - Namespace.yaml
+  - SealedSecret.mas-secrets.yaml
+  - ServiceAccount.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - HTTPRoute.yaml
+  - SecurityPolicy.yaml
