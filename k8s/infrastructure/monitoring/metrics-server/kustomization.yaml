@@ -9,7 +9,7 @@ resources:
 helmCharts:
   - name: metrics-server
     repo: https://kubernetes-sigs.github.io/metrics-server/
-    version: 3.13.0  # renovate: github-releases=kubernetes-sigs/metrics-server
+    version: 3.13.0  # renovate: datasource=github-releases depName=kubernetes-sigs/metrics-server
     releaseName: metrics-server
     namespace: metrics-server
     includeCRDs: true

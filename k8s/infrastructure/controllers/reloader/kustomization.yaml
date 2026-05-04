@@ -9,7 +9,7 @@ resources:
 helmCharts:
   - name: reloader
     repo: oci://ghcr.io/stakater/charts
-    version: 2.2.11  # renovate: github-releases=stakater/reloader
+    version: 2.2.11  # renovate: datasource=github-releases depName=stakater/reloader
     releaseName: reloader
     namespace: reloader
     includeCRDs: true

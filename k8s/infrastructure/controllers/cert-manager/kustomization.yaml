@@ -16,7 +16,7 @@ resources:
 helmCharts:
   - name: cert-manager
     repo: oci://quay.io/jetstack/charts
-    version: v1.20.2  # renovate: github-releases=cert-manager/cert-manager
+    version: v1.20.2  # renovate: datasource=github-releases depName=cert-manager/cert-manager
     releaseName: cert-manager
     namespace: cert-manager
     includeCRDs: true
@@ -24,7 +24,7 @@ helmCharts:
 
   - name: trust-manager
     repo: oci://quay.io/jetstack/charts
-    version: v0.22.1  # renovate: github-releases=cert-manager/trust-manager
+    version: v0.22.1  # renovate: datasource=github-releases depName=cert-manager/trust-manager
     releaseName: trust-manager
     namespace: cert-manager
     includeCRDs: true

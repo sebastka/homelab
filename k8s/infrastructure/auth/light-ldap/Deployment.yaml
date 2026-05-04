@@ -35,7 +35,7 @@ spec:
       containers:
         - name: light-ldap
           # Dockerfile: https://github.com/lldap/lldap/blob/main/Dockerfile
-          image: docker.io/lldap/lldap:2026-02-27-alpine-rootless  # renovate: docker=ghcr.io/lldap/lldap
+          image: docker.io/lldap/lldap:2026-02-27-alpine-rootless
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
