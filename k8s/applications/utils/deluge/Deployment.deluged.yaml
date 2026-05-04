@@ -68,7 +68,7 @@ spec:
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
           image: ghcr.io/home-operations/deluge:2.2.0
           imagePullPolicy: Always
-          command: 
+          command:
             - /usr/bin/deluged
             - --config=/config
             - --loglevel=info

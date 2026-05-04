@@ -10,22 +10,22 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: sankeymatic 
+      app.kubernetes.io/name: sankeymatic
       app.kubernetes.io/version: stable
       app.kubernetes.io/component: server
-      app.kubernetes.io/part-of: sankeymatic 
+      app.kubernetes.io/part-of: sankeymatic
       # app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
-      namespace: sankeymatic 
+      namespace: sankeymatic
       labels:
-        app.kubernetes.io/name: sankeymatic 
+        app.kubernetes.io/name: sankeymatic
         app.kubernetes.io/version: stable
         app.kubernetes.io/component: server
-        app.kubernetes.io/part-of: sankeymatic 
+        app.kubernetes.io/part-of: sankeymatic
         # app.kubernetes.io/managed-by: kustomize
     spec:
-      serviceAccountName: sankeymatic 
+      serviceAccountName: sankeymatic
       securityContext:
         runAsNonRoot: true
         runAsUser: 65532

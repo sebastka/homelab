@@ -112,7 +112,7 @@ gitea:
     mailer:
       ENABLED: 'true'
       PROTOCOL: smtps
-      SMTP_PORT: '465' 
+      SMTP_PORT: '465'
     openid:
       ENABLE_OPENID_SIGNIN: 'false'
       ENABLE_OPENID_SIGNUP: 'true'
