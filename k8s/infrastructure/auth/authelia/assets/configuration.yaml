@@ -325,8 +325,6 @@ identity_providers:
         userinfo_signed_response_alg: none
         id_token_signed_response_alg: ES256
         token_endpoint_auth_method: client_secret_basic
-        backchannel_logout_uri: https://mas.karlsen.fr/upstream/backchannel-logout/01KPNSVGCRHBYC9MY7A9P40ZPQ
-        backchannel_logout_session_required: false
 
       - client_id: tailscale
         client_name: Tailscale
