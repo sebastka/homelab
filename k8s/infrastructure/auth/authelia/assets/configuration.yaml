@@ -305,5 +305,23 @@ identity_providers:
         id_token_signed_response_alg: RS256
         access_token_signed_response_alg: RS256
 
+      - client_id: tailscale
+        client_name: Tailscale
+        client_secret: {{ secret "/secrets/client-secrets/tailscale" }}
+        public: false
+        authorization_policy: two_factor
+        pre_configured_consent_duration: 3 months
+        claims_policy: embed_id_token_claims
+        require_pkce: false
+        pkce_challenge_method: ''
+        redirect_uris: [https://login.tailscale.com/a/oauth_response]
+        scopes: [openid, groups, email, profile]
+        response_types: [code]
+        grant_types: [authorization_code]
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        id_token_signed_response_alg: ES256
+        token_endpoint_auth_method: client_secret_basic
+
 # https://www.authelia.com/configuration/miscellaneous/privacy-policy/
 # privacy_policy: {}
