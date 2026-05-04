@@ -3,27 +3,29 @@
   "extends": [
     "config:recommended"
   ],
-  "prHourlyLimit": 10,
-  "minimumReleaseAge": "1 day",
   "ignorePaths": [
-    "k8s/infrastructure/monitoring/stork/*"
+    "k8s/**/charts/**"
   ],
+  "prHourlyLimit": 10,
+  "minimumReleaseAge": "3 days",
+  "labels": ["renovate"],
+  "semanticCommits": "enabled",
   "kubernetes": {
     "managerFilePatterns": [
       "/(^|/)k8s/.+\\.yaml$/"
     ]
   },
-  "customManagers": [
+  "packageRules": [
     {
-      "customType": "regex",
-      "description": "Apply an explicit forgejo digest field match",
-      "managerFilePatterns": [
-        "/values\\.ya?ml/"
-      ],
-      "matchStrings": ["(?<depName>forgejo\\/forgejo)\\n(?<indentation>\\s+)tag: (?<currentValue>[^@].*?)\\n\\s+digest: (?<currentDigest>sha256:[a-f0-9]+)"],
-      "datasourceTemplate": "docker",
-      "packageNameTemplate": "code.forgejo.org/{{depName}}",
-      "autoReplaceStringTemplate": "{{depName}}\n{{indentation}}tag: {{newValue}}\n{{indentation}}digest: {{#if newDigest}}{{{newDigest}}}{{else}}{{{currentDigest}}}{{/if}}"
+      "matchUpdateTypes": ["patch", "digest"],
+      "automerge": true
+    }
+  ],
+  "hostRules": [
+    {
+      "matchHost": "docker.io",
+      "username": "sebastka",
+      "password": "{{ secrets.DOCKERHUB_TOKEN }}"
     }
   ]
 }
