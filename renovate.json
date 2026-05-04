@@ -19,10 +19,6 @@
     {
       "matchUpdateTypes": ["patch", "digest"],
       "automerge": true
-    },
-    {
-      "matchPackageNames": ["lldap/lldap"],
-      "versioning": "regex:^(?<major>\\d{4})-(?<minor>\\d{2})-(?<patch>\\d{2})-alpine-rootless$"
     }
   ],
   "hostRules": [

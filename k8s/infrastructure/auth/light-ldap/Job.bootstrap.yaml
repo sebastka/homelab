@@ -47,7 +47,7 @@ spec:
       containers:
         - name: lldap-bootstrap
           # Dockerfile: https://github.com/lldap/lldap/blob/main/Dockerfile
-          image: docker.io/lldap/lldap:2026-02-27-alpine-rootless
+          image: docker.io/lldap/lldap:v0.6.3-alpine-rootless
           command: [/app/bootstrap.sh]
           securityContext:
             allowPrivilegeEscalation: false
