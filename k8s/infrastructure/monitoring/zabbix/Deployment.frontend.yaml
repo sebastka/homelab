@@ -24,7 +24,6 @@ spec:
         app.kubernetes.io/part-of: zabbix
       # app.kubernetes.io/managed-by: kustomize
     spec:
-      hostAliases: [{ip: 127.0.0.1, hostnames: [zabbix.talmox.hera.home.karlsen.fr]}]
       serviceAccountName: frontend
       securityContext:
         runAsNonRoot: true
