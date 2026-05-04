@@ -2,10 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: dev
+  name: &x-project dev
   namespace: argocd
   labels:
-    fr.karlsen: dev
+    fr.karlsen: *x-project
 spec:
   generators:
     - git:
@@ -20,11 +20,11 @@ spec:
     metadata:
       name: '{{ path.basename }}'
       labels:
-        fr.karlsen: dev
+        fr.karlsen: *x-project
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
-      project: dev
+      project: *x-project
       sources:
         - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
       destination: {name: in-cluster, namespace: argocd}

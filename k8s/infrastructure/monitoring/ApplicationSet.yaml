@@ -2,10 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: monitoring
+  name: &x-project monitoring
   namespace: argocd
   labels:
-    fr.karlsen: monitoring
+    fr.karlsen: *x-project
 spec:
   generators:
     - git:
@@ -15,15 +15,13 @@ spec:
           - path: k8s/infrastructure/monitoring/*
           - {path: k8s/infrastructure/monitoring/grafana, exclude: true}
           - {path: k8s/infrastructure/monitoring/kube-prometheus-stack, exclude: true}
-          - {path: k8s/infrastructure/monitoring/stork, exclude: true}
-          - {path: k8s/infrastructure/monitoring/zabbix, exclude: true}
   template:
     metadata:
       name: '{{ path.basename }}'
       labels:
-        fr.karlsen: monitoring
+        fr.karlsen: *x-project
     spec:
-      project: monitoring
+      project: *x-project
       sources:
         - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
       destination: {name: in-cluster, namespace: argocd}
