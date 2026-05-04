@@ -12,7 +12,7 @@ resources:
 helmCharts:
   - name: kite
     repo: https://kite-org.github.io/kite/
-    version: 0.10.0  # renovate: datasource=github-releases depName=kite-org/kite
+    version: 0.11.0  # renovate: datasource=github-releases depName=kite-org/kite
     releaseName: kite
     namespace: kite-system
     includeCRDs: true
