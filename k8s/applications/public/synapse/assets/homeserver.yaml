@@ -14,19 +14,22 @@ log_config: /karlsen.fr.log.config
 
 ## Ports ##
 listeners:
-  - port: 18080
+  - type: http
+    port: 8080
+    bind_addresses: [0.0.0.0]
     tls: false
-    type: http
     x_forwarded: true
-    bind_addresses:
-      - 0.0.0.0
     resources:
-      - names: [client]
+      - names: [client, federation, media, openid]  # consent, replication, static
         compress: true
-      - names: [federation]
-        compress: false
   - type: metrics
-    port: 19090
+    port: 8081
+    bind_addresses: [0.0.0.0]
+    tls: false
+  - type: health
+    port: 8082
+    bind_addresses: [0.0.0.0]
+    tls: false
 
 ## Database ##
 database:
