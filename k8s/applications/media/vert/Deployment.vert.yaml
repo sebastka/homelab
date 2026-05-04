@@ -4,6 +4,8 @@ apiVersion: apps/v1
 metadata:
   name: vert
   namespace: vert
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   strategy: {type: Recreate}
   replicas: 1

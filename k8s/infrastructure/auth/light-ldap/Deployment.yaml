@@ -4,6 +4,8 @@ kind: Deployment
 metadata:
   name: light-ldap
   namespace: light-ldap
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   strategy: {type: Recreate}
