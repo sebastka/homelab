@@ -14,6 +14,7 @@ spec:
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
+            remove: [Access-Control-Allow-Origin]
             add:
               - {name: Access-Control-Allow-Origin, value: '*'}
               - {name: Content-Security-Policy, value: "default-src 'none'; style-src-elem 'sha256-5nmABY0n6AHY5A6W8TKSGqMCp6RVWXwjYd7/FoevaVY='; img-src 'self'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
