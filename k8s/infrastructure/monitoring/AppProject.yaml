@@ -11,7 +11,7 @@ spec:
     - {namespace: kube-system, server: '*'}
     - {namespace: grafana, server: '*'}
     - {namespace: headlamp, server: '*'}
-    - {namespace: kite, server: '*'}
+    - {namespace: kite-system, server: '*'}
     - {namespace: metrics-server, server: '*'}
     - {namespace: monitoring, server: '*'}
     - {namespace: portainer, server: '*'}
