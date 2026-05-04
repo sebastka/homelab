@@ -23,7 +23,6 @@ spec:
         app.kubernetes.io/part-of: stork
       # app.kubernetes.io/managed-by: kustomize
     spec:
-      hostAliases: [{ip: 127.0.0.1, hostnames: [zabbix.talmox.hera.home.karlsen.fr]}]
       serviceAccountName: stork
       securityContext:
         runAsNonRoot: true
