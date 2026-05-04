@@ -13,14 +13,12 @@ http:
         - name: compat
         - name: graphql
         - name: assets
-      binds:
-        - address: '[::]:8080'
+      binds: [{address: '[::]:8080'}]
       proxy_protocol: false
     - name: internal
       resources:
         - name: health
-      binds:
-        - address: '[::]:8081'
+      binds: [{address: '[::]:8081'}]
       proxy_protocol: false
   trusted_proxies:
     - 192.168.0.0/16
