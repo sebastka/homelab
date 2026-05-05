@@ -68,7 +68,7 @@ gitea:
       existingSecret: authelia-secrets  # Expected keys: key, secret
       # existingSecretKey:
       autoDiscoverUrl: https://auth.karlsen.fr/.well-known/openid-configuration
-      skipLocalTwoFA: true
+      skip-local-2fa: true
       scopes: openid email profile groups sshpubkey
       attributeSSHPublicKey: sshpubkey
       adminGroup: forgejo:admins
