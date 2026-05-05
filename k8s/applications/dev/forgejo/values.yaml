@@ -128,7 +128,7 @@ gitea:
       WHITELISTED_URIS: auth.karlsen.fr
     oauth2_client:
       OPENID_CONNECT_SCOPES: email profile groups sshpubkey
-      USERNAME: preferred_username
+      USERNAME: nickname  # userid, nickname, email
       UPDATE_AVATAR: 'true'
       ACCOUNT_LINKING: 'disabled'  # 'disabled', 'login', 'auto'
     cache:
