@@ -11,9 +11,15 @@
     "disable_3pid_login": true,
     "brand": "Element",
     "default_country_code": "NO",
-    "show_labs_settings": false,
+    "show_labs_settings": true,
     "features": {
-        "feature_latex_maths": true
+        "feature_latex_maths": true,
+        "feature_video_rooms": true,
+        "feature_element_call_video_rooms": true,
+        "feature_notification_settings_v2": true,
+        "feature_wysiwyg_composer": true,
+        "feature_jump_to_date": true,
+        "feature_pinning": true
     },
     "default_federate": true,
     "default_theme": "light",
