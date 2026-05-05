@@ -30,6 +30,7 @@ spec:
               rm -rf /mnt/generated-schemas/* /mnt/generated-schemas/.[!.]*
               jq -cn \
                   --arg LLDAP_SEBASTIAN_PASSWORD "$LLDAP_SEBASTIAN_PASSWORD" \
+                  --arg LLDAP_SEBASTKA_PASSWORD "$LLDAP_SEBASTKA_PASSWORD" \
                   --arg LLDAP_STORK_PASSWORD "$LLDAP_STORK_PASSWORD" \
                   -f /mnt/schemas/users.jq \
                   >/mnt/generated-schemas/users.json
