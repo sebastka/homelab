@@ -131,7 +131,7 @@ gitea:
       OPENID_CONNECT_SCOPES: email profile groups sshpubkey
       USERNAME: preferred_username
       UPDATE_AVATAR: 'true'
-      ACCOUNT_LINKING: 'disable'
+      ACCOUNT_LINKING: 'disabled'  # 'disabled', 'login', 'auto'
     cache:
       ADAPTER: memory
     session:
