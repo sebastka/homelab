@@ -32,7 +32,7 @@ spec:
               args:
                 - |
                   set -eu
-                  echo "$MARIADB_DB_CSV" | sed 1d | sed '/^$/d' | while IFS=, read username password host port database; do
+                  echo "$MARIADB_DB_CSV" | sed 1d | grep -v '^#' | sed '/^$/d' | while IFS=, read username password host port database; do
                     filename="${database}.$(date +'%Y-%m-%d--%H-%M-%S')"
 
                     mariadb-dump --host="$host" --port="$port" --user="$username" --password="$password" "$database" >"/tmp/${filename}.sql"
