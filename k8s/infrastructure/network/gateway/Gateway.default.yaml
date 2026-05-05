@@ -20,22 +20,22 @@ spec:
   #   - type: IPAddress
   #     value: 192.168.2.2
   listeners:
+    - name: forgejo-ssh
+      protocol: TCP
+      port: 22
+      allowedRoutes: {namespaces: {from: Selector, selector: {matchLabels: {app.kubernetes.io/name: forgejo}}}}
+
     - name: ldap
       protocol: TCP
       port: 389
-      allowedRoutes: {namespaces: {from: All}}
+      allowedRoutes: {namespaces: {from: Selector, selector: {matchLabels: {app.kubernetes.io/name: light-ldap}}}}
     - name: ldaps
       protocol: TLS
       hostname: ldap.karlsen.fr
       port: 636
-      allowedRoutes: {namespaces: {from: All}}
+      allowedRoutes: {namespaces: {from: Selector, selector: {matchLabels: {app.kubernetes.io/name: light-ldap}}}}
       tls: {mode: Passthrough}
       # tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: wc-karlsen-fr-certificate}]}
-
-    - name: fogejo-ssh
-      protocol: TCP
-      port: 2200
-      allowedRoutes: {namespaces: {from: All}}
 
     - name: http
       protocol: HTTP
