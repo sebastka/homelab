@@ -78,7 +78,9 @@ account:
 
 # captcha: {}
 
-# policy: {}
+policy:
+  wasm_module: /usr/local/share/mas-cli/policy.wasm
+  data: {admin_users: [sebastian]}
 
 # rate_limiting: {}
 
