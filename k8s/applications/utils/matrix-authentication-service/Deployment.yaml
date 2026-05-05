@@ -51,7 +51,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 24Mi}
-            limits: {memory: 24Mi, cpu: 1}
+            limits: {memory: 24Mi}
           env:
             - {name: DATABASE_PASSWORD, valueFrom: {secretKeyRef: {name: mas-secrets, key: DATABASE_PASSWORD}}}
             - {name: EMAIL_USERNAME, valueFrom: {secretKeyRef: {name: mas-secrets, key: EMAIL_USERNAME}}}
