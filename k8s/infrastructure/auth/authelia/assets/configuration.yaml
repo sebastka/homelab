@@ -136,12 +136,12 @@ identity_providers:
       endpoints: [userinfo, authorization, token, revocation, introspection]
     claims_policies:
       embed_id_token_claims: {id_token: [email, preferred_username, groups]}
-      forgejo: {custom_claims: {forgejo: {attribute: sshpubkey}}}
+      sshpubkey: {custom_claims: {sshpubkey: {attribute: sshpubkey}}, id_token: [email, preferred_username, groups]}
       grafana: {custom_claims: {grafana: {attribute: grafana}}}
       legacy: {id_token: [email, email_verified, alt_emails, name, preferred_username, groups]}  # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
       username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
     scopes:
-      forgejo: {claims: [forgejo]}
+      sshpubkey: {claims: [sshpubkey]}
       grafana: {claims: [grafana]}
     clients:
       - client_id: argocd
@@ -210,15 +210,17 @@ identity_providers:
         client_secret: {{ secret "/secrets/client-secrets/forgejo" }}
         public: false
         authorization_policy: two_factor
-        claims_policy: forgejo
+        pre_configured_consent_duration: 3 months
+        claims_policy: sshpubkey
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris: [https://git.karlsen.fr/user/oauth2/authelia/callback]
-        scopes: [openid, email, profile, groups, forgejo]
+        scopes: [openid, email, profile, groups, sshpubkey]
         response_types: [code]
         grant_types: [authorization_code]
-        access_token_signed_response_alg: RS256
+        access_token_signed_response_alg: none
         userinfo_signed_response_alg: none
+        id_token_signed_response_alg: ES256
         token_endpoint_auth_method: client_secret_basic
 
       # - client_id: harbor
