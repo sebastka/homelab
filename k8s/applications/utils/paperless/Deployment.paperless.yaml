@@ -122,8 +122,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 256Mi}
-            limits: {memory: 256Mi}
+            requests: {memory: 512Mi}
+            limits: {memory: 512Mi}
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
@@ -146,8 +146,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 2Gi}
-            limits: {memory: 2Gi}
+            requests: {memory: 3Gi}
+            limits: {memory: 3Gi}
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
@@ -170,8 +170,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 512Mi}
-            limits: {memory: 512Mi}
+            requests: {memory: 768Mi}
+            limits: {memory: 768Mi}
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
