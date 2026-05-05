@@ -24,6 +24,7 @@ resources:
   - SealedSecret.bootstrap-secrets.yaml
   - ServiceAccount.yaml
   - Job.bootstrap.yaml
+  - Certificate.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
