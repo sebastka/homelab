@@ -18,7 +18,7 @@ resources:
 helmCharts:
   - name: longhorn
     repo: https://charts.longhorn.io
-    version: 1.11.1  # renovate: datasource=github-releases depName=longhorn/charts
+    version: 1.11.2  # renovate: datasource=github-releases depName=longhorn/charts
     releaseName: longhorn
     namespace: longhorn-system
     includeCRDs: true
