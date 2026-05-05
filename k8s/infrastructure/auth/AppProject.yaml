@@ -12,6 +12,5 @@ spec:
     - {namespace: authelia, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
-    - {group: '', kind: PersistentVolume}
-    - {group: rbac.authorization.k8s.io, kind: ClusterRole}
-    - {group: rbac.authorization.k8s.io, kind: ClusterRoleBinding}
+    - {group: rbac.authorization.k8s.io, kind: ClusterRole}  # Needed by users
+    - {group: rbac.authorization.k8s.io, kind: ClusterRoleBinding}  # Needed by users
