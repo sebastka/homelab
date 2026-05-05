@@ -72,7 +72,7 @@ gitea:
       scopes: openid email profile groups sshpubkey
       attributeSSHPublicKey: sshpubkey
       adminGroup: forgejo:admins
-      allowUsernameChange: false
+      # allowUsernameChange: false  # Buggy. Run: forgejo admin auth update-oauth --id <id> --allow-username-change=false
   config:
     # APP_NAME: 'Forgejo: Beyond coding. We forge.'
     # APP_SLOGAN
