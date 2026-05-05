@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: forgejo-shared-storage-pvc
+  name: forgejo-data-pvc
   namespace: forgejo
   labels:
     app.kubernetes.io/name: forgejo
@@ -12,4 +12,4 @@ spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 10Gi}}
   storageClassName: longhorn-encrypted
-  volumeName: forgejo-shared-storage-pv
+  volumeName: forgejo-data-pv
