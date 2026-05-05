@@ -49,9 +49,9 @@ spec:
             requests: {memory: 128Mi}
             limits: {memory: 128Mi}
           ports:
-            - {name: http, containerPort: 80}
-            - {name: ldap, containerPort: 389}
-            - {name: ldaps, containerPort: 636}
+            - {name: http, containerPort: 17170}
+            - {name: ldap, containerPort: 3890}
+            - {name: ldaps, containerPort: 6360}
           startupProbe: {exec: {command: [/app/lldap, healthcheck]}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
           livenessProbe: {exec: {command: [/app/lldap, healthcheck]}, initialDelaySeconds: 5, periodSeconds: 120}
           readinessProbe: {exec: {command: [/app/lldap, healthcheck]}, initialDelaySeconds: 10, periodSeconds: 120}
