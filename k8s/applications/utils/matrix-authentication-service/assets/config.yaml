@@ -110,6 +110,7 @@ upstream_oauth2:
         localpart:
           action: require
           template: "{{ user.preferred_username }}"
+          on_conflict: add  # temp
         displayname:
           action: suggest
           template: "{{ user.name }}"
