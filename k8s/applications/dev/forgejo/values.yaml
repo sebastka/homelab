@@ -66,7 +66,7 @@ gitea:
       provider: openidConnect
       key: forgejo
       existingSecret: authelia-secrets
-      existingSecretKey: OAUTH2_CLIENT_SECRET
+      # existingSecretKey: OAUTH2_CLIENT_SECRET  # Hardcoded to "key"
       autoDiscoverUrl: https://auth.karlsen.fr/.well-known/openid-configuration
       skipLocalTwoFA: true
       scopes: openid email profile groups sshpubkey
