@@ -10,7 +10,7 @@ spec:
   hostnames: [ldap.karlsen.fr]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
-      backendRefs: [{name: light-ldap, kind: Service, port: 80}]
+      backendRefs: [{name: light-ldap, kind: Service, port: http}]
       # filters:
       #   - type: ResponseHeaderModifier
       #     responseHeaderModifier:

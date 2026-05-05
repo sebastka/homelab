@@ -2,11 +2,21 @@
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TCPRoute
 metadata:
-  name: light-ldap
+  name: ldap
   namespace: light-ldap
 spec:
   parentRefs:
     - {namespace: gateway, name: default, sectionName: ldap}
+  rules:
+    - backendRefs: [{name: light-ldap, kind: Service, port: ldap}]
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: ldaps
+  namespace: light-ldap
+spec:
+  parentRefs:
     - {namespace: gateway, name: default, sectionName: ldaps}
   rules:
-    - backendRefs: [{name: lldap, kind: Service, port: 389}]
+    - backendRefs: [{name: light-ldap, kind: Service, port: ldaps}]

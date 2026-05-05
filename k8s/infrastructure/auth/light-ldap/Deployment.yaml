@@ -49,18 +49,18 @@ spec:
             requests: {memory: 128Mi}
             limits: {memory: 128Mi}
           ports:
-            - {name: ldap, containerPort: 3890}
-            # - {name: ldaps, containerPort: 6360}
-            - {name: http, containerPort: 17170}
-          # startupProbe: {httpGet: {port: 17170, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
-          # livenessProbe: {httpGet: {port: 17170, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
-          # readinessProbe: {httpGet: {port: 17170, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
+            - {name: http, containerPort: 80}
+            - {name: ldap, containerPort: 389}
+            - {name: ldaps, containerPort: 636}
           startupProbe: {exec: {command: [/app/lldap, healthcheck]}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
           livenessProbe: {exec: {command: [/app/lldap, healthcheck]}, initialDelaySeconds: 5, periodSeconds: 120}
           readinessProbe: {exec: {command: [/app/lldap, healthcheck]}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             # - {name: tmp-volume, mountPath: /tmp}
             - {name: lldap-config, mountPath: /data/lldap_config.toml, subPath: lldap_config.toml, readOnly: true}
+            - {name: jwk-ecdsa-volume, mountPath: /secrets/jwk-ecdsa/tls.key, subPath: tls.key, readOnly: true}
+            - {name: jwk-ecdsa-volume, mountPath: /secrets/jwk-ecdsa/tls.crt, subPath: tls.crt, readOnly: true}
       volumes:
         # - {name: tmp-volume, emptyDir: {}}
         - {name: lldap-config, configMap: {name: lldap-config}}
+        - {name: jwk-ecdsa-volume, secret: {secretName: jwk-ecdsa}}
