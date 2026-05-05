@@ -1,19 +1,6 @@
 # yaml-language-server: $schema=
 # https://artifacthub.io/packages/helm/forgejo-helm/forgejo?modal=values
 # https://forgejo.org/docs/latest/admin/config-cheat-sheet
-
-# Init oidc:
-# forgejo admin auth add-oauth \
-#   --name=authelia \
-#   --provider=openidConnect \
-#   --key=forgejo \
-#   --secret='' \
-#   --auto-discover-url=https://auth.karlsen.fr/.well-known/openid-configuration \
-#   --skip-local-2fa=true \
-#   --scopes='openid email profile groups sshpubkey' \
-#   --attribute-ssh-public-key=sshpubkey \
-#   --admin-group='forgejo:admins' \
-#   --allow-username-change=false
 ---
 
 replicaCount: 1
@@ -74,7 +61,18 @@ gitea:
     enabled: true
     serviceMonitor:
       enabled: false
-  # oauth: []
+  oauth:
+    - name: authelia
+      provider: openidConnect
+      key: forgejo
+      existingSecret: authelia-secrets
+      existingSecretKey: OAUTH2_CLIENT_SECRET
+      autoDiscoverUrl: https://auth.karlsen.fr/.well-known/openid-configuration
+      skipLocalTwoFA: true
+      scopes: openid email profile groups sshpubkey
+      attributeSSHPublicKey: sshpubkey
+      adminGroup: forgejo:admins
+      allowUsernameChange: false
   config:
     # APP_NAME: 'Forgejo: Beyond coding. We forge.'
     # APP_SLOGAN
