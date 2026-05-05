@@ -8,7 +8,7 @@ spec:
   parentRefs:
     - {namespace: gateway, name: default, sectionName: ldap}
   rules:
-    - backendRefs: [{name: light-ldap, kind: Service, port: ldap}]
+    - backendRefs: [{name: light-ldap, kind: Service, port: 389}]
 ---
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TCPRoute
@@ -19,4 +19,4 @@ spec:
   parentRefs:
     - {namespace: gateway, name: default, sectionName: ldaps}
   rules:
-    - backendRefs: [{name: light-ldap, kind: Service, port: ldaps}]
+    - backendRefs: [{name: light-ldap, kind: Service, port: 636}]
