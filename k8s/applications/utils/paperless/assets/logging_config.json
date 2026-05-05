@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stdout"
+        }
+    },
+    "loggers": {
+        "granian.access": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": false
+        }
+    }
+}

@@ -164,7 +164,7 @@ spec:
         - name: webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
-          command: [granian, "--interface", "asginl", "--access-log", "--ws", "paperless.asgi:application"]
+          command: [granian, "--interface", "asginl", "--access-log", "--log-config", "/mnt/logging_config.json", "--ws", "paperless.asgi:application"]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -184,6 +184,7 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /var/cache}
             # - {name: scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: logging-config-volume, mountPath: /mnt/logging_config.json, subPath: logging_config.json, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
@@ -195,4 +196,5 @@ spec:
         - {name: cache-volume, emptyDir: {}}
         - {name: customizations-volume, emptyDir: {}}
         - {name: scripts-volume, configMap: {name: paperless-scripts}}
+        - {name: logging-config-volume, configMap: {name: logging-config}}
         - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-pvc}}
