@@ -12,7 +12,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: backend
-      app.kubernetes.io/version: '7.4.9'
+      app.kubernetes.io/version: stable
       app.kubernetes.io/component: server
       app.kubernetes.io/part-of: zabbix
     # app.kubernetes.io/managed-by: kustomize
@@ -21,7 +21,7 @@ spec:
       namespace: zabbix
       labels:
         app.kubernetes.io/name: backend
-        app.kubernetes.io/version: '7.4.9'
+      app.kubernetes.io/version: stable
         app.kubernetes.io/component: server
         app.kubernetes.io/part-of: zabbix
       # app.kubernetes.io/managed-by: kustomize

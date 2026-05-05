@@ -12,7 +12,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: metube
-      app.kubernetes.io/version: 2026.04.28
+      app.kubernetes.io/version: stable
       app.kubernetes.io/component: server
       app.kubernetes.io/part-of: metube
       # app.kubernetes.io/managed-by: kustomize
@@ -21,7 +21,7 @@ spec:
       namespace: metube
       labels:
         app.kubernetes.io/name: metube
-        app.kubernetes.io/version: 2026.04.28
+      app.kubernetes.io/version: stable
         app.kubernetes.io/component: server
         app.kubernetes.io/part-of: metube
         # app.kubernetes.io/managed-by: kustomize

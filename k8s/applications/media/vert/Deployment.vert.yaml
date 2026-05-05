@@ -12,7 +12,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: vert
-      app.kubernetes.io/version: 2026.4.19
+      app.kubernetes.io/version: git
       app.kubernetes.io/component: frontend
       app.kubernetes.io/part-of: vert
       # app.kubernetes.io/managed-by: kustomize
@@ -21,7 +21,7 @@ spec:
       namespace: vert
       labels:
         app.kubernetes.io/name: vert
-        app.kubernetes.io/version: 2026.4.19
+      app.kubernetes.io/version: git
         app.kubernetes.io/component: frontend
         app.kubernetes.io/part-of: vert
         # app.kubernetes.io/managed-by: kustomize

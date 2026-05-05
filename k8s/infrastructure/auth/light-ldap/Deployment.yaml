@@ -12,7 +12,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: light-ldap
-      app.kubernetes.io/version: 2026-02-27-alpine-rootless
+      app.kubernetes.io/version: stable
       app.kubernetes.io/component: ldap-server
       app.kubernetes.io/part-of: light-ldap
       # app.kubernetes.io/managed-by: kustomize
@@ -21,7 +21,7 @@ spec:
       namespace: light-ldap
       labels:
         app.kubernetes.io/name: light-ldap
-        app.kubernetes.io/version: 2026-02-27-alpine-rootless
+        app.kubernetes.io/version: stable
         app.kubernetes.io/component: ldap-server
         app.kubernetes.io/part-of: light-ldap
         # app.kubernetes.io/managed-by: kustomize

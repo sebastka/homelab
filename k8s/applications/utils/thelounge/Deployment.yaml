@@ -15,7 +15,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: thelounge
-      app.kubernetes.io/version: 4.4.3
+      app.kubernetes.io/version: stable
       app.kubernetes.io/component: irc-client
       app.kubernetes.io/part-of: thelounge
       # app.kubernetes.io/managed-by: kustomize
@@ -24,7 +24,7 @@ spec:
       namespace: thelounge
       labels:
         app.kubernetes.io/name: thelounge
-        app.kubernetes.io/version: 4.4.3
+      app.kubernetes.io/version: stable
         app.kubernetes.io/component: irc-client
         app.kubernetes.io/part-of: thelounge
         # app.kubernetes.io/managed-by: kustomize

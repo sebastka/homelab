@@ -12,7 +12,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: jellyfin
-      app.kubernetes.io/version: '10.11.8'
+      app.kubernetes.io/version: stable
       app.kubernetes.io/component: media-server
       app.kubernetes.io/part-of: jellyfin
       # app.kubernetes.io/managed-by: kustomize
@@ -21,7 +21,7 @@ spec:
       namespace: jellyfin
       labels:
         app.kubernetes.io/name: jellyfin
-        app.kubernetes.io/version: '10.11.8'
+      app.kubernetes.io/version: stable
         app.kubernetes.io/component: media-server
         app.kubernetes.io/part-of: jellyfin
         # app.kubernetes.io/managed-by: kustomize
