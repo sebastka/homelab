@@ -11,3 +11,18 @@ spec:
     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
   authorization:
     defaultAction: Allow
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: adminapi-local-only
+  namespace: matrix-authentication-service
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: adminapi}
+  authorization:
+    defaultAction: Deny
+    rules:
+      - name: allow-local
+        action: Allow
+        principal: {clientCIDRs: [192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8, fd00::/8]}
