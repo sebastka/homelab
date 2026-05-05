@@ -9,6 +9,7 @@ spec:
   destinations:
     - {namespace: argocd, server: 'https://kubernetes.default.svc'}
     - {namespace: deluge, server: 'https://kubernetes.default.svc'}
+    - {namespace: element-admin, server: 'https://kubernetes.default.svc'}
     - {namespace: glance, server: 'https://kubernetes.default.svc'}
     - {namespace: matrix-authentication-service, server: 'https://kubernetes.default.svc'}
     - {namespace: n8n, server: 'https://kubernetes.default.svc'}
