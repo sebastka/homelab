@@ -26,11 +26,11 @@ spec:
       allowedRoutes: {namespaces: {from: All}}
     - name: ldaps
       protocol: TLS
-      hostname: '*.karlsen.fr'
+      hostname: ldap.karlsen.fr
       port: 636
       allowedRoutes: {namespaces: {from: All}}
-      # tls: {mode: Passthrough}
-      tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: wc-karlsen-fr-certificate}]}
+      tls: {mode: Passthrough}
+      # tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: wc-karlsen-fr-certificate}]}
 
     - name: fogejo-ssh
       protocol: TCP
