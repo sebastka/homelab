@@ -71,6 +71,7 @@ gitea:
       skip-local-2fa: true
       scopes: openid email profile groups sshpubkey
       attributeSSHPublicKey: sshpubkey
+      groupClaimName: groups
       adminGroup: forgejo:admins
       # allowUsernameChange: false  # Buggy. Run: forgejo admin auth update-oauth --id <id> --allow-username-change=false
   config:
