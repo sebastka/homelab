@@ -5,6 +5,7 @@ metadata:
   name: valkey
   namespace: harbor
 spec:
+  strategy: {type: Recreate}
   replicas: 1
   selector:
     matchLabels:

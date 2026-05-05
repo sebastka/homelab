@@ -5,8 +5,8 @@ metadata:
   name: tika
   namespace: paperless
 spec:
-  replicas: 1
   strategy: {type: Recreate}
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: tika

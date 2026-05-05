@@ -5,6 +5,7 @@ metadata:
   name: debian-debug
   namespace: debian-debug
 spec:
+  strategy: {type: Recreate}
   replicas: 1
   selector:
     matchLabels:

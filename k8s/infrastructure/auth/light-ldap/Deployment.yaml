@@ -7,8 +7,8 @@ metadata:
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
-  replicas: 1
   strategy: {type: Recreate}
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: light-ldap
