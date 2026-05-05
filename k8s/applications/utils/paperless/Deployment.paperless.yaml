@@ -82,7 +82,7 @@ spec:
             requests: {memory: 256Mi}
             limits: {memory: 256Mi}
           volumeMounts:
-            - {name: migrate-tmp-volume, mountPath: /tmp}
+            - {name: tmp-volume, mountPath: /tmp}
             - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
@@ -104,8 +104,8 @@ spec:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           volumeMounts:
-            - {name: consumer-tmp-volume, mountPath: /tmp}
-            - {name: consumer-cache-volume, mountPath: /var/cache}
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /var/cache}
             - {name: scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
@@ -128,8 +128,8 @@ spec:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           volumeMounts:
-            - {name: scheduler-tmp-volume, mountPath: /tmp}
-            - {name: scheduler-cache-volume, mountPath: /var/cache}
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /var/cache}
             # - {name: scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
@@ -152,8 +152,8 @@ spec:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
           volumeMounts:
-            - {name: worker-tmp-volume, mountPath: /tmp}
-            - {name: worker-cache-volume, mountPath: /var/cache}
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /var/cache}
             - {name: scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
@@ -181,8 +181,8 @@ spec:
           livenessProbe: {httpGet: {port: 8000, path: /}, periodSeconds: 30}
           readinessProbe: {httpGet: {port: 8000, path: /}, periodSeconds: 30}
           volumeMounts:
-            - {name: webserver-tmp-volume, mountPath: /tmp}
-            - {name: webserver-cache-volume, mountPath: /var/cache}
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /var/cache}
             # - {name: scripts-volume, mountPath: /scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: customizations-volume, mountPath: /usr/src/paperless/src/paperless/settings.py, subPath: settings.py, readOnly: true}
@@ -191,15 +191,8 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
       volumes:
-        - {name: migrate-tmp-volume, emptyDir: {}}
-        - {name: consumer-tmp-volume, emptyDir: {}}
-        - {name: scheduler-tmp-volume, emptyDir: {}}
-        - {name: worker-tmp-volume, emptyDir: {}}
-        - {name: webserver-tmp-volume, emptyDir: {}}
-        - {name: consumer-cache-volume, emptyDir: {}}
-        - {name: scheduler-cache-volume, emptyDir: {}}
-        - {name: worker-cache-volume, emptyDir: {}}
-        - {name: webserver-cache-volume, emptyDir: {}}
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: cache-volume, emptyDir: {}}
         - {name: customizations-volume, emptyDir: {}}
         - {name: scripts-volume, configMap: {name: paperless-scripts}}
         - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-pvc}}
