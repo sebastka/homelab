@@ -19,7 +19,7 @@ spec:
       namespace: whoami
       labels:
         app.kubernetes.io/name: whoami
-      app.kubernetes.io/version: stable
+        app.kubernetes.io/version: stable
         app.kubernetes.io/component: server
         app.kubernetes.io/part-of: whoami
         app.kubernetes.io/managed-by: kustomize

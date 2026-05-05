@@ -21,7 +21,7 @@ spec:
       namespace: glance
       labels:
         app.kubernetes.io/name: glance
-      app.kubernetes.io/version: stable
+        app.kubernetes.io/version: stable
         app.kubernetes.io/component: server
         app.kubernetes.io/part-of: glance
         # app.kubernetes.io/managed-by: kustomize

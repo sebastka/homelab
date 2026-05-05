@@ -19,7 +19,7 @@ spec:
       namespace: harbor
       labels:
         app.kubernetes.io/name: valkey
-      app.kubernetes.io/version: stable
+        app.kubernetes.io/version: stable
         app.kubernetes.io/component: key-value-store
         app.kubernetes.io/part-of: harbor
         # app.kubernetes.io/managed-by: kustomize

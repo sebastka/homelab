@@ -12,11 +12,19 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: searxng
+      app.kubernetes.io/version: stable
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: searxng
+      # app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       namespace: searxng
       labels:
         app.kubernetes.io/name: searxng
+        app.kubernetes.io/version: stable
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: searxng
+        # app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccount: searxng
       securityContext:

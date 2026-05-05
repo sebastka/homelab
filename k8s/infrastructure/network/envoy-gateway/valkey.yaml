@@ -26,7 +26,7 @@ spec:
       namespace: envoy-gateway-system
       labels:
         app.kubernetes.io/name: valkey
-      app.kubernetes.io/version: stable
+        app.kubernetes.io/version: stable
         app.kubernetes.io/component: key-value-store
         app.kubernetes.io/part-of: envoy-gateway
         # app.kubernetes.io/managed-by: kustomize

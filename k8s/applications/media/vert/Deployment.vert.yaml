@@ -21,7 +21,7 @@ spec:
       namespace: vert
       labels:
         app.kubernetes.io/name: vert
-      app.kubernetes.io/version: git
+        app.kubernetes.io/version: git
         app.kubernetes.io/component: frontend
         app.kubernetes.io/part-of: vert
         # app.kubernetes.io/managed-by: kustomize
