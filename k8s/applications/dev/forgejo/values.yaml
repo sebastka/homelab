@@ -10,11 +10,13 @@
 #   --secret='' \
 #   --auto-discover-url=https://auth.karlsen.fr/.well-known/openid-configuration \
 #   --skip-local-2fa=true \
-#   --scopes='openid email profile groups forgejo' \
+#   --scopes='openid email profile groups sshpubkey' \
 #   --attribute-ssh-public-key=sshpubkey \
-#   --admin-group='forgejo:administrators' \
+#   --admin-group='forgejo:admins' \
 #   --allow-username-change=false
 ---
+
+replicaCount: 1
 
 service:
   http:
@@ -74,7 +76,7 @@ gitea:
       # ACCESS_CONTROL_ALLOW_ORIGIN
     cors:
       ENABLE: 'true'
-      ALLOW_ORIGIN: 'git.karlsen.fr'
+      ALLOW_ORIGIN: 'https://git.karlsen.fr'
       X_FRAME_OPTIONS: DENY
     ui:
       EXPLORE_PAGING_NUM: 20
@@ -118,8 +120,8 @@ gitea:
       ENABLE_OPENID_SIGNUP: 'true'
       WHITELISTED_URIS: auth.karlsen.fr
     oauth2_client:
-      OPENID_CONNECT_SCOPES: email profile groups forgejo
-      USERNAME: sub
+      OPENID_CONNECT_SCOPES: email profile groups sshpubkey
+      USERNAME: preferred_username
       UPDATE_AVATAR: 'true'
       ACCOUNT_LINKING: 'disable'
     cache:
