@@ -38,6 +38,14 @@ resources:
   requests: {memory: 512Mi}
   limits: {memory: 512Mi}
 
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile: {type: RuntimeDefault}
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities: {drop: [ALL]}
+
 persistence:
   enabled: true
   create: false
