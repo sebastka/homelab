@@ -91,10 +91,10 @@ max_spider_size: 10M
 # recaptcha_siteverify_api: "https://www.google.com/recaptcha/api/siteverify"
 
 ## Turn ##
-# turn_uris: [ "turn:turn.cloudflare.com?transport=udp", "turn:turn.cloudflare.com?transport=tcp" ]
-# turn_shared_secret: ""
-# turn_user_lifetime: 86400000
-# turn_allow_guests: true
+turn_uris: ['turns:staticauth.openrelay.metered.ca:443', 'turn:staticauth.openrelay.metered.ca:80']
+turn_shared_secret: openrelayprojectsecret
+turn_user_lifetime: 86400000
+turn_allow_guests: false
 
 ## Registration ##
 enable_registration: false
