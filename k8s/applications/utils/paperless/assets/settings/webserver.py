@@ -1,3 +1,7 @@
+from paperless.settings import *  # noqa: F401,F403
+from paperless.settings import __get_boolean  # noqa: F401
+
+LOGGING["loggers"]["granian.access"]["handlers"] = ["file_paperless", "console"]
 
 ##########################
 # Extra Django settings

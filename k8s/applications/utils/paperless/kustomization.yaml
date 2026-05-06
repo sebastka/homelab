@@ -8,8 +8,8 @@ generatorOptions:
 
 configMapGenerator:
   - {namespace: paperless, name: paperless-env, envs: [assets/paperless.env]}
-  - {namespace: paperless, name: logging-config, files: [logging_config.json=assets/logging_config.json]}
-  - {namespace: paperless, name: paperless-scripts, files: [post-consumption.sh=assets/post-consumption.sh, extra_settings.py=assets/extra_settings.py]}
+  - {namespace: paperless, name: paperless-scripts, files: [post-consumption.sh=assets/scripts/post-consumption.sh]}
+  - {namespace: paperless, name: paperless-settings, files: [webserver.py=assets/settings/webserver.py]}
 
 resources:
   - Namespace.yaml
