@@ -74,6 +74,7 @@ spec:
             limits: {memory: 256Mi}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
+            - {name: tesseract-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
