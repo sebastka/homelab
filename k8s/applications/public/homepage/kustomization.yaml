@@ -7,16 +7,12 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - name: nginx-config
-    namespace: homepage
-    files:
-      - nginx.custom.conf=assets/nginx.custom.conf
-      - sites.conf=assets/sites.conf
+  - {namespace: homepage, name: nginx-config, files: [nginx.custom.conf=assets/nginx.custom.conf, sites.conf=assets/sites.conf]}
 
 resources:
   - Namespace.yaml
   - ServiceAccount.yaml
-  - Deployment.yaml
+  - Deployment.website.yaml
   - Service.yaml
   - HTTPRoute.yaml
   - SecurityPolicy.yaml

@@ -14,7 +14,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: homepage
       app.kubernetes.io/version: v1
-      app.kubernetes.io/component: website
+      app.kubernetes.io/component: karlsenfr
       app.kubernetes.io/part-of: homepage
       # app.kubernetes.io/managed-by: kustomize
   template:
@@ -23,7 +23,7 @@ spec:
       labels:
         app.kubernetes.io/name: homepage
         app.kubernetes.io/version: v1
-        app.kubernetes.io/component: website
+        app.kubernetes.io/component: karlsenfr
         app.kubernetes.io/part-of: homepage
         # app.kubernetes.io/managed-by: kustomize
     spec:
