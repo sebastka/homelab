@@ -95,7 +95,6 @@ spec:
           livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
-            - {name: tmp-volume, mountPath: /tmp}
             - {name: karlsenfr-volume, mountPath: /karlsenfr, readOnly: true}
             - {name: other-volume, mountPath: /other, readOnly: true}
             - {name: openpgpkey-volume, mountPath: /openpgpkey, readOnly: true}
@@ -107,5 +106,4 @@ spec:
         - {name: other-volume, emptyDir: {}}
         - {name: openpgpkey-volume, emptyDir: {}}
         - {name: mtasts-volume, emptyDir: {}}
-        - {name: tmp-volume, emptyDir: {}}
         - {name: nginx-config-volume, configMap: {name: nginx-config}}
