@@ -1,7 +1,40 @@
 from paperless.settings import *  # noqa: F401,F403
 from paperless.settings import __get_boolean  # noqa: F401
 
+import datetime as _dt
+import logging as _log
+import time as _time
+
 LOGGING["loggers"]["granian.access"]["handlers"] = ["file_paperless", "console"]
+
+_access_logger = _log.getLogger("granian.access")
+
+class AccessLogMiddleware:
+    async_capable = True
+    sync_capable = False
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    async def __call__(self, request):
+        t0 = _time.perf_counter()
+        response = await self.get_response(request)
+        dt_ms = (_time.perf_counter() - t0) * 1000
+        xff = request.META.get("HTTP_X_FORWARDED_FOR", "")
+        addr = xff.split(",")[0].strip() if xff else request.META.get("REMOTE_ADDR", "-")
+        _access_logger.info(
+            "[%s] %s - \"%s %s\" %d %.3f",
+            _dt.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %z"),
+            addr,
+            request.method,
+            request.get_full_path(),
+            response.status_code,
+            dt_ms,
+        )
+        return response
+
+
+MIDDLEWARE = ["webserver.AccessLogMiddleware"] + list(MIDDLEWARE)
 
 ##########################
 # Extra Django settings
