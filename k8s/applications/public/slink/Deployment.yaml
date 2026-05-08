@@ -37,7 +37,7 @@ spec:
       initContainers:
         - name: slink-init
           # Dockerfile: https://github.com/andrii-kryvoviaz/slink/blob/main/docker/Dockerfile.prod
-          image: anirdev/slink:v1.11.0
+          image: anirdev/slink:v1.11.1
           command: [/bin/sh, -c]
           args:
             - |
@@ -63,7 +63,7 @@ spec:
       containers:
         - name: slink
           # Dockerfile: https://github.com/andrii-kryvoviaz/slink/blob/main/docker/Dockerfile.prod
-          image: anirdev/slink:v1.11.0
+          image: anirdev/slink:v1.11.1
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
