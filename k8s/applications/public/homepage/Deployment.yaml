@@ -95,8 +95,9 @@ spec:
           livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
-            - {name: nginx-proxy-temp-volume, mountPath: /var/cache/nginx/proxy_temp, readOnly: true}
             - {name: nginx-client-temp-volume, mountPath: /var/cache/nginx/client_temp, readOnly: true}
+            - {name: nginx-client-temp-volume, mountPath: /var/cache/nginx/fastcgi_temp, readOnly: true}
+            - {name: nginx-proxy-temp-volume, mountPath: /var/cache/nginx/proxy_temp, readOnly: true}
             - {name: karlsenfr-volume, mountPath: /karlsenfr, readOnly: true}
             - {name: other-volume, mountPath: /other, readOnly: true}
             - {name: openpgpkey-volume, mountPath: /openpgpkey, readOnly: true}
@@ -104,7 +105,8 @@ spec:
             - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: 'nginx.custom.conf', readOnly: true}
             - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/sites.conf, subPath: 'sites.conf', readOnly: true}
       volumes:
-        - {name: nginx-proxy-temp-volume, emptyDir: {}}
+        - {name: nginx-client-temp-volume, emptyDir: {}}
+        - {name: nginx-fastcgi-temp-volume, emptyDir: {}}
         - {name: nginx-client-temp-volume, emptyDir: {}}
         - {name: karlsenfr-volume, emptyDir: {}}
         - {name: other-volume, emptyDir: {}}
