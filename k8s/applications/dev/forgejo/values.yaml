@@ -91,6 +91,7 @@ gitea:
       PROTOCOL: http
       DOMAIN: git.karlsen.fr
       ROOT_URL: https://git.karlsen.fr
+      # LANDING_PAGE: /sebastian
       START_SSH_SERVER: 'true'
       SSH_SERVER_USE_PROXY_PROTOCOL: 'false'
       SSH_CREATE_AUTHORIZED_KEYS_FILE: 'true'
