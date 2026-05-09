@@ -20,7 +20,7 @@ resources:
 helmCharts:
   - name: argo-cd
     repo: oci://ghcr.io/argoproj/argo-helm
-    version: 9.5.12  # renovate: datasource=github-releases depName=argoproj/argo-helm
+    version: 9.5.13  # renovate: datasource=github-releases depName=argoproj/argo-helm
     releaseName: argocd
     namespace: argocd
     includeCRDs: true
