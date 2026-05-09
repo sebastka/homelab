@@ -107,7 +107,7 @@ spec:
       volumes:
         - {name: nginx-client-temp-volume, emptyDir: {}}
         - {name: nginx-fastcgi-temp-volume, emptyDir: {}}
-        - {name: nginx-client-temp-volume, emptyDir: {}}
+        - {name: nginx-proxy-temp-volume, emptyDir: {}}
         - {name: karlsenfr-volume, emptyDir: {}}
         - {name: other-volume, emptyDir: {}}
         - {name: openpgpkey-volume, emptyDir: {}}
