@@ -96,7 +96,7 @@ spec:
           readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             - {name: nginx-client-temp-volume, mountPath: /var/cache/nginx/client_temp, readOnly: true}
-            - {name: nginx-client-temp-volume, mountPath: /var/cache/nginx/fastcgi_temp, readOnly: true}
+            - {name: nginx-fastcgi-temp-volume, mountPath: /var/cache/nginx/fastcgi_temp, readOnly: true}
             - {name: nginx-proxy-temp-volume, mountPath: /var/cache/nginx/proxy_temp, readOnly: true}
             - {name: karlsenfr-volume, mountPath: /karlsenfr, readOnly: true}
             - {name: other-volume, mountPath: /other, readOnly: true}
