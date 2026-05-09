@@ -72,7 +72,7 @@ loadBalancer:
   standalone: true
   # https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#maglev-consistent-hashing
   algorithm: maglev
-  mode: snat
+  mode: dsr  # snat
   dsrDispatch: opt
   # acceleration: native
   l7:
