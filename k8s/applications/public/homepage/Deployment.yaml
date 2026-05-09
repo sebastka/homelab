@@ -98,6 +98,7 @@ spec:
             - {name: nginx-client-temp-volume, mountPath: /var/cache/nginx/client_temp, readOnly: true}
             - {name: nginx-fastcgi-temp-volume, mountPath: /var/cache/nginx/fastcgi_temp, readOnly: true}
             - {name: nginx-proxy-temp-volume, mountPath: /var/cache/nginx/proxy_temp, readOnly: true}
+            - {name: nginx-proxy-temp-volume, mountPath: /var/cache/nginx/uwsgi_temp, readOnly: true}
             - {name: karlsenfr-volume, mountPath: /karlsenfr, readOnly: true}
             - {name: other-volume, mountPath: /other, readOnly: true}
             - {name: openpgpkey-volume, mountPath: /openpgpkey, readOnly: true}
@@ -108,6 +109,7 @@ spec:
         - {name: nginx-client-temp-volume, emptyDir: {}}
         - {name: nginx-fastcgi-temp-volume, emptyDir: {}}
         - {name: nginx-proxy-temp-volume, emptyDir: {}}
+        - {name: nginx-uwsgi-temp-volume, emptyDir: {}}
         - {name: karlsenfr-volume, emptyDir: {}}
         - {name: other-volume, emptyDir: {}}
         - {name: openpgpkey-volume, emptyDir: {}}
