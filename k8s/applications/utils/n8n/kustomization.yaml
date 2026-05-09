@@ -12,7 +12,7 @@ configMapGenerator:
 helmCharts:
   - name: n8n
     repo: oci://ghcr.io/n8n-io/n8n-helm-chart
-    version: 1.4.3  # renovate: datasource=github-releases depName=n8n-io/n8n-hosting
+    version: 1.5.0  # renovate: datasource=github-releases depName=n8n-io/n8n-hosting
     releaseName: n8n
     namespace: n8n
     includeCRDs: true
