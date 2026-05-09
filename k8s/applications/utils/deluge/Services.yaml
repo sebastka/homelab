@@ -39,7 +39,6 @@ metadata:
     arp.cilium.io/ip-pool: default-arp-ip-pool
   annotations:
     lbipam.cilium.io/ips: 192.168.2.10
-    service.cilium.io/lb-mode: snat
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
