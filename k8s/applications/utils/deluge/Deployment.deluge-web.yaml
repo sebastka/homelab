@@ -38,7 +38,6 @@ spec:
         - name: deluge-web-init
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
           image: ghcr.io/home-operations/deluge:2.2.0
-          imagePullPolicy: Always
           command: ['/bin/sh', '-c']
           args:
             - |
@@ -49,7 +48,7 @@ spec:
 
               mkdir -p /config/plugins/.python-eggs
 
-              # Generate web.conf for deuge-web interface configuration
+              # Generate web.conf for deluge-web interface configuration
               jq -n \
                 --arg DELUGE_WEB_PASSWORD_SALT "$DELUGE_WEB_PASSWORD_SALT" \
                 --arg DELUGE_WEB_PASSWORD_SHA1 "$DELUGE_WEB_PASSWORD_SHA1" \
@@ -113,7 +112,6 @@ spec:
         - name: deluge-web
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
           image: ghcr.io/home-operations/deluge:2.2.0
-          imagePullPolicy: Always
           command:
             - /usr/bin/deluge-web
             - --config=/config

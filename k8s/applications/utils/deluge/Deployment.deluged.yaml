@@ -38,7 +38,6 @@ spec:
         - name: deluged-init
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
           image: ghcr.io/home-operations/deluge:2.2.0
-          imagePullPolicy: Always
           command: ['/bin/sh', '-c']
           args:
             - |
@@ -66,7 +65,6 @@ spec:
         - name: deluged
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
           image: ghcr.io/home-operations/deluge:2.2.0
-          imagePullPolicy: Always
           command:
             - /usr/bin/deluged
             - --config=/config
@@ -84,7 +82,7 @@ spec:
             - {name: daemon, containerPort: 58846, protocol: TCP}
             - {name: torrent-tcp, containerPort: 6881, protocol: TCP}
             - {name: torrent-udp, containerPort: 6881, protocol: UDP}
-          startupProbe: {tcpSocket: {port: 58846}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          startupProbe: {tcpSocket: {port: 58846}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 12}
           livenessProbe: {tcpSocket: {port: 58846}, initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {tcpSocket: {port: 58846}, initialDelaySeconds: 10, periodSeconds: 120}
           env:
