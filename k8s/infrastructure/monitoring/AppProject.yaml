@@ -11,10 +11,8 @@ spec:
     - {namespace: kube-system, server: 'https://kubernetes.default.svc'}
     - {namespace: grafana, server: 'https://kubernetes.default.svc'}
     - {namespace: headlamp, server: 'https://kubernetes.default.svc'}
-    - {namespace: kite-system, server: 'https://kubernetes.default.svc'}
     - {namespace: metrics-server, server: 'https://kubernetes.default.svc'}
     - {namespace: monitoring, server: 'https://kubernetes.default.svc'}
-    - {namespace: portainer, server: 'https://kubernetes.default.svc'}
     - {namespace: stork, server: 'https://kubernetes.default.svc'}
     - {namespace: zabbix, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
