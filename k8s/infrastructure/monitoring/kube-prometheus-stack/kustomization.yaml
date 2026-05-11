@@ -10,7 +10,7 @@ resources:
 helmCharts:
   - name: kube-prometheus-stack
     repo: oci://ghcr.io/prometheus-community/charts
-    version: 84.5.0  # renovate: datasource=github-releases depName=prometheus-community/helm-charts
+    version: 85.0.1  # renovate: datasource=github-releases depName=prometheus-community/helm-charts
     releaseName: kube-prometheus-stack
     namespace: monitoring
     includeCRDs: true
