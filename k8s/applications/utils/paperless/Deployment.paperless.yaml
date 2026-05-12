@@ -55,7 +55,6 @@ spec:
             limits: {memory: 512Mi}
           volumeMounts:
             - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata}
-            - {name: tmp-volume, mountPath: /tmp}
         - name: migrate
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: [python3, manage.py, migrate, --noinput]
