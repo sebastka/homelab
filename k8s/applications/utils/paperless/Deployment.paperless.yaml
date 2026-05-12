@@ -56,30 +56,6 @@ spec:
           volumeMounts:
             - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata}
             - {name: tmp-volume, mountPath: /tmp}
-        - name: fetch-tesseract-data
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
-          command: ['/bin/sh', '-c']
-          args:
-            - |
-              set -eux
-
-              # Fetch trained data for Tesseract OCR
-              # Use the existing PAPERLESS_OCR_LANGUAGES var
-              for lang in $PAPERLESS_OCR_LANGUAGES; do
-                rm -f "/usr/share/tesseract-ocr/5/tessdata/${lang}.traineddata"
-                curl -sLO --output-dir /usr/share/tesseract-ocr/5/tessdata/ "https://raw.githubusercontent.com/tesseract-ocr/tessdata/refs/heads/main/${lang}.traineddata"
-              done
-          envFrom:
-            - configMapRef: {name: paperless-env}
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: {drop: [ALL]}
-          resources:
-            requests: {memory: 64Mi}
-            limits: {memory: 64Mi}
-          volumeMounts:
-            - {name: tesseract-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/}
         - name: migrate
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: [python3, manage.py, migrate, --noinput]
@@ -95,12 +71,11 @@ spec:
             limits: {memory: 256Mi}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
-            - {name: tesseract-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
-            - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata, readOnly: true}
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
+            - {name: paperless-data-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata/tessdata.git/nor.traineddata, readOnly: true}
       containers:
         - name: consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
@@ -120,12 +95,11 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /var/cache}
             - {name: scripts-volume, mountPath: /mnt/scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
-            - {name: paperless-data-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata/tessdata.git/nor.traineddata, readOnly: true}
-            - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata, readOnly: true}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
+            - {name: paperless-data-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata/tessdata.git/nor.traineddata, readOnly: true}
         - name: scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
@@ -165,12 +139,11 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /var/cache}
             - {name: scripts-volume, mountPath: /mnt/scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
-            - {name: tesseract-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
-            - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
+            - {name: paperless-data-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata/tessdata.git/nor.traineddata, readOnly: true}
         - name: webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
@@ -204,7 +177,6 @@ spec:
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: cache-volume, emptyDir: {}}
-        - {name: tesseract-volume, emptyDir: {}}
         - {name: scripts-volume, configMap: {name: paperless-scripts}}
         - {name: settings-volume, configMap: {name: paperless-settings}}
         - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-pvc}}
