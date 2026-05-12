@@ -45,11 +45,15 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
+          env:
+            - {name: GIT_CONFIG_NOSYSTEM, value: 'true'}
+            - {name: GIT_CONFIG_NOGLOBAL, value: 'true'}
           resources:
             requests: {memory: 64Mi}
             limits: {memory: 64Mi}
           volumeMounts:
-            - {name: paperless-data-volume, mountPath: /tmp/tessdata, subPath: tessdata}
+            - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata}
+            - {name: tmp-volume, mountPath: /tmp}
         - name: fetch-tesseract-data
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: ['/bin/sh', '-c']
