@@ -15,3 +15,16 @@ spec:
   resources: {requests: {storage: 20Gi}}
   storageClassName: longhorn-encrypted
   volumeName: paperless-data-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-tessdata-pvc
+  namespace: paperless
+  labels:
+    app.kubernetes.io/name: paperless
+spec:
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 10Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: paperless-tessdata-pv

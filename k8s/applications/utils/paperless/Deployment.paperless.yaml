@@ -6,6 +6,7 @@ metadata:
   namespace: paperless
   annotations:
     reloader.stakater.com/auto: "true"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   strategy: {type: Recreate}
   replicas: 1
@@ -35,24 +36,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:
-        - name: git-sync-tesseract
-          # Dockerfile: https://github.com/kubernetes/git-sync/blob/master/Dockerfile.in
-          image: registry.k8s.io/git-sync/git-sync:v4.6.0  # renovate: docker=registry.k8s.io/git-sync/git-sync
-          args:
-            - --repo=https://github.com/tesseract-ocr/tessdata.git
-            - --root=/mnt/tessdata
-            - --one-time
-            - --sync-timeout=1800s
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: {drop: [ALL]}
-          resources:
-            requests: {memory: 512Mi}
-            limits: {memory: 512Mi}
-          volumeMounts:
-            - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata}
-            - {name: tmp-volume, mountPath: /tmp}
         - name: migrate
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: [python3, manage.py, migrate, --noinput]
@@ -72,7 +55,7 @@ spec:
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
-            - {name: paperless-data-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata/tessdata.git/nor.traineddata, readOnly: true}
+            - {name: tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata.git/nor.traineddata, readOnly: true}
       containers:
         - name: consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
@@ -96,7 +79,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
-            - {name: paperless-data-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata/tessdata.git/nor.traineddata, readOnly: true}
+            - {name: tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata.git/nor.traineddata, readOnly: true}
         - name: scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
@@ -140,7 +123,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
-            - {name: paperless-data-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata/tessdata.git/nor.traineddata, readOnly: true}
+            - {name: tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata.git/nor.traineddata, readOnly: true}
         - name: webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
@@ -176,4 +159,5 @@ spec:
         - {name: cache-volume, emptyDir: {}}
         - {name: scripts-volume, configMap: {name: paperless-scripts}}
         - {name: settings-volume, configMap: {name: paperless-settings}}
+        - {name: tessdata-volume, persistentVolumeClaim: {claimName: paperless-tessdata-pvc}}
         - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-pvc}}
