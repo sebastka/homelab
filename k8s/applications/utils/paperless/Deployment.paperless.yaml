@@ -35,27 +35,27 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:
-        # - name: git-sync-tesseract
-        #   # Dockerfile: https://github.com/kubernetes/git-sync/blob/master/Dockerfile.in
-        #   image: registry.k8s.io/git-sync/git-sync:v4.6.0  # renovate: docker=registry.k8s.io/git-sync/git-sync
-        #   args:
-        #     - --repo=https://github.com/tesseract-ocr/tessdata.git
-        #     - --root=/mnt/tessdata
-        #     - --one-time
-        #     - --sync-timeout=1800s
-        #   securityContext:
-        #     allowPrivilegeEscalation: false
-        #     readOnlyRootFilesystem: true
-        #     capabilities: {drop: [ALL]}
-        #   env:
-        #     - {name: GIT_CONFIG_NOSYSTEM, value: 'true'}
-        #     - {name: GIT_CONFIG_NOGLOBAL, value: 'true'}
-        #   resources:
-        #     requests: {memory: 128Mi}
-        #     limits: {memory: 128Mi}
-        #   volumeMounts:
-        #     - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata}
-        #     - {name: tmp-volume, mountPath: /tmp}
+        - name: git-sync-tesseract
+          # Dockerfile: https://github.com/kubernetes/git-sync/blob/master/Dockerfile.in
+          image: registry.k8s.io/git-sync/git-sync:v4.6.0  # renovate: docker=registry.k8s.io/git-sync/git-sync
+          args:
+            - --repo=https://github.com/tesseract-ocr/tessdata.git
+            - --root=/mnt/tessdata
+            - --one-time
+            - --sync-timeout=1800s
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          env:
+            - {name: GIT_CONFIG_NOSYSTEM, value: 'true'}
+            - {name: GIT_CONFIG_NOGLOBAL, value: 'true'}
+          resources:
+            requests: {memory: 128Mi}
+            limits: {memory: 128Mi}
+          volumeMounts:
+            - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata}
+            - {name: tmp-volume, mountPath: /tmp}
         - name: fetch-tesseract-data
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: ['/bin/sh', '-c']
