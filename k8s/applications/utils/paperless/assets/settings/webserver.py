@@ -1,9 +1,10 @@
-from paperless.settings import *  # noqa: F401,F403
-from paperless.settings import __get_boolean  # noqa: F401
-
+import paperless.settings as _base
 import datetime as _dt
 import logging as _log
 import time as _time
+
+# Import all settings from paperless.settings, including private _names excluded by `import *`
+globals().update({k: v for k, v in vars(_base).items() if not k.startswith("__")})
 
 LOGGING["loggers"]["granian.access"]["handlers"] = ["file_paperless", "console"]
 
