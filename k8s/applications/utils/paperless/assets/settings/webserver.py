@@ -42,9 +42,9 @@ MIDDLEWARE = ["webserver.AccessLogMiddleware"] + list(MIDDLEWARE)
 # https://docs.djangoproject.com/en/6.0/ref/settings/
 ##########################
 
-CSRF_COOKIE_NAME: Final[str] = os.getenv("DJANGO_CSRF_COOKIE_NAME", "__Host-csrftoken")
+CSRF_COOKIE_NAME: Final[str] = os.getenv("DJANGO_CSRF_COOKIE_NAME", "csrftoken")
 CSRF_COOKIE_DOMAIN: Final[str] = os.getenv("DJANGO_CSRF_COOKIE_DOMAIN", None)
-CSRF_COOKIE_HTTPONLY: Final[bool] = __get_boolean("DJANGO_CSRF_COOKIE_HTTPONLY", "yes")
+CSRF_COOKIE_HTTPONLY: Final[bool] = __get_boolean("DJANGO_CSRF_COOKIE_HTTPONLY", "no")
 CSRF_COOKIE_PATH: Final[str] = os.getenv("DJANGO_CSRF_COOKIE_PATH", "/")
 CSRF_COOKIE_SAMESITE: Final[str] = os.getenv("DJANGO_CSRF_COOKIE_SAMESITE", "Strict")
 CSRF_COOKIE_SECURE: Final[bool] = __get_boolean("DJANGO_CSRF_COOKIE_SECURE", "yes")
