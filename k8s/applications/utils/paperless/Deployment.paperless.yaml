@@ -51,8 +51,8 @@ spec:
             - {name: GIT_CONFIG_NOSYSTEM, value: 'true'}
             - {name: GIT_CONFIG_NOGLOBAL, value: 'true'}
           resources:
-            requests: {memory: 128Mi}
-            limits: {memory: 128Mi}
+            requests: {memory: 512Mi}
+            limits: {memory: 512Mi}
           volumeMounts:
             - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata}
             - {name: tmp-volume, mountPath: /tmp}
