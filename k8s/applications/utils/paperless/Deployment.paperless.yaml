@@ -166,7 +166,7 @@ spec:
             - {name: cache-volume, mountPath: /var/cache}
             - {name: scripts-volume, mountPath: /mnt/scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: tesseract-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: nor.traineddata, readOnly: true}
-            - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata, readOnly: true}
+            - {name: paperless-data-volume, mountPath: /mnt/tessdata, subPath: tessdata}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
