@@ -35,6 +35,21 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:
+        - name: git-sync-tesseract
+          # Dockerfile: https://github.com/kubernetes/git-sync/blob/master/Dockerfile.in
+          image: registry.k8s.io/git-sync/git-sync:v4.6.0  # renovate: docker=registry.k8s.io/git-sync/git-sync
+          args:
+            - --repo=https://github.com/tesseract-ocr/tessdata.git
+            - --root=/tmp/tessdata
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 64Mi}
+          volumeMounts:
+            - {name: paperless-data-volume, mountPath: /tmp/tessdata, subPath: tessdata}
         - name: fetch-tesseract-data
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
           command: ['/bin/sh', '-c']
