@@ -4,7 +4,7 @@ import logging as _log
 import time as _time
 
 # Import all settings from paperless.settings, including private _names excluded by `import *`
-globals().update({k: v for k, v in vars(_base).items() if not k.startswith("__")})
+globals().update({k: v for k, v in vars(_base).items() if not (k.startswith("__") and k.endswith("__"))})
 
 LOGGING["loggers"]["granian.access"]["handlers"] = ["file_paperless", "console"]
 
