@@ -1,0 +1,20 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-kubelet-probes-whoami
+  namespace: whoami
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: whoami}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-whoami-ingress
+  namespace: whoami
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: whoami}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}

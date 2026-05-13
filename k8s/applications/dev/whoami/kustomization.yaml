@@ -10,3 +10,4 @@ resources:
   - Service.yaml
   - HTTPRoute.yaml
   - SecurityPolicy.yaml
+  - CiliumNetworkPolicy.yaml
