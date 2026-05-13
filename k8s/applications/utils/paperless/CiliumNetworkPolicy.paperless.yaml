@@ -5,7 +5,7 @@ metadata:
   name: allow-kubelet-probes-webserver
   namespace: paperless
 spec:
-  endpointSelector: {}
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: paperless}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '8000', protocol: TCP}]]}
 ---

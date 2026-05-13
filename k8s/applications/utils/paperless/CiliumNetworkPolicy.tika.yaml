@@ -5,7 +5,7 @@ metadata:
   name: allow-kubelet-probes-tika
   namespace: paperless
 spec:
-  endpointSelector: {}
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: tika}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '9998', protocol: TCP}]]}
 ---

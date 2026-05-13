@@ -5,7 +5,7 @@ metadata:
   name: allow-kubelet-probes-gotenberg
   namespace: paperless
 spec:
-  endpointSelector: {}
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: gotenberg}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
 ---
