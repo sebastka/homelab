@@ -7,4 +7,4 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: tessdata-sync}}
   egress:
-    - {toFQDNs: [{matchName: github.com}, {matchName: objects.githubusercontent.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+    - {toFQDNs: [{matchName: github.com}, {matchName: objects.githubusercontent.com}, {matchName: codeload.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
