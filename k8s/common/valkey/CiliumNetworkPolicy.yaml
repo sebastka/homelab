@@ -1,0 +1,20 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-kubelet-probes-valkey
+  # namespace:
+spec:
+  endpointSelector: {}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-valkey-ingress
+  # namespace:
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: valkey}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: APP_NAME}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
