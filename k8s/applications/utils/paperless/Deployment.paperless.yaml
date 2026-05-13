@@ -157,8 +157,8 @@ spec:
           ports:
             - {name: http, protocol: TCP, containerPort: 8000}
           startupProbe: {httpGet: {port: 8000, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 12}
-          livenessProbe: {httpGet: {port: 8000, path: /}, periodSeconds: 30}
-          readinessProbe: {httpGet: {port: 8000, path: /}, periodSeconds: 30}
+          livenessProbe: {httpGet: {port: 8000, path: /}, periodSeconds: 30, timeoutSeconds: 5, failureThreshold: 3}
+          readinessProbe: {httpGet: {port: 8000, path: /}, periodSeconds: 30, timeoutSeconds: 5, failureThreshold: 3}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /var/cache}
