@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=
+# yaml-language-server: $schema=https://code.forgejo.org/forgejo-helm/forgejo-helm/raw/branch/main/values.schema.json
 # https://artifacthub.io/packages/helm/forgejo-helm/forgejo?modal=values
 # https://forgejo.org/docs/latest/admin/config-cheat-sheet
 ---
