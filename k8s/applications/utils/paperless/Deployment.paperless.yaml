@@ -79,7 +79,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
-            - {name: tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata.git/nor.traineddata, readOnly: true}
+            - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
@@ -123,8 +123,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
-            - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}  # For indicative purposes
-            - {name: tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata.git/nor.traineddata, readOnly: true}
+            - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
