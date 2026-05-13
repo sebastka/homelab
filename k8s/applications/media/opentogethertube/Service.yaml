@@ -13,18 +13,3 @@ spec:
       protocol: TCP
       port: 80
       targetPort: http
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: valkey
-  namespace: opentogethertube
-spec:
-  type: ClusterIP
-  selector:
-    app.kubernetes.io/name: valkey
-  ports:
-    - name: valkey
-      protocol: TCP
-      port: 6379
-      targetPort: valkey
