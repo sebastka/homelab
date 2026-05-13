@@ -20,6 +20,6 @@ spec:
     - {toEndpoints: [matchLabels: {app.kubernetes.io/name: valkey}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
     - {toEndpoints: [matchLabels: {app.kubernetes.io/name: tika}], toPorts: [ports: [{port: '9998', protocol: TCP}]]}
     - {toEndpoints: [matchLabels: {app.kubernetes.io/name: gotenberg}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
-    - {toFQDNs: [{matchName: auth.karlsen.fr}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Needed for OIDC / Authelia
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}
