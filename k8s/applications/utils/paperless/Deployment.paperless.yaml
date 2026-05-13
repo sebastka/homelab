@@ -88,7 +88,7 @@ spec:
         - name: scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
-          command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO", "--schedule-filename", "/tmp/celerybeat-schedule"]
+          command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO", "--schedule", "/tmp/celerybeat-schedule"]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
