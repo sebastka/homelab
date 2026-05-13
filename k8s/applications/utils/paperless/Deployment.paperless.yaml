@@ -28,7 +28,7 @@ spec:
         # app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccountName: paperless
-      terminationGracePeriodSeconds: 300
+      terminationGracePeriodSeconds: 150
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -124,6 +124,7 @@ spec:
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
+          lifecycle: {preStop: {exec: {command: [sh, -c, "celery --app paperless control shutdown --destination celery@$HOSTNAME"]}}}
           startupProbe: {exec: {command: [/usr/local/bin/worker-health]}, initialDelaySeconds: 10, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
           livenessProbe: {exec: {command: [/usr/local/bin/worker-health]}, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
           readinessProbe: {exec: {command: [/usr/local/bin/worker-health]}, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
