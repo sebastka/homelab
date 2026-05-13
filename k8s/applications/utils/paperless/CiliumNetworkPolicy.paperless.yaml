@@ -23,3 +23,4 @@ spec:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Needed for OIDC / Authelia
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}
+    - {toFQDNs: [{matchName: api.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
