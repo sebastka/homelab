@@ -56,7 +56,7 @@ spec:
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
-            - {name: tessdata-volume, mountPath: /usr/share/tesseract-ocr/5/tessdata/nor.traineddata, subPath: tessdata.git/nor.traineddata, readOnly: true}
+            - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
       containers:
         - name: consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
