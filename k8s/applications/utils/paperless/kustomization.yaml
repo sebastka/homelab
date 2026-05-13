@@ -8,8 +8,14 @@ generatorOptions:
 
 configMapGenerator:
   - {namespace: paperless, name: paperless-env, envs: [assets/paperless.env]}
-  - {namespace: paperless, name: paperless-scripts, files: [post-consumption.sh=assets/scripts/post-consumption.sh]}
   - {namespace: paperless, name: paperless-settings, files: [webserver.py=assets/settings/webserver.py]}
+  - namespace: paperless
+    name: paperless-scripts
+    files:
+      - post-consumption.sh=assets/scripts/post-consumption.sh
+      - consumer-health.py=assets/scripts/consumer-health.py
+      - scheduler-health.sh=assets/scripts/scheduler-health.sh
+      - worker-health.sh=assets/scripts/worker-health.sh
 
 resources:
   - Namespace.yaml

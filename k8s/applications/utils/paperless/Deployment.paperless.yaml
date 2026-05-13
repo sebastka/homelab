@@ -72,10 +72,14 @@ spec:
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
+          startupProbe: {exec: {command: [/usr/local/bin/consumer-health]}, initialDelaySeconds: 10, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
+          livenessProbe: {exec: {command: [/usr/local/bin/consumer-health]}, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
+          readinessProbe: {exec: {command: [/usr/local/bin/consumer-health]}, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /var/cache}
             - {name: scripts-volume, mountPath: /mnt/scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: scripts-volume, mountPath: /usr/local/bin/consumer-health, subPath: consumer-health.py, readOnly: true}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
@@ -84,7 +88,7 @@ spec:
         - name: scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
-          command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO"]
+          command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO", "--schedule-filename", "/tmp/celerybeat-schedule"]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -95,9 +99,13 @@ spec:
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
+          startupProbe: {exec: {command: [/usr/local/bin/scheduler-health]}, initialDelaySeconds: 10, periodSeconds: 60, timeoutSeconds: 5, failureThreshold: 3}
+          livenessProbe: {exec: {command: [/usr/local/bin/scheduler-health]}, periodSeconds: 60, timeoutSeconds: 5, failureThreshold: 3}
+          readinessProbe: {exec: {command: [/usr/local/bin/scheduler-health]}, periodSeconds: 60, timeoutSeconds: 5, failureThreshold: 3}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /var/cache}
+            - {name: scripts-volume, mountPath: /usr/local/bin/scheduler-health, subPath: scheduler-health.sh, readOnly: true}
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
@@ -116,10 +124,14 @@ spec:
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
+          startupProbe: {exec: {command: [/usr/local/bin/worker-health]}, initialDelaySeconds: 10, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
+          livenessProbe: {exec: {command: [/usr/local/bin/worker-health]}, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
+          readinessProbe: {exec: {command: [/usr/local/bin/worker-health]}, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /var/cache}
             - {name: scripts-volume, mountPath: /mnt/scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
+            - {name: scripts-volume, mountPath: /usr/local/bin/worker-health, subPath: worker-health.sh, readOnly: true}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
@@ -151,14 +163,14 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /var/cache}
             - {name: settings-volume, mountPath: /mnt/settings/webserver.py, subPath: webserver.py, readOnly: true}
-            - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
-            - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
-            - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
+            # - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
+            # - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
+            # - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: cache-volume, emptyDir: {}}
-        - {name: scripts-volume, configMap: {name: paperless-scripts}}
+        - {name: scripts-volume, configMap: {name: paperless-scripts, defaultMode: 0755}}
         - {name: settings-volume, configMap: {name: paperless-settings}}
         - {name: tessdata-volume, persistentVolumeClaim: {claimName: paperless-tessdata-pvc}}
         - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-pvc}}
