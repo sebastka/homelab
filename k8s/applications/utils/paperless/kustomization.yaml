@@ -25,3 +25,9 @@ resources:
   - HTTPRoute.yaml
   - BackendTrafficPolicy.yaml
   - SecurityPolicy.yaml
+  - CiliumNetworkPolicy.main.yaml
+  - CiliumNetworkPolicy.paperless.yaml
+  - CiliumNetworkPolicy.tika.yaml
+  - CiliumNetworkPolicy.valkey.yaml
+  - CiliumNetworkPolicy.gotenberg.yaml
+  - CiliumNetworkPolicy.tessdata-sync.yaml
