@@ -8,7 +8,7 @@ spec:
   endpointSelector: {}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '9998', protocol: TCP}]]}
-------
+---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:

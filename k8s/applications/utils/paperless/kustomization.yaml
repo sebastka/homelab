@@ -27,8 +27,8 @@ resources:
   - SealedSecret.paperless-secrets.yaml
   - PersistentVolumeClaim.yaml
   - ServiceAccounts.yaml
-  - Deployment.paperless.yaml
   - Job.tessdata-sync.yaml
+  - Deployment.paperless.yaml
   - Deployment.gotenberg.yaml
   - Deployment.tika.yaml
   - Services.yaml
