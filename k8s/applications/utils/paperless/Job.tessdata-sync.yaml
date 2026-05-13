@@ -39,6 +39,7 @@ spec:
           args:
             - --repo=https://github.com/tesseract-ocr/tessdata.git
             - --root=/mnt/tessdata
+            - --link=tessdata.git
             - --one-time
             - --sync-timeout=1800s
           securityContext:
