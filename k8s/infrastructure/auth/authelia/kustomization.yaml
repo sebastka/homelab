@@ -9,6 +9,16 @@ generatorOptions:
 configMapGenerator:
   - {namespace: authelia, name: authelia-configuration, files: [configuration.yaml=assets/configuration.yaml]}
 
+components:
+  - ../../../common/valkey
+
+patches:
+  - target: {kind: CiliumNetworkPolicy, name: allow-valkey-ingress}
+    patch: |
+      - op: replace
+        path: /spec/ingress/0/fromEndpoints/0/matchLabels/app.kubernetes.io~1name
+        value: authelia
+
 resources:
   - Namespace.yaml
   # - Secret.jwk.yaml
@@ -16,7 +26,6 @@ resources:
   - SealedSecret.authelia-secrets.yaml
   - SealedSecret.client-secrets.yaml
   - ServiceAccount.yaml
-  - Deployment.valkey.yaml
   - Deployment.authelia.yaml
   - Service.yaml
   - HTTPRoute.yaml
