@@ -5,13 +5,20 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: harbor
 
+components:
+  - ../../../common/valkey
+
+patches:
+  - target: {kind: CiliumNetworkPolicy, name: allow-valkey-ingress}
+    patch: |
+      - op: replace
+        path: /spec/ingress/0/fromEndpoints/0/matchLabels/app.kubernetes.io~1name
+        value: harbor
+
 resources:
   - Namespace.yaml
   - SealedSecret.harbor-secrets.yaml
   - PersistentVolumeClaim.yaml
-  - ServiceAccount.yaml
-  - Deployment.valkey.yaml
-  - Services.yaml
   - HTTPRoute.yaml
 
 helmCharts:
