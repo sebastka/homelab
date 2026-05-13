@@ -2,6 +2,16 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
+  name: allow-kubelet-probes-tika
+  namespace: paperless
+spec:
+  endpointSelector: {}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '9998', protocol: TCP}]]}
+------
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
   name: allow-tika-ingress
   namespace: paperless
 spec:

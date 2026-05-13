@@ -2,6 +2,16 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
+  name: allow-kubelet-probes-gotenberg
+  namespace: paperless
+spec:
+  endpointSelector: {}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
   name: allow-gotenberg-ingress
   namespace: paperless
 spec:

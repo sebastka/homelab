@@ -2,6 +2,16 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
+  name: allow-kubelet-probes-webserver
+  namespace: paperless
+spec:
+  endpointSelector: {}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8000', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
   name: allow-paperless-ingress
   namespace: paperless
 spec:
