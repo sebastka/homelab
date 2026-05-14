@@ -37,7 +37,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:
-        - name: git-cloner
+        - name: site-setup
           image: alpine/git:v2.52.0
           command: ['/bin/sh', '-c']
           args:
