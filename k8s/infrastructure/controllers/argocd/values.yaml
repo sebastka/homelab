@@ -166,6 +166,8 @@ notifications:
         ntfy:
           method: POST
           headers:
+            - name: Content-Type
+              value: text/plain
             - name: Title
               value: "Sync failed: {{.app.metadata.name}}"
             - name: Priority
@@ -182,6 +184,8 @@ notifications:
         ntfy:
           method: POST
           headers:
+            - name: Content-Type
+              value: text/plain
             - name: Title
               value: "Degraded: {{.app.metadata.name}}"
             - name: Priority
