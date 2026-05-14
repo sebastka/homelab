@@ -7,8 +7,11 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - {namespace: metube, name: metube-env, envs: [assets/metube.env]}
-  - {namespace: metube, name: ytdl-options, files: [ytdl-options.json=assets/ytdl-options.json]}
+  - {name: metube-env, envs: [assets/metube.env]}
+  - {name: ytdl-options, files: [ytdl-options.json=assets/ytdl-options.json]}
+
+components:
+  - ../../../common/default-networkpolicy
 
 resources:
   - Namespace.yaml
@@ -19,3 +22,4 @@ resources:
   - HTTPRoute.yaml
   - SealedSecret.oidc.yaml
   - SecurityPolicy.yaml
+  - CiliumNetworkPolicy.yaml

@@ -1,0 +1,31 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-kubelet-probes-metube
+  namespace: metube
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: metube}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
+    - {fromEntities: [host], toPorts: [ports: [{port: '4416', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-metube-ingress
+  namespace: metube
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: metube}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-metube-egress
+  namespace: metube
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: metube}}
+  egress:
+    - {toEntities: [world]}  # cluster, host
