@@ -1,0 +1,22 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-searxng-ingress
+  namespace: searxng
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: searxng}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-searxng-egress
+  namespace: searxng
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: searxng}}
+  egress:
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: searxng, app.kubernetes.io/name: valkey}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toEntities: [world], toPorts: [ports: [{port: '80', protocol: TCP}, {port: '443', protocol: TCP}]]}  # Internet access for search engines
