@@ -144,11 +144,69 @@ applicationSet:
     limits: {memory: 128Mi}
 
 notifications:
-  enabled: false
+  enabled: true
   metrics:
     enabled: true
     serviceMonitor:
-      enabled: true
+      enabled: false
   resources:
     requests: {memory: 64Mi}
     limits: {memory: 64Mi}
+
+  notifiers:
+    service.webhook.ntfy: |
+      url: http://web.ntfy.svc.cluster.local
+      headers:
+        - name: Authorization
+          value: $ntfy-token
+
+  templates:
+    template.app-sync-failed: |
+      webhook:
+        ntfy:
+          method: POST
+          path: /argocd
+          headers:
+            - name: Title
+              value: "Sync failed: {{.app.metadata.name}}"
+            - name: Priority
+              value: high
+            - name: Tags
+              value: rotating_light,argocd
+          body: |
+            {{.app.metadata.name}} failed to sync.
+            Message: {{.app.status.operationState.message}}
+            Repo: {{.app.spec.source.repoURL}}
+
+    template.app-health-degraded: |
+      webhook:
+        ntfy:
+          method: POST
+          path: /argocd
+          headers:
+            - name: Title
+              value: "Degraded: {{.app.metadata.name}}"
+            - name: Priority
+              value: high
+            - name: Tags
+              value: warning,argocd
+          body: |
+            {{.app.metadata.name}} health is {{.app.status.health.status}}.
+            {{range .app.status.resources -}}
+            {{if eq .health.status "Degraded"}}  - {{.kind}}/{{.name}}: {{.health.message}}
+            {{end}}{{end}}
+
+  triggers:
+    trigger.on-sync-failed: |
+      - when: app.status.operationState.phase in ['Error', 'Failed']
+        send: [app-sync-failed]
+    trigger.on-health-degraded: |
+      - when: app.status.health.status == 'Degraded'
+        send: [app-health-degraded]
+
+  subscriptions:
+    - recipients:
+        - ntfy:argocd
+      triggers:
+        - on-sync-failed
+        - on-health-degraded

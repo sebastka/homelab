@@ -18,10 +18,12 @@ resources:
   # - service-monitors/argocd-repo-server.yaml
   # - service-monitors/argocd-server.yaml
   - SealedSecret.oidc.yaml
+  - SealedSecret.argocd-notifications-secret.yaml
   - CiliumNetworkPolicy.server.yaml
   - CiliumNetworkPolicy.application-controller.yaml
   - CiliumNetworkPolicy.applicationset-controller.yaml
   - CiliumNetworkPolicy.repo-server.yaml
+  - CiliumNetworkPolicy.notifications.yaml
   - CiliumNetworkPolicy.redis.yaml
 
 # OIDC broken from 9.4.3?
