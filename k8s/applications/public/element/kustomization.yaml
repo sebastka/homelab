@@ -4,7 +4,10 @@ kind: Kustomization
 namespace: element
 
 configMapGenerator:
-  - {namespace: element, name: element-config, files: [config.json=assets/config.json]}
+  - {name: element-config, files: [config.json=assets/config.json]}
+
+components:
+  - ../../../common/default-networkpolicy
 
 resources:
   - Namespace.yaml
