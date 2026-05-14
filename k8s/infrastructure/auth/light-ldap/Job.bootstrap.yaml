@@ -4,11 +4,25 @@ kind: Job
 metadata:
   name: bootstrap
   namespace: light-ldap
+  labels:
+    app.kubernetes.io/name: bootstrap
+    app.kubernetes.io/version: stable
+    app.kubernetes.io/component: bootstrap
+    app.kubernetes.io/part-of: light-ldap
+    # app.kubernetes.io/managed-by: kustomize
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 spec:
   template:
+    metadata:
+      namespace: light-ldap
+      labels:
+        app.kubernetes.io/name: bootstrap
+        app.kubernetes.io/version: stable
+        app.kubernetes.io/component: bootstrap
+        app.kubernetes.io/part-of: light-ldap
+        # app.kubernetes.io/managed-by: kustomize
     spec:
       restartPolicy: OnFailure
       serviceAccountName: light-ldap
