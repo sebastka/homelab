@@ -2,22 +2,13 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-kubelet-probes-opentogethertube
-  namespace: opentogethertube
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: opentogethertube}}
-  ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
   name: allow-opentogethertube-ingress
   namespace: opentogethertube
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: opentogethertube}}
   ingress:
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
+    - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Envoy Gateway
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
