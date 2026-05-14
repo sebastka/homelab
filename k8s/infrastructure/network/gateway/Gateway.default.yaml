@@ -25,10 +25,10 @@ spec:
       port: 22
       allowedRoutes: {namespaces: {from: Selector, selector: {matchLabels: {app.kubernetes.io/name: forgejo}}}}
 
-    - name: ldap
-      protocol: TCP
-      port: 389
-      allowedRoutes: {namespaces: {from: Selector, selector: {matchLabels: {app.kubernetes.io/name: light-ldap}}}}
+    # - name: ldap
+    #   protocol: TCP
+    #   port: 389
+    #   allowedRoutes: {namespaces: {from: Selector, selector: {matchLabels: {app.kubernetes.io/name: light-ldap}}}}
     - name: ldaps
       protocol: TLS
       hostname: ldap.karlsen.fr
