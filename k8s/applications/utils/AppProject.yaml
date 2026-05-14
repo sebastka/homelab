@@ -16,7 +16,6 @@ spec:
     - {namespace: ntfy, server: 'https://kubernetes.default.svc'}
     - {namespace: paperless, server: 'https://kubernetes.default.svc'}
     - {namespace: searxng, server: 'https://kubernetes.default.svc'}
-    - {namespace: sankeymatic, server: 'https://kubernetes.default.svc'}
     - {namespace: thelounge, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
