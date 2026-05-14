@@ -2,19 +2,10 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-kubelet-probes-homepage
-  namespace: homepage
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: homepage}}
-  ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
   name: allow-homepage-ingress
   namespace: homepage
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: homepage}}
   ingress:
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
