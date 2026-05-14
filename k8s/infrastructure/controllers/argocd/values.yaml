@@ -198,7 +198,7 @@ notifications:
 
   triggers:
     trigger.on-sync-failed: |
-      - when: app.status.operationState.phase in ['Error', 'Failed']
+      - when: app.status.operationState != nil && app.status.operationState.phase in ['Error', 'Failed']
         send: [app-sync-failed]
     trigger.on-health-degraded: |
       - when: app.status.health.status == 'Degraded'
