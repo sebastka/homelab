@@ -154,18 +154,34 @@ notifications:
     limits: {memory: 64Mi}
 
   notifiers:
-    service.webhook.ntfy: |
+    service.webhook.ntfy-sync: |
       url: http://web.ntfy.svc.cluster.local/$ntfy-topic
       headers:
         - name: Authorization
           value: $ntfy-token
+        - name: X-Title
+          value: Sync failed
+        - name: X-Priority
+          value: high
+        - name: X-Tags
+          value: rotating_light,argocd
+    service.webhook.ntfy-degraded: |
+      url: http://web.ntfy.svc.cluster.local/$ntfy-topic
+      headers:
+        - name: Authorization
+          value: $ntfy-token
+        - name: X-Title
+          value: App degraded
+        - name: X-Priority
+          value: high
+        - name: X-Tags
+          value: warning,argocd
 
   templates:
     template.app-sync-failed: |
       webhook:
-        ntfy:
+        ntfy-sync:
           method: POST
-          path: "?t=Sync+failed:+{{.app.metadata.name}}&p=high&ta=rotating_light,argocd&a=view,+Open+ArgoCD,+https://argocd.talmox.hera.home.karlsen.fr/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"
           body: |
             {{.app.metadata.name}} failed to sync.
             Repo: {{.app.spec.source.repoURL}}
@@ -173,9 +189,8 @@ notifications:
 
     template.app-health-degraded: |
       webhook:
-        ntfy:
+        ntfy-degraded:
           method: POST
-          path: "?t=Degraded:+{{.app.metadata.name}}&p=high&ta=warning,argocd&a=view,+Open+ArgoCD,+https://argocd.talmox.hera.home.karlsen.fr/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"
           body: |
             {{.app.metadata.name}} health is {{.app.status.health.status}}.
             {{range .app.status.resources}}{{if eq .health.status "Degraded"}}- {{.kind}}/{{.name}}: {{.health.message}}
@@ -191,7 +206,10 @@ notifications:
 
   subscriptions:
     - recipients:
-        - ntfy:argocd
+        - ntfy-sync:argocd
       triggers:
         - on-sync-failed
+    - recipients:
+        - ntfy-degraded:argocd
+      triggers:
         - on-health-degraded
