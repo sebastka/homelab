@@ -1,20 +1,22 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-# namespace: synapse
+namespace: synapse
 
 generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - {namespace: synapse, name: common-env, envs: [assets/common.env]}
-  - {namespace: synapse, name: run-env, envs: [assets/run.env]}
-  # - {namespace: synapse, name: generate-env, envs: [assets/generate.env]}
-  - namespace: synapse
-    name: synapse-config
+  - {name: common-env, envs: [assets/common.env]}
+  - {name: run-env, envs: [assets/run.env]}
+  # - {name: generate-env, envs: [assets/generate.env]}
+  - name: synapse-config
     files:
       - homeserver.yaml=assets/homeserver.yaml
       - karlsen.fr.log.config=assets/karlsen.fr.log.config
+
+components:
+  - ../../../common/default-networkpolicy
 
 resources:
   - Namespace.yaml
@@ -26,3 +28,4 @@ resources:
   - HTTPRoute.yaml
   - SecurityPolicy.yaml
   - BackendTrafficPolicy.yaml
+  - CiliumNetworkPolicy.yaml
