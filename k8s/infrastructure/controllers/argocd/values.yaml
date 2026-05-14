@@ -155,7 +155,7 @@ notifications:
 
   notifiers:
     service.webhook.ntfy: |
-      url: http://web.ntfy.svc.cluster.local
+      url: http://web.ntfy.svc.cluster.local/$ntfy-topic
       headers:
         - name: Authorization
           value: $ntfy-token
@@ -165,7 +165,6 @@ notifications:
       webhook:
         ntfy:
           method: POST
-          path: /argocd
           headers:
             - name: Title
               value: "Sync failed: {{.app.metadata.name}}"
@@ -182,7 +181,6 @@ notifications:
       webhook:
         ntfy:
           method: POST
-          path: /argocd
           headers:
             - name: Title
               value: "Degraded: {{.app.metadata.name}}"
