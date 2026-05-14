@@ -49,7 +49,7 @@ spec:
               mkdir -p /mnt/www-data/www /mnt/www-data/other /mnt/www-data/openpgpkey /mnt/www-data/mta-sts
 
               # Homepage: www.karlsen.fr
-              cp /mnt/karlsenfr/sebastka.github.io.git/* /mnt/karlsenfr/sebastka.github.io.git/.[!.]* /mnt/www-data/www
+              cp -a /mnt/karlsenfr/sebastka.github.io.git/* /mnt/karlsenfr/sebastka.github.io.git/.[!.]* /mnt/www-data/www
               rm -rf /mnt/www-data/www/.git /mnt/www-data/www/bin /mnt/www-data/www/.nojekyll /mnt/www-data/www/README.md
 
               # Other tlds (org|app) and karlsen.fr:
