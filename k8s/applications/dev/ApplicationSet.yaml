@@ -14,6 +14,7 @@ spec:
         directories:
           - path: k8s/applications/dev/*
           - {path: k8s/applications/dev/debian-debug, exclude: true}
+          - {path: k8s/applications/dev/forgejo, exclude: true}
           - {path: k8s/applications/dev/harbor, exclude: true}
   template:
     metadata:
