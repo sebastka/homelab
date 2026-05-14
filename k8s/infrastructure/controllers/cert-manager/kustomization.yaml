@@ -13,7 +13,7 @@ resources:
   - SealedSecret.cloudflare-api-token.yaml
   - ClusterIssuer.le.yaml
   - cluster-ca.yaml
-  - Bundle.karlsen-fr-ca-bundle.yaml
+  - Bundle.cluster-ca-bundle.yaml
   - CiliumNetworkPolicy.cert-manager.controller.yaml
   - CiliumNetworkPolicy.cert-manager.webhook.yaml
   - CiliumNetworkPolicy.cert-manager.cainjector.yaml

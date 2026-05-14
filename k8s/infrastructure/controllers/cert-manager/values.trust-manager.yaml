@@ -4,7 +4,7 @@
 
 crds:
   enabled: true
-  keep: false
+  keep: true
 
 app:
   trust:
@@ -18,10 +18,6 @@ app:
 defaultPackage:
   enabled: true
 
-secretTargets:
-  enabled: true
-  authorizedSecrets: [karsen-fr-ca-bundle]
-
 resources:
-  requests: {memory: 32Mi}
-  limits: {memory: 32Mi}
+  requests: {memory: 64Mi}
+  limits: {memory: 64Mi}

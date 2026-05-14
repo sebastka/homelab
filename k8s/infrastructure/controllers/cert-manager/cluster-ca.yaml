@@ -1,6 +1,6 @@
 # https://a-cup-of.coffee/blog/spiffe/
 # cmctl -n cert-manager approve trust-manager-1
-# cmctl -n cert-manager approve trust-domain-root-ca-1
+# cmctl -n cert-manager approve cluster-root-ca-1
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -12,18 +12,22 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: trust-domain-root-ca
+  name: cluster-root-ca
   namespace: cert-manager
 spec:
   isCA: true
-  commonName: trust-domain-root-ca
-  secretName: trust-domain-root-ca-secret
+  commonName: Karlsen Homelab Cluster Root CA
+  subject:
+    organizations: [Karlsen]
+    countries: [NO]
+    organizationalUnits: [Homelab]
+  secretName: cluster-root-ca-secret
   privateKey: {algorithm: ECDSA, size: 521}
   issuerRef: {group: cert-manager.io, kind: ClusterIssuer, name: selfsigned-issuer}
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: trust-domain-root
+  name: cluster-root-ca
 spec:
-  ca: {secretName: trust-domain-root-ca-secret}
+  ca: {secretName: cluster-root-ca-secret}
