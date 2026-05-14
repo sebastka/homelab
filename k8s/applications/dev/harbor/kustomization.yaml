@@ -14,6 +14,9 @@ patches:
       - op: replace
         path: /spec/ingress/0/fromEndpoints/0/matchLabels/app.kubernetes.io~1name
         value: harbor
+      - op: replace
+        path: /spec/ingress/0/fromEndpoints/0/matchLabels/k8s:io.kubernetes.pod.namespace
+        value: harbor
 
 resources:
   - Namespace.yaml

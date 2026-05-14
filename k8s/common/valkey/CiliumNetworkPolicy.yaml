@@ -17,4 +17,4 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: valkey}}
   ingress:
-    - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: APP_NAME}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: NAMESPACE, app.kubernetes.io/name: APP_NAME}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
