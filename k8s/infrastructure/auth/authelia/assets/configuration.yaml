@@ -5,6 +5,7 @@
 # Miscellaneous:
 # - https://www.authelia.com/configuration/miscellaneous/introduction/#default_2fa_method
 # certificates_directory: '/config/certificates/'
+certificates_directory: /mnt/ca/
 theme: 'light'
 default_2fa_method: totp
 
@@ -51,7 +52,7 @@ authentication_backend:
   # password_change: {disable: true}
   # password_reset: {disable: true}
   ldap:
-    address: ldap://light-ldap.light-ldap.svc.cluster.local
+    address: ldaps://light-ldap.light-ldap.svc.cluster.local:636
     implementation: lldap
     base_dn: DC=karlsen,DC=fr
     user: UID=lldap-admin,OU=people,dc=karlsen,dc=fr
