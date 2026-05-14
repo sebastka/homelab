@@ -8,7 +8,7 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: trust-manager}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '6060', protocol: TCP}]]}  # Host probes
-    - {fromEntities: [host], toPorts: [ports: [{port: '6443', protocol: TCP}]]}  # kube-apiserver admission calls
+    - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '6443', protocol: TCP}]]}  # kube-apiserver admission calls
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy

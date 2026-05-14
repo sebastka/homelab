@@ -7,7 +7,8 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: webhook}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '10250', protocol: TCP}]]}  # Host probes + kube-apiserver admission calls
+    - {fromEntities: [host], toPorts: [ports: [{port: '10250', protocol: TCP}]]}  # Host probes
+    - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '10250', protocol: TCP}]]}  # kube-apiserver admission calls
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
