@@ -11,6 +11,7 @@ configMapGenerator:
   - {name: opentogethertube-config, files: [base.toml=assets/base.toml]}
 
 components:
+  - ../../../common/default-networkpolicy
   - ../../../common/valkey
 
 patches:
@@ -28,3 +29,4 @@ resources:
   - Service.yaml
   - HTTPRoute.yaml
   - SecurityPolicy.yaml
+  - CiliumNetworkPolicy.yaml
