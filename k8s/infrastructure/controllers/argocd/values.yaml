@@ -157,25 +157,17 @@ notifications:
     service.webhook.ntfy-sync: |
       url: http://web.ntfy.svc.cluster.local/$ntfy-topic
       headers:
-        - name: Authorization
-          value: $ntfy-token
-        - name: X-Title
-          value: Sync failed
-        - name: X-Priority
-          value: high
-        - name: X-Tags
-          value: rotating_light,argocd
+        - {name: Authorization, value: $ntfy-token}
+        - {name: X-Title, value: Sync failed}
+        - {name: X-Priority, value: high}
+        - {name: X-Tags, value: rotating_light,argocd}
     service.webhook.ntfy-degraded: |
       url: http://web.ntfy.svc.cluster.local/$ntfy-topic
       headers:
-        - name: Authorization
-          value: $ntfy-token
-        - name: X-Title
-          value: App degraded
-        - name: X-Priority
-          value: high
-        - name: X-Tags
-          value: warning,argocd
+        - {name: Authorization, value: $ntfy-token}
+        - {name: X-Title, value: App degraded}
+        - {name: X-Priority, value: high}
+        - {name: X-Tags, value: warning,argocd}
 
   templates:
     template.app-sync-failed: |
@@ -205,11 +197,5 @@ notifications:
         send: [app-health-degraded]
 
   subscriptions:
-    - recipients:
-        - ntfy-sync:argocd
-      triggers:
-        - on-sync-failed
-    - recipients:
-        - ntfy-degraded:argocd
-      triggers:
-        - on-health-degraded
+    - {recipients: [ntfy-sync:argocd], triggers: [on-sync-failed]}
+    - {recipients: [ntfy-degraded:argocd], triggers: [on-health-degraded]}
