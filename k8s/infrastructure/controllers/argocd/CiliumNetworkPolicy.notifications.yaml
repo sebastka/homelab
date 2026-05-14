@@ -7,5 +7,5 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: argocd-notifications-controller}}
   egress:
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: ntfy, app.kubernetes.io/name: ntfy}}], toPorts: [ports: [{port: '80', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: ntfy, app.kubernetes.io/name: ntfy}}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
     - {toEntities: [kube-apiserver]}
