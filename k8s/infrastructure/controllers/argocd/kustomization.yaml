@@ -4,6 +4,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: argocd
 
+components:
+  - ../../../common/default-networkpolicy
+
 resources:
   - Namespace.yaml
   - Service.yaml
@@ -15,6 +18,11 @@ resources:
   # - service-monitors/argocd-repo-server.yaml
   # - service-monitors/argocd-server.yaml
   - SealedSecret.oidc.yaml
+  - CiliumNetworkPolicy.server.yaml
+  - CiliumNetworkPolicy.application-controller.yaml
+  - CiliumNetworkPolicy.applicationset-controller.yaml
+  - CiliumNetworkPolicy.repo-server.yaml
+  - CiliumNetworkPolicy.redis.yaml
 
 # OIDC broken from 9.4.3?
 helmCharts:
