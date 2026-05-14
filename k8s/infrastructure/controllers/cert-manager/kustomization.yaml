@@ -17,7 +17,7 @@ resources:
   - CiliumNetworkPolicy.cert-manager.controller.yaml
   - CiliumNetworkPolicy.cert-manager.webhook.yaml
   - CiliumNetworkPolicy.cert-manager.cainjector.yaml
-  # - CiliumNetworkPolicy.trust-manager.yaml
+  - CiliumNetworkPolicy.trust-manager.yaml
   # - GrafanaDashboard.yaml
 
 helmCharts:
