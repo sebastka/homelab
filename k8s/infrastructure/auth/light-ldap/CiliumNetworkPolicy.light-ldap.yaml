@@ -8,10 +8,11 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: light-ldap}}
   ingress:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '17170', protocol: TCP}]]}  # Envoy Gateway
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3890', protocol: TCP}]]}  # Envoy Gateway
+    # - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3890', protocol: TCP}]]}  # Envoy Gateway
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '6360', protocol: TCP}]]}  # Envoy Gateway
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: light-ldap, app.kubernetes.io/name: bootstrap}], toPorts: [ports: [{port: '17170', protocol: TCP}]]}  # bootstrap job
-    - {fromEntities: [cluster], toPorts: [ports: [{port: '3890', protocol: TCP}]]}
+    # - {fromEntities: [cluster], toPorts: [ports: [{port: '3890', protocol: TCP}]]}
+    - {fromEntities: [cluster], toPorts: [ports: [{port: '6360', protocol: TCP}]]}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
