@@ -11,6 +11,9 @@ configMapGenerator:
     namespace: glance
     files: [glance.yaml=assets/glance.yaml]
 
+components:
+  - ../../../common/default-networkpolicy
+
 resources:
   - Namespace.yaml
   - ServiceAccount.yaml
@@ -19,3 +22,4 @@ resources:
   - HTTPRoute.yaml
   - SealedSecret.oidc.yaml
   - SecurityPolicy.yaml
+  - CiliumNetworkPolicy.yaml
