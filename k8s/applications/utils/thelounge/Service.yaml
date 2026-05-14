@@ -36,7 +36,7 @@ spec:
       port: 113
       targetPort: identd-tcp
 
-    - name: identd-udp
-      protocol: UDP
-      port: 113
-      targetPort: identd-udp
+    # - name: identd-udp
+    #   protocol: UDP
+    #   port: 113
+    #   targetPort: identd-udp
