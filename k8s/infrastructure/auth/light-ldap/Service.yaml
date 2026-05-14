@@ -14,10 +14,10 @@ spec:
       port: 80
       targetPort: http
 
-    - name: ldap
-      protocol: TCP
-      port: 389
-      targetPort: ldap
+    # - name: ldap
+    #   protocol: TCP
+    #   port: 389
+    #   targetPort: ldap
 
     - name: ldaps
       protocol: TCP
