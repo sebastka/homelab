@@ -25,6 +25,7 @@ resources:
   - CiliumNetworkPolicy.repo-server.yaml
   - CiliumNetworkPolicy.notifications.yaml
   - CiliumNetworkPolicy.redis.yaml
+  - CiliumNetworkPolicy.redis-secret-init.yaml
 
 # OIDC broken from 9.4.3?
 helmCharts:
