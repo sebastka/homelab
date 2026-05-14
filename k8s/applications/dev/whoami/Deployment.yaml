@@ -35,7 +35,7 @@ spec:
       containers:
         - name: whoami
           # Dockerfile: https://github.com/traefik/whoami/blob/master/Dockerfile
-          image: ghcr.io/traefik/whoami:v1.11.0
+          image: ghcr.io/traefik/whoami:v0.0.0-doesnotexist
           args: ['-port=8080']
           securityContext:
             allowPrivilegeEscalation: false
