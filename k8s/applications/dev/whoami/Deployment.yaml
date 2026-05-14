@@ -6,6 +6,7 @@ metadata:
   namespace: whoami
 spec:
   strategy: {type: Recreate}
+  progressDeadlineSeconds: 120
   replicas: 1
   selector:
     matchLabels:
@@ -35,8 +36,9 @@ spec:
       containers:
         - name: whoami
           # Dockerfile: https://github.com/traefik/whoami/blob/master/Dockerfile
-          image: ghcr.io/traefik/whoami:v0.0.0-doesnotexist
-          args: ['-port=8080']
+          image: ghcr.io/traefik/whoami:v1.11.0
+          command: ['false']
+          # args: ['-port=8080']
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
