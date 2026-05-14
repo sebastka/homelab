@@ -1,3 +1,4 @@
+# Currently missing world egress. Only needed if using outgoing webhooks in the future.
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
