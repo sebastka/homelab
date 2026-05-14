@@ -5,12 +5,19 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: cert-manager
 
+components:
+  - ../../../common/default-networkpolicy
+
 resources:
   - Namespace.yaml
   - SealedSecret.cloudflare-api-token.yaml
   - ClusterIssuer.le.yaml
   - cluster-ca.yaml
   - Bundle.karlsen-fr-ca-bundle.yaml
+  - CiliumNetworkPolicy.cert-manager.controller.yaml
+  - CiliumNetworkPolicy.cert-manager.webhook.yaml
+  - CiliumNetworkPolicy.cert-manager.cainjector.yaml
+  # - CiliumNetworkPolicy.trust-manager.yaml
   # - GrafanaDashboard.yaml
 
 helmCharts:
