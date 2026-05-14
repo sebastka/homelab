@@ -44,6 +44,8 @@ spec:
           resources:
             requests: {memory: 128Mi}
             limits: {memory: 128Mi}
+          env:
+            - {name: SSL_CERT_FILE, value: /mnt/ca/cluster-root-ca.crt}
           envFrom:
             - configMapRef: {name: stork-env}
             - secretRef: {name: stork-secrets}
@@ -52,3 +54,7 @@ spec:
           startupProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
           livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            - {name: ca-bundle-volume, mountPath: /mnt/ca, readOnly: true}
+      volumes:
+        - {name: ca-bundle-volume, configMap: {name: cluster-ca-bundle}}

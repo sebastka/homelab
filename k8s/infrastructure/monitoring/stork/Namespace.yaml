@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   name: stork
   labels:
+    karlsen.fr/inject-cluster-ca: 'true'
     pod-security.kubernetes.io/enforce: restricted
     pod-security.kubernetes.io/enforce-version: latest
     pod-security.kubernetes.io/audit: restricted
