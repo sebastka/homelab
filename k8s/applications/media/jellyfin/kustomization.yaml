@@ -9,6 +9,9 @@ generatorOptions:
 configMapGenerator:
   - {namespace: jellyfin, name: jellyfin-env, envs: [assets/jellyfin.env]}
 
+components:
+  - ../../../common/default-networkpolicy
+
 resources:
   - Namespace.yaml
   - ServiceAccount.yaml
@@ -17,3 +20,4 @@ resources:
   - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
+  - CiliumNetworkPolicy.yaml
