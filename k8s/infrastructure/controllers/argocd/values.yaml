@@ -183,7 +183,7 @@ notifications:
           body: |
             {
               "title": "Degraded: {{.app.metadata.name}}",
-              "message": "{{.app.metadata.name}} health is {{.app.status.health.status}}.{{range .app.status.resources}}{{if eq .health.status \"Degraded\"}}\n- {{.kind}}/{{.name}}: {{.health.message}}{{end}}{{end}}",
+              "message": "{{.app.metadata.name}} health is {{.app.status.health.status}}.{{range .app.status.resources}}{{if eq .health.status "Degraded"}}\n- {{.kind}}/{{.name}}: {{.health.message}}{{end}}{{end}}",
               "priority": "high",
               "tags": ["warning", "argocd"],
               "actions": [{"action": "view", "label": "Open ArgoCD", "url": "https://argocd.talmox.hera.home.karlsen.fr/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"}]
