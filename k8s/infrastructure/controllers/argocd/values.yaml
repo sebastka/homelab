@@ -159,35 +159,27 @@ notifications:
       headers:
         - name: Authorization
           value: $ntfy-token
-        - name: Content-Type
-          value: application/json
 
   templates:
     template.app-sync-failed: |
       webhook:
         ntfy:
           method: POST
+          path: "?t=Sync+failed:+{{.app.metadata.name}}&p=high&ta=rotating_light,argocd&a=view,+Open+ArgoCD,+https://argocd.talmox.hera.home.karlsen.fr/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"
           body: |
-            {
-              "title": "Sync failed: {{.app.metadata.name}}",
-              "message": "{{.app.metadata.name}} failed to sync.\nRepo: {{.app.spec.source.repoURL}}\nMessage: {{.app.status.operationState.message | js}}",
-              "priority": "high",
-              "tags": ["rotating_light", "argocd"],
-              "actions": [{"action": "view", "label": "Open ArgoCD", "url": "https://argocd.talmox.hera.home.karlsen.fr/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"}]
-            }
+            {{.app.metadata.name}} failed to sync.
+            Repo: {{.app.spec.source.repoURL}}
+            Message: {{.app.status.operationState.message}}
 
     template.app-health-degraded: |
       webhook:
         ntfy:
           method: POST
+          path: "?t=Degraded:+{{.app.metadata.name}}&p=high&ta=warning,argocd&a=view,+Open+ArgoCD,+https://argocd.talmox.hera.home.karlsen.fr/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"
           body: |
-            {
-              "title": "Degraded: {{.app.metadata.name}}",
-              "message": "{{.app.metadata.name}} health is {{.app.status.health.status}}.{{range .app.status.resources}}{{if eq .health.status "Degraded"}}\n- {{.kind}}/{{.name}}: {{.health.message}}{{end}}{{end}}",
-              "priority": "high",
-              "tags": ["warning", "argocd"],
-              "actions": [{"action": "view", "label": "Open ArgoCD", "url": "https://argocd.talmox.hera.home.karlsen.fr/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"}]
-            }
+            {{.app.metadata.name}} health is {{.app.status.health.status}}.
+            {{range .app.status.resources}}{{if eq .health.status "Degraded"}}- {{.kind}}/{{.name}}: {{.health.message}}
+            {{end}}{{end}}
 
   triggers:
     trigger.on-sync-failed: |
