@@ -22,4 +22,4 @@ spec:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: light-ldap, app.kubernetes.io/name: light-ldap}}], toPorts: [ports: [{port: '3890', protocol: TCP}]]}
     - {toFQDNs: [matchName: db01.hera.home.karlsen.fr], toPorts: [ports: [{port: '3306', protocol: TCP}]]}
     - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}
-    - {toFQDNs: [matchName: pool.ntp.org], toPorts: [ports: [{port: '123', protocol: UDP}]]}
+    - {toFQDNs: [matchName: time.cloudflare.com], toPorts: [ports: [{port: '123', protocol: UDP}]]}
