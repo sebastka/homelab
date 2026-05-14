@@ -11,6 +11,9 @@ configMapGenerator:
       - autoadd.conf=assets/autoadd.conf
       - label.conf=assets/label.conf
 
+components:
+  - ../../../common/default-networkpolicy
+
 resources:
   - Namespace.yaml
   - PersistentVolume.yaml
@@ -23,3 +26,5 @@ resources:
   - Services.yaml
   - HTTPRoute.yaml
   - SecurityPolicy.yaml
+  - CiliumNetworkPolicy.deluged.yaml
+  - CiliumNetworkPolicy.deluge-web.yaml

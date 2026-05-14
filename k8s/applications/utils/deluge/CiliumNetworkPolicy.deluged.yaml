@@ -1,0 +1,22 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-deluged-ingress
+  namespace: deluge
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: deluged}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '58846', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: deluge, app.kubernetes.io/name: deluge-web}], toPorts: [ports: [{port: '58846', protocol: TCP}]]}  # deluge-web
+    - {fromEntities: [world], toPorts: [ports: [{port: '6881', protocol: TCP}, {port: '6881', protocol: UDP}]]}  # torrent
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-deluged-egress
+  namespace: deluge
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: deluged}}
+  egress:
+    - {toEntities: [world]}
