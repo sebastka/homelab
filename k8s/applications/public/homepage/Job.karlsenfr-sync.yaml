@@ -1,0 +1,59 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: karlsenfr-sync
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: karlsenfr-sync
+    app.kubernetes.io/version: stable
+    app.kubernetes.io/component: data-sync
+    app.kubernetes.io/part-of: homepage
+    # app.kubernetes.io/managed-by: kustomize
+  annotations:
+    argocd.argoproj.io/sync-wave: '1'
+spec:
+  ttlSecondsAfterFinished: 604800
+  template:
+    metadata:
+      namespace: homepage
+      labels:
+        app.kubernetes.io/name: karlsenfr-sync
+        app.kubernetes.io/version: stable
+        app.kubernetes.io/component: data-sync
+        app.kubernetes.io/part-of: homepage
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: karlsenfr-sync
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: git-sync
+          image: registry.k8s.io/git-sync/git-sync:v4.6.0  # renovate: docker=registry.k8s.io/git-sync/git-sync
+          args:
+            - --repo=https://github.com/sebastka/sebastka.github.io.git
+            - --root=/mnt/karlsenfr
+            # - --link=karlsenfr.git
+            - --ref=master
+            - --depth=1
+            - --one-time
+            - --sync-timeout=1800s
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 64Mi}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: karlsenfr-volume, mountPath: /mnt/karlsenfr}
+      volumes:
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: karlsenfr-volume, persistentVolumeClaim: {claimName: homepage-karlsenfr-pvc}}

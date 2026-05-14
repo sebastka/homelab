@@ -1,0 +1,10 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-github-egress
+  namespace: homepage
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: karlsenfr-sync}}
+  egress:
+    - {toFQDNs: [{matchName: github.com}, {matchName: objects.githubusercontent.com}, {matchName: codeload.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
