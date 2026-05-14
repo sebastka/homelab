@@ -1,22 +1,24 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-# namespace: light-ldap
+namespace: light-ldap
 
 generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - {namespace: light-ldap, name: lldap-config, files: [lldap_config.toml=assets/lldap_config.toml]}
-  - {namespace: light-ldap, name: lldap-env, envs: [assets/lldap.env]}
-  - {namespace: light-ldap, name: bootstrap-env, envs: [assets/bootstrap.env]}
-  - namespace: light-ldap
-    name: bootstrap-schemas
+  - {name: lldap-config, files: [lldap_config.toml=assets/lldap_config.toml]}
+  - {name: lldap-env, envs: [assets/lldap.env]}
+  - {name: bootstrap-env, envs: [assets/bootstrap.env]}
+  - name: bootstrap-schemas
     files:
       - group-schemas.json=assets/group-schemas.json
       - groups.json=assets/groups.json
       - user-schemas.json=assets/user-schemas.json
       - users.jq=assets/users.jq
+
+components:
+  - ../../../common/default-networkpolicy
 
 resources:
   - Namespace.yaml
@@ -29,3 +31,4 @@ resources:
   - Service.yaml
   - HTTPRoute.yaml
   - TCPRoute.yaml
+  - CiliumNetworkPolicy.yaml
