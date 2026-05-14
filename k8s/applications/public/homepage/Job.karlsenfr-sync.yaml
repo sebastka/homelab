@@ -39,7 +39,7 @@ spec:
           args:
             - --repo=https://github.com/sebastka/sebastka.github.io.git
             - --root=/mnt/karlsenfr
-            # - --link=karlsenfr.git
+            - --link=sebastka.github.io.git
             - --ref=master
             - --depth=1
             - --one-time

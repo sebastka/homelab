@@ -49,17 +49,17 @@ spec:
               mkdir -p /mnt/www-data/www /mnt/www-data/other /mnt/www-data/openpgpkey /mnt/www-data/mta-sts
 
               # Homepage: www.karlsen.fr
-              cp /mnt/karlsenfr/* /mnt/karlsenfr/.[!.]* /mnt/www-data/www
+              cp /mnt/karlsenfr/sebastka.github.io.git/* /mnt/karlsenfr/sebastka.github.io.git/.[!.]* /mnt/www-data/www
               rm -rf /mnt/www-data/www/.git /mnt/www-data/www/bin /mnt/www-data/www/.nojekyll /mnt/www-data/www/README.md
 
               # Other tlds (org|app) and karlsen.fr:
-              cp -a /mnt/karlsenfr/.well-known /mnt/www-data/other/
+              cp -a /mnt/karlsenfr/sebastka.github.io.git/.well-known /mnt/www-data/other/
               printf -- '<!DOCTYPE html><html lang="en"><head><title>Karlsen.fr</title><meta http-equiv="refresh" content="0; URL=https://www.karlsen.fr"></head></html>' >/mnt/www-data/other/index.html
 
               # WKD: openpgpkey.karlsen.fr
               mkdir -p /mnt/www-data/openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
               cp /mnt/www-data/other/index.html /mnt/www-data/openpgpkey/index.html
-              cp /mnt/karlsenfr/.well-known/openpgpkey/hu/* /mnt/www-data/openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
+              cp /mnt/karlsenfr/sebastka.github.io.git/.well-known/openpgpkey/hu/* /mnt/www-data/openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
               touch /mnt/www-data/openpgpkey/.well-known/openpgpkey/karlsen.fr/policy
 
               # MTA-STS:
