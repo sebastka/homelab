@@ -109,7 +109,7 @@ gitea:
       DISABLE_GIT_HOOKS: 'true'
       MIN_PASSWORD_LENGTH: 48
       PASSWORD_COMPLEXITY: lower,upper,digit
-      PASSWORD_CHECK_PWN: 'true'
+      PASSWORD_CHECK_PWN: 'false'
     service:
       REGISTER_EMAIL_CONFIRM: 'true'
       REGISTER_MANUAL_CONFIRM: 'true'
