@@ -28,4 +28,4 @@ ui:
   url_formatting: full
 
 valkey:
-  url: valkey://127.0.1:6379/0
+  url: valkey://valkey:6379/0
