@@ -23,7 +23,7 @@ resources:
   - CiliumLoadBalancerIPPool.yaml
   - CiliumL2AnnouncementPolicy.yaml
   - CiliumClusterwideNetworkPolicy.mtls.yaml
-  - CiliumClusterwideNetworkPolicy.default-deny.yaml
+  # - CiliumClusterwideNetworkPolicy.default-deny.yaml
   # - GrafanaDashboard.cilium.yaml
   # - GrafanaDashboard.cilium-operator.yaml
 
