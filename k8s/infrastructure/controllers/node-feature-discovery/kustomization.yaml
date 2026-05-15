@@ -3,8 +3,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: nfd
 
+components:
+  - ../../../common/default-networkpolicy
+
 resources:
   - Namespace.yaml
+  - CiliumNetworkPolicy.master.yaml
+  - CiliumNetworkPolicy.worker.yaml
+  - CiliumNetworkPolicy.gc.yaml
 
 # https://github.com/kubernetes-sigs/node-feature-discovery
 helmCharts:

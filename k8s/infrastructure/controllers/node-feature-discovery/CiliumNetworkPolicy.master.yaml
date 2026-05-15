@@ -1,0 +1,21 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-nfd-master-ingress
+  namespace: nfd
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: node-feature-discovery, role: master}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: node-feature-discovery, role: worker}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Worker gRPC
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-nfd-master-egress
+  namespace: nfd
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: node-feature-discovery, role: master}}
+  egress:
+    - {toEntities: [kube-apiserver]}
