@@ -17,9 +17,6 @@ configMapGenerator:
       - user-schemas.json=assets/user-schemas.json
       - users.jq=assets/users.jq
 
-components:
-  - ../../../common/default-networkpolicy
-
 resources:
   - Namespace.yaml
   - SealedSecret.lldap-secrets.yaml

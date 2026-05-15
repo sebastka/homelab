@@ -9,9 +9,6 @@ generatorOptions:
 configMapGenerator:
   - {namespace: matrix-authentication-service, name: mas-config, files: [config.yaml=assets/config.yaml]}
 
-components:
-  - ../../../common/default-networkpolicy
-
 resources:
   - Namespace.yaml
   - SealedSecret.mas-secrets.yaml

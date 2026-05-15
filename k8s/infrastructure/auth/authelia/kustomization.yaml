@@ -10,7 +10,6 @@ configMapGenerator:
   - {namespace: authelia, name: authelia-configuration, files: [configuration.yaml=assets/configuration.yaml]}
 
 components:
-  - ../../../common/default-networkpolicy
   - ../../../common/valkey
 
 patches:

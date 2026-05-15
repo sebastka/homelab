@@ -9,9 +9,6 @@ generatorOptions:
 configMapGenerator:
   - {namespace: ntfy, name: ntfy-config, files: [server.yaml=assets/server.yaml]}
 
-components:
-  - ../../../common/default-networkpolicy
-
 resources:
   - Namespace.yaml
   - ServiceAccount.yaml

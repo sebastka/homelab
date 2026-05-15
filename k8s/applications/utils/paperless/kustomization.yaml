@@ -12,7 +12,6 @@ configMapGenerator:
   - {name: paperless-scripts, files: [post-consumption.sh=assets/scripts/post-consumption.sh, worker-health.sh=assets/scripts/worker-health.sh]}
 
 components:
-  - ../../../common/default-networkpolicy
   - ../../../common/valkey
 
 patches:

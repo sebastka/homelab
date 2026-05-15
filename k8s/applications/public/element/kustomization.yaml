@@ -6,9 +6,6 @@ namespace: element
 configMapGenerator:
   - {name: element-config, files: [config.json=assets/config.json]}
 
-components:
-  - ../../../common/default-networkpolicy
-
 resources:
   - Namespace.yaml
   - ServiceAccounts.yaml

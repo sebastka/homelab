@@ -15,9 +15,6 @@ configMapGenerator:
       - homeserver.yaml=assets/homeserver.yaml
       - karlsen.fr.log.config=assets/karlsen.fr.log.config
 
-components:
-  - ../../../common/default-networkpolicy
-
 resources:
   - Namespace.yaml
   - SealedSecret.synapse-secrets.yaml

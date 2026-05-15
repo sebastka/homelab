@@ -10,9 +10,6 @@ configMapGenerator:
   - {name: metube-env, envs: [assets/metube.env]}
   - {name: ytdl-options, files: [ytdl-options.json=assets/ytdl-options.json]}
 
-components:
-  - ../../../common/default-networkpolicy
-
 resources:
   - Namespace.yaml
   - ServiceAccount.yaml

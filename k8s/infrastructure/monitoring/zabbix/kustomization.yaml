@@ -11,9 +11,6 @@ generatorOptions:
 configMapGenerator:
   - {namespace: zabbix, name: zabbix-env, envs: [assets/zabbix.env]}
 
-components:
-  - ../../../common/default-networkpolicy
-
 resources:
   - Namespace.yaml
   - SealedSecret.zabbix-secrets.yaml

@@ -9,9 +9,6 @@ generatorOptions:
 configMapGenerator:
   - {name: nginx-config, files: [nginx.custom.conf=assets/nginx.custom.conf, sites.conf=assets/sites.conf]}
 
-components:
-  - ../../../common/default-networkpolicy
-
 resources:
   - Namespace.yaml
   - ServiceAccount.yaml

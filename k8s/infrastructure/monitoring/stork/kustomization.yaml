@@ -11,9 +11,6 @@ generatorOptions:
 configMapGenerator:
   - {namespace: stork, name: stork-env, envs: [assets/stork.env]}
 
-components:
-  - ../../../common/default-networkpolicy
-
 resources:
   - Namespace.yaml
   - SealedSecret.stork-secrets.yaml
