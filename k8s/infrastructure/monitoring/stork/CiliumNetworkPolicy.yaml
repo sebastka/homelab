@@ -22,3 +22,4 @@ spec:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: light-ldap, app.kubernetes.io/name: light-ldap}}], toPorts: [ports: [{port: '6360', protocol: TCP}]]}
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toFQDNs: [matchName: www.isc.org], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Version metadata
+    - {toFQDNs: [matchName: helios.home.karlsen.fr], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # To Stork Agent
