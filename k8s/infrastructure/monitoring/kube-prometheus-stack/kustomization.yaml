@@ -6,6 +6,8 @@ namespace: monitoring
 resources:
   - Namespace.yaml
   - HTTPRoute.yaml
+  - CiliumNetworkPolicy.alertmanager.yaml
+  - CiliumNetworkPolicy.node-exporter.yaml
 
 helmCharts:
   - name: kube-prometheus-stack

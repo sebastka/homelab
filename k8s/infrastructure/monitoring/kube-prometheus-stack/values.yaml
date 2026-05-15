@@ -6,6 +6,24 @@
 namespaceOverride: monitoring
 
 prometheus:
+  networkPolicy:
+    enabled: true
+    flavor: cilium
+    cilium:
+      egress:
+        - toEntities: [kube-apiserver]             # service discovery + secret reads
+        - toEntities: [host, remote-node]          # kubelet metrics
+          toPorts:
+            - ports: [{port: "10250", protocol: TCP}]
+        - toEntities: [cluster]                    # pod scraping across all namespaces
+      ingress:
+        - fromEntities: [host]                     # health probes
+          toPorts:
+            - ports: [{port: "9090", protocol: TCP}]
+        - fromEndpoints:
+          - matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}
+          toPorts:
+            - ports: [{port: "9090", protocol: TCP}]
   prometheusSpec:
     podMonitorNamespaceSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
@@ -25,6 +43,9 @@ prometheus:
           resources: {requests: {storage: 20Gi}}
 
 prometheusOperator:
+  networkPolicy:
+    enabled: true
+    flavor: cilium
   resources:
     requests: {memory: 64Mi}
     limits: {memory: 64Mi}
@@ -96,6 +117,11 @@ kubeScheduler:
 
 nodeExporter:
   enabled: true
+
+kube-state-metrics:
+  networkPolicy:
+    enabled: true
+    flavor: cilium
 
 grafana:
   enabled: false
