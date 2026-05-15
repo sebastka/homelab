@@ -9,6 +9,7 @@ spec:
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Host probes
     - {fromCIDR: [192.168.0.0/16], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From Zabbix agents for active checks
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: frontend}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From frontend
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
