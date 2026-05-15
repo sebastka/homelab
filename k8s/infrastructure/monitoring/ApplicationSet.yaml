@@ -13,7 +13,6 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/infrastructure/monitoring/*
-          - {path: k8s/infrastructure/monitoring/grafana, exclude: true}
   template:
     metadata:
       name: '{{ path.basename }}'

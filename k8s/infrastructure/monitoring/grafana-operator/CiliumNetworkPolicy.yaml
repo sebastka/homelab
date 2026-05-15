@@ -1,0 +1,22 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-grafana-operator-ingress
+  namespace: grafana
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: grafana-operator}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8081', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9090', protocol: TCP}]]}  # Prometheus
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-grafana-operator-egress
+  namespace: grafana
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: grafana-operator}}
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toEndpoints: [matchLabels: {app: grafana, k8s:io.kubernetes.pod.namespace: grafana}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Grafana API

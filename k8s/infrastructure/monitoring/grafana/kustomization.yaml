@@ -10,4 +10,4 @@ resources:
   - GrafanaDashboard.yaml
   - GrafanaDatasource.prometheus.yaml
   - GrafanaDatasource.alertmanager.yaml
-
+  - CiliumNetworkPolicy.yaml

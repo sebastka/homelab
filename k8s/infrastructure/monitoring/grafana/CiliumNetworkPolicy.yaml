@@ -1,0 +1,24 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-grafana-ingress
+  namespace: grafana
+spec:
+  endpointSelector: {matchLabels: {app: grafana}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Envoy Gateway
+    - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: grafana-operator, k8s:io.kubernetes.pod.namespace: grafana}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # grafana-operator
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-grafana-egress
+  namespace: grafana
+spec:
+  endpointSelector: {matchLabels: {app: grafana}}
+  egress:
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: prometheus, k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9090', protocol: TCP}]]}  # Prometheus datasource
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: alertmanager, k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9093', protocol: TCP}]]}  # Alertmanager datasource
+    - {toFQDNs: [{matchName: karlsen-xzy0yv.zitadel.cloud}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # OIDC (Zitadel)

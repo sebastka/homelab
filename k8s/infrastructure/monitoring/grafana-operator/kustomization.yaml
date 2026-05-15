@@ -5,6 +5,7 @@ namespace: grafana
 
 resources:
   - Namespace.yaml
+  - CiliumNetworkPolicy.yaml
 
 helmCharts:
   - name: grafana-operator
