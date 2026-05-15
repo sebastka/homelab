@@ -10,6 +10,7 @@ spec:
     - {namespace: argocd, server: 'https://kubernetes.default.svc'}
     - {namespace: kube-system, server: 'https://kubernetes.default.svc'}
     - {namespace: cilium-secrets, server: 'https://kubernetes.default.svc'}
+    - {namespace: cilium-spire, server: 'https://kubernetes.default.svc'}
     - {namespace: envoy-gateway-system, server: 'https://kubernetes.default.svc'}
     - {namespace: gateway, server: 'https://kubernetes.default.svc'}
     - {namespace: tailscale, server: 'https://kubernetes.default.svc'}
