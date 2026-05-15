@@ -14,17 +14,19 @@ prometheus:
         - toEntities: [kube-apiserver]             # service discovery + secret reads
         - toEntities: [host, remote-node]          # kubelet metrics
           toPorts:
-            - ports: [{port: "10250", protocol: TCP}]
+            - ports: [{port: '10250', protocol: TCP}]
         - toEntities: [cluster]                    # pod scraping across all namespaces
       ingress:
         - fromEntities: [host]                     # health probes
           toPorts:
-            - ports: [{port: "9090", protocol: TCP}]
+            - ports: [{port: '9090', protocol: TCP}]
         - fromEndpoints:
           - matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}
           toPorts:
-            - ports: [{port: "9090", protocol: TCP}]
+            - ports: [{port: '9090', protocol: TCP}]
   prometheusSpec:
+    externalLabels:
+      cluster: talmox
     podMonitorNamespaceSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
     podMonitorSelector: {}
