@@ -33,6 +33,8 @@ prometheus:
     serviceMonitorNamespaceSelector: {}
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelector: {}
+    retention: 30d
+    retentionSize: 9GB
     resources:
       requests: {memory: 2048Mi}
       limits: {memory: 2048Mi}
@@ -42,7 +44,7 @@ prometheus:
           storageClassName: longhorn-encrypted
           volumeName: prometheus-data-pv
           accessModes: [ReadWriteOncePod]
-          resources: {requests: {storage: 20Gi}}
+          resources: {requests: {storage: 10Gi}}
 
 prometheusOperator:
   networkPolicy:
