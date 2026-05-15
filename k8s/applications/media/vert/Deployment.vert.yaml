@@ -37,7 +37,7 @@ spec:
       containers:
         - name: vert
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/vert/Dockerfile
-          image: ghcr.io/sebastka/vert:2026.5.13
+          image: ghcr.io/sebastka/vert:2026.5.15
           command: [nginx]
           args: ['-c', '/etc/nginx/nginx.custom.conf', '-g', 'daemon off;']
           securityContext:
