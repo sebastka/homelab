@@ -1,0 +1,22 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-velero-nodeagent-ingress
+  namespace: velero
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: velero, name: node-agent}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8085', protocol: TCP}]]}  # Readiness/liveness probe
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [ports: [{port: '8085', protocol: TCP}]]}  # Prometheus
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-velero-nodeagent-egress
+  namespace: velero
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: velero, name: node-agent}}
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toFQDNs: [{matchName: hel1.your-objectstorage.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # S3 data movement

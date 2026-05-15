@@ -82,6 +82,10 @@ nodeAgent:
   #   - {name: tmp-volume, mountPath: /tmp}
   #   - {name: nonexistant-volume, mountPath: /nonexistant}
 
+kubectl:
+  labels:
+    component: kubectl-job
+
 schedules:
   nightly-hetzner:
     disabled: false
