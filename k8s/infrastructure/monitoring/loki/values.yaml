@@ -53,4 +53,6 @@ monitoring:
   dashboards: {enabled: true}
   serviceMonitor:
     enabled: true
-    clusterLabel: null  # Prevent a duplicate 'cluster' label — Prometheus already stamps one via externalLabels.
+    relabelings:
+      - targetLabel: cluster
+        replacement: talmox
