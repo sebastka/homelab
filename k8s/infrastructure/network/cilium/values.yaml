@@ -181,14 +181,15 @@ k8sClientRateLimit:
 
 # mTLS
 authentication:
-  enabled: false
+  enabled: true
   mutual:
     spire:
-      enabled: false
+      enabled: true
       install:
+        enabled: true
         server:
           dataStorage:
-            storageClass: cilium-spire-sc
+            enabled: false
           resources:
             requests: {memory: 128Mi}
             limits: {memory: 128Mi}
