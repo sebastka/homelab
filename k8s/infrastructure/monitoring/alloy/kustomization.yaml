@@ -3,6 +3,21 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: alloy
 
+# Helm chart omits namespaces: patch resources to add them back in
+patches:
+  - target: {kind: ConfigMap, name: alloy}
+    patch: |-
+      - {op: add, path: /metadata/namespace, value: alloy}
+  - target: {kind: Service, name: alloy}
+    patch: |-
+      - {op: add, path: /metadata/namespace, value: alloy}
+  - target: {kind: Deployment, name: alloy}
+    patch: |-
+      - {op: add, path: /metadata/namespace, value: alloy}
+  - target: {kind: ServiceMonitor, name: alloy}
+    patch: |-
+      - {op: add, path: /metadata/namespace, value: alloy}
+
 resources:
   - Namespace.yaml
   - CiliumNetworkPolicy.yaml
