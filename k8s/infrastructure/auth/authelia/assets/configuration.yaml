@@ -136,9 +136,8 @@ identity_providers:
       allowed_origins_from_client_redirect_uris: true
       endpoints: [userinfo, authorization, token, revocation, introspection]
     claims_policies:
-      embed_id_token_claims: {id_token: [email, preferred_username, groups]}
+      embed_id_token_claims: {id_token: [email, name, preferred_username, groups]}
       sshpubkey: {custom_claims: {sshpubkey: {attribute: sshpubkey}}, id_token: [email, preferred_username, groups]}
-      grafana: {custom_claims: {grafana: {attribute: grafana}}}
       legacy: {id_token: [email, email_verified, alt_emails, name, preferred_username, groups]}  # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
       username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
     scopes:
@@ -217,6 +216,24 @@ identity_providers:
         pkce_challenge_method: S256
         redirect_uris: [https://git.karlsen.fr/user/oauth2/authelia/callback]
         scopes: [openid, email, profile, groups, sshpubkey]
+        response_types: [code]
+        grant_types: [authorization_code]
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        id_token_signed_response_alg: ES256
+        token_endpoint_auth_method: client_secret_basic
+
+      - client_id: grafana
+        client_name: Grafana
+        client_secret: {{ secret "/secrets/client-secrets/grafana" }}
+        public: false
+        authorization_policy: two_factor
+        pre_configured_consent_duration: 3 months
+        claims_policy: embed_id_token_claims
+        require_pkce: true
+        pkce_challenge_method: S256
+        redirect_uris: [https://grafana.talmox.hera.home.karlsen.fr/login/generic_oauth]
+        scopes: [openid, email, profile, groups, picture]
         response_types: [code]
         grant_types: [authorization_code]
         access_token_signed_response_alg: none

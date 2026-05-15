@@ -6,6 +6,7 @@ namespace: grafana
 resources:
   - HTTPRoute.yaml
   - SealedSecret.admin-credentials.yaml
+  - SealedSecret.oidc.yaml
   - Grafana.yaml
   - GrafanaDashboard.yaml
   - GrafanaDatasource.prometheus.yaml

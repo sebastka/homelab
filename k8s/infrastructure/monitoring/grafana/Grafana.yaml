@@ -17,19 +17,23 @@ spec:
     server:
       root_url: https://grafana.talmox.hera.home.karlsen.fr
     auth.generic_oauth:
-      enabled: "true"
-      name: Zitadel
-      client_id: '358847975163817689'
-      scopes: openid email profile picture
-      use_pkce: "true"
-      auth_url: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/authorize
-      token_url: https://karlsen-xzy0yv.zitadel.cloud/oauth/v2/token
-      api_url: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/userinfo
-      signout_redirect_url: https://karlsen-xzy0yv.zitadel.cloud/oidc/v1/end_session
+      enabled: 'true'
+      name: Authelia
+      icon: signin
+      client_id: grafana
+      scopes: openid profile email groups picture
+      empty_scopes: 'false'
+      auth_url: https://auth.karlsen.fr/api/oidc/authorization
+      token_url: https://auth.karlsen.fr/api/oidc/token
+      api_url: https://auth.karlsen.fr/api/oidc/userinfo
+      signout_redirect_url: https://auth.karlsen.fr/logout
       login_attribute_path: email
+      groups_attribute_path: groups
       name_attribute_path: name
+      use_pkce: 'true'
       allow_assign_grafana_admin: "true"
       role_attribute_path: contains(groups[*], 'k8s:admins') && 'Admin' || 'Viewer'
+      auth_style: InHeader
       # auto_login: "true"
   version: '12.3'
   deployment:
@@ -41,3 +45,4 @@ spec:
               env:
                 - {name: GF_SECURITY_ADMIN_USER, valueFrom: {secretKeyRef: {name: admin-credentials, key: username}}}
                 - {name: GF_SECURITY_ADMIN_PASSWORD, valueFrom: {secretKeyRef: {name: admin-credentials, key: password}}}
+                - {name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET, valueFrom: {secretKeyRef: {name: oidc, key: client-secret}}}
