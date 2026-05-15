@@ -66,7 +66,7 @@ spec:
             requests: {memory: 512Mi}
             limits: {memory: 512Mi}
           envFrom:
-            # - configMapRef: {name: opentogethertube-env}
+            - configMapRef: {name: opentogethertube-env}
             - secretRef: {name: opentogethertube-secrets}
           ports:
             - {name: http, containerPort: 3000}
