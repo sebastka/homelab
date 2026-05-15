@@ -20,3 +20,4 @@ spec:
   egress:
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: n8n, app.kubernetes.io/name: valkey}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toFQDNs: [matchPattern: '*.n8n.io'], toPorts: [ports: [{port: '443', protocol: TCP}]]}
