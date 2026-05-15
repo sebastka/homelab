@@ -13,5 +13,5 @@ helmCharts:
     version: 85.0.3  # renovate: datasource=github-releases depName=prometheus-community/helm-charts
     releaseName: kube-prometheus-stack
     namespace: monitoring
-    includeCRDs: true
+    includeCRDs: false
     valuesFile: values.yaml

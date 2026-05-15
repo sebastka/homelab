@@ -5,11 +5,6 @@
 
 namespaceOverride: monitoring
 
-crds:
-  resources:
-    requests: {memory: 512Mi}
-    limits: {memory: 512Mi}
-
 prometheus:
   prometheusSpec:
     podMonitorNamespaceSelector: {}
