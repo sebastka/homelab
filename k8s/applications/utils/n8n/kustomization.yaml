@@ -10,6 +10,7 @@ configMapGenerator:
   - {namespace: n8n, name: n8n-env, envs: [assets/n8n.env]}
 
 components:
+  - ../../../common/default-networkpolicy
   - ../../../common/valkey
 
 patches:
@@ -28,6 +29,9 @@ resources:
   - SealedSecret.n8n-secrets.yaml
   - HTTPRoute.yaml
   - SecurityPolicy.yaml
+  - CiliumNetworkPolicy.main.yaml
+  - CiliumNetworkPolicy.webhook-processor.yaml
+  - CiliumNetworkPolicy.worker.yaml
 
 helmCharts:
   - name: n8n
