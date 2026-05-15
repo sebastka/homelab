@@ -233,7 +233,7 @@ identity_providers:
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris: [https://grafana.talmox.hera.home.karlsen.fr/login/generic_oauth]
-        scopes: [openid, email, profile, groups, picture]
+        scopes: [openid, email, profile, groups]
         response_types: [code]
         grant_types: [authorization_code]
         access_token_signed_response_alg: none

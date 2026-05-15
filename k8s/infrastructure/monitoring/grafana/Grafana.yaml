@@ -21,7 +21,7 @@ spec:
       name: Authelia
       icon: signin
       client_id: grafana
-      scopes: openid profile email groups picture
+      scopes: openid profile email groups
       empty_scopes: 'false'
       auth_url: https://auth.karlsen.fr/api/oidc/authorization
       token_url: https://auth.karlsen.fr/api/oidc/token
