@@ -4,7 +4,7 @@ kind: Namespace
 metadata:
   name: authelia
   labels:
-    karlsen.fr/inject-cluster-ca: "true"
+    karlsen.fr/inject-cluster-ca: 'true'
     pod-security.kubernetes.io/enforce: restricted
     pod-security.kubernetes.io/enforce-version: latest
     pod-security.kubernetes.io/audit: restricted
