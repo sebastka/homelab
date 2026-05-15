@@ -2,12 +2,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-resources:
-  - CiliumLoadBalancerIPPool.yaml
-  - CiliumL2AnnouncementPolicy.yaml
-  # - GrafanaDashboard.cilium.yaml
-  # - GrafanaDashboard.cilium-operator.yaml
-
 patches:
   - target:
       kind: Namespace
@@ -24,6 +18,13 @@ patches:
           pod-security.kubernetes.io/audit-version: latest
           pod-security.kubernetes.io/warn: privileged
           pod-security.kubernetes.io/warn-version: latest
+
+resources:
+  - CiliumLoadBalancerIPPool.yaml
+  - CiliumL2AnnouncementPolicy.yaml
+  - CiliumClusterwideNetworkPolicy.mtls.yaml
+  # - GrafanaDashboard.cilium.yaml
+  # - GrafanaDashboard.cilium-operator.yaml
 
 helmCharts:
   - name: cilium
