@@ -1,32 +1,38 @@
-# https://artifacthub.io/packages/helm/bitnami/thanos
-# https://github.com/bitnami/charts/blob/main/bitnami/thanos/values.yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/thanos-community/helm-charts/refs/heads/master/charts/thanos/values.schema.json
+# https://github.com/thanos-community/helm-charts/blob/master/charts/thanos/values.yaml
 ---
 
-query:
-  enabled: true
-  logLevel: info
-  replicaCount: 1
-  replicaLabel: [prometheus_replica]
-  stores:
-    - kube-prometheus-stack-thanos-discovery.monitoring.svc.cluster.local:10901
+global:
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
+    seccompProfile: {type: RuntimeDefault}
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    seccompProfile: {type: RuntimeDefault}
+    capabilities: {drop: [ALL]}
   resources:
     requests: {memory: 128Mi}
     limits: {memory: 256Mi}
-  podSecurityContext:
-    enabled: true
-    runAsNonRoot: true
-    runAsUser: 1001
-    runAsGroup: 1001
-    seccompProfile: {type: RuntimeDefault}
-  containerSecurityContext:
-    enabled: true
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
-    capabilities: {drop: [ALL]}
 
-queryFrontend: {enabled: false}
-bucketweb:    {enabled: false}
+bucket: {enabled: false, {bucketweb: {enabled: false}}}
 compactor:    {enabled: false}
+queryFrontend: {enabled: false}
 storegateway: {enabled: false}
-ruler:        {enabled: false}
 receive:      {enabled: false}
+ruler:        {enabled: false}
+rustfs:       {enabled: false}
+kube-prometheus-stack: {enabled: false}
+
+query:
+  replicaCount: 1
+  replicaLabels: [prometheus_replica]
+  endpoints:
+    autogen: {enabled: false}
+    static:
+      - kube-prometheus-stack-thanos-discovery.monitoring.svc.cluster.local:10901
+  serviceMonitor:
+    enabled: true

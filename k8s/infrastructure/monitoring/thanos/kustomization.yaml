@@ -9,8 +9,8 @@ resources:
 
 helmCharts:
   - name: thanos
-    repo: oci://registry-1.docker.io/bitnamicharts
-    version: 17.3.1  # renovate: datasource=helm registryUrl=https://charts.bitnami.com/bitnami depName=thanos
+    repo: oci://ghcr.io/thanos-community/helm-charts
+    version: 0.11.0  # renovate: datasource=docker registryUrl=ghcr.io depName=thanos-community/helm-charts/thanos
     releaseName: thanos
     namespace: thanos
     valuesFile: values.yaml
