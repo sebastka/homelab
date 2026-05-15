@@ -98,6 +98,15 @@ gatewayAPI:
   gatewayClass:
     create: "true"
 
+encryption:
+  enabled: true
+  type: wireguard
+  nodeEncryption: true
+  strictMode:
+    egress:
+      enabled: true
+      cidr: 10.244.0.0/16
+
 envoy:
   enabled: true
   prometheus:
