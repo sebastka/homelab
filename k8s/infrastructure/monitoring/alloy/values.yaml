@@ -2,6 +2,15 @@
 # https://github.com/grafana/alloy/blob/main/operations/helm/charts/alloy/values.yaml
 ---
 
+global:
+  podSecurityContext:
+    runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+    fsGroupChangePolicy: OnRootMismatch
+    seccompProfile: {type: RuntimeDefault}
+
 alloy:
   enableReporting: false
   securityContext:
