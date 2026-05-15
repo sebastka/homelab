@@ -47,7 +47,7 @@ persistence: {enabled: false}
 resources:
   main:
     requests: {memory: 256Mi}
-    limits: {memory: 1024Mi}
+    limits: {memory: 768Mi}
   worker:
     requests: {memory: 256Mi}
     limits: {memory: 1024Mi}
