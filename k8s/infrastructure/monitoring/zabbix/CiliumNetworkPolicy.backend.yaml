@@ -1,0 +1,22 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-zabbix-backend-ingress
+  namespace: zabbix
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: backend}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Host probes
+    - {fromCIDR: [192.168.0.0/16], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From Zabbix agents for active checks
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-zabbix-backend-egress
+  namespace: zabbix
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: backend}}
+  egress:
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toCIDR: [192.168.0.0/16]}  # To LAN hosts: passive checks (10050), ICMP, MariaDB, etc.
