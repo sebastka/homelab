@@ -12,4 +12,5 @@ resources:
   - GrafanaDatasource.prometheus.yaml
   - GrafanaDatasource.alertmanager.yaml
   - GrafanaDatasource.loki.yaml
+  - GrafanaDashboard.logs.yaml
   - CiliumNetworkPolicy.yaml
