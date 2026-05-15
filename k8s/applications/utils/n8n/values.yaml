@@ -33,8 +33,8 @@ taskRunners:
     existingSecret: n8n-secrets
     existingSecretKey: N8N_RUNNERS_AUTH_TOKEN
   resources:
-    requests: {memory: 512Mi}
-    limits: {memory: 512Mi}
+    requests: {memory: 128Mi}
+    limits: {memory: 1024Mi}
 
 strategy: {type: Recreate}
 
@@ -46,14 +46,14 @@ persistence: {enabled: false}
 
 resources:
   main:
-    requests: {memory: 512Mi}
-    limits: {memory: 512Mi}
+    requests: {memory: 256Mi}
+    limits: {memory: 1024Mi}
   worker:
-    requests: {memory: 512Mi}
-    limits: {memory: 512Mi}
+    requests: {memory: 256Mi}
+    limits: {memory: 1024Mi}
   webhookProcessor:
-    requests: {memory: 512Mi}
-    limits: {memory: 512Mi}
+    requests: {memory: 256Mi}
+    limits: {memory: 1024Mi}
 
 networkPolicy: {enabled: false}
 

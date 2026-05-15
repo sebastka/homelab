@@ -42,7 +42,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 256Mi}
-            limits: {memory: 256Mi}
+            limits: {memory: 1024Mi}
           ports:
             - {name: http, protocol: TCP, containerPort: 9998}
           startupProbe: {httpGet: {port: 9998, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}

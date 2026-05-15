@@ -64,8 +64,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 768Mi}
-            limits: {memory: 768Mi}
+            requests: {memory: 256Mi}
+            limits: {memory: 2048Mi}
           env:
             - {name: TZ, value: Europe/Oslo}
           envFrom:
@@ -90,8 +90,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 48Mi}
-            limits: {memory: 48Mi}
+            requests: {memory: 64Mi}
+            limits: {memory: 128Mi}
           env:
             - {name: TZ, value: Europe/Oslo}
           ports:

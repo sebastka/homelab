@@ -46,7 +46,7 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 128Mi}
+            requests: {memory: 32Mi}
             limits: {memory: 128Mi}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}

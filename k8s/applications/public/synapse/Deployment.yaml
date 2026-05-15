@@ -73,7 +73,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 512Mi}
-            limits: {memory: 512Mi}
+            limits: {memory: 1024Mi}
           ports:
             - {name: http, containerPort: 8080}
             - {name: metrics, containerPort: 8081}

@@ -55,7 +55,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 24Mi}
-            limits: {memory: 24Mi}
+            limits: {memory: 128Mi}
           envFrom:
             - secretRef: {name: slink-secrets}
           volumeMounts:

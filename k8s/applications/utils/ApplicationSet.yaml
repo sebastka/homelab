@@ -13,9 +13,6 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/applications/utils/*
-          - {path: k8s/applications/utils/n8n, exclude: true}
-          - {path: k8s/applications/utils/searxng, exclude: true}
-          - {path: k8s/applications/utils/thelounge, exclude: true}
   template:
     metadata:
       name: '{{ path.basename }}'

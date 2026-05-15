@@ -67,8 +67,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 512Mi}
-            limits: {memory: 512Mi}
+            requests: {memory: 128Mi}
+            limits: {memory: 1024Mi}
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
@@ -90,8 +90,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 512Mi}
-            limits: {memory: 512Mi}
+            requests: {memory: 256Mi}
+            limits: {memory: 1024Mi}
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
@@ -111,8 +111,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 3Gi}
-            limits: {memory: 3Gi}
+            requests: {memory: 256Mi}
+            limits: {memory: 4096Mi}
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
@@ -139,8 +139,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 768Mi}
-            limits: {memory: 768Mi}
+            requests: {memory: 256Mi}
+            limits: {memory: 1024Mi}
           env:
             - {name: DJANGO_SETTINGS_MODULE, value: webserver}
             - {name: PYTHONPATH, value: /mnt/settings}
