@@ -73,6 +73,11 @@ alloy:
         }
       }
 
+configReloader:
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities: {drop: [ALL]}
 
 # Single Deployment is sufficient for loki.source.kubernetes (API-based log reading).
 # Switch to daemonset if using loki.source.file (host path-based log reading).
