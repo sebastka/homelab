@@ -1,0 +1,22 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-alloy-ingress
+  namespace: alloy
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: alloy}}
+  ingress:
+    - {fromEntities: [host], toPorts: [{ports: [{port: '12345', protocol: TCP}]}]}  # Health probes
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [{ports: [{port: '12345', protocol: TCP}]}]}  # Prometheus scrape
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-alloy-egress
+  namespace: alloy
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: alloy}}
+  egress:
+    - {toEntities: [kube-apiserver]}  # Pod discovery + log streaming via Kubernetes API
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: loki, app.kubernetes.io/name: loki}}], toPorts: [{ports: [{port: '3100', protocol: TCP}]}]}  # Log push

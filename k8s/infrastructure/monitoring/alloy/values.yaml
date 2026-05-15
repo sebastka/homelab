@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=
+# https://github.com/grafana/alloy/blob/main/operations/helm/charts/alloy/values.yaml
+---
+
+alloy:
+  enableReporting: false
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities: {drop: [ALL]}
+    runAsNonRoot: true
+    runAsUser: 65534
+    seccompProfile: {type: RuntimeDefault}
+  resources:
+    requests: {memory: 128Mi}
+    limits: {memory: 256Mi}
+  configMap:
+    content: |
+      // Discover all Kubernetes pods
+      discovery.kubernetes "pods" {
+        role = "pod"
+      }
+
+      // Relabel pods to add useful log labels
+      discovery.relabel "pod_logs" {
+        targets = discovery.kubernetes.pods.targets
+
+        // Drop pods that are not running
+        rule {
+          source_labels = ["__meta_kubernetes_pod_phase"]
+          regex         = "Pending|Succeeded|Failed|Completed"
+          action        = "drop"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_namespace"]
+          target_label  = "namespace"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_pod_name"]
+          target_label  = "pod"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_container_name"]
+          target_label  = "container"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_pod_node_name"]
+          target_label  = "node"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
+          target_label  = "app"
+        }
+      }
+
+      // Collect pod logs via the Kubernetes API — no host path mount required.
+      // To switch to file-based collection (reads /var/log/pods/ directly),
+      // replace with loki.source.file and set controller.type: daemonset,
+      // alloy.mounts.varlog: true, and alloy.mounts.dockercontainers: true.
+      loki.source.kubernetes "pods" {
+        targets    = discovery.relabel.pod_logs.output
+        forward_to = [loki.write.default.receiver]
+      }
+
+      // Push logs to Loki
+      loki.write "default" {
+        endpoint {
+          url = "http://loki.loki.svc.cluster.local:3100/loki/api/v1/push"
+        }
+      }
+
+
+# Single Deployment is sufficient for loki.source.kubernetes (API-based log reading).
+# Switch to daemonset if using loki.source.file (host path-based log reading).
+controller:
+  type: deployment
+  replicas: 1
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 65534
+    seccompProfile: {type: RuntimeDefault}
+
+serviceMonitor:
+  enabled: true
