@@ -21,3 +21,4 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: loki}}
   egress:
     - {toEntities: [kube-apiserver]}  # Ring membership / leader election
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: loki}}], toPorts: [{ports: [{port: '11211', protocol: TCP}]}]}  # Memcached
