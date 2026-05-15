@@ -68,7 +68,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 128Mi}
-            limits: {memory: 1024Mi}
+            limits: {memory: 512Mi}
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
@@ -91,7 +91,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 256Mi}
-            limits: {memory: 1024Mi}
+            limits: {memory: 512Mi}
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
@@ -140,7 +140,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 256Mi}
-            limits: {memory: 1024Mi}
+            limits: {memory: 512Mi}
           env:
             - {name: DJANGO_SETTINGS_MODULE, value: webserver}
             - {name: PYTHONPATH, value: /mnt/settings}

@@ -45,8 +45,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 256Mi}
-            limits: {memory: 1024Mi}
+            requests: {memory: 64Mi}
+            limits: {memory: 128Mi}
           ports:
             - {name: http, protocol: TCP, containerPort: 3000}
           startupProbe: {httpGet: {port: 3000, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}

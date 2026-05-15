@@ -65,7 +65,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 256Mi}
-            limits: {memory: 2048Mi}
+            limits: {memory: 768Mi}
           env:
             - {name: TZ, value: Europe/Oslo}
           envFrom:

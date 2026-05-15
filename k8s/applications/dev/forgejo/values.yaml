@@ -23,7 +23,7 @@ tcpRoute:
 
 resources:
   requests: {memory: 128Mi}
-  limits: {memory: 1024Mi}
+  limits: {memory: 512Mi}
 
 podSecurityContext:
   runAsNonRoot: true

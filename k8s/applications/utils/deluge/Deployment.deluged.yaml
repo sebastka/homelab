@@ -76,8 +76,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 512Mi}
-            limits: {memory: 1024Mi}
+            requests: {memory: 128Mi}
+            limits: {memory: 256Mi}
           ports:
             - {name: daemon, containerPort: 58846, protocol: TCP}
             - {name: torrent-tcp, containerPort: 6881, protocol: TCP}
