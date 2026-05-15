@@ -1,0 +1,21 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-reloader-ingress
+  namespace: reloader
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: reloader}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '9090', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9090', protocol: TCP}]]}  # Prometheus
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-reloader-egress
+  namespace: reloader
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: reloader}}
+  egress:
+    - {toEntities: [kube-apiserver]}
