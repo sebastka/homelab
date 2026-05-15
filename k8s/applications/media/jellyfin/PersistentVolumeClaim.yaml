@@ -23,7 +23,7 @@ metadata:
     app.kubernetes.io/name: jellyfin
 spec:
   accessModes: [ReadWriteOncePod]
-  resources: {requests: {storage: 10Gi}}
+  resources: {requests: {storage: 5Gi}}
   storageClassName: longhorn-static
   # volumeName:
 ---
