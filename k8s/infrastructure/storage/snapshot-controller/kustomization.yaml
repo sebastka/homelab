@@ -4,5 +4,5 @@ kind: Kustomization
 # namespace:
 
 resources:
-  - https://github.com/kubernetes-csi/external-snapshotter/client/config/crd?ref=release-8.5
-  - https://github.com/kubernetes-csi/external-snapshotter/deploy/kubernetes/snapshot-controller?ref=release-8.5
+  - https://github.com/kubernetes-csi/external-snapshotter/client/config/crd?ref=v8.5.0  # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter
+  - https://github.com/kubernetes-csi/external-snapshotter/deploy/kubernetes/snapshot-controller?ref=v8.5.0  # renovate: datasource=github-releases depName=kubernetes-csi/external-snapshotter
