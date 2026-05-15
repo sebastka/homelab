@@ -91,10 +91,6 @@ configReloader:
 controller:
   type: deployment
   replicas: 1
-  podSecurityContext:
-    runAsNonRoot: true
-    runAsUser: 65534
-    seccompProfile: {type: RuntimeDefault}
 
 serviceMonitor:
   enabled: true
