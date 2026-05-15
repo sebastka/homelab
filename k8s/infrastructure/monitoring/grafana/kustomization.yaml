@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: grafana
 
 resources:
-  - Namespace.yaml
   - HTTPRoute.yaml
   - SealedSecret.admin-credentials.yaml
   - Grafana.yaml
