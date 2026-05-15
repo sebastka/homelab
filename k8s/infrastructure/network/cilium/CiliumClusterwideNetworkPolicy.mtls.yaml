@@ -4,6 +4,6 @@ kind: CiliumClusterwideNetworkPolicy
 metadata:
   name: require-mtls
 spec:
-  endpointSelector: {matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, envoy-gateway-system]}]}
+  endpointSelector: {matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, envoy-gateway-system, metrics-server]}]}
   ingress:
     - {fromEndpoints: [matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire]}]], authentication: {mode: required}}
