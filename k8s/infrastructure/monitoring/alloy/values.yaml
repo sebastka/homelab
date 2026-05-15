@@ -77,6 +77,7 @@ alloy:
         endpoint {
           url = "http://loki.loki.svc.cluster.local:3100/loki/api/v1/push"
         }
+        external_labels = {cluster = "talmox"}
       }
 
 configReloader:
