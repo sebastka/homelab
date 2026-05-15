@@ -22,8 +22,8 @@ mode = "postgres"
 # url = "postgresql://user:password@localhost:5432/ott"
 host = "db02.hera.home.karlsen.fr"
 port = 5432
-name = "ott"
-user = "ott"
+name = "opentogethertube"
+user = "opentogethertube"
 # password = "" # POSTGRES_PASSWORD
 metrics = false
 
