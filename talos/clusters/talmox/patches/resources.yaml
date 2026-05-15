@@ -4,13 +4,13 @@
 cluster:
   apiServer:
     resources:
-      requests: {memory: 1536Mi}
-      limits: {memory: 1536Mi}
+      requests: {memory: 2048Mi}
+      limits: {memory: 2560Mi}
   controllerManager:
     resources:
-      requests: {memory: 256Mi}
-      limits: {memory: 256Mi}
+      requests: {memory: 128Mi}
+      limits: {memory: 512Mi}
   scheduler:
     resources:
-      requests: {memory: 256Mi}
-      limits: {memory: 256Mi}
+      requests: {memory: 64Mi}
+      limits: {memory: 128Mi}
