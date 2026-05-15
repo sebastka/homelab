@@ -22,4 +22,6 @@ spec:
     - {toEndpoints: [matchLabels: {app.kubernetes.io/name: prometheus, k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9090', protocol: TCP}]]}  # Prometheus datasource
     - {toEndpoints: [matchLabels: {app.kubernetes.io/name: alertmanager, k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9093', protocol: TCP}]]}  # Alertmanager datasource
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Needed for OIDC / Authelia
-    - {toFQDNs: [{matchName: 'grafana.com'}, {matchPattern: '*.grafana.com'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Grafana plugin catalog / update checks
+    - {toFQDNs: [{matchName: grafana.com}, {matchPattern: '*.grafana.com'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Grafana plugin catalog / update checks
+    - {toFQDNs: [{matchName: storage.googleapis.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Google Cloud Storage for Grafana plugins
+    - {toFQDNs: [{matchName: secure.gravatar.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Google Cloud Storage for Grafana plugins
