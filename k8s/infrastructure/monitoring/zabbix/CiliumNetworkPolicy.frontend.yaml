@@ -18,5 +18,5 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: frontend}}
   egress:
-    - {toCIDR: [192.168.2.12/32], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Zabbix server API
+    - {toFQDNs: [matchName: zabbix.talmox.hera.home.karlsen.fr], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Zabbix server API
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
