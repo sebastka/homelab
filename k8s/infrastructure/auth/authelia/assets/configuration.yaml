@@ -142,7 +142,6 @@ identity_providers:
       username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
     scopes:
       sshpubkey: {claims: [sshpubkey]}
-      grafana: {claims: [grafana]}
     clients:
       - client_id: argocd
         client_name: Argo CD
