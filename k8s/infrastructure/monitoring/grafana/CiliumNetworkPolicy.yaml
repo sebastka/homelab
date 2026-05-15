@@ -21,5 +21,5 @@ spec:
   egress:
     - {toEndpoints: [matchLabels: {app.kubernetes.io/name: prometheus, k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9090', protocol: TCP}]]}  # Prometheus datasource
     - {toEndpoints: [matchLabels: {app.kubernetes.io/name: alertmanager, k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9093', protocol: TCP}]]}  # Alertmanager datasource
-    - {toFQDNs: [{matchName: karlsen-xzy0yv.zitadel.cloud}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # OIDC (Zitadel)
-    - {toFQDNs: [{matchPattern: '*.grafana.com'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Grafana plugin catalog / update checks
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Needed for OIDC / Authelia
+    - {toFQDNs: [{matchName: 'grafana.com'}, {matchPattern: '*.grafana.com'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Grafana plugin catalog / update checks
