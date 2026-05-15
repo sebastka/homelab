@@ -5,9 +5,6 @@
 # https://www.johanneskueber.com/posts/longhorn_uservolumes_talos/
 ---
 
-networkPolicies:
-  enabled: true
-
 defaultSettings:
   defaultReplicaCount: 2
   defaultDataLocality: best-effort

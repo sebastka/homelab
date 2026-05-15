@@ -1,0 +1,13 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-longhorn-namespace
+  namespace: longhorn-system
+spec:
+  endpointSelector: {}
+  ingress:
+    - fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: longhorn-system}}]
+  egress:
+    - toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: longhorn-system}}]
+    - toEntities: [kube-apiserver]
