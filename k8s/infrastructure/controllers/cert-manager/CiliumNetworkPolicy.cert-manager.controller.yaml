@@ -20,4 +20,4 @@ spec:
     - {toEntities: [kube-apiserver]}
     - {toFQDNs: [{matchName: acme-v02.api.letsencrypt.org}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
     - {toFQDNs: [{matchName: api.cloudflare.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
-    - {toCIDRSet: [{cidr: 8.8.8.8/32}, {cidr: 8.8.4.4/32}], toPorts: [ports: [{port: '53', protocol: UDP}, {port: '53', protocol: TCP}]]}
+    - {toEntities: [world], toPorts: [ports: [{port: '53', protocol: UDP}, {port: '53', protocol: TCP}]]}
