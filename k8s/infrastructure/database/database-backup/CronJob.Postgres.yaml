@@ -7,14 +7,25 @@ kind: CronJob
 metadata:
   name: postgres-backup
   namespace: databases-backup
+  labels:
+    app.kubernetes.io/name: postgres-backup
+    app.kubernetes.io/component: backup
 spec:
   schedule: '0 3 * * *'  # 03:00 UTC = 04:00 CET
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   concurrencyPolicy: Replace
   jobTemplate:
+    metadata:
+      labels:
+        app.kubernetes.io/name: postgres-backup
+        app.kubernetes.io/component: backup
     spec:
       template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: postgres-backup
+            app.kubernetes.io/component: backup
         spec:
           restartPolicy: OnFailure
           serviceAccountName: postgres-backup

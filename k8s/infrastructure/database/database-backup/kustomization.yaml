@@ -4,6 +4,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: databases-backup
 
+components:
+  - ../../../common/default-networkpolicy
+
 resources:
   - Namespace.yaml
   - ServiceAccount.yaml
@@ -13,3 +16,5 @@ resources:
   - SealedSecret.postgres-secrets.yaml
   - CronJob.MariaDB.yaml
   - CronJob.Postgres.yaml
+  - CiliumNetworkPolicy.mariadb.yaml
+  - CiliumNetworkPolicy.postgres.yaml

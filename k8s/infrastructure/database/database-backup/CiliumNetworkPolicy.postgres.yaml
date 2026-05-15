@@ -1,0 +1,10 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-postgres-backup-egress
+  namespace: databases-backup
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: postgres-backup}}
+  egress:
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
