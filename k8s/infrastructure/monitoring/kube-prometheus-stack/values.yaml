@@ -6,6 +6,7 @@
 namespaceOverride: monitoring
 
 prometheus:
+  thanosService: {enabled: true}
   networkPolicy:
     enabled: true
     flavor: cilium
@@ -21,12 +22,12 @@ prometheus:
           toPorts:
             - ports: [{port: '9090', protocol: TCP}]
         - fromEndpoints:
-          - matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}
+          - matchLabels: {k8s:io.kubernetes.pod.namespace: thanos}
           toPorts:
-            - ports: [{port: '9090', protocol: TCP}]
+            - ports: [{port: '10901', protocol: TCP}]
   prometheusSpec:
-    externalLabels:
-      cluster: talmox
+    thanos: {image: quay.io/thanos/thanos:v0.39.2}
+    externalLabels: {cluster: talmox}
     podMonitorNamespaceSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
     podMonitorSelector: {}

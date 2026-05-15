@@ -53,6 +53,4 @@ monitoring:
   dashboards: {enabled: true}
   serviceMonitor:
     enabled: true
-    relabelings:
-      - targetLabel: cluster
-        replacement: talmox
+    clusterLabel: null  # cluster label comes from Prometheus externalLabels via Thanos remote_write

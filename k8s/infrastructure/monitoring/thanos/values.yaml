@@ -1,0 +1,41 @@
+# https://artifacthub.io/packages/helm/bitnami/thanos
+# https://github.com/bitnami/charts/blob/main/bitnami/thanos/values.yaml
+---
+
+image:
+  registry: docker.io
+  repository: bitnami/thanos
+  tag: 0.39.2-debian-12-r2
+
+query:
+  enabled: true
+  logLevel: info
+  replicaCount: 1
+  replicaLabel: [prometheus_replica]
+  stores:
+    - kube-prometheus-stack-thanos-discovery.monitoring.svc.cluster.local:10901
+  resources:
+    requests: {memory: 128Mi}
+    limits: {memory: 256Mi}
+  podSecurityContext:
+    enabled: true
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+    seccompProfile: {type: RuntimeDefault}
+  containerSecurityContext:
+    enabled: true
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities: {drop: [ALL]}
+    seccompProfile: {type: RuntimeDefault}
+
+queryFrontend: {enabled: false}
+bucketweb:    {enabled: false}
+compactor:    {enabled: false}
+storegateway: {enabled: false}
+ruler:        {enabled: false}
+receive:      {enabled: false}
