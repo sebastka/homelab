@@ -11,3 +11,4 @@ spec:
   egress:
     - toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: longhorn-system}}]
     - toEntities: [kube-apiserver]
+    - {toFQDNs: [{matchName: file01.hera.home.karlsen.fr}], toPorts: [ports: [{port: '2049', protocol: TCP}]]}  # NFS backup/restore target

@@ -9,13 +9,3 @@ spec:
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '9502', protocol: TCP}]]}  # Readiness probe
     - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '9502', protocol: TCP}, {port: '9503', protocol: TCP}]]}  # Admission webhook, recovery backend
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-longhorn-manager-egress
-  namespace: longhorn-system
-spec:
-  endpointSelector: {matchLabels: {app: longhorn-manager}}
-  egress:
-    - {toFQDNs: [{matchName: file01.hera.home.karlsen.fr}], toPorts: [ports: [{port: '2049', protocol: TCP}]]}  # NFS backup/restore target
