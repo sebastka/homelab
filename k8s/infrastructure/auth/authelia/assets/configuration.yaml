@@ -16,7 +16,7 @@ server:
 
 # https://www.authelia.com/configuration/miscellaneous/logging/
 log:
-  level: info
+  level: debug
 
 # https://www.authelia.com/configuration/telemetry/introduction/
 telemetry:
