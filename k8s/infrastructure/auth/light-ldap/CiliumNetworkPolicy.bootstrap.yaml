@@ -8,4 +8,4 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: bootstrap}}
   egress:
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: light-ldap, app.kubernetes.io/name: light-ldap}], toPorts: [ports: [{port: '17170', protocol: TCP}]]}
-    - {toFQDNs: [matchName: www.karlsen.fr], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Avatar
