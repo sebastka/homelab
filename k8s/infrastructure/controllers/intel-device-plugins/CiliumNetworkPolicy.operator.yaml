@@ -8,7 +8,7 @@ spec:
   endpointSelector: {matchLabels: {control-plane: controller-manager}}
   ingress:
     - {fromEntities: [host], toPorts: [{ports: [{port: '8081', protocol: TCP}]}]}  # Host health probes
-    - {fromEntities: [kube-apiserver], toPorts: [{ports: [{port: '9443', protocol: TCP}]}]}  # Webhook
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: kube-system, component: kube-apiserver}], toPorts: [{ports: [{port: '9443', protocol: TCP}]}]}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
