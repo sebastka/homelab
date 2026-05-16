@@ -13,6 +13,7 @@ resources:
   - HTTPRoute.yaml
   - CiliumNetworkPolicy.alertmanager.yaml
   - CiliumNetworkPolicy.node-exporter.yaml
+  - SealedSecret.alertmanager-ntfy.yaml
 
 helmCharts:
   - name: kube-prometheus-stack

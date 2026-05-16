@@ -53,7 +53,8 @@ spec:
                 .smtp-sender-pass = strenv(NTFY_SMTP_SENDER_PASS) |
                 .web-push-public-key = strenv(NTFY_WEB_PUSH_PUBLIC_KEY) |
                 .web-push-private-key = strenv(NTFY_WEB_PUSH_PRIVATE_KEY) |
-                .web-push-email-address = strenv(NTFY_WEB_PUSH_EMAIL_ADDRESS)' \
+                .web-push-email-address = strenv(NTFY_WEB_PUSH_EMAIL_ADDRESS) |
+                .auth-tokens = ["alertmanager:" + strenv(NTFY_AUTH_TOKEN_ALERTMANAGER) + ":Alertmanager"]' \
                 /mnt/server.yaml >/etc/ntfy/server.yml
           securityContext:
             allowPrivilegeEscalation: false
