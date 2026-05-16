@@ -90,8 +90,10 @@ spec:
           readinessProbe: {httpGet: {port: 8080, path: /v1/health, httpHeaders: [{name: Host, value: ntfy.karlsen.app}]}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             - {name: generated-config-volume, mountPath: /etc/ntfy, readOnly: true}
+            - {name: ntfy-templates-volume, mountPath: /etc/ntfy/templates, readOnly: true}
             - {name: ntfy-data-volume, mountPath: /var/lib/ntfy/attachments, subPath: attachments}
       volumes:
         - {name: generated-config-volume, emptyDir: {}}
         - {name: config-volume, configMap: {name: ntfy-config}}
+        - {name: ntfy-templates-volume, configMap: {name: ntfy-templates}}
         - {name: ntfy-data-volume, persistentVolumeClaim: {claimName: ntfy-data-pvc}}

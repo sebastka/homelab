@@ -8,6 +8,7 @@ generatorOptions:
 
 configMapGenerator:
   - {namespace: ntfy, name: ntfy-config, files: [server.yaml=assets/server.yaml]}
+  - {namespace: ntfy, name: ntfy-templates, files: [prometheus.yml=assets/templates/prometheus.yaml]}
 
 resources:
   - Namespace.yaml
