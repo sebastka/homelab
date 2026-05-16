@@ -83,7 +83,6 @@ spec:
             - {name: bootstrap-schemas-volume, mountPath: /bootstrap/group-configs/groups.json, subPath: groups.json, readOnly: true}
             - {name: bootstrap-schemas-volume, mountPath: /bootstrap/user-schemas/user-schemas.json, subPath: user-schemas.json, readOnly: true}
             - {name: generated-schemas-volume, mountPath: /bootstrap/user-configs/users.json, subPath: users.json, readOnly: true}
-            - {name: bootstrap-schemas-volume, mountPath: /bootstrap/avatars/avatar-sebastian.jpg, subPath: avatar-sebastian.jpg, readOnly: true}
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: generated-schemas-volume, emptyDir: {}}
