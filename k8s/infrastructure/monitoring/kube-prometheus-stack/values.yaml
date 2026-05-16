@@ -27,7 +27,7 @@ prometheus:
             - ports: [{port: '10901', protocol: TCP}]
   prometheusSpec:
     thanos: {image: quay.io/thanos/thanos:v0.41.0}  # renovate: datasource=docker depName=quay.io/thanos/thanos
-    externalLabels: {cluster: talmox}
+    # externalLabels: {cluster: XXX}  # Patch for each cluster
     podMonitorNamespaceSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
     podMonitorSelector: {}
