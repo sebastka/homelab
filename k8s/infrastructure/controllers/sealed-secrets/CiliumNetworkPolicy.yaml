@@ -9,6 +9,7 @@ spec:
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}  # Prometheus
+    - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Kube API Server
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
