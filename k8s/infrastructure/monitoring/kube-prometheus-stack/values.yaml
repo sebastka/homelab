@@ -11,20 +11,14 @@ prometheus:
     enabled: true
     flavor: cilium
     cilium:
-      egress:
-        - toEntities: [kube-apiserver]             # service discovery + secret reads
-        - toEntities: [host, remote-node]          # kubelet metrics
-          toPorts:
-            - ports: [{port: '10250', protocol: TCP}]
-        - toEntities: [cluster]                    # pod scraping across all namespaces
       ingress:
-        - fromEntities: [host]                     # health probes
-          toPorts:
-            - ports: [{port: '9090', protocol: TCP}]
-        - fromEndpoints:
-          - matchLabels: {k8s:io.kubernetes.pod.namespace: thanos}
-          toPorts:
-            - ports: [{port: '10901', protocol: TCP}]
+        - {fromEntities: [host], toPorts: [ports: [{port: '9090', protocol: TCP}]]}  # health probes
+        - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '9090', protocol: TCP}]]}
+        - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: thanos}], toPorts: {ports: [{port: '10901', protocol: TCP}]}}
+      egress:
+        - {toEntities: [kube-apiserver]}  # service discovery + secret reads
+        - {toEntities: [host, remote-node], toPorts: [ports: [{port: '10250', protocol: TCP}]]}  # kubelet metrics
+        - {toEntities: [cluster]}  # pod scraping across all namespaces
   prometheusSpec:
     thanos: {image: quay.io/thanos/thanos:v0.41.0}  # renovate: datasource=docker depName=quay.io/thanos/thanos
     # externalLabels: {cluster: XXX}  # Patch for each cluster
