@@ -19,6 +19,13 @@ loki:
   compactor:
     retention_enabled: true
     delete_request_store: filesystem
+  rulerConfig:
+    storage: {type: local, local: {directory: /etc/loki/rules}}
+    rule_path: /tmp/loki/ruler-temp
+    alertmanager_url: http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093
+    enable_alertmanager_v2: true
+    ring: {kvstore: {store: inmemory}}
+    enable_api: true
   limits_config:
     retention_period: 168h  # 7 days
     ingestion_rate_mb: 20
@@ -37,6 +44,10 @@ singleBinary:
   resources:
     requests: {memory: 256Mi}
     limits: {memory: 512Mi}
+  extraVolumes:
+    - {name: loki-rules, configMap: {name: loki-rules}}
+  extraVolumeMounts:
+    - {name: loki-rules, mountPath: /etc/loki/rules/fake, readOnly: true}
   persistence:
     enabled: true
     storageClass: longhorn-encrypted

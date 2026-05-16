@@ -3,6 +3,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: loki
 
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - {name: loki-rules, files: [log-errors.yaml=assets/log-errors.yaml]}
+
 resources:
   - Namespace.yaml
   - CiliumNetworkPolicy.yaml

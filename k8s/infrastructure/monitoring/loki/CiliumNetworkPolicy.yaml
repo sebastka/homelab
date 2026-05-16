@@ -22,3 +22,4 @@ spec:
   egress:
     - {toEntities: [kube-apiserver]}  # Ring membership / leader election
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: loki}}], toPorts: [{ports: [{port: '11211', protocol: TCP}]}]}  # Memcached
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: alertmanager}}], toPorts: [{ports: [{port: '9093', protocol: TCP}]}]}  # Ruler -> Alertmanager
