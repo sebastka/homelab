@@ -1,0 +1,8 @@
+---
+title: "Degraded: {{ .app }}"
+priority: high
+tags: [warning, argocd]
+click: "{{ .url }}/applications/{{ .namespace }}/{{ .app }}"
+markdown: true
+message: |
+  **{{ .app }}** health is Degraded.

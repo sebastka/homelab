@@ -156,15 +156,15 @@ notifications:
 
   notifiers:
     service.webhook.ntfy-sync: |
-      url: http://web.ntfy.svc.cluster.local/$ntfy-topic
+      url: http://web.ntfy.svc.cluster.local/$ntfy-topic?template=argocd-sync-failed
       headers:
         - {name: Authorization, value: $ntfy-token}
     service.webhook.ntfy-degraded: |
-      url: http://web.ntfy.svc.cluster.local/$ntfy-topic
+      url: http://web.ntfy.svc.cluster.local/$ntfy-topic?template=argocd-degraded
       headers:
         - {name: Authorization, value: $ntfy-token}
     service.webhook.ntfy-restored: |
-      url: http://web.ntfy.svc.cluster.local/$ntfy-topic
+      url: http://web.ntfy.svc.cluster.local/$ntfy-topic?template=argocd-restored
       headers:
         - {name: Authorization, value: $ntfy-token}
 
@@ -174,45 +174,25 @@ notifications:
         ntfy-sync:
           method: POST
           headers:
-            - {name: X-Title, value: "Sync failed: {{.app.metadata.name}}"}
-            - {name: X-Priority, value: high}
-            - {name: X-Tags, value: "rotating_light,argocd"}
-            - {name: X-Click, value: "{{.context.argocdUrl}}/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"}
-            - {name: X-Markdown, value: "true"}
+            - {name: Content-Type, value: application/json}
           body: |
-            **{{.app.metadata.name}}** failed to sync.
-
-            **Message:** {{.app.status.operationState.message}}
-            **Repo:** {{.app.spec.source.repoURL}}
+            {"app":{{.app.metadata.name | toJson}},"namespace":{{.app.metadata.namespace | toJson}},"url":{{.context.argocdUrl | toJson}},"opMessage":{{.app.status.operationState.message | toJson}},"repo":{{.app.spec.source.repoURL | toJson}}}
     template.app-health-degraded: |
       webhook:
         ntfy-degraded:
           method: POST
           headers:
-            - {name: X-Title, value: "Degraded: {{.app.metadata.name}}"}
-            - {name: X-Priority, value: high}
-            - {name: X-Tags, value: "warning,argocd"}
-            - {name: X-Click, value: "{{.context.argocdUrl}}/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"}
-            - {name: X-Markdown, value: "true"}
+            - {name: Content-Type, value: application/json}
           body: |
-            **{{.app.metadata.name}}** health is Degraded.
-            {{- range .app.status.resources}}
-            {{- if eq .health.status "Degraded"}}
-            - **{{.kind}}/{{.name}}**: {{.health.message}}
-            {{- end}}
-            {{- end}}
+            {"app":{{.app.metadata.name | toJson}},"namespace":{{.app.metadata.namespace | toJson}},"url":{{.context.argocdUrl | toJson}}}
     template.app-health-restored: |
       webhook:
         ntfy-restored:
           method: POST
           headers:
-            - {name: X-Title, value: "Restored: {{.app.metadata.name}}"}
-            - {name: X-Priority, value: default}
-            - {name: X-Tags, value: "white_check_mark,argocd"}
-            - {name: X-Click, value: "{{.context.argocdUrl}}/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"}
-            - {name: X-Markdown, value: "true"}
+            - {name: Content-Type, value: application/json}
           body: |
-            **{{.app.metadata.name}}** is back to Healthy.
+            {"app":{{.app.metadata.name | toJson}},"namespace":{{.app.metadata.namespace | toJson}},"url":{{.context.argocdUrl | toJson}}}
 
   triggers:
     trigger.on-sync-failed: |

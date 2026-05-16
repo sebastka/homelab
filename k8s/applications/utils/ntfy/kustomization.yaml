@@ -8,7 +8,13 @@ generatorOptions:
 
 configMapGenerator:
   - {namespace: ntfy, name: ntfy-config, files: [server.yaml=assets/server.yaml]}
-  - {namespace: ntfy, name: ntfy-templates, files: [prometheus.yml=assets/templates/prometheus.yaml]}
+  - namespace: ntfy
+    name: ntfy-templates
+    files:
+      - prometheus.yml=assets/templates/prometheus.yaml
+      - argocd-degraded.yml=assets/templates/argocd-degraded.yaml
+      - argocd-restored.yml=assets/templates/argocd-restored.yaml
+      - argocd-sync-failed.yml=assets/templates/argocd-sync-failed.yaml
 
 resources:
   - Namespace.yaml
