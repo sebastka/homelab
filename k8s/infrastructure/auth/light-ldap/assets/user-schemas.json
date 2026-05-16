@@ -1,10 +1,10 @@
 [
-  {"name": "uidNumber",      "attributeType": "INTEGER", "isEditable": false, "isList": false, "isVisible": true},
-  {"name": "gidNumber",      "attributeType": "INTEGER", "isEditable": false, "isList": false, "isVisible": true},
-  {"name": "pictureUrl",     "attributeType": "STRING",  "isEditable": false, "isList": false, "isVisible": true},
-  {"name": "timezone",       "attributeType": "STRING",  "isEditable": false, "isList": false, "isVisible": true},
-  {"name": "homeDirectory",  "attributeType": "STRING",  "isEditable": false, "isList": false, "isVisible": true},
-  {"name": "loginShell",     "attributeType": "STRING",  "isEditable": false, "isList": false, "isVisible": true},
-  {"name": "sshPublicKey",   "attributeType": "STRING",  "isEditable": false, "isList": true,  "isVisible": true},
-  {"name": "pgpKey",         "attributeType": "STRING",  "isEditable": false, "isList": true,  "isVisible": true}
+  {"name": "uidNumber",     "attributeType": "INTEGER", "isEditable": false, "isList": false, "isVisible": true},
+  {"name": "gidNumber",     "attributeType": "INTEGER", "isEditable": false, "isList": false, "isVisible": true},
+  {"name": "pictureUrl",    "attributeType": "STRING",  "isEditable": false, "isList": false, "isVisible": true},
+  {"name": "timezone",      "attributeType": "STRING",  "isEditable": false, "isList": false, "isVisible": true},
+  {"name": "homeDirectory", "attributeType": "STRING",  "isEditable": false, "isList": false, "isVisible": true},
+  {"name": "loginShell",    "attributeType": "STRING",  "isEditable": false, "isList": false, "isVisible": true},
+  {"name": "sshPublicKey",  "attributeType": "STRING",  "isEditable": false, "isList": true,  "isVisible": true},
+  {"name": "pgpKey",        "attributeType": "STRING",  "isEditable": false, "isList": true,  "isVisible": true}
 ]
