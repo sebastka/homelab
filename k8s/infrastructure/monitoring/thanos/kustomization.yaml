@@ -3,6 +3,24 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: thanos
 
+# Helm chart omits namespaces: patch resources to add them back in
+patches:
+  - target: {kind: ServiceAccount, name: thanos-thanos}
+    patch: |-
+      - {op: add, path: /metadata/namespace, value: thanos}
+  - target: {kind: Service, name: thanos-query}
+    patch: |-
+      - {op: add, path: /metadata/namespace, value: thanos}
+  - target: {kind: Deployment, name: thanos-query}
+    patch: |-
+      - {op: add, path: /metadata/namespace, value: thanos}
+  - target: {kind: PrometheusRule, name: thanos-rules}
+    patch: |-
+      - {op: add, path: /metadata/namespace, value: thanos}
+  - target: {kind: ServiceMonitor, name: thanos-query}
+    patch: |-
+      - {op: add, path: /metadata/namespace, value: thanos}
+
 resources:
   - Namespace.yaml
   - CiliumNetworkPolicy.yaml
