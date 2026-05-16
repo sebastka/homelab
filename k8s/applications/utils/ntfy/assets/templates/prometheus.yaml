@@ -1,12 +1,16 @@
 ---
 title: |
-  {{ if eq .status "firing" }}🔥{{ else }}✅{{ end }} {{ .commonLabels.alertname }}
+  {{ if eq .status "firing" }}🔥{{ else }}✅ Resolved:{{ end }} {{ .commonLabels.alertname }}
 markdown: true
 message: |
   {{ range .alerts -}}
   {{ with .annotations.summary }}{{ . }}
+
   {{ end -}}
   {{ with .annotations.description }}{{ . }}
+
   {{ end -}}
-  Severity: {{ .labels.severity }}{{ with .labels.namespace }} | namespace: {{ . }}{{ end }}
+  **Severity**: {{ .labels.severity }}
+  {{ with .labels.namespace }}**Namespace**: {{ . }}
+  {{ end -}}
   {{ end -}}
