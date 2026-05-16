@@ -207,12 +207,25 @@ notifications:
             **App:** {{.app.metadata.name}}
             **Namespace:** {{.app.metadata.namespace}}
             [Open in ArgoCD]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})
+    template.app-sync-succeeded: |
+      webhook:
+        ntfy-restored:
+          method: POST
+          body: |
+            **App:** {{.app.metadata.name}}
+            **Namespace:** {{.app.metadata.namespace}}
+            **Repo:** {{.app.spec.source.repoURL}}
+            [Open in ArgoCD]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})
 
   triggers:
     trigger.on-sync-failed: |
       - when: app.status.operationState != nil && app.status.operationState.phase in ['Error', 'Failed']
         oncePer: app.status.operationState.syncResult.revision
         send: [app-sync-failed]
+    trigger.on-sync-succeeded: |
+      - when: app.status.operationState != nil && app.status.operationState.phase in ['Succeeded'] && app.metadata.annotations["notified.notifications.argoproj.io"] != "" && app.metadata.annotations["notified.notifications.argoproj.io"].contains("on-sync-failed")
+        oncePer: app.status.operationState.syncResult.revision
+        send: [app-sync-succeeded]
     trigger.on-health-degraded: |
       - when: app.status.health.status == 'Degraded'
         send: [app-health-degraded]
@@ -222,5 +235,5 @@ notifications:
 
   subscriptions:
     - {recipients: [ntfy-sync:argocd], triggers: [on-sync-failed]}
+    - {recipients: [ntfy-restored:argocd], triggers: [on-sync-succeeded, on-health-restored]}
     - {recipients: [ntfy-degraded:argocd], triggers: [on-health-degraded]}
-    - {recipients: [ntfy-restored:argocd], triggers: [on-health-restored]}
