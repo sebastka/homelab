@@ -155,64 +155,78 @@ notifications:
     limits: {memory: 64Mi}
 
   notifiers:
-    # service.webhook.ntfy-sync: |
-    #   url: http://web.ntfy.svc.cluster.local/$ntfy-topic
-    #   headers:
-    #     - {name: Authorization, value: $ntfy-token}
-    #     - {name: X-Title, value: Sync failed}
-    #     - {name: X-Priority, value: high}
-    #     - {name: X-Tags, value: rotating_light,argocd}
+    service.webhook.ntfy-sync: |
+      url: http://web.ntfy.svc.cluster.local/$ntfy-topic
+      headers:
+        - {name: Authorization, value: $ntfy-token}
     service.webhook.ntfy-degraded: |
       url: http://web.ntfy.svc.cluster.local/$ntfy-topic
       headers:
         - {name: Authorization, value: $ntfy-token}
-        - {name: X-Title, value: App degraded}
-        - {name: X-Priority, value: high}
-        - {name: X-Tags, value: warning,argocd}
     service.webhook.ntfy-restored: |
       url: http://web.ntfy.svc.cluster.local/$ntfy-topic
       headers:
         - {name: Authorization, value: $ntfy-token}
-        - {name: X-Title, value: App restored}
-        - {name: X-Priority, value: default}
-        - {name: X-Tags, value: white_check_mark,argocd}
 
   templates:
     template.app-sync-failed: |
       webhook:
         ntfy-sync:
           method: POST
+          headers:
+            - {name: X-Title, value: "Sync failed: {{.app.metadata.name}}"}
+            - {name: X-Priority, value: high}
+            - {name: X-Tags, value: "rotating_light,argocd"}
+            - {name: X-Click, value: "{{.context.argocdUrl}}/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"}
+            - {name: X-Markdown, value: "true"}
           body: |
-            {{.app.metadata.name}} failed to sync.
-            Repo: {{.app.spec.source.repoURL}}
-            Message: {{.app.status.operationState.message}}
+            **{{.app.metadata.name}}** failed to sync.
+
+            **Message:** {{.app.status.operationState.message}}
+            **Repo:** {{.app.spec.source.repoURL}}
     template.app-health-degraded: |
       webhook:
         ntfy-degraded:
           method: POST
+          headers:
+            - {name: X-Title, value: "Degraded: {{.app.metadata.name}}"}
+            - {name: X-Priority, value: high}
+            - {name: X-Tags, value: "warning,argocd"}
+            - {name: X-Click, value: "{{.context.argocdUrl}}/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"}
+            - {name: X-Markdown, value: "true"}
           body: |
-            {{.app.metadata.name}} health is {{.app.status.health.status}}.
-            {{range .app.status.resources}}{{if eq .health.status "Degraded"}}- {{.kind}}/{{.name}}: {{.health.message}}
-            {{end}}{{end}}
+            **{{.app.metadata.name}}** health is Degraded.
+            {{- range .app.status.resources}}
+            {{- if eq .health.status "Degraded"}}
+            - **{{.kind}}/{{.name}}**: {{.health.message}}
+            {{- end}}
+            {{- end}}
     template.app-health-restored: |
       webhook:
         ntfy-restored:
           method: POST
+          headers:
+            - {name: X-Title, value: "Restored: {{.app.metadata.name}}"}
+            - {name: X-Priority, value: default}
+            - {name: X-Tags, value: "white_check_mark,argocd"}
+            - {name: X-Click, value: "{{.context.argocdUrl}}/applications/{{.app.metadata.namespace}}/{{.app.metadata.name}}"}
+            - {name: X-Markdown, value: "true"}
           body: |
-            {{.app.metadata.name}} is back to Healthy.
+            **{{.app.metadata.name}}** is back to Healthy.
 
   triggers:
-    # trigger.on-sync-failed: |
-    #   - when: app.status.operationState != nil && app.status.operationState.phase in ['Error', 'Failed']
-    #     send: [app-sync-failed]
+    trigger.on-sync-failed: |
+      - when: app.status.operationState != nil && app.status.operationState.phase in ['Error', 'Failed']
+        oncePer: app.status.operationState.syncResult.revision
+        send: [app-sync-failed]
     trigger.on-health-degraded: |
       - when: app.status.health.status == 'Degraded'
         send: [app-health-degraded]
     trigger.on-health-restored: |
-      - when: app.status.health.status == 'Healthy'
+      - when: app.status.health.status == 'Healthy' && app.metadata.annotations["notified.notifications.argoproj.io"] != "" && app.metadata.annotations["notified.notifications.argoproj.io"].contains("on-health-degraded")
         send: [app-health-restored]
 
   subscriptions:
-    # - {recipients: [ntfy-sync:argocd], triggers: [on-sync-failed]}
+    - {recipients: [ntfy-sync:argocd], triggers: [on-sync-failed]}
     - {recipients: [ntfy-degraded:argocd], triggers: [on-health-degraded]}
     - {recipients: [ntfy-restored:argocd], triggers: [on-health-restored]}
