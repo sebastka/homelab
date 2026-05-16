@@ -18,7 +18,7 @@ global:
     requests: {memory: 128Mi}
     limits: {memory: 256Mi}
 
-bucket: {enabled: false, {bucketweb: {enabled: false}}}
+bucket: {enabled: false, bucketweb: {enabled: false}}
 compactor:    {enabled: false}
 queryFrontend: {enabled: false}
 storegateway: {enabled: false}
