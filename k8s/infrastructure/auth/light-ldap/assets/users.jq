@@ -28,7 +28,7 @@
   "gidNumber": null,
   "timezone": "Europe/Oslo",
   "homeDirectory": "",
-  "loginShell": ""
+  "loginShell": "",
   "sshPublicKey": [],
   "pgpKey": []
 },
