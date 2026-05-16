@@ -4,10 +4,8 @@ title: |
 message: |
   {{ range .alerts -}}
   {{ with .annotations.summary }}{{ . }}
-
   {{ end -}}
   {{ with .annotations.description }}{{ . }}
-
   {{ end -}}
   **Severity**: {{ .labels.severity }}
   {{ with .labels.namespace }}**Namespace**: {{ . }}
