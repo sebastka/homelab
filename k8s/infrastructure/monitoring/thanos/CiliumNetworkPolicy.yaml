@@ -7,9 +7,9 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/component: query}}
   ingress:
-    - {fromEntities: [host], toPorts: [{ports: [{port: '10902', protocol: TCP}]}]}  # Health probes
+    - {fromEntities: [host], toPorts: [{ports: [{port: '9090', protocol: TCP}]}]}  # Health probes
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}}], toPorts: [{ports: [{port: '9090', protocol: TCP}]}]}  # Grafana datasource
-    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [{ports: [{port: '10902', protocol: TCP}]}]}  # Prometheus scrape
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [{ports: [{port: '9090', protocol: TCP}]}]}  # Prometheus scrape
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
