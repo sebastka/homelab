@@ -140,7 +140,7 @@ identity_providers:
       endpoints: [userinfo, authorization, token, revocation, introspection]
     claims_policies:
       embed_id_token_claims: {custom_claims: {picture: {attribute: pictureUrl}}, id_token: [email, name, preferred_username, groups]}
-      sshPublicKey: {custom_claims: {picture: {attribute: pictureUrl}, sshPublicKey: {attribute: sshPublicKey}, pgpKey: {attribute: pgpKey}, timezone: {attribute: timezone}}, id_token: [email, preferred_username, groups]}
+      sshPublicKey: {custom_claims: {picture: {attribute: pictureUrl}, sshPublicKey: {attribute: sshPublicKey}, pgpKey: {attribute: pgpKey}, timezone: {attribute: timezone}}, id_token: [email, preferred_username, groups, picture]}
       legacy: {id_token: [email, email_verified, alt_emails, name, preferred_username, groups]}  # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
       username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
     scopes:
