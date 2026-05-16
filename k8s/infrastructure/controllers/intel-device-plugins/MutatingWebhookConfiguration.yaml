@@ -1,0 +1,16 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: inteldeviceplugins-mutating-webhook-configuration
+webhooks:
+  - name: mgpudeviceplugin.kb.io
+    admissionReviewVersions: [v1]
+    clientConfig: {service: {namespace: intel-device-plugins, name: inteldeviceplugins-webhook-service, path: /mutate-deviceplugin-intel-com-v1-gpudeviceplugin, port: 443}}
+    failurePolicy: Fail
+    matchPolicy: Equivalent
+    reinvocationPolicy: Never
+    rules:
+      - {apiGroups: [deviceplugin.intel.com], apiVersions: [v1], operations: [CREATE, UPDATE], resources: [gpudeviceplugins], scope: '*'}
+    sideEffects: None
+    timeoutSeconds: 10
