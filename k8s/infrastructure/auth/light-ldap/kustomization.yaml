@@ -16,6 +16,7 @@ configMapGenerator:
       - groups.json=assets/groups.json
       - user-schemas.json=assets/user-schemas.json
       - users.jq=assets/users.jq
+      - avatar-sebastian.jpg=assets/avatar-sebastian.jpg
 
 resources:
   - Namespace.yaml
