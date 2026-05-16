@@ -89,7 +89,7 @@ spec:
           livenessProbe: {httpGet: {port: 8080, path: /v1/health, httpHeaders: [{name: Host, value: ntfy.karlsen.app}]}, initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {httpGet: {port: 8080, path: /v1/health, httpHeaders: [{name: Host, value: ntfy.karlsen.app}]}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
-            - {name: generated-config-volume, mountPath: /etc/ntfy, readOnly: true}
+            - {name: generated-config-volume, mountPath: /etc/ntfy/server.yml, subPath: server.yml, readOnly: true}
             - {name: ntfy-templates-volume, mountPath: /etc/ntfy/templates, readOnly: true}
             - {name: ntfy-data-volume, mountPath: /var/lib/ntfy/attachments, subPath: attachments}
       volumes:
