@@ -156,43 +156,57 @@ notifications:
 
   notifiers:
     service.webhook.ntfy-sync: |
-      url: http://web.ntfy.svc.cluster.local/$ntfy-topic?template=argocd-sync-failed
+      url: http://web.ntfy.svc.cluster.local/$ntfy-topic
       headers:
         - {name: Authorization, value: $ntfy-token}
+        - {name: X-Title, value: "Sync failed"}
+        - {name: X-Priority, value: high}
+        - {name: X-Tags, value: "warning,argocd"}
+        - {name: X-Markdown, value: "1"}
     service.webhook.ntfy-degraded: |
-      url: http://web.ntfy.svc.cluster.local/$ntfy-topic?template=argocd-degraded
+      url: http://web.ntfy.svc.cluster.local/$ntfy-topic
       headers:
         - {name: Authorization, value: $ntfy-token}
+        - {name: X-Title, value: "App degraded"}
+        - {name: X-Priority, value: high}
+        - {name: X-Tags, value: "warning,argocd"}
+        - {name: X-Markdown, value: "1"}
     service.webhook.ntfy-restored: |
-      url: http://web.ntfy.svc.cluster.local/$ntfy-topic?template=argocd-restored
+      url: http://web.ntfy.svc.cluster.local/$ntfy-topic
       headers:
         - {name: Authorization, value: $ntfy-token}
+        - {name: X-Title, value: "App restored"}
+        - {name: X-Priority, value: default}
+        - {name: X-Tags, value: "white_check_mark,argocd"}
+        - {name: X-Markdown, value: "1"}
 
   templates:
     template.app-sync-failed: |
       webhook:
         ntfy-sync:
           method: POST
-          headers:
-            - {name: Content-Type, value: application/json}
           body: |
-            {"app":{{.app.metadata.name | toJson}},"namespace":{{.app.metadata.namespace | toJson}},"url":{{.context.argocdUrl | toJson}},"opMessage":{{.app.status.operationState.message | toJson}},"repo":{{.app.spec.source.repoURL | toJson}}}
+            **App:** {{.app.metadata.name}}
+            **Namespace:** {{.app.metadata.namespace}}
+            **Repo:** {{.app.spec.source.repoURL}}
+            **Message:** {{.app.status.operationState.message}}
+            [Open in ArgoCD]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})
     template.app-health-degraded: |
       webhook:
         ntfy-degraded:
           method: POST
-          headers:
-            - {name: Content-Type, value: application/json}
           body: |
-            {"app":{{.app.metadata.name | toJson}},"namespace":{{.app.metadata.namespace | toJson}},"url":{{.context.argocdUrl | toJson}}}
+            **App:** {{.app.metadata.name}}
+            **Namespace:** {{.app.metadata.namespace}}
+            [Open in ArgoCD]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})
     template.app-health-restored: |
       webhook:
         ntfy-restored:
           method: POST
-          headers:
-            - {name: Content-Type, value: application/json}
           body: |
-            {"app":{{.app.metadata.name | toJson}},"namespace":{{.app.metadata.namespace | toJson}},"url":{{.context.argocdUrl | toJson}}}
+            **App:** {{.app.metadata.name}}
+            **Namespace:** {{.app.metadata.namespace}}
+            [Open in ArgoCD]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})
 
   triggers:
     trigger.on-sync-failed: |
