@@ -47,6 +47,7 @@ spec:
                   --arg LLDAP_SEBASTKA_PASSWORD "$LLDAP_SEBASTKA_PASSWORD" \
                   --arg LLDAP_STORK_PASSWORD "$LLDAP_STORK_PASSWORD" \
                   -f /mnt/schemas/users.jq \
+                | jq -c 'with_entries(select(.value != null))' \
                   >/mnt/generated-schemas/users.json
           securityContext:
             allowPrivilegeEscalation: false
