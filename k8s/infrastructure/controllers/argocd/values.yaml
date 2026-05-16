@@ -155,13 +155,13 @@ notifications:
     limits: {memory: 64Mi}
 
   notifiers:
-    service.webhook.ntfy-sync: |
-      url: http://web.ntfy.svc.cluster.local/$ntfy-topic
-      headers:
-        - {name: Authorization, value: $ntfy-token}
-        - {name: X-Title, value: Sync failed}
-        - {name: X-Priority, value: high}
-        - {name: X-Tags, value: rotating_light,argocd}
+    # service.webhook.ntfy-sync: |
+    #   url: http://web.ntfy.svc.cluster.local/$ntfy-topic
+    #   headers:
+    #     - {name: Authorization, value: $ntfy-token}
+    #     - {name: X-Title, value: Sync failed}
+    #     - {name: X-Priority, value: high}
+    #     - {name: X-Tags, value: rotating_light,argocd}
     service.webhook.ntfy-degraded: |
       url: http://web.ntfy.svc.cluster.local/$ntfy-topic
       headers:
@@ -186,7 +186,6 @@ notifications:
             {{.app.metadata.name}} failed to sync.
             Repo: {{.app.spec.source.repoURL}}
             Message: {{.app.status.operationState.message}}
-
     template.app-health-degraded: |
       webhook:
         ntfy-degraded:
@@ -195,7 +194,6 @@ notifications:
             {{.app.metadata.name}} health is {{.app.status.health.status}}.
             {{range .app.status.resources}}{{if eq .health.status "Degraded"}}- {{.kind}}/{{.name}}: {{.health.message}}
             {{end}}{{end}}
-
     template.app-health-restored: |
       webhook:
         ntfy-restored:
@@ -204,9 +202,9 @@ notifications:
             {{.app.metadata.name}} is back to Healthy.
 
   triggers:
-    trigger.on-sync-failed: |
-      - when: app.status.operationState != nil && app.status.operationState.phase in ['Error', 'Failed']
-        send: [app-sync-failed]
+    # trigger.on-sync-failed: |
+    #   - when: app.status.operationState != nil && app.status.operationState.phase in ['Error', 'Failed']
+    #     send: [app-sync-failed]
     trigger.on-health-degraded: |
       - when: app.status.health.status == 'Degraded'
         send: [app-health-degraded]
@@ -215,6 +213,6 @@ notifications:
         send: [app-health-restored]
 
   subscriptions:
-    - {recipients: [ntfy-sync:argocd], triggers: [on-sync-failed]}
+    # - {recipients: [ntfy-sync:argocd], triggers: [on-sync-failed]}
     - {recipients: [ntfy-degraded:argocd], triggers: [on-health-degraded]}
     - {recipients: [ntfy-restored:argocd], triggers: [on-health-restored]}
