@@ -1,8 +1,0 @@
----
-title: "Restored: {{ .app }}"
-priority: default
-tags: [white_check_mark, argocd]
-click: "{{ .url }}/applications/{{ .namespace }}/{{ .app }}"
-markdown: true
-message: |
-  **{{ .app }}** is back to Healthy.
