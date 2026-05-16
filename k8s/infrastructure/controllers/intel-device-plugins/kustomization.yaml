@@ -26,7 +26,6 @@ patches:
 
 resources:
   - Namespace.yaml
-  - MutatingWebhookConfiguration.yaml
   - CiliumNetworkPolicy.operator.yaml
   - CiliumNetworkPolicy.gpu.yaml
 
