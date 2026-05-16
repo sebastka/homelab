@@ -6,8 +6,14 @@
   "firstName": "Sebastian",
   "lastName": "Karlsen",
   "avatar": "",
-  "groups": ["k8s:admins", "forgejo:admins"],
-  "sshpubkey": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPez8beLkvaGA3EK61rE/EeihTlbiGJJTgPUwgBQ3wiB sebastian@boreas.local"]
+  "groups": ["k8s_admins", "forgejo_admins"],
+  "uidNumber": 1000,
+  "gidNumber": 1000,
+  "timezone": "Europe/Oslo",
+  "homeDirectory": "/home/sebastian",
+  "loginShell": "/bin/bash",
+  "sshPublicKey": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPez8beLkvaGA3EK61rE/EeihTlbiGJJTgPUwgBQ3wiB sebastian@boreas.local"],
+  "pgpKey": ["-----BEGIN PGP PUBLIC KEY BLOCK-----\n\nmDMEYZFg5xYJKwYBBAHaRw8BAQdARkJQu8J21Vqh0r4PYqMvEAlvS0xV9o6+Lh2E\nVirdkCq0MlNlYmFzdGlhbiBLYXJsc2VuIChQcml2YXRlKSA8c2ViYXN0aWFuQGth\ncmxzZW4uZnI+iJAEExYIADgWIQTTU1/5jMz2k5rpTjOUhjx/mG1l6AUCYZFg5wIb\nAQULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRCUhjx/mG1l6H6IAQDPdpRW/IEM\n5DULdVyJVME5sVwHiSE7n6CGti0Yh8rISQD6A4PbGQEKWycExd7yQflUb7ZxORMG\nI9QpRjNXtHx9HQK0MVNlYmFzdGlhbiBLYXJsc2VuIChXb3JrKSA8c2ViYXN0aWFu\nQGZqb3JkbWFpbC5ubz6InQQwFgoARRYhBNNTX/mMzPaTmulOM5SGPH+YbWXoBQJn\nXsPWJx0gV29yayBkb21haW4gY2hhbmdlZCB0byBjb3JwLmluYm94LmNvbQAKCRCU\nhjx/mG1l6LR7AQC2HsdyrIkplszK7o0H24lhxbkHBmQb25r+Jjy/5M8X1QD/TmAH\nbPVOL/txk+D5pWjZnxK+ika3LogLADYMxfVqcw6IkAQTFggAOBYhBNNTX/mMzPaT\nmulOM5SGPH+YbWXoBQJhkWEzAhsBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJ\nEJSGPH+YbWXoPWMBAJrP86TSaSyQgjGDMYNN6ZNUR5Y+7CVwV7/5+89izTvLAP47\nmyurrn17Rc5D54YzSwqfPGlFjh9UyMevpn3uDfAiCbQ0U2ViYXN0aWFuIEthcmxz\nZW4gKFVuaXZlcnNpdHkpIDxzZWJhc2thckBpZmkudWlvLm5vPoidBDAWCgBFFiEE\n01Nf+YzM9pOa6U4zlIY8f5htZegFAmdewhUnHSBFLW1haWwgYWRkcmVzcyBkb2Vz\nIG5vdCBleGlzdCBhbnltb3JlAAoJEJSGPH+YbWXosP0BALQ1jYJ9YkfnYSV72i1T\nxBjcYk70Yk14TTRQnbW2icbqAQD2zVJbc8D0CDC85slB55gM5l80wWY7cxvptr1P\nsbKfDoiQBBMWCAA4FiEE01Nf+YzM9pOa6U4zlIY8f5htZegFAmGRYVMCGwEFCwkI\nBwIGFQoJCAsCBBYCAwECHgECF4AACgkQlIY8f5htZeiiHAD7BFrc4mg2uz95wc3L\nRVTqlZiXCDlhIdyp2+zBufKU8qAA/RaSdoZvAftSi5ySeCRf2FBrp5zkI1WeLKNy\n4AJLJdsBtDNTZWJhc3RpYW4gS2FybHNlbiAoV29yaykgPHNlYmFzdGlhbkBjb3Jw\nLmluYm94LmNvbT6IkwQTFgoAOxYhBNNTX/mMzPaTmulOM5SGPH+YbWXoBQJnXsQj\nAhsBBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEJSGPH+YbWXoc5UBAJLN\nabwIQ+gRWSBSsMxS/4lJnF+m9rkDdsZTG2aQCRIUAP0Xl5ZurW0tVmeLS8NRFdTI\nNq3FhOhestxk3Su8ql+KCLgzBGGRYWcWCSsGAQQB2kcPAQEHQLKqgI3R2x3cg+jY\nmGdZnjFwoRu+LAptBgGio6x5Up9UiO8EGBYIACAWIQTTU1/5jMz2k5rpTjOUhjx/\nmG1l6AUCYZFhZwIbAgCBCRCUhjx/mG1l6HYgBBkWCAAdFiEE6YUPXIGv5kViCnvK\npMaLsryIfLoFAmGRYWcACgkQpMaLsryIfLqUfwD+JIYKAi5ewNbF73yB97jPLKk1\ning1Wz0R6IRVbljaUkcBAJLMlfBDg4dH7+HOnrEwU+gbqqMwsJN/bAYswDokc6oC\nzSUBANmcUhoY3Lv/4c57MJe8+SB10dQzs/QB5wxaDLORSaeAAP4kdwIMe4kGYR+6\nG9Ual9bsGu+nCXy2wcHbxM3BEFBbA7g4BGGRYZQSCisGAQQBl1UBBQEBB0B2ujWd\nbMKywtn96yY0OQmavkst+fJdUtZ1bqnd+YhbHAMBCAeIeAQYFggAIBYhBNNTX/mM\nzPaTmulOM5SGPH+YbWXoBQJhkWGUAhsMAAoJEJSGPH+YbWXoHO0A/Ryd/vpm55Dr\n+EEOV35euJ/ICPzSJ7trLm2hEjFVKkViAP9OWQ5XtSKrrbP7bP5uagKx1wju/1Kb\npuiMRezfHRaQCrgzBGGRYakWCSsGAQQB2kcPAQEHQPKbpN+v+gSFhj1mJj9cv+46\n4umKSzlSvcEPWaQC4O16iHgEGBYIACAWIQTTU1/5jMz2k5rpTjOUhjx/mG1l6AUC\nYZFhqQIbIAAKCRCUhjx/mG1l6F4IAQAAuk3h9S3U1Ap8pvsNxvNTacodXAACEpaT\nTHwUULKr8gD/fkiIfodoSrEq6K9MT34jvtgBpeu9DIKExw/FadpC8QU=\n=orvD\n-----END PGP PUBLIC KEY BLOCK-----\n"]
 },
 {
   "id": "sebastka",
@@ -18,7 +24,13 @@
   "lastName": "Karlsen",
   "avatar": "",
   "groups": [],
-  "sshpubkey": []
+  "uidNumber": null,
+  "gidNumber": null,
+  "timezone": "Europe/Oslo",
+  "homeDirectory": "",
+  "loginShell": ""
+  "sshPublicKey": [],
+  "pgpKey": []
 },
 {
   "id": "stork",
@@ -29,5 +41,11 @@
   "lastName": "Service",
   "avatar": "",
   "groups": ["lldap_strict_readonly"],
-  "sshpubkey": []
+  "uidNumber": null,
+  "gidNumber": null,
+  "timezone": "",
+  "homeDirectory": "",
+  "loginShell": "",
+  "sshPublicKey": [],
+  "pgpKey": []
 }

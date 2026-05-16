@@ -32,7 +32,7 @@ spec:
       name_attribute_path: name
       use_pkce: 'true'
       allow_assign_grafana_admin: "true"
-      role_attribute_path: contains(groups[*], 'k8s:admins') && 'Admin' || 'Viewer'
+      role_attribute_path: contains(groups[*], 'k8s_admins') && 'Admin' || 'Viewer'
       auth_style: InHeader
       # auto_login: "true"
   version: '12.3'

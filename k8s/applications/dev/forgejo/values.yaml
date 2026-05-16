@@ -69,10 +69,10 @@ gitea:
       # existingSecretKey:
       autoDiscoverUrl: https://auth.karlsen.fr/.well-known/openid-configuration
       skip-local-2fa: true
-      scopes: openid email profile groups sshpubkey
-      attributeSSHPublicKey: sshpubkey
+      scopes: openid email profile groups sshPublicKey
+      attributeSSHPublicKey: sshPublicKey
       groupClaimName: groups
-      adminGroup: forgejo:admins
+      adminGroup: forgejo_admins
       # allowUsernameChange: false  # Buggy. Run: forgejo admin auth update-oauth --id <id> --allow-username-change=false
   config:
     # APP_NAME: 'Forgejo: Beyond coding. We forge.'
@@ -128,7 +128,7 @@ gitea:
       ENABLE_OPENID_SIGNUP: 'true'
       WHITELISTED_URIS: auth.karlsen.fr
     oauth2_client:
-      OPENID_CONNECT_SCOPES: email profile groups sshpubkey
+      OPENID_CONNECT_SCOPES: email profile groups sshPublicKey
       USERNAME: nickname  # userid, nickname, email
       UPDATE_AVATAR: 'true'
       ACCOUNT_LINKING: 'disabled'  # 'disabled', 'login', 'auto'

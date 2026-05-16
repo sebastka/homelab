@@ -33,8 +33,8 @@ configs:
     controller.diff.server.side: true
   rbac:
     policy.csv: |
-      g, k8s:admins, role:admin
-      g, k8s:users, role:readonly
+      g, k8s_admins, role:admin
+      g, k8s_users, role:readonly
     policy.default: ''
 
 crds:

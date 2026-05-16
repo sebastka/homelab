@@ -59,8 +59,10 @@ authentication_backend:
     # password: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
     attributes:
       extra:
+        timezone: {multi_valued: false, value_type: string}
+        sshPublicKey: {multi_valued: true, value_type: string}
+        pgpKey: {multi_valued: true, value_type: string}
         grafana: {multi_valued: true, value_type: string}
-        sshpubkey: {multi_valued: true, value_type: string}
 
 # https://www.authelia.com/configuration/security/password-policy/
 # password_policy: {}
@@ -137,11 +139,13 @@ identity_providers:
       endpoints: [userinfo, authorization, token, revocation, introspection]
     claims_policies:
       embed_id_token_claims: {id_token: [email, name, preferred_username, groups]}
-      sshpubkey: {custom_claims: {sshpubkey: {attribute: sshpubkey}}, id_token: [email, preferred_username, groups]}
+      sshPublicKey: {custom_claims: {sshPublicKey: {attribute: sshPublicKey}, pgpKey: {attribute: pgpKey}, timezone: {attribute: timezone}}, id_token: [email, preferred_username, groups]}
       legacy: {id_token: [email, email_verified, alt_emails, name, preferred_username, groups]}  # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
       username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
     scopes:
-      sshpubkey: {claims: [sshpubkey]}
+      timezone: {claims: [timezone]}
+      sshPublicKey: {claims: [sshPublicKey]}
+      pgpKey: {claims: [pgpKey]}
     clients:
       - client_id: argocd
         client_name: Argo CD
@@ -210,11 +214,11 @@ identity_providers:
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 3 months
-        claims_policy: sshpubkey
+        claims_policy: sshPublicKey
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris: [https://git.karlsen.fr/user/oauth2/authelia/callback]
-        scopes: [openid, email, profile, groups, sshpubkey]
+        scopes: [openid, email, profile, groups, sshPublicKey]
         response_types: [code]
         grant_types: [authorization_code]
         access_token_signed_response_alg: none

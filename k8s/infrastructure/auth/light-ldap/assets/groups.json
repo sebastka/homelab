@@ -1,4 +1,4 @@
-{"name": "k8s:admins", "displayName": "Kubernetes Administrators"}
-{"name": "k8s:users", "displayName": "Kubernetes Users"}
-{"name": "forgejo:admins", "displayName": "Forgejo Administrators"}
-{"name": "forgejo:users", "displayName": "Forgejo Users"}
+{"name": "k8s_admins",     "displayName": "Kubernetes Administrators",   "gidNumber": 2000}
+{"name": "k8s_users",      "displayName": "Kubernetes Users",            "gidNumber": 2001}
+{"name": "forgejo_admins", "displayName": "Forgejo Administrators",      "gidNumber": 2002}
+{"name": "forgejo_users",  "displayName": "Forgejo Users",               "gidNumber": 2003}

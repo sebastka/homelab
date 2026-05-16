@@ -44,4 +44,4 @@ spec:
           jwt:
             provider: authelia
             claims:
-              - {name: groups, valueType: StringArray, values: ['k8s:admins']}
+              - {name: groups, valueType: StringArray, values: ['k8s_admins']}

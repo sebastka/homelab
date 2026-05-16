@@ -44,7 +44,7 @@ spec:
           jwt:
             provider: authelia
             claims:
-              - {name: groups, valueType: StringArray, values: ['k8s:admins']}
+              - {name: groups, valueType: StringArray, values: ['k8s_admins']}
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy

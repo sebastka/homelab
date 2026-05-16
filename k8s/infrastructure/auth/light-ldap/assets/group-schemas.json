@@ -1,3 +1,4 @@
 [
-  {"name": "displayName", "attributeType": "STRING", "isEditable": false, "isList": false, "isVisible": true}
+  {"name": "displayName", "attributeType": "STRING",  "isEditable": false, "isList": false, "isVisible": true},
+  {"name": "gidNumber",   "attributeType": "INTEGER", "isEditable": false, "isList": false, "isVisible": true}
 ]
