@@ -5,7 +5,7 @@ groups:
       - alert: HighLogErrorRate
         expr: |
           sum by (namespace, pod) (
-            rate({namespace!~"kube-system|cilium-spire"}
+            rate({namespace=~".+", namespace!~"kube-system|cilium-spire"}
               |~ "(?i)\\b(error|exception|fatal|panic)\\b"
               [5m]
             )
@@ -19,7 +19,7 @@ groups:
       - alert: CriticalLogErrorRate
         expr: |
           sum by (namespace, pod) (
-            rate({namespace!~"kube-system|cilium-spire"}
+            rate({namespace=~".+", namespace!~"kube-system|cilium-spire"}
               |~ "(?i)\\b(error|exception|fatal|panic)\\b"
               [5m]
             )
