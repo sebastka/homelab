@@ -13,7 +13,6 @@ prometheus:
     cilium:
       ingress:
         - {fromEntities: [host], toPorts: [ports: [{port: '9090', protocol: TCP}]]}  # health probes
-        - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '9090', protocol: TCP}]]}
         - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: thanos}], toPorts: [ports: [{port: '10901', protocol: TCP}]]}
       egress:
         - {toEntities: [kube-apiserver]}  # service discovery + secret reads
