@@ -1,6 +1,6 @@
 {
   "id": "sebastian",
-  "password": $LLDAP_SEBASTIAN_PASSWORD,
+  "password": $ENV.LLDAP_SEBASTIAN_PASSWORD,
   "email": "sebastian@karlsen.fr",
   "displayName": "Sebastian Karlsen",
   "firstName": "Sebastian",
@@ -17,7 +17,7 @@
 },
 {
   "id": "sebastka",
-  "password": $LLDAP_SEBASTKA_PASSWORD,
+  "password": $ENV.LLDAP_SEBASTKA_PASSWORD,
   "email": "sebastka@karlsen.fr",
   "displayName": "Sebastian Karlsen",
   "firstName": "Sebastian",
@@ -34,7 +34,7 @@
 },
 {
   "id": "stork",
-  "password": $LLDAP_STORK_PASSWORD,
+  "password": $ENV.LLDAP_STORK_PASSWORD,
   "email": "stork@karlsen.fr",
   "displayName": "Stork",
   "firstName": "Stork",

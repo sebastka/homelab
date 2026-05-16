@@ -42,11 +42,7 @@ spec:
             - |
               set -eu
               rm -rf /mnt/generated-schemas/* /mnt/generated-schemas/.[!.]*
-              jq -cn \
-                  --arg LLDAP_SEBASTIAN_PASSWORD "$LLDAP_SEBASTIAN_PASSWORD" \
-                  --arg LLDAP_SEBASTKA_PASSWORD "$LLDAP_SEBASTKA_PASSWORD" \
-                  --arg LLDAP_STORK_PASSWORD "$LLDAP_STORK_PASSWORD" \
-                  -f /mnt/schemas/users.jq \
+              jq -cn -f /mnt/schemas/users.jq \
                 | jq -c 'with_entries(select(.value != null))' \
                   >/mnt/generated-schemas/users.json
           securityContext:
