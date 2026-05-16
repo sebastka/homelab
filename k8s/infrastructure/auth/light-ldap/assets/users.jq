@@ -27,8 +27,8 @@
   "uidNumber": null,
   "gidNumber": null,
   "timezone": "Europe/Oslo",
-  "homeDirectory": "",
-  "loginShell": "",
+  "homeDirectory": null,
+  "loginShell": null,
   "sshPublicKey": [],
   "pgpKey": []
 },
@@ -43,9 +43,9 @@
   "groups": ["lldap_strict_readonly"],
   "uidNumber": null,
   "gidNumber": null,
-  "timezone": "",
-  "homeDirectory": "",
-  "loginShell": "",
+  "timezone": null,
+  "homeDirectory": null,
+  "loginShell": null,
   "sshPublicKey": [],
   "pgpKey": []
 }
