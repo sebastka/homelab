@@ -1,7 +1,6 @@
 ---
 title: |
   {{ if eq .status "firing" }}🔥{{ else }}✅ Resolved:{{ end }} {{ .commonLabels.alertname }}
-markdown: true
 message: |
   {{ range .alerts -}}
   {{ with .annotations.summary }}{{ . }}
