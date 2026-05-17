@@ -9,3 +9,14 @@ spec:
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-ui-egress
+  namespace: policy-reporter
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: policy-reporter-ui}}
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: policy-reporter, app.kubernetes.io/name: policy-reporter}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: policy-reporter, app.kubernetes.io/name: policy-reporter-kyverno-plugin}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
