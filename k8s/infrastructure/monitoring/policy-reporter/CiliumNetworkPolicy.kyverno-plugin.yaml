@@ -1,0 +1,21 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-kyverno-plugin-ingress
+  namespace: policy-reporter
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: policy-reporter-kyverno-plugin}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: policy-reporter, app.kubernetes.io/name: policy-reporter-ui}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # UI
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-kyverno-plugin-egress
+  namespace: policy-reporter
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: policy-reporter-kyverno-plugin}}
+  egress:
+    - {toEntities: [kube-apiserver]}
