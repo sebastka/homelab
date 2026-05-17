@@ -28,7 +28,7 @@ spec:
             deny:
               conditions:
                 any:
-                  - {key: "{{ element.securityContext.privileged }}", operator: Equals, value: true}
-                  - {key: "{{ element.securityContext.allowPrivilegeEscalation }}", operator: NotEquals, value: false}
-                  - {key: "{{ element.securityContext.readOnlyRootFilesystem }}", operator: NotEquals, value: true}
+                  - {key: "{{ element.securityContext.privileged || `false` }}", operator: Equals, value: true}
+                  - {key: "{{ element.securityContext.allowPrivilegeEscalation || `true` }}", operator: NotEquals, value: false}
+                  - {key: "{{ element.securityContext.readOnlyRootFilesystem || `false` }}", operator: NotEquals, value: true}
                   - {key: "ALL", operator: AnyNotIn, value: "{{ element.securityContext.capabilities.drop || `[]` }}"}
