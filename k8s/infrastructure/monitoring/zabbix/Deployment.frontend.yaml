@@ -40,7 +40,7 @@ spec:
           image: zabbix/zabbix-web-nginx-pgsql:alpine-7.4.9
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
+            readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 256Mi}
