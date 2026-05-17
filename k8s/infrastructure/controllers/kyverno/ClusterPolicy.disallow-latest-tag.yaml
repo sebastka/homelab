@@ -1,0 +1,21 @@
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-latest-tag
+spec:
+  failureAction: Audit
+  background: true
+  rules:
+    - name: require-image-tag
+      match: {any: [resources: {kinds: [Pod]}]}
+      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
+      validate:
+        message: "Image '{{ element.image }}' must use an explicit tag — not ':latest' and not untagged."
+        foreach:
+          - list: "request.object.spec.[containers, initContainers][]"
+            deny:
+              conditions:
+                any:
+                  - {key: "{{ element.image }}", operator: Equals, value: '*:latest'}
+                  - {key: "{{ element.image }}", operator: NotContains, value: ':'}
