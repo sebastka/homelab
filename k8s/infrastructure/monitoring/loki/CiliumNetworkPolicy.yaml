@@ -11,6 +11,7 @@ spec:
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: alloy}}], toPorts: [{ports: [{port: '3100', protocol: TCP}]}]}  # Alloy log push
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}}], toPorts: [{ports: [{port: '3100', protocol: TCP}]}]}  # Grafana queries
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [{ports: [{port: '3100', protocol: TCP}]}]}  # Prometheus scrape
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [{ports: [{port: '3100', protocol: TCP}]}]}  # Envoy Gateway
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy

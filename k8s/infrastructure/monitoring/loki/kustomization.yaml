@@ -11,6 +11,7 @@ configMapGenerator:
 
 resources:
   - Namespace.yaml
+  - HTTPRoute.yaml
   - CiliumNetworkPolicy.yaml
   - GrafanaDashboard.yaml
 
