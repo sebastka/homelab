@@ -11,8 +11,8 @@ spec:
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
       validate:
         failureAction: Audit
-        message: Label app.kubernetes.io/name is required.
-        pattern:
-          metadata:
-            labels:
-              app.kubernetes.io/name: '?*'
+        message: "Label 'app.kubernetes.io/name' is required on all pods."
+        deny:
+          conditions:
+            all:
+              - {key: "{{ contains(keys(request.object.metadata.labels), 'app.kubernetes.io/name') }}", operator: Equals, value: false}
