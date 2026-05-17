@@ -11,11 +11,11 @@ spec:
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
       validate:
         failureAction: Audit
-        message: "Image '{{ element.image }}' must use an explicit tag — not ':latest' and not untagged."
+        message: "All container images must use an explicit tag — not ':latest' and not untagged."
         foreach:
           - list: "request.object.spec.[containers, initContainers][]"
             deny:
               conditions:
                 any:
                   - {key: "{{ element.image }}", operator: Equals, value: '*:latest'}
-                  - {key: "{{ element.image }}", operator: NotContains, value: ':'}
+                  - {key: "{{ regex_match('^[^:]+$', element.image) }}", operator: Equals, value: true}
