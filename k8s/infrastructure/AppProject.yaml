@@ -4,6 +4,8 @@ kind: AppProject
 metadata:
   name: infrastructure
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: '-1'
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
