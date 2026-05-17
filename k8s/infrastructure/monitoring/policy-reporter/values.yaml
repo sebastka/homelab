@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=
+# https://github.com/kyverno/policy-reporter/blob/main/charts/policy-reporter/values.yaml
+---
+
+ui:
+  enabled: true
+
+plugin:
+  kyverno:
+    enabled: true
+
+target:
+  loki:
+    host: http://loki.loki:3100
+    skipExistingOnStartup: true
+
+monitoring:
+  enabled: true

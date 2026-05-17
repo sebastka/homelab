@@ -1,0 +1,19 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: policy-reporter
+
+resources:
+  - Namespace.yaml
+  - HTTPRoute.yaml
+  - CiliumNetworkPolicy.policy-reporter.yaml
+  - CiliumNetworkPolicy.ui.yaml
+
+helmCharts:
+  - name: policy-reporter
+    repo: https://kyverno.github.io/policy-reporter
+    version: 3.7.4  # renovate: datasource=helm depName=policy-reporter registryUrl=https://kyverno.github.io/policy-reporter
+    releaseName: policy-reporter
+    namespace: policy-reporter
+    includeCRDs: true
+    valuesFile: values.yaml
