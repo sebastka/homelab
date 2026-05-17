@@ -18,7 +18,7 @@ resources:
 helmCharts:
   - name: loki
     repo: oci://ghcr.io/grafana-community/helm-charts
-    version: 14.2.0  # renovate: datasource=helm registryUrl=https://grafana.github.io/helm-charts depName=loki
+    version: 16.0.0  # renovate: datasource=helm registryUrl=https://grafana.github.io/helm-charts depName=loki
     releaseName: loki
     namespace: loki
     valuesFile: values.yaml
