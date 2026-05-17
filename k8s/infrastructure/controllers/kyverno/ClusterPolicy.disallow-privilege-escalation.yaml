@@ -4,13 +4,13 @@ kind: ClusterPolicy
 metadata:
   name: disallow-privilege-escalation
 spec:
-  failureAction: Audit
   background: true
   rules:
     - name: deny-privileged-and-escalation
       match: {any: [resources: {kinds: [Pod]}]}
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
       validate:
+        failureAction: Audit
         message: "Container '{{ element.name }}' must not run as privileged or allow privilege escalation."
         foreach:
           - list: "request.object.spec.[containers, initContainers][]"
