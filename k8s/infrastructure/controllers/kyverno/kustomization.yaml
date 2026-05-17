@@ -12,7 +12,7 @@ patches:
       - {op: add, path: /metadata/annotations, value: {argocd.argoproj.io/sync-wave: '1'}}
   - target: {kind: ClusterPolicy}
     patch: |
-      - {op: add, path: /metadata/annotations, value: {argocd.argoproj.io/sync-wave: '1'}}
+      - {op: add, path: /metadata/annotations, value: {argocd.argoproj.io/sync-wave: '2'}}
 
 resources:
   - Namespace.yaml
