@@ -7,6 +7,7 @@ resources:
   - Namespace.yaml
   - HTTPRoute.yaml
   - CiliumNetworkPolicy.policy-reporter.yaml
+  - CiliumNetworkPolicy.kyverno-plugin.yaml
   - CiliumNetworkPolicy.ui.yaml
 
 helmCharts:
