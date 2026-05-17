@@ -22,13 +22,12 @@ spec:
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
       validate:
         failureAction: Audit
-        message: "All containers must set privileged: false, allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, and drop all capabilities."
+        message: "All containers must set allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, drop all capabilities, and must not run as privileged."
         foreach:
           - list: "request.object.spec.[containers, initContainers][]"
-            deny:
-              conditions:
-                any:
-                  - {key: "{{ element.securityContext.privileged || `false` }}", operator: Equals, value: true}
-                  - {key: "{{ element.securityContext.allowPrivilegeEscalation || `true` }}", operator: NotEquals, value: false}
-                  - {key: "{{ element.securityContext.readOnlyRootFilesystem || `false` }}", operator: NotEquals, value: true}
-                  - {key: "ALL", operator: AnyNotIn, value: "{{ element.securityContext.capabilities.drop || `[]` }}"}
+            pattern:
+              securityContext:
+                =(privileged): false
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: {drop: [ALL]}
