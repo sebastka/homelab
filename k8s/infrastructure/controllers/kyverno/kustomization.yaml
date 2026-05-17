@@ -3,6 +3,17 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: kyverno
 
+# Wave 0: CRDs + Operator
+# Wave 1: CiliumNetworkPolicies
+# Wave 2: ClusterPolicies
+patches:
+  - target: {kind: CiliumNetworkPolicy}
+    patch: |
+      - {op: add, path: /metadata/annotations, value: {argocd.argoproj.io/sync-wave: '1'}}
+  - target: {kind: ClusterPolicy}
+    patch: |
+      - {op: add, path: /metadata/annotations, value: {argocd.argoproj.io/sync-wave: '1'}}
+
 resources:
   - Namespace.yaml
   - ClusterPolicy.spread-pods.yaml

@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.12/website/content/v1.12/schemas/config.schema.json
+# Increase etcd heartbeat and election timeouts to tolerate brief I/O spikes
+# (e.g. burst CRD writes during a large ArgoCD sync) without triggering a leader election.
+---
+cluster:
+  etcd:
+    extraArgs:
+      heartbeat-interval: '200'
+      election-timeout: '2000'

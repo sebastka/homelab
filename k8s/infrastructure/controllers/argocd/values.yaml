@@ -32,6 +32,8 @@ configs:
     server.insecure: true
     controller.diff.server.side: true
     applicationsetcontroller.enable.progressive.syncs: "true"
+    controller.operation.processors: '5'
+    controller.kubectl.parallelism.limit: '10'
   rbac:
     policy.csv: |
       g, k8s_admins, role:admin
