@@ -5,7 +5,7 @@ namespace: kyverno
 
 resources:
   - Namespace.yaml
-  # - ClusterPolicy.spread-pods.yaml
+  - ClusterPolicy.spread-pods.yaml
   - CiliumNetworkPolicy.namespace.yaml
   - CiliumNetworkPolicy.migrate-resources.yaml
   - CiliumNetworkPolicy.rm-webhooks.yaml
