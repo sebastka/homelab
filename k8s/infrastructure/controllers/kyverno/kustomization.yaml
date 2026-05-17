@@ -1,0 +1,25 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kyverno
+
+resources:
+  - Namespace.yaml
+  # - ClusterPolicy.spread-pods.yaml
+  - CiliumNetworkPolicy.namespace.yaml
+  - CiliumNetworkPolicy.migrate-resources.yaml
+  - CiliumNetworkPolicy.rm-webhooks.yaml
+  - CiliumNetworkPolicy.scale-to-zero.yaml
+  - CiliumNetworkPolicy.admission.yaml
+  - CiliumNetworkPolicy.background.yaml
+  - CiliumNetworkPolicy.cleanup.yaml
+  - CiliumNetworkPolicy.reports.yaml
+
+helmCharts:
+  - name: kyverno
+    repo: https://kyverno.github.io/kyverno/
+    version: 3.8.0  # renovate: datasource=github-releases depName=kyverno/kyverno
+    releaseName: kyverno
+    namespace: kyverno
+    includeCRDs: true
+    valuesFile: values.yaml

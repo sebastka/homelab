@@ -1,0 +1,19 @@
+# ---
+# apiVersion: cilium.io/v2
+# kind: CiliumNetworkPolicy
+# metadata:
+#   name: allow-reports-ingress
+#   namespace: kyverno
+# spec:
+#   endpointSelector: {matchLabels: {app.kubernetes.io/name: kyverno-reports-controller}}
+#   ingress: []
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-reports-egress
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: kyverno-reports-controller}}
+  egress:
+    - {toEntities: [kube-apiserver]}

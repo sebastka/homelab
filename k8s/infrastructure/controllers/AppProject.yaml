@@ -11,6 +11,7 @@ spec:
     - {namespace: kube-system, server: 'https://kubernetes.default.svc'}
     - {namespace: cert-manager, server: 'https://kubernetes.default.svc'}
     - {namespace: intel-device-plugins, server: 'https://kubernetes.default.svc'}
+    - {namespace: kyverno, server: 'https://kubernetes.default.svc'}
     - {namespace: nfd, server: 'https://kubernetes.default.svc'}
     - {namespace: reloader, server: 'https://kubernetes.default.svc'}
     - {namespace: sealed-secrets, server: 'https://kubernetes.default.svc'}

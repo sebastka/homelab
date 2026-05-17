@@ -1,0 +1,21 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-admission-ingress
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: kyverno-admission-controller}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '9443', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: prometheus}], toPorts: [ports: [{port: '8000', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-admission-egress
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: kyverno-admission-controller}}
+  egress:
+    - {toEntities: [kube-apiserver]}

@@ -1,0 +1,10 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-migrateresources-egress
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {job-name: kyverno-migrate-resources}}
+  egress:
+    - {toEntities: [kube-apiserver]}

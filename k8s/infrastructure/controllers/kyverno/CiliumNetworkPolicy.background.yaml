@@ -1,0 +1,19 @@
+# ---
+# apiVersion: cilium.io/v2
+# kind: CiliumNetworkPolicy
+# metadata:
+#   name: allow-background-ingress
+#   namespace: kyverno
+# spec:
+#   endpointSelector: {matchLabels: {app.kubernetes.io/name: kyverno-background-controller}}
+#   ingress: []
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-background-egress
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: kyverno-background-controller}}
+  egress:
+    - {toEntities: [kube-apiserver]}
