@@ -63,7 +63,7 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 512Mi}
+            requests: {memory: 256Mi}
             limits: {memory: 512Mi}
           envFrom:
             - configMapRef: {name: opentogethertube-env}
