@@ -11,11 +11,9 @@ spec:
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
       validate:
         failureAction: Audit
-        message: "Container '{{ element.name }}' must define liveness and readiness probes."
+        message: "All containers must define liveness and readiness probes."
         foreach:
           - list: request.object.spec.template.spec.containers
             pattern:
-              livenessProbe:
-                periodSeconds: '>0'
-              readinessProbe:
-                periodSeconds: '>0'
+              livenessProbe: {periodSeconds: '>0'}
+              readinessProbe: {periodSeconds: '>0'}

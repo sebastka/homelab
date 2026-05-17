@@ -1,0 +1,34 @@
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-securitycontext
+spec:
+  background: true
+  rules:
+    - name: check-pod-securitycontext
+      match: {any: [resources: {kinds: [Pod]}]}
+      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
+      validate:
+        failureAction: Audit
+        message: "Pod must set runAsNonRoot: true and seccompProfile: {type: RuntimeDefault} at the pod level."
+        pattern:
+          spec:
+            securityContext:
+              runAsNonRoot: true
+              seccompProfile: {type: RuntimeDefault}
+    - name: check-container-securitycontext
+      match: {any: [resources: {kinds: [Pod]}]}
+      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
+      validate:
+        failureAction: Audit
+        message: "All containers must set privileged: false, allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, and drop all capabilities."
+        foreach:
+          - list: "request.object.spec.[containers, initContainers][]"
+            deny:
+              conditions:
+                any:
+                  - {key: "{{ element.securityContext.privileged }}", operator: Equals, value: true}
+                  - {key: "{{ element.securityContext.allowPrivilegeEscalation }}", operator: NotEquals, value: false}
+                  - {key: "{{ element.securityContext.readOnlyRootFilesystem }}", operator: NotEquals, value: true}
+                  - {key: "ALL", operator: AnyNotIn, value: "{{ element.securityContext.capabilities.drop || `[]` }}"}
