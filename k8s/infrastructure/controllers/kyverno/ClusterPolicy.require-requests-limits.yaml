@@ -4,13 +4,13 @@ kind: ClusterPolicy
 metadata:
   name: require-requests-limits
 spec:
-  failureAction: Audit
   background: true
   rules:
     - name: require-memory-requests-limits
       match: {any: [resources: {kinds: [Pod]}]}
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
       validate:
+        failureAction: Audit
         message: "Container '{{ element.name }}' must define memory requests and limits."
         foreach:
           - list: "request.object.spec.[containers, initContainers][]"

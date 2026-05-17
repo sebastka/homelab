@@ -4,13 +4,13 @@ kind: ClusterPolicy
 metadata:
   name: require-probes
 spec:
-  failureAction: Audit
   background: true
   rules:
     - name: require-liveness-readiness-probes
       match: {any: [resources: {kinds: [Deployment, StatefulSet, DaemonSet]}]}
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
       validate:
+        failureAction: Audit
         message: "Container '{{ element.name }}' must define liveness and readiness probes."
         foreach:
           - list: request.object.spec.template.spec.containers

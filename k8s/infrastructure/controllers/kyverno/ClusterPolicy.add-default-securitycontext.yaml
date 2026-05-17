@@ -4,12 +4,12 @@ kind: ClusterPolicy
 metadata:
   name: add-default-securitycontext
 spec:
-  failureAction: Audit
   background: true
   rules:
     - name: add-securitycontext
       match: {any: [resources: {kinds: [Pod]}]}
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
+      validate: {failureAction: Audit}
       mutate:
         patchStrategicMerge:
           spec:

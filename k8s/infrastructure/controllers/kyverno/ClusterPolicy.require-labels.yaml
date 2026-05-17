@@ -4,13 +4,13 @@ kind: ClusterPolicy
 metadata:
   name: require-labels
 spec:
-  failureAction: Audit
   background: true
   rules:
     - name: require-app-name-label
       match: {any: [resources: {kinds: [Deployment, StatefulSet, DaemonSet, Job, CronJob]}]}
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
       validate:
+        failureAction: Audit
         message: Label app.kubernetes.io/name is required.
         pattern:
           metadata:
