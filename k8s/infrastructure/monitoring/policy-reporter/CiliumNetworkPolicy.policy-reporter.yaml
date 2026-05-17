@@ -1,0 +1,22 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-policyreporter-ingress
+  namespace: policy-reporter
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: policy-reporter}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: prometheus}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Prometheus scraping
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-policyreporter-egress
+  namespace: policy-reporter
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: policy-reporter}}
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: loki, app.kubernetes.io/name: loki}], toPorts: [ports: [{port: '3100', protocol: TCP}]]}
