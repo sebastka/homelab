@@ -17,6 +17,12 @@ patches:
 resources:
   - Namespace.yaml
   - ClusterPolicy.spread-pods.yaml
+  - ClusterPolicy.add-default-securitycontext.yaml
+  - ClusterPolicy.disallow-latest-tag.yaml
+  - ClusterPolicy.require-requests-limits.yaml
+  - ClusterPolicy.disallow-privilege-escalation.yaml
+  - ClusterPolicy.require-labels.yaml
+  - ClusterPolicy.require-probes.yaml
   - CiliumNetworkPolicy.namespace.yaml
   - CiliumNetworkPolicy.migrate-resources.yaml
   - CiliumNetworkPolicy.rm-webhooks.yaml
