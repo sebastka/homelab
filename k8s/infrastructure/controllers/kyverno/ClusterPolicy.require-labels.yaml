@@ -7,7 +7,7 @@ spec:
   background: true
   rules:
     - name: require-app-name-label
-      match: {any: [resources: {kinds: [Deployment, StatefulSet, DaemonSet, Job, CronJob]}]}
+      match: {any: [resources: {kinds: [Pod]}]}
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
       validate:
         failureAction: Audit
