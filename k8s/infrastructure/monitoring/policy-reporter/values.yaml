@@ -17,6 +17,9 @@ plugin:
       requests: {memory: 128Mi}
   trivy:
     enabled: true
+    podSecurityContext:
+      runAsNonRoot: true
+      seccompProfile: {type: RuntimeDefault}
     resources:
       limits: {memory: 128Mi}
       requests: {memory: 128Mi}
