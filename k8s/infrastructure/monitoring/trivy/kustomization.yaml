@@ -6,7 +6,8 @@ namespace: trivy
 patches:
   - target: {kind: StatefulSet, name: trivy-server}
     patch: |
-      - {op: add, path: /metadata/annotations/argocd.argoproj.io~1sync-options, value: Replace=true}
+      - {op: remove, path: /spec/volumeClaimTemplates/0/apiVersion}
+      - {op: remove, path: /spec/volumeClaimTemplates/0/kind}
 
 resources:
   - Namespace.yaml

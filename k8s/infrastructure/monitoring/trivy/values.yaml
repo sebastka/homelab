@@ -16,7 +16,7 @@ operator:
   scanJobTTL: 6h
 
 trivy:
-  storageClassName: longhorn-encrypted
+  storageClassName: longhorn
   storageSize: 5Gi
   resources:
     requests: {memory: 128Mi}
