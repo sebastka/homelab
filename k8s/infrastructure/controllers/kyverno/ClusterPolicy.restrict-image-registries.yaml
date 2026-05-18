@@ -105,7 +105,7 @@ spec:
 
                       # infrastructure/monitoring/trivy
                       - 'ghcr.io/aquasecurity/*'
-                      - 'gcr.io/aquasec/*'
+                      - 'mirror.gcr.io/aquasec/*'
 
                       # infrastructure/monitoring/headlamp
                       - docker.io/headlamp-k8s/headlamp
