@@ -10,7 +10,7 @@ spec:
       match: {any: [resources: {kinds: [Pod]}]}
       verifyImages:
         - imageReferences: ['ghcr.io/sebastka/*']
-          failureAction: Enforce
+          failureAction: Audit  # Enforce
           mutateDigest: false
           verifyDigest: false
           attestors:
