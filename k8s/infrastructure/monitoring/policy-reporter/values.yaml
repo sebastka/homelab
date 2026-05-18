@@ -5,9 +5,21 @@
 ui:
   enabled: true
 
+resources:
+  limits: {memory: 128Mi}
+  requests: {memory: 128Mi}
+
 plugin:
-  kyverno: {enabled: true}
-  trivy: {enabled: true}
+  kyverno:
+    enabled: true
+    resources:
+      limits: {memory: 128Mi}
+      requests: {memory: 128Mi}
+  trivy:
+    enabled: true
+    resources:
+      limits: {memory: 128Mi}
+      requests: {memory: 128Mi}
 
 target:
   loki:
