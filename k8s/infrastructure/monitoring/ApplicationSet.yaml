@@ -14,14 +14,13 @@ spec:
         - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [prometheus-operator-crds, grafana-operator]}]
         - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [kube-prometheus-stack, loki]}]
         - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [thanos, alloy]}]
-        - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [grafana, headlamp, hubble, metrics-server, policy-reporter, stork, zabbix]}]  # trivy
+        - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [grafana, headlamp, hubble, metrics-server, policy-reporter, stork, zabbix, trivy]}]
   generators:
     - git:
         repoURL: https://github.com/sebastka/homelab.git
         revision: HEAD
         directories:
           - path: k8s/infrastructure/monitoring/*
-          - {path: k8s/infrastructure/monitoring/trivy, exclude: true}
   template:
     metadata:
       name: '{{ path.basename }}'
