@@ -23,7 +23,7 @@ plugin:
       fsGroup: 1234
     resources:
       limits: {memory: 128Mi}
-      requests: {memory: 128Mi}
+      requests: {memory: 512Mi}
     dbVolume:
       persistentVolumeClaim:
         claimName: policyreporter-trivydb-pvc
