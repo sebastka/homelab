@@ -9,7 +9,7 @@ spec:
   rules:
     - name: inject-zone-spread
       match: {any: [resources: {kinds: [Pod]}]}
-      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
+      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets, trivy]}]}}]}
       mutate:
         patchStrategicMerge:
           metadata: {labels: {topology.karlsen.fr/spread: 'true'}}
