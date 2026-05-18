@@ -3,12 +3,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: trivy
 
-patches:
-  - target: {kind: StatefulSet, name: trivy-server}
-    patch: |
-      - {op: remove, path: /spec/volumeClaimTemplates/0/apiVersion}
-      - {op: remove, path: /spec/volumeClaimTemplates/0/kind}
-
 resources:
   - Namespace.yaml
   - CiliumNetworkPolicy.operator.yaml
