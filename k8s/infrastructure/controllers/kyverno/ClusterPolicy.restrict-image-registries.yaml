@@ -102,7 +102,10 @@ spec:
                       # infrastructure/monitoring/policy-reporter
                       # kyverno/* (line 50) covers all policy-reporter images
                       - ghcr.io/oliver006/redis_exporter
-                      # - aquasecurity/trivy  # trivy-plugin sidecar; disabled until plugin is enabled
+
+                      # infrastructure/monitoring/trivy
+                      - ghcr.io/aquasecurity/trivy-operator
+                      - ghcr.io/aquasecurity/trivy
 
                       # infrastructure/monitoring/headlamp
                       - docker.io/headlamp-k8s/headlamp

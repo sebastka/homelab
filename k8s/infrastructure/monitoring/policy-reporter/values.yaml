@@ -6,8 +6,8 @@ ui:
   enabled: true
 
 plugin:
-  kyverno:
-    enabled: true
+  kyverno: {enabled: true}
+  trivy: {enabled: true}
 
 target:
   loki:
