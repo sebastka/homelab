@@ -19,7 +19,7 @@ operator:
   configAuditScannerEnabled: false  # Covered by Kyverno ClusterPolicies
   # infraAssessmentScannerEnabled: false
   # clusterComplianceEnabled: false
-  scanJobTTL: 6h
+  scanJobTTL: 10m
       
 trivy:
   storageClassName: longhorn
