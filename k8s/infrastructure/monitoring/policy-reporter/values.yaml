@@ -23,6 +23,9 @@ plugin:
     resources:
       limits: {memory: 128Mi}
       requests: {memory: 128Mi}
+    dbVolume:
+      persistentVolumeClaim:
+        claimName: trivy-plugindb-pvc
 
 target:
   loki:
