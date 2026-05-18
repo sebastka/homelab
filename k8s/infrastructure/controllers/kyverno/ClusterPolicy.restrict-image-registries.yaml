@@ -11,9 +11,9 @@ spec:
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public]}]}}]}
       validate:
         failureAction: Audit  # Switch to Enforce once policy-reporter shows zero violations
-        message: "Image '{{ element.image }}' is not in the allowlist. Add it to ClusterPolicy/restrict-image-registries to permit it."
         foreach:
           - list: 'request.object.spec.[containers, initContainers, ephemeralContainers][]'
+            message: "Image '{{ element.image }}' is not in the allowlist. Add it to ClusterPolicy/restrict-image-registries to permit it."
             deny:
               conditions:
                 all:
