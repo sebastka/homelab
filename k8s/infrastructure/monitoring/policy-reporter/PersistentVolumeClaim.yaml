@@ -7,4 +7,4 @@ metadata:
 spec:
   accessModes: [ReadWriteOncePod]
   storageClassName: longhorn
-  resources: {requests: {storage: 1Gi}}
+  resources: {requests: {storage: 2Gi}}
