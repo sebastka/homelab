@@ -20,6 +20,7 @@ plugin:
       limits: {memory: 64Mi}
   trivy:
     enabled: true
+    updateStrategy: {type: Recreate}
     podSecurityContext:
       runAsNonRoot: true
       seccompProfile: {type: RuntimeDefault}
