@@ -3,15 +3,21 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: policy-reporter-trivy-plugin
+  labels:
+    app.kubernetes.io/name: policy-reporter-trivy-plugin
+    app.kubernetes.io/instance: policy-reporter
 rules:
   - apiGroups: [aquasecurity.github.io]
-    resources: [vulnerabilityreports, clustervulnerabilityreports]
+    resources: [clustercompliancereports, clusterconfigauditreports, clusterinfraassessmentreports, clusterrbacassessmentreports, clustersbomreports, clustervulnerabilityreports, configauditreports, exposedsecretreports, infraassessmentreports, rbacassessmentreports, sbomreports, vulnerabilityreports]
     verbs: [get, list, watch]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: policy-reporter-trivy-plugin
+  labels:
+    app.kubernetes.io/name: policy-reporter-trivy-plugin
+    app.kubernetes.io/instance: policy-reporter
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
