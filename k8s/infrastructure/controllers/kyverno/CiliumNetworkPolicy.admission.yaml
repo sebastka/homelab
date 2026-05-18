@@ -20,3 +20,4 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: kyverno-admission-controller}}
   egress:
     - {toEntities: [kube-apiserver]}
+    - {toFQDNs: [{matchName: ghcr.io}, {matchName: tuf-repo-cdn.sigstore.dev}, {matchName: rekor.sigstore.dev}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
