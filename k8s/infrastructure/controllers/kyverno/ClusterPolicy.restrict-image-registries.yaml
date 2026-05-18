@@ -104,8 +104,7 @@ spec:
                       - ghcr.io/oliver006/redis_exporter
 
                       # infrastructure/monitoring/trivy
-                      - ghcr.io/aquasecurity/trivy-operator
-                      - ghcr.io/aquasecurity/trivy
+                      - 'ghcr.io/aquasecurity/*'
 
                       # infrastructure/monitoring/headlamp
                       - docker.io/headlamp-k8s/headlamp
