@@ -6,15 +6,15 @@ ui:
   enabled: true
 
 resources:
-  limits: {memory: 128Mi}
   requests: {memory: 128Mi}
+  limits: {memory: 128Mi}
 
 plugin:
   kyverno:
     enabled: true
     resources:
-      limits: {memory: 128Mi}
       requests: {memory: 128Mi}
+      limits: {memory: 128Mi}
   trivy:
     enabled: true
     podSecurityContext:
@@ -22,8 +22,8 @@ plugin:
       seccompProfile: {type: RuntimeDefault}
       fsGroup: 1234
     resources:
-      limits: {memory: 128Mi}
-      requests: {memory: 512Mi}
+      requests: {memory: 128Mi}
+      limits: {memory: 512Mi}
     dbVolume:
       persistentVolumeClaim:
         claimName: policyreporter-trivydb-pvc
