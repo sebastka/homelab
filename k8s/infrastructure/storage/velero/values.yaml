@@ -28,7 +28,7 @@ metrics:
 
 initContainers:
   - name: velero-plugin-for-aws
-    image: velero/velero-plugin-for-aws:v1.14.0
+    image: docker.io/velero/velero-plugin-for-aws:v1.14.0
     imagePullPolicy: IfNotPresent
     securityContext:
       runAsNonRoot: true

@@ -36,7 +36,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       initContainers:
         - name: config-merger
-          image: mikefarah/yq:4.53.2
+          image: docker.io/mikefarah/yq:4.53.2
           command: ['/bin/sh', '-c']
           args:
             - |
@@ -71,7 +71,7 @@ spec:
       containers:
         - name: ntfy
           # Dockerfile: https://github.com/binwiederhier/ntfy/blob/main/Dockerfile
-          image: binwiederhier/ntfy:v2.23
+          image: docker.io/binwiederhier/ntfy:v2.23
           args: [serve]
           securityContext:
             allowPrivilegeEscalation: false
