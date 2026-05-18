@@ -2,19 +2,22 @@
 # https://github.com/kyverno/policy-reporter/blob/main/charts/policy-reporter/values.yaml
 ---
 
+resources:
+  requests: {memory: 64Mi}
+  limits: {memory: 128Mi}
+
 ui:
   enabled: true
-
-resources:
-  requests: {memory: 128Mi}
-  limits: {memory: 128Mi}
+  resources:
+    requests: {memory: 32Mi}
+    limits: {memory: 64Mi}
 
 plugin:
   kyverno:
     enabled: true
     resources:
-      requests: {memory: 128Mi}
-      limits: {memory: 128Mi}
+      requests: {memory: 32Mi}
+      limits: {memory: 64Mi}
   trivy:
     enabled: true
     podSecurityContext:
@@ -22,11 +25,10 @@ plugin:
       seccompProfile: {type: RuntimeDefault}
       fsGroup: 1234
     resources:
-      requests: {memory: 128Mi}
-      limits: {memory: 512Mi}
+      requests: {memory: 32Mi}
+      limits: {memory: 512Mi}  # Needs some memory to decompress the Trivy database
     dbVolume:
-      persistentVolumeClaim:
-        claimName: policyreporter-trivydb-pvc
+      persistentVolumeClaim: {claimName: policyreporter-trivydb-pvc}
 
 target:
   loki:
