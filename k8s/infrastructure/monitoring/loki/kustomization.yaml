@@ -21,4 +21,5 @@ helmCharts:
     version: 16.0.0  # renovate: datasource=helm registryUrl=https://grafana.github.io/helm-charts depName=loki
     releaseName: loki
     namespace: loki
+    includeCRDs: true
     valuesFile: values.yaml
