@@ -8,7 +8,7 @@ trivyOperator:
     runAsUser: 1000
     runAsGroup: 1000
     seccompProfile: {type: RuntimeDefault}
-  # scanJobPodTemplateContainerSecurityContext
+  scanJobPodTemplateLabels: 'app.kubernetes.io/component=scan-job'
 
 operator:
   builtInTrivyServer: true
