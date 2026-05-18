@@ -2,9 +2,11 @@
 # https://github.com/aquasecurity/trivy-operator/blob/main/deploy/helm/values.yaml
 ---
 
-podSecurityContext:
-  runAsNonRoot: true
-  seccompProfile: {type: RuntimeDefault}
+trivyOperator:
+  scanJobPodTemplatePodSecurityContext:
+    runAsNonRoot: true
+    seccompProfile: {type: RuntimeDefault}
+  # scanJobPodTemplateContainerSecurityContext
 
 operator:
   builtInTrivyServer: true
@@ -14,9 +16,6 @@ operator:
   # infraAssessmentScannerEnabled: false
   # clusterComplianceEnabled: false
   scanJobTTL: 6h
-  scanJobPodTemplatePodSecurityContext:
-    runAsNonRoot: true
-    seccompProfile: {type: RuntimeDefault}
       
 trivy:
   storageClassName: longhorn
@@ -33,3 +32,7 @@ trivy:
     securityContext:
       allowPrivilegeEscalation: false
       capabilities: {drop: [ALL]}
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile: {type: RuntimeDefault}
