@@ -5,7 +5,7 @@ namespace: policy-reporter
 
 resources:
   - Namespace.yaml
-  - PersistentVolumeClaim.trivy-db.yaml
+  - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
   - CiliumNetworkPolicy.policy-reporter.yaml
   - CiliumNetworkPolicy.kyverno-plugin.yaml
