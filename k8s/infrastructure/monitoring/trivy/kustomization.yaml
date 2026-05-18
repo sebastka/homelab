@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: trivy
+
+resources:
+  - Namespace.yaml
+  - CiliumNetworkPolicy.yaml
+
+helmCharts:
+  - name: trivy-operator
+    repo: oci://ghcr.io/aquasecurity/helm-charts
+    version: 0.32.1  # renovate: datasource=helm depName=trivy-operator registryUrl=oci://ghcr.io/aquasecurity/helm-charts
+    releaseName: trivy-operator
+    namespace: trivy
+    includeCRDs: true
+    valuesFile: values.yaml

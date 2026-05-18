@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=
+# https://github.com/aquasecurity/trivy-operator/blob/main/deploy/helm/values.yaml
+---
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile: {type: RuntimeDefault}
+
+operator:
+  builtInTrivyServer: true
+  scanJobsConcurrentLimit: 3
+  vulnerabilityScannerEnabled: true
+  configAuditScannerEnabled: false  # Covered by Kyverno ClusterPolicies
+  # infraAssessmentScannerEnabled: false
+  # clusterComplianceEnabled: false
+  scanJobTTL: 6h
+
+trivy:
+  storageClassName: longhorn-encrypted
+  storageSize: 5Gi
+  resources:
+    requests: {memory: 128Mi}
+    limits: {memory: 512Mi}
+  server:
+    resources:
+      requests: {memory: 512Mi}
+      limits: {memory: 1Gi}
+    podSecurityContext:
+      seccompProfile: {type: RuntimeDefault}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities: {drop: [ALL]}
