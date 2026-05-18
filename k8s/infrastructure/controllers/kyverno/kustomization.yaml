@@ -22,6 +22,9 @@ resources:
   - ClusterPolicy.require-requests-limits.yaml
   - ClusterPolicy.require-labels.yaml
   - ClusterPolicy.require-probes.yaml
+  - ClusterPolicy.restrict-image-registries.yaml
+  - ClusterPolicy.verify-image-signatures-custom.yaml
+  - ClusterPolicy.verify-image-signatures-third-party.yaml
   - CiliumNetworkPolicy.namespace.yaml
   - CiliumNetworkPolicy.migrate-resources.yaml
   - CiliumNetworkPolicy.rm-webhooks.yaml

@@ -1,0 +1,236 @@
+# Exceptions:
+# - forgejo: GPG signatures on release binaries only, no container image signing
+# - searxng: not signed
+# - lldap: not signed
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: verify-image-signatures-third-party
+spec:
+  background: false
+  rules:
+    - name: verify-cilium
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['quay.io/cilium/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/cilium/cilium/.github/workflows/*'
+                    issuer: 'https://token.actions.githubusercontent.com'
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-argocd
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['quay.io/argoproj/*', 'quay.io/argoprojlabs/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/argoproj/argo-cd/.github/workflows/*'
+                    issuer: 'https://token.actions.githubusercontent.com'
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-kyverno
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['docker.io/kyverno/*', 'ghcr.io/kyverno/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/kyverno/kyverno/.github/workflows/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-cloudnative-pg
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['ghcr.io/cloudnative-pg/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/cloudnative-pg/cloudnative-pg/.github/workflows/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-spire
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['ghcr.io/spiffe/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/spiffe/spire/.github/workflows/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-reloader
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: [ghcr.io/stakater/reloader]
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/stakater/Reloader/.github/workflows/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-velero
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['docker.io/velero/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/vmware-tanzu/velero/.github/workflows/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-authelia
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: [docker.io/authelia/authelia]
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/authelia/authelia/.github/workflows/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-dex
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: [ghcr.io/dexidp/dex]
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/dexidp/dex/.github/workflows/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-minio
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['quay.io/minio/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/minio/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-thanos
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: [quay.io/thanos/thanos]
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/thanos-io/thanos/.github/workflows/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-grafana
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['docker.io/grafana/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/grafana/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-longhorn
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['docker.io/longhornio/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/longhorn/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-kubernetes
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['registry.k8s.io/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: k8s-infra-gcb@k8s-infra-release-prod.iam.gserviceaccount.com
+                    issuer: https://accounts.google.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    # - name: verify-bitnami  # Enterprise only -- Disabled
+    #   match: {any: [resources: {kinds: [Pod]}]}
+    #   verifyImages:
+    #     - imageReferences: ['docker.io/bitnami/*']
+    #       failureAction: Audit
+    #       mutateDigest: false
+    #       verifyDigest: false
+    #       attestors:
+    #         - count: 1
+    #           entries:
+    #             - keys:
+    #                 publicKeys: |-
+    #                   -----BEGIN PUBLIC KEY-----
+    #                   -----END PUBLIC KEY-----
+    - name: verify-synapse
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: [ghcr.io/element-hq/synapse]
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/element-hq/synapse/.github/workflows/docker.yml@refs/tags/v*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}

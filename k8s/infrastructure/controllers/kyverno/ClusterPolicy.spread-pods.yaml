@@ -1,8 +1,4 @@
-# Inject a soft zone-spread topology constraint into every non-system pod.
-# The labelSelector (topology.karlsen.fr/spread) matches ALL pods that receive this label, so the scheduler
-# counts the full cluster-wide zone balance rather than only same-Deployment pods.
-# whenUnsatisfiable: ScheduleAnyway means this is advisory — pods with hard node
-# affinities (e.g. jellyfin on the GPU zone) still schedule correctly.
+# Soft zone-spread topology constraint into every non-system pod
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
