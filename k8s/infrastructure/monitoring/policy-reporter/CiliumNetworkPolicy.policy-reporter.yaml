@@ -10,6 +10,7 @@ spec:
     - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: prometheus}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Prometheus scraping
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: policy-reporter, app.kubernetes.io/name: policy-reporter-ui}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # UI
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: policy-reporter, app.kubernetes.io/name: policy-reporter-trivy-plugin}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Trivy plugin
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
