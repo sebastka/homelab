@@ -9,10 +9,6 @@ trivyOperator:
     runAsGroup: 1000
     seccompProfile: {type: RuntimeDefault}
   scanJobPodTemplateLabels: 'app.kubernetes.io/name=trivy-scan-job,app.kubernetes.io/component=scan-job'
-  scanJobCustomVolumes:
-    - {name: tmp, emptyDir: {}}
-  scanJobCustomVolumesMount:
-    - {name: tmp, mountPath: /tmp}
 
 operator:
   builtInTrivyServer: true
