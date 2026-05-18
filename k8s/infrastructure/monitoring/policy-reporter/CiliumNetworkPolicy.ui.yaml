@@ -21,3 +21,4 @@ spec:
     - {toEntities: [kube-apiserver]}
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: policy-reporter, app.kubernetes.io/name: policy-reporter}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: policy-reporter, app.kubernetes.io/name: policy-reporter-kyverno-plugin}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: policy-reporter, app.kubernetes.io/name: policy-reporter-trivy-plugin}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
