@@ -20,6 +20,7 @@ plugin:
     podSecurityContext:
       runAsNonRoot: true
       seccompProfile: {type: RuntimeDefault}
+      fsGroup: 1234
     resources:
       limits: {memory: 128Mi}
       requests: {memory: 128Mi}
