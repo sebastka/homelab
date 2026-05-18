@@ -11,6 +11,7 @@ resources:
   - CiliumNetworkPolicy.kyverno-plugin.yaml
   - CiliumNetworkPolicy.ui.yaml
   - CiliumNetworkPolicy.trivy-plugin.yaml
+  - ClusterRole.trivy-plugin.yaml
 
 helmCharts:
   - name: policy-reporter
