@@ -1,0 +1,1736 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: trivy-vulnerabilities
+  namespace: trivy
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  folder: Security
+  resyncPeriod: 10m
+  json: |
+    {
+      "annotations": {"list": []},
+      "editable": true,
+      "graphTooltip": 0,
+      "links": [],
+      "panels": [
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},
+          "id": 1,
+          "title": "Summary",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "dark-red", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "dark-red", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 0, "y": 1},
+          "id": 2,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_vulnerabilities{namespace=~\"$namespace\", severity=\"CRITICAL\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Critical",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "orange", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "orange", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 4, "y": 1},
+          "id": 3,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_vulnerabilities{namespace=~\"$namespace\", severity=\"HIGH\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "High",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "yellow", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "yellow", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 8, "y": 1},
+          "id": 4,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_vulnerabilities{namespace=~\"$namespace\", severity=\"MEDIUM\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Medium",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "blue", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 1},
+          "id": 5,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_vulnerabilities{namespace=~\"$namespace\", severity=\"LOW\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Low",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "text", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 1},
+          "id": 6,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_vulnerabilities{namespace=~\"$namespace\", severity=\"UNKNOWN\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Unknown",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "semi-dark-purple", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "semi-dark-purple", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 20, "y": 1},
+          "id": 7,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_vulnerabilities{namespace=~\"$namespace\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total",
+          "type": "stat"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 5},
+          "id": 8,
+          "title": "By Namespace",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 1},
+                  {"color": "orange", "value": 10},
+                  {"color": "red", "value": 50}
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 10, "w": 24, "x": 0, "y": 6},
+          "id": 9,
+          "options": {
+            "displayMode": "gradient",
+            "fillOpacity": 80,
+            "gradientMode": "scheme",
+            "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false},
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "namePlacement": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "showUnfilled": true,
+            "sizing": "auto",
+            "tooltip": {"mode": "single", "sort": "none"}
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sort_desc(sum by(namespace)(trivy_image_vulnerabilities{namespace=~\"$namespace\", severity=~\"CRITICAL|HIGH\"}))",
+              "instant": true,
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Critical & High Vulnerabilities by Namespace",
+          "type": "bargauge"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 16},
+          "id": 10,
+          "title": "Image Details",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {"type": "auto"},
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {"id": "byName", "options": "severity"},
+                "properties": [
+                  {"id": "custom.width", "value": 110},
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {"options": {"CRITICAL": {"color": "dark-red", "index": 0, "text": "CRITICAL"}}, "type": "value"},
+                      {"options": {"HIGH": {"color": "orange", "index": 1, "text": "HIGH"}}, "type": "value"},
+                      {"options": {"MEDIUM": {"color": "yellow", "index": 2, "text": "MEDIUM"}}, "type": "value"},
+                      {"options": {"LOW": {"color": "blue", "index": 3, "text": "LOW"}}, "type": "value"},
+                      {"options": {"UNKNOWN": {"color": "gray", "index": 4, "text": "UNKNOWN"}}, "type": "value"}
+                    ]
+                  },
+                  {"id": "custom.cellOptions", "value": {"type": "color-text"}}
+                ]
+              },
+              {
+                "matcher": {"id": "byName", "options": "Count"},
+                "properties": [
+                  {"id": "custom.width", "value": 80},
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {"color": "green", "value": null},
+                        {"color": "yellow", "value": 1},
+                        {"color": "orange", "value": 10},
+                        {"color": "red", "value": 50}
+                      ]
+                    }
+                  },
+                  {"id": "custom.cellOptions", "value": {"type": "color-background"}}
+                ]
+              }
+            ]
+          },
+          "gridPos": {"h": 16, "w": 24, "x": 0, "y": 17},
+          "id": 11,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {"countRows": false, "fields": "", "reducer": ["sum"], "show": false},
+            "showHeader": true,
+            "sortBy": [{"desc": true, "displayName": "Count"}]
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sort_desc(sum by(namespace, image_repository, image_tag, severity)(trivy_image_vulnerabilities{namespace=~\"$namespace\"}))",
+              "format": "table",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Image Vulnerabilities",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {"Time": true},
+                "indexByName": {
+                  "namespace": 0,
+                  "image_repository": 1,
+                  "image_tag": 2,
+                  "severity": 3,
+                  "Value": 4
+                },
+                "renameByName": {"Value": "Count"}
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 33},
+          "id": 12,
+          "title": "Exposed Secrets",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "dark-red", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "dark-red", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 0, "y": 34},
+          "id": 13,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_exposedsecrets{namespace=~\"$namespace\", severity=\"CRITICAL\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Critical",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "orange", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "orange", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 4, "y": 34},
+          "id": 14,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_exposedsecrets{namespace=~\"$namespace\", severity=\"HIGH\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "High",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "yellow", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "yellow", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 8, "y": 34},
+          "id": 15,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_exposedsecrets{namespace=~\"$namespace\", severity=\"MEDIUM\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Medium",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "blue", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 34},
+          "id": 16,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_exposedsecrets{namespace=~\"$namespace\", severity=\"LOW\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Low",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "text", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 34},
+          "id": 17,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_exposedsecrets{namespace=~\"$namespace\", severity=\"UNKNOWN\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Unknown",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "semi-dark-purple", "mode": "fixed"},
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "semi-dark-purple", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 20, "y": 34},
+          "id": 18,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "textMode": "auto"
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sum(trivy_image_exposedsecrets{namespace=~\"$namespace\"}) or vector(0)",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total",
+          "type": "stat"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 38},
+          "id": 19,
+          "title": "By Namespace",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 1},
+                  {"color": "orange", "value": 5},
+                  {"color": "red", "value": 20}
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 10, "w": 24, "x": 0, "y": 39},
+          "id": 20,
+          "options": {
+            "displayMode": "gradient",
+            "fillOpacity": 80,
+            "gradientMode": "scheme",
+            "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false},
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "namePlacement": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "showUnfilled": true,
+            "sizing": "auto",
+            "tooltip": {"mode": "single", "sort": "none"}
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sort_desc(sum by(namespace)(trivy_image_exposedsecrets{namespace=~\"$namespace\", severity=~\"CRITICAL|HIGH\"}))",
+              "instant": true,
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Critical & High Exposed Secrets by Namespace",
+          "type": "bargauge"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 49},
+          "id": 21,
+          "title": "Image Details",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {"type": "auto"},
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {"id": "byName", "options": "severity"},
+                "properties": [
+                  {"id": "custom.width", "value": 110},
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {"options": {"CRITICAL": {"color": "dark-red", "index": 0, "text": "CRITICAL"}}, "type": "value"},
+                      {"options": {"HIGH": {"color": "orange", "index": 1, "text": "HIGH"}}, "type": "value"},
+                      {"options": {"MEDIUM": {"color": "yellow", "index": 2, "text": "MEDIUM"}}, "type": "value"},
+                      {"options": {"LOW": {"color": "blue", "index": 3, "text": "LOW"}}, "type": "value"},
+                      {"options": {"UNKNOWN": {"color": "gray", "index": 4, "text": "UNKNOWN"}}, "type": "value"}
+                    ]
+                  },
+                  {"id": "custom.cellOptions", "value": {"type": "color-text"}}
+                ]
+              },
+              {
+                "matcher": {"id": "byName", "options": "Count"},
+                "properties": [
+                  {"id": "custom.width", "value": 80},
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {"color": "green", "value": null},
+                        {"color": "yellow", "value": 1},
+                        {"color": "orange", "value": 5},
+                        {"color": "red", "value": 20}
+                      ]
+                    }
+                  },
+                  {"id": "custom.cellOptions", "value": {"type": "color-background"}}
+                ]
+              }
+            ]
+          },
+          "gridPos": {"h": 16, "w": 24, "x": 0, "y": 50},
+          "id": 22,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {"countRows": false, "fields": "", "reducer": ["sum"], "show": false},
+            "showHeader": true,
+            "sortBy": [{"desc": true, "displayName": "Count"}]
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sort_desc(sum by(namespace, image_repository, image_tag, severity)(trivy_image_exposedsecrets{namespace=~\"$namespace\"}))",
+              "format": "table",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Image Exposed Secrets",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {"Time": true},
+                "indexByName": {
+                  "namespace": 0,
+                  "image_repository": 1,
+                  "image_tag": 2,
+                  "severity": 3,
+                  "Value": 4
+                },
+                "renameByName": {"Value": "Count"}
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 66},
+          "id": 23,
+          "title": "RBAC Assessments",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "dark-red", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "dark-red", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 0, "y": 67},
+          "id": 24,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_rbacassessment_info{namespace=~\"$namespace\", severity=\"CRITICAL\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Critical",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "orange", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "orange", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 4, "y": 67},
+          "id": 25,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_rbacassessment_info{namespace=~\"$namespace\", severity=\"HIGH\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "High",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "yellow", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "yellow", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 8, "y": 67},
+          "id": 26,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_rbacassessment_info{namespace=~\"$namespace\", severity=\"MEDIUM\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Medium",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "blue", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 67},
+          "id": 27,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_rbacassessment_info{namespace=~\"$namespace\", severity=\"LOW\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Low",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "text", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 67},
+          "id": 28,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_rbacassessment_info{namespace=~\"$namespace\", severity=\"UNKNOWN\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Unknown",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "semi-dark-purple", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "semi-dark-purple", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 20, "y": 67},
+          "id": 29,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_rbacassessment_info{namespace=~\"$namespace\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Total",
+          "type": "stat"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 71},
+          "id": 30,
+          "title": "By Namespace",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 1},
+                  {"color": "orange", "value": 10},
+                  {"color": "red", "value": 50}
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 10, "w": 24, "x": 0, "y": 72},
+          "id": 31,
+          "options": {
+            "displayMode": "gradient",
+            "fillOpacity": 80,
+            "gradientMode": "scheme",
+            "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false},
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "namePlacement": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "showUnfilled": true,
+            "sizing": "auto",
+            "tooltip": {"mode": "single", "sort": "none"}
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sort_desc(sum by(namespace)(trivy_rbacassessment_info{namespace=~\"$namespace\", severity=~\"CRITICAL|HIGH\"}))",
+              "instant": true,
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Critical & High RBAC Findings by Namespace",
+          "type": "bargauge"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 82},
+          "id": 32,
+          "title": "Resource Details",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "custom": {"align": "auto", "cellOptions": {"type": "auto"}, "filterable": true, "inspect": false},
+              "mappings": [],
+              "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {"id": "byName", "options": "severity"},
+                "properties": [
+                  {"id": "custom.width", "value": 110},
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {"options": {"CRITICAL": {"color": "dark-red", "index": 0, "text": "CRITICAL"}}, "type": "value"},
+                      {"options": {"HIGH": {"color": "orange", "index": 1, "text": "HIGH"}}, "type": "value"},
+                      {"options": {"MEDIUM": {"color": "yellow", "index": 2, "text": "MEDIUM"}}, "type": "value"},
+                      {"options": {"LOW": {"color": "blue", "index": 3, "text": "LOW"}}, "type": "value"},
+                      {"options": {"UNKNOWN": {"color": "gray", "index": 4, "text": "UNKNOWN"}}, "type": "value"}
+                    ]
+                  },
+                  {"id": "custom.cellOptions", "value": {"type": "color-text"}}
+                ]
+              },
+              {
+                "matcher": {"id": "byName", "options": "Count"},
+                "properties": [
+                  {"id": "custom.width", "value": 80},
+                  {"id": "thresholds", "value": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 1}, {"color": "orange", "value": 10}, {"color": "red", "value": 50}]}},
+                  {"id": "custom.cellOptions", "value": {"type": "color-background"}}
+                ]
+              }
+            ]
+          },
+          "gridPos": {"h": 16, "w": 24, "x": 0, "y": 83},
+          "id": 33,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {"countRows": false, "fields": "", "reducer": ["sum"], "show": false},
+            "showHeader": true,
+            "sortBy": [{"desc": true, "displayName": "Count"}]
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sort_desc(sum by(namespace, resource_kind, resource_name, severity)(trivy_rbacassessment_info{namespace=~\"$namespace\"}))",
+              "format": "table",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "RBAC Assessment Findings",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {"Time": true},
+                "indexByName": {"namespace": 0, "resource_kind": 1, "resource_name": 2, "severity": 3, "Value": 4},
+                "renameByName": {"Value": "Count"}
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 99},
+          "id": 34,
+          "title": "Infra Assessments",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "dark-red", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "dark-red", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 0, "y": 100},
+          "id": 35,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_infraassessment_info{namespace=~\"$namespace\", severity=\"CRITICAL\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Critical",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "orange", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "orange", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 4, "y": 100},
+          "id": 36,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_infraassessment_info{namespace=~\"$namespace\", severity=\"HIGH\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "High",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "yellow", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "yellow", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 8, "y": 100},
+          "id": 37,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_infraassessment_info{namespace=~\"$namespace\", severity=\"MEDIUM\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Medium",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "blue", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 100},
+          "id": 38,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_infraassessment_info{namespace=~\"$namespace\", severity=\"LOW\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Low",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "text", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 100},
+          "id": 39,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_infraassessment_info{namespace=~\"$namespace\", severity=\"UNKNOWN\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Unknown",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "semi-dark-purple", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "semi-dark-purple", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 20, "y": 100},
+          "id": 40,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_infraassessment_info{namespace=~\"$namespace\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Total",
+          "type": "stat"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 104},
+          "id": 41,
+          "title": "By Namespace",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 1},
+                  {"color": "orange", "value": 10},
+                  {"color": "red", "value": 50}
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 10, "w": 24, "x": 0, "y": 105},
+          "id": 42,
+          "options": {
+            "displayMode": "gradient",
+            "fillOpacity": 80,
+            "gradientMode": "scheme",
+            "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false},
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "namePlacement": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "showUnfilled": true,
+            "sizing": "auto",
+            "tooltip": {"mode": "single", "sort": "none"}
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sort_desc(sum by(namespace)(trivy_infraassessment_info{namespace=~\"$namespace\", severity=~\"CRITICAL|HIGH\"}))",
+              "instant": true,
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Critical & High Infra Findings by Namespace",
+          "type": "bargauge"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 115},
+          "id": 43,
+          "title": "Resource Details",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "custom": {"align": "auto", "cellOptions": {"type": "auto"}, "filterable": true, "inspect": false},
+              "mappings": [],
+              "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {"id": "byName", "options": "severity"},
+                "properties": [
+                  {"id": "custom.width", "value": 110},
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {"options": {"CRITICAL": {"color": "dark-red", "index": 0, "text": "CRITICAL"}}, "type": "value"},
+                      {"options": {"HIGH": {"color": "orange", "index": 1, "text": "HIGH"}}, "type": "value"},
+                      {"options": {"MEDIUM": {"color": "yellow", "index": 2, "text": "MEDIUM"}}, "type": "value"},
+                      {"options": {"LOW": {"color": "blue", "index": 3, "text": "LOW"}}, "type": "value"},
+                      {"options": {"UNKNOWN": {"color": "gray", "index": 4, "text": "UNKNOWN"}}, "type": "value"}
+                    ]
+                  },
+                  {"id": "custom.cellOptions", "value": {"type": "color-text"}}
+                ]
+              },
+              {
+                "matcher": {"id": "byName", "options": "Count"},
+                "properties": [
+                  {"id": "custom.width", "value": 80},
+                  {"id": "thresholds", "value": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 1}, {"color": "orange", "value": 10}, {"color": "red", "value": 50}]}},
+                  {"id": "custom.cellOptions", "value": {"type": "color-background"}}
+                ]
+              }
+            ]
+          },
+          "gridPos": {"h": 16, "w": 24, "x": 0, "y": 116},
+          "id": 44,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {"countRows": false, "fields": "", "reducer": ["sum"], "show": false},
+            "showHeader": true,
+            "sortBy": [{"desc": true, "displayName": "Count"}]
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sort_desc(sum by(namespace, resource_kind, resource_name, severity)(trivy_infraassessment_info{namespace=~\"$namespace\"}))",
+              "format": "table",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Infra Assessment Findings",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {"Time": true},
+                "indexByName": {"namespace": 0, "resource_kind": 1, "resource_name": 2, "severity": 3, "Value": 4},
+                "renameByName": {"Value": "Count"}
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 132},
+          "id": 45,
+          "title": "Config Audits",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "dark-red", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "dark-red", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 0, "y": 133},
+          "id": 46,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_resource_configaudits{namespace=~\"$namespace\", severity=\"CRITICAL\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Critical",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "orange", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "orange", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 4, "y": 133},
+          "id": 47,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_resource_configaudits{namespace=~\"$namespace\", severity=\"HIGH\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "High",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "yellow", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "yellow", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 8, "y": 133},
+          "id": 48,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_resource_configaudits{namespace=~\"$namespace\", severity=\"MEDIUM\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Medium",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "blue", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 133},
+          "id": 49,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_resource_configaudits{namespace=~\"$namespace\", severity=\"LOW\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Low",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "text", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 133},
+          "id": 50,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_resource_configaudits{namespace=~\"$namespace\", severity=\"UNKNOWN\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Unknown",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"fixedColor": "semi-dark-purple", "mode": "fixed"},
+              "mappings": [], "noValue": "0",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "semi-dark-purple", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 4, "w": 4, "x": 20, "y": 133},
+          "id": 51,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_resource_configaudits{namespace=~\"$namespace\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Total",
+          "type": "stat"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 137},
+          "id": 52,
+          "title": "By Namespace",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 1},
+                  {"color": "orange", "value": 10},
+                  {"color": "red", "value": 50}
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 10, "w": 24, "x": 0, "y": 138},
+          "id": 53,
+          "options": {
+            "displayMode": "gradient",
+            "fillOpacity": 80,
+            "gradientMode": "scheme",
+            "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false},
+            "minVizHeight": 10,
+            "minVizWidth": 0,
+            "namePlacement": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+            "showUnfilled": true,
+            "sizing": "auto",
+            "tooltip": {"mode": "single", "sort": "none"}
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sort_desc(sum by(namespace)(trivy_resource_configaudits{namespace=~\"$namespace\", severity=~\"CRITICAL|HIGH\"}))",
+              "instant": true,
+              "legendFormat": "{{namespace}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Critical & High Config Audit Findings by Namespace",
+          "type": "bargauge"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 148},
+          "id": 54,
+          "title": "Resource Details",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "custom": {"align": "auto", "cellOptions": {"type": "auto"}, "filterable": true, "inspect": false},
+              "mappings": [],
+              "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]},
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "matcher": {"id": "byName", "options": "severity"},
+                "properties": [
+                  {"id": "custom.width", "value": 110},
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {"options": {"CRITICAL": {"color": "dark-red", "index": 0, "text": "CRITICAL"}}, "type": "value"},
+                      {"options": {"HIGH": {"color": "orange", "index": 1, "text": "HIGH"}}, "type": "value"},
+                      {"options": {"MEDIUM": {"color": "yellow", "index": 2, "text": "MEDIUM"}}, "type": "value"},
+                      {"options": {"LOW": {"color": "blue", "index": 3, "text": "LOW"}}, "type": "value"},
+                      {"options": {"UNKNOWN": {"color": "gray", "index": 4, "text": "UNKNOWN"}}, "type": "value"}
+                    ]
+                  },
+                  {"id": "custom.cellOptions", "value": {"type": "color-text"}}
+                ]
+              },
+              {
+                "matcher": {"id": "byName", "options": "Count"},
+                "properties": [
+                  {"id": "custom.width", "value": 80},
+                  {"id": "thresholds", "value": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 1}, {"color": "orange", "value": 10}, {"color": "red", "value": 50}]}},
+                  {"id": "custom.cellOptions", "value": {"type": "color-background"}}
+                ]
+              }
+            ]
+          },
+          "gridPos": {"h": 16, "w": 24, "x": 0, "y": 149},
+          "id": 55,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {"countRows": false, "fields": "", "reducer": ["sum"], "show": false},
+            "showHeader": true,
+            "sortBy": [{"desc": true, "displayName": "Count"}]
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${datasource}"},
+              "expr": "sort_desc(sum by(namespace, resource_kind, resource_name, severity)(trivy_resource_configaudits{namespace=~\"$namespace\"}))",
+              "format": "table",
+              "instant": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Config Audit Findings",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {"Time": true},
+                "indexByName": {"namespace": 0, "resource_kind": 1, "resource_name": 2, "severity": 3, "Value": 4},
+                "renameByName": {"Value": "Count"}
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 165},
+          "id": 56,
+          "title": "Cluster RBAC Assessments",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "dark-red", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "dark-red", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 0, "y": 166},
+          "id": 57,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_rbacassessments{severity=\"CRITICAL\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Critical",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "orange", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "orange", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 4, "y": 166},
+          "id": 58,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_rbacassessments{severity=\"HIGH\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "High",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "yellow", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "yellow", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 8, "y": 166},
+          "id": 59,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_rbacassessments{severity=\"MEDIUM\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Medium",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "blue", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 166},
+          "id": 60,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_rbacassessments{severity=\"LOW\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Low",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "text", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 166},
+          "id": 61,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_rbacassessments{severity=\"UNKNOWN\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Unknown",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "semi-dark-purple", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "semi-dark-purple", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 20, "y": 166},
+          "id": 62,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_rbacassessments) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Total",
+          "type": "stat"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 170},
+          "id": 63,
+          "title": "By Resource Kind",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "mappings": [],
+              "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 1}, {"color": "orange", "value": 10}, {"color": "red", "value": 50}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 10, "w": 24, "x": 0, "y": 171},
+          "id": 64,
+          "options": {"displayMode": "gradient", "fillOpacity": 80, "gradientMode": "scheme", "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false}, "minVizHeight": 10, "minVizWidth": 0, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "showUnfilled": true, "sizing": "auto", "tooltip": {"mode": "single", "sort": "none"}},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sort_desc(sum by(resource_kind)(trivy_cluster_rbacassessments{severity=~\"CRITICAL|HIGH\"}))", "instant": true, "legendFormat": "{{resource_kind}}", "refId": "A"}],
+          "title": "Critical & High Cluster RBAC Findings by Resource Kind",
+          "type": "bargauge"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 181},
+          "id": 65,
+          "title": "Resource Details",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {"custom": {"align": "auto", "cellOptions": {"type": "auto"}, "filterable": true, "inspect": false}, "mappings": [], "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]}, "unit": "short"},
+            "overrides": [
+              {"matcher": {"id": "byName", "options": "severity"}, "properties": [{"id": "custom.width", "value": 110}, {"id": "mappings", "value": [{"options": {"CRITICAL": {"color": "dark-red", "index": 0, "text": "CRITICAL"}}, "type": "value"}, {"options": {"HIGH": {"color": "orange", "index": 1, "text": "HIGH"}}, "type": "value"}, {"options": {"MEDIUM": {"color": "yellow", "index": 2, "text": "MEDIUM"}}, "type": "value"}, {"options": {"LOW": {"color": "blue", "index": 3, "text": "LOW"}}, "type": "value"}, {"options": {"UNKNOWN": {"color": "gray", "index": 4, "text": "UNKNOWN"}}, "type": "value"}]}, {"id": "custom.cellOptions", "value": {"type": "color-text"}}]},
+              {"matcher": {"id": "byName", "options": "Count"}, "properties": [{"id": "custom.width", "value": 80}, {"id": "thresholds", "value": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 1}, {"color": "orange", "value": 10}, {"color": "red", "value": 50}]}}, {"id": "custom.cellOptions", "value": {"type": "color-background"}}]}
+            ]
+          },
+          "gridPos": {"h": 16, "w": 24, "x": 0, "y": 182},
+          "id": 66,
+          "options": {"cellHeight": "sm", "footer": {"countRows": false, "fields": "", "reducer": ["sum"], "show": false}, "showHeader": true, "sortBy": [{"desc": true, "displayName": "Count"}]},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sort_desc(sum by(resource_kind, resource_name, severity)(trivy_cluster_rbacassessments))", "format": "table", "instant": true, "refId": "A"}],
+          "title": "Cluster RBAC Assessment Findings",
+          "transformations": [{"id": "organize", "options": {"excludeByName": {"Time": true}, "indexByName": {"resource_kind": 0, "resource_name": 1, "severity": 2, "Value": 3}, "renameByName": {"Value": "Count"}}}],
+          "type": "table"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 198},
+          "id": 67,
+          "title": "Cluster Infra Assessments",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "dark-red", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "dark-red", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 0, "y": 199},
+          "id": 68,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_infraassessments{severity=\"CRITICAL\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Critical",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "orange", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "orange", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 4, "y": 199},
+          "id": 69,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_infraassessments{severity=\"HIGH\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "High",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "yellow", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "yellow", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 8, "y": 199},
+          "id": 70,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_infraassessments{severity=\"MEDIUM\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Medium",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "blue", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 199},
+          "id": 71,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_infraassessments{severity=\"LOW\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Low",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "text", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "text", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 199},
+          "id": 72,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_infraassessments{severity=\"UNKNOWN\"}) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Unknown",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {"defaults": {"color": {"fixedColor": "semi-dark-purple", "mode": "fixed"}, "mappings": [], "noValue": "0", "thresholds": {"mode": "absolute", "steps": [{"color": "semi-dark-purple", "value": null}]}, "unit": "short"}, "overrides": []},
+          "gridPos": {"h": 4, "w": 4, "x": 20, "y": 199},
+          "id": 73,
+          "options": {"colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(trivy_cluster_infraassessments) or vector(0)", "instant": true, "refId": "A"}],
+          "title": "Total",
+          "type": "stat"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 203},
+          "id": 74,
+          "title": "By Resource Kind",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "mappings": [],
+              "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 1}, {"color": "orange", "value": 10}, {"color": "red", "value": 50}]},
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {"h": 10, "w": 24, "x": 0, "y": 204},
+          "id": 75,
+          "options": {"displayMode": "gradient", "fillOpacity": 80, "gradientMode": "scheme", "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false}, "minVizHeight": 10, "minVizWidth": 0, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "showUnfilled": true, "sizing": "auto", "tooltip": {"mode": "single", "sort": "none"}},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sort_desc(sum by(resource_kind)(trivy_cluster_infraassessments{severity=~\"CRITICAL|HIGH\"}))", "instant": true, "legendFormat": "{{resource_kind}}", "refId": "A"}],
+          "title": "Critical & High Cluster Infra Findings by Resource Kind",
+          "type": "bargauge"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 214},
+          "id": 76,
+          "title": "Resource Details",
+          "type": "row"
+        },
+        {
+          "datasource": {"type": "prometheus", "uid": "${datasource}"},
+          "fieldConfig": {
+            "defaults": {"custom": {"align": "auto", "cellOptions": {"type": "auto"}, "filterable": true, "inspect": false}, "mappings": [], "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]}, "unit": "short"},
+            "overrides": [
+              {"matcher": {"id": "byName", "options": "severity"}, "properties": [{"id": "custom.width", "value": 110}, {"id": "mappings", "value": [{"options": {"CRITICAL": {"color": "dark-red", "index": 0, "text": "CRITICAL"}}, "type": "value"}, {"options": {"HIGH": {"color": "orange", "index": 1, "text": "HIGH"}}, "type": "value"}, {"options": {"MEDIUM": {"color": "yellow", "index": 2, "text": "MEDIUM"}}, "type": "value"}, {"options": {"LOW": {"color": "blue", "index": 3, "text": "LOW"}}, "type": "value"}, {"options": {"UNKNOWN": {"color": "gray", "index": 4, "text": "UNKNOWN"}}, "type": "value"}]}, {"id": "custom.cellOptions", "value": {"type": "color-text"}}]},
+              {"matcher": {"id": "byName", "options": "Count"}, "properties": [{"id": "custom.width", "value": 80}, {"id": "thresholds", "value": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 1}, {"color": "orange", "value": 10}, {"color": "red", "value": 50}]}}, {"id": "custom.cellOptions", "value": {"type": "color-background"}}]}
+            ]
+          },
+          "gridPos": {"h": 16, "w": 24, "x": 0, "y": 215},
+          "id": 77,
+          "options": {"cellHeight": "sm", "footer": {"countRows": false, "fields": "", "reducer": ["sum"], "show": false}, "showHeader": true, "sortBy": [{"desc": true, "displayName": "Count"}]},
+          "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sort_desc(sum by(resource_kind, resource_name, severity)(trivy_cluster_infraassessments))", "format": "table", "instant": true, "refId": "A"}],
+          "title": "Cluster Infra Assessment Findings",
+          "transformations": [{"id": "organize", "options": {"excludeByName": {"Time": true}, "indexByName": {"resource_kind": 0, "resource_name": 1, "severity": 2, "Value": 3}, "renameByName": {"Value": "Count"}}}],
+          "type": "table"
+        }
+      ],
+      "refresh": "5m",
+      "schemaVersion": 38,
+      "tags": ["trivy", "security", "kubernetes"],
+      "templating": {
+        "list": [
+          {
+            "current": {},
+            "hide": 0,
+            "includeAll": false,
+            "label": "Datasource",
+            "multi": false,
+            "name": "datasource",
+            "options": [],
+            "query": "prometheus",
+            "refresh": 1,
+            "type": "datasource"
+          },
+          {
+            "allValue": ".*",
+            "current": {},
+            "datasource": {"type": "prometheus", "uid": "${datasource}"},
+            "hide": 0,
+            "includeAll": true,
+            "label": "Namespace",
+            "multi": true,
+            "name": "namespace",
+            "options": [],
+            "query": {
+              "query": "label_values(trivy_image_vulnerabilities, namespace)",
+              "refId": "StandardVariableQuery"
+            },
+            "refresh": 2,
+            "sort": 1,
+            "type": "query"
+          }
+        ]
+      },
+      "time": {"from": "now-1h", "to": "now"},
+      "timepicker": {},
+      "timezone": "Europe/Oslo",
+      "title": "Trivy Operator / Vulnerabilities",
+      "uid": "trivy-operator-vuln",
+      "version": 1
+    }

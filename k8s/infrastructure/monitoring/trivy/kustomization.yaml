@@ -8,6 +8,7 @@ resources:
   - CiliumNetworkPolicy.operator.yaml
   - CiliumNetworkPolicy.server.yaml
   - CiliumNetworkPolicy.scanjob.yaml
+  - GrafanaDashboard.yaml
 
 helmCharts:
   - name: trivy-operator

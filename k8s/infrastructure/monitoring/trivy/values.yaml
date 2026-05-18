@@ -16,12 +16,16 @@ operator:
   builtInTrivyServer: true
   scanJobsConcurrentLimit: 3
   vulnerabilityScannerEnabled: true
-  configAuditScannerEnabled: false  # Covered by Kyverno ClusterPolicies
+  configAuditScannerEnabled: true  # Should be covered vby Kyverno as well
   # infraAssessmentScannerEnabled: false
   # clusterComplianceEnabled: false
   scanJobTTL: 10m
-      
+
+service:
+  headless: false
+
 trivy:
+  ignoreUnfixed: true
   storageClassName: longhorn
   storageSize: 5Gi
   resources:
@@ -40,3 +44,6 @@ trivy:
 podSecurityContext:
   runAsNonRoot: true
   seccompProfile: {type: RuntimeDefault}
+
+serviceMonitor:
+  enabled: true
