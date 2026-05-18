@@ -14,7 +14,10 @@ operator:
   # infraAssessmentScannerEnabled: false
   # clusterComplianceEnabled: false
   scanJobTTL: 6h
-
+  scanJobPodTemplatePodSecurityContext:
+    runAsNonRoot: true
+    seccompProfile: {type: RuntimeDefault}
+      
 trivy:
   storageClassName: longhorn
   storageSize: 5Gi
