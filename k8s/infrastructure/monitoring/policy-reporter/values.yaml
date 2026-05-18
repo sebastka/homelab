@@ -21,6 +21,7 @@ plugin:
   trivy:
     enabled: true
     updateStrategy: {type: Recreate}
+    rbac: true
     podSecurityContext:
       runAsNonRoot: true
       seccompProfile: {type: RuntimeDefault}
