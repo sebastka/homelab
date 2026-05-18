@@ -65,7 +65,7 @@ alloy:
         }
       }
 
-      // Collect pod logs via the Kubernetes API — no host path mount required.
+      // Collect pod logs via the Kubernetes API: no host path mount required.
       // To switch to file-based collection (reads /var/log/pods/ directly),
       // replace with loki.source.file and set controller.type: daemonset,
       // alloy.mounts.varlog: true, and alloy.mounts.dockercontainers: true.

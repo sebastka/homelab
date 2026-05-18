@@ -36,7 +36,7 @@ loki:
 test: {enabled: false}
 lokiCanary: {enabled: false}
 
-gateway: {enabled: false}  # Disable nginx gateway — not needed for monolithic mode.
+gateway: {enabled: false}  # Disable nginx gateway: not needed for monolithic mode.
 # route: {}  # Traffic is only internal, so not needed, unless we want to uke logcli
 
 singleBinary:
