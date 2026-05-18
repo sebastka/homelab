@@ -7,14 +7,14 @@ metadata:
   labels:
     fr.karlsen: *x-project
 spec:
-  strategy:
-    type: RollingSync
-    rollingSync:
-      steps:
-        - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [prometheus-operator-crds, grafana-operator]}]
-        - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [kube-prometheus-stack, loki]}]
-        - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [thanos, alloy]}]
-        - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [grafana, headlamp, hubble, metrics-server, policy-reporter, stork, zabbix, trivy]}]
+  # strategy:
+  #   type: RollingSync
+  #   rollingSync:
+  #     steps:
+  #       - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [prometheus-operator-crds, grafana-operator]}]
+  #       - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [kube-prometheus-stack, loki]}]
+  #       - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [thanos, alloy]}]
+  #       - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [grafana, headlamp, hubble, metrics-server, policy-reporter, stork, zabbix, trivy]}]
   generators:
     - git:
         repoURL: https://github.com/sebastka/homelab.git
@@ -26,7 +26,7 @@ spec:
       name: '{{ path.basename }}'
       labels:
         fr.karlsen: *x-project
-        monitoring.karlsen.fr/app: '{{ path.basename }}'
+        # monitoring.karlsen.fr/app: '{{ path.basename }}'
     spec:
       project: *x-project
       sources:
