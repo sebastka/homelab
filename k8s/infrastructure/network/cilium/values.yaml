@@ -28,11 +28,10 @@ cgroup:
 operator:
   rollOutPods: true
   prometheus:
-    metricsService: false
-    enabled: false
+    metricsService: true
+    enabled: true
     port: 9963
-    serviceMonitor:
-      enabled: false
+    serviceMonitor: {enabled: true}
   dashboards:
     enabled: true
   resources:
@@ -127,7 +126,7 @@ hubble:
   metrics:
     enabled:
       - dns
-      - drop
+      - 'drop:labelsContext=source_namespace,destination_namespace'
       - tcp
       - flow
       - port-distribution
@@ -135,10 +134,8 @@ hubble:
       - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
     enableOpenMetrics: true
     port: 9965
-    serviceMonitor:
-      enabled: false
-    dashboards:
-      enabled: true
+    serviceMonitor: {enabled: true}
+    dashboards: {enabled: true}
   relay:
     enabled: true
     rollOutPods: true
@@ -208,11 +205,11 @@ authentication:
             limits: {memory: 128Mi}
 
 prometheus:
-  metricsService: false
-  enabled: false
+  metricsService: true
+  enabled: true
   port: 9962
   serviceMonitor:
-    enabled: false
+    enabled: true
     trustCRDsExist: true
 
 dashboards:

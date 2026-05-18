@@ -24,8 +24,9 @@ resources:
   - CiliumL2AnnouncementPolicy.yaml
   - CiliumClusterwideNetworkPolicy.mtls.yaml
   - CiliumClusterwideNetworkPolicy.default-deny.yaml
-  # - GrafanaDashboard.cilium.yaml
-  # - GrafanaDashboard.cilium-operator.yaml
+  - PrometheusRule.network-policy-drops.yaml
+  - GrafanaDashboard.cilium.yaml
+  - GrafanaDashboard.cilium-operator.yaml
 
 helmCharts:
   - name: cilium

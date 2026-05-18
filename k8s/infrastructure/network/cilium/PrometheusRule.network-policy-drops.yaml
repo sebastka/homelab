@@ -1,0 +1,18 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: network-policy-drops
+  namespace: kube-system
+spec:
+  groups:
+    - name: cilium.drops
+      rules:
+        - alert: NetworkPolicyDroppingPackets
+          expr: sum(rate(hubble_drop_total{reason="POLICY_DENIED"}[2m])) by (source_namespace, destination_namespace, direction) > 0
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Network policy dropping {{ $labels.direction }} traffic"
+            description: "Cilium is dropping {{ $labels.direction }} packets due to a network policy.\n\nSource namespace: `{{ $labels.source_namespace }}`\nDestination namespace: `{{ $labels.destination_namespace }}`"

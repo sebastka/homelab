@@ -5,7 +5,7 @@ namespace: kube-system
 
 resources:
   - HTTPRoute.yaml
-  # - GrafanaDashboard.hubble.yaml
-  # - GrafanaDashboard.hubble-dns-namespace.yaml
-  # - GrafanaDashboard.hubble-l7-http-metrics.yaml
-  # - GrafanaDashboard.hubble-network-overview.yaml
+  - GrafanaDashboard.hubble.yaml
+  - GrafanaDashboard.hubble-dns-namespace.yaml
+  - GrafanaDashboard.hubble-l7-http-metrics.yaml
+  - GrafanaDashboard.hubble-network-overview.yaml
