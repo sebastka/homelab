@@ -21,6 +21,7 @@ spec:
     - {toEntities: [kube-apiserver]}  # VulnerabilityReport reads
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: policy-reporter, app.kubernetes.io/name: policy-reporter}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # policy-reporter core
     - toFQDNs:
+        - {matchName: mirror.gcr.io}                         # Trivy DB (GCR mirror)
         - {matchName: ghcr.io}                               # Trivy DB (OCI registry)
         - {matchName: pkg-containers.githubusercontent.com}  # Trivy DB blobs (GitHub CDN)
         - {matchName: cveawg.mitre.org}                      # CVE AWG API
