@@ -10,6 +10,7 @@ resources:
   - CiliumNetworkPolicy.policy-reporter.yaml
   - CiliumNetworkPolicy.kyverno-plugin.yaml
   - CiliumNetworkPolicy.ui.yaml
+  - CiliumNetworkPolicy.trivy-plugin.yaml
 
 helmCharts:
   - name: policy-reporter

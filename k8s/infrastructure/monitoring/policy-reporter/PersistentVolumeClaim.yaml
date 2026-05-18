@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: trivy-plugindb-pvc
+  name: policyreporter-trivydb-pvc
   namespace: policy-reporter
 spec:
   accessModes: [ReadWriteOncePod]

@@ -25,7 +25,7 @@ plugin:
       requests: {memory: 128Mi}
     dbVolume:
       persistentVolumeClaim:
-        claimName: trivy-plugindb-pvc
+        claimName: policyreporter-trivydb-pvc
 
 target:
   loki:
