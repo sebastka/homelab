@@ -6,7 +6,7 @@ metadata:
   namespace: kyverno
 spec:
   endpointSelector: {}
-  ingress: 
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: kyverno}]}     
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: kyverno}]}
   egress:
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: kyverno}]}
