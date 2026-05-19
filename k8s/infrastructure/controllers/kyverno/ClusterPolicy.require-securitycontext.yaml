@@ -22,7 +22,7 @@ spec:
               seccompProfile: {type: RuntimeDefault}
     - name: check-container-securitycontext
       match: {any: [resources: {kinds: [Pod]}]}
-      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
+      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets, falco]}]}}]}
       validate:
         failureAction: Audit
         message: "All containers must set allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, drop all capabilities, and must not run as privileged."

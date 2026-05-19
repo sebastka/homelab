@@ -11,7 +11,7 @@ spec:
   rules:
     - name: require-liveness-readiness-probes
       match: {any: [resources: {kinds: [Deployment, StatefulSet, DaemonSet]}]}
-      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public]}]}}]}
+      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, falco]}]}}]}
       validate:
         failureAction: Audit
         message: "All containers must define liveness and readiness probes."
