@@ -109,6 +109,7 @@ spec:
 
                       # infrastructure/monitoring/headlamp
                       - docker.io/headlamp-k8s/headlamp
+                      - ghcr.io/kubebeam/trivy-headlamp-plugin
 
                       # infrastructure/monitoring/zabbix
                       - docker.io/zabbix/zabbix-server-pgsql
