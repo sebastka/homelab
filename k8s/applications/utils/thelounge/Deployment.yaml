@@ -50,6 +50,7 @@ spec:
               set -eu
               jq -n '{publicKey: env.VAPID_PUBLIC_KEY, privateKey: env.VAPID_PRIVATE_KEY}' \
                 >/mnt/thelounge/vapid.json
+              chmod 600 /mnt/thelounge/vapid.json
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
