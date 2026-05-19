@@ -11,7 +11,7 @@ spec:
   rules:
     - name: require-app-name-label
       match: {any: [resources: {kinds: [Pod]}]}
-      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
+      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public]}]}}]}
       validate:
         failureAction: Audit
         message: "Label 'app.kubernetes.io/name' is required on all pods."

@@ -11,7 +11,7 @@ spec:
   rules:
     - name: require-image-tag
       match: {any: [resources: {kinds: [Pod]}]}
-      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}}]}
+      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public]}]}}]}
       validate:
         failureAction: Audit
         message: "All container images must use an explicit tag: not ':latest' and not untagged."

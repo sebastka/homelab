@@ -1,24 +1,32 @@
-# Soft zone-spread topology constraint into every non-system pod
+# Soft zone- and node-spread topology constraints into every non-system Deployment/StatefulSet
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: spread-pods-across-zones
+  name: spread-pods-across-zones-and-nodes
   annotations:
-    policies.kyverno.io/title: Spread Pods Across Zones
-    policies.kyverno.io/description: Inject a soft topology spread constraint into every non-system Pod to distribute workloads evenly across availability zones.
+    policies.kyverno.io/title: Spread Pods Across Zones And Nodes
+    policies.kyverno.io/description: Inject soft topology spread constraints into every non-system Deployment and StatefulSet to distribute pods evenly across availability zones and nodes.
 spec:
   background: false
   rules:
     - name: inject-zone-spread
-      match: {any: [resources: {kinds: [Pod], operations: [CREATE]}]}
-      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets, trivy]}]}}]}
+      match: {any: [resources: {kinds: [Deployment, StatefulSet, Job], operations: [CREATE]}]}
+      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public]}]}}]}
       mutate:
         patchStrategicMerge:
-          metadata: {labels: {topology.karlsen.fr/spread: 'true'}}
           spec:
-            topologySpreadConstraints:
-              - maxSkew: 1
-                topologyKey: topology.kubernetes.io/zone
-                whenUnsatisfiable: ScheduleAnyway
-                labelSelector: {matchLabels: {topology.karlsen.fr/spread: 'true'}}
+            template:
+              metadata:
+                labels:
+                  topology.karlsen.fr/spread: 'true'
+              spec:
+                topologySpreadConstraints:
+                  - maxSkew: 1
+                    topologyKey: topology.kubernetes.io/zone
+                    whenUnsatisfiable: ScheduleAnyway
+                    labelSelector: {matchLabels: {topology.karlsen.fr/spread: 'true'}}
+                  - maxSkew: 1
+                    topologyKey: kubernetes.io/hostname
+                    whenUnsatisfiable: ScheduleAnyway
+                    labelSelector: {matchLabels: {topology.karlsen.fr/spread: 'true'}}
