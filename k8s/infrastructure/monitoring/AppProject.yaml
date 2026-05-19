@@ -15,7 +15,6 @@ spec:
     - {namespace: loki, server: 'https://kubernetes.default.svc'}
     - {namespace: metrics-server, server: 'https://kubernetes.default.svc'}
     - {namespace: monitoring, server: 'https://kubernetes.default.svc'}
-    - {namespace: policy-reporter, server: 'https://kubernetes.default.svc'}
     - {namespace: stork, server: 'https://kubernetes.default.svc'}
     - {namespace: thanos, server: 'https://kubernetes.default.svc'}
     - {namespace: trivy, server: 'https://kubernetes.default.svc'}
