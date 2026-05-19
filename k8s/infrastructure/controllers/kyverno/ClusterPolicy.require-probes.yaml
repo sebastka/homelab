@@ -14,6 +14,9 @@ spec:
         message: "All containers must define liveness and readiness probes."
         foreach:
           - list: request.object.spec.template.spec.containers
+            preconditions:
+              all:
+                - {key: "{{ element.name }}", operator: NotEquals, value: headlamp-plugin}
             pattern:
               livenessProbe: {periodSeconds: '>0'}
               readinessProbe: {periodSeconds: '>0'}
