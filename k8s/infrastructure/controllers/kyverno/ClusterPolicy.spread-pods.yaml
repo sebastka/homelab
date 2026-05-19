@@ -8,7 +8,7 @@ spec:
   background: false
   rules:
     - name: inject-zone-spread
-      match: {any: [resources: {kinds: [Pod]}]}
+      match: {any: [resources: {kinds: [Pod], operations: [CREATE]}]}
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets, trivy]}]}}]}
       mutate:
         patchStrategicMerge:
