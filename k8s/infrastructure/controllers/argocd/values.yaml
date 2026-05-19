@@ -51,7 +51,7 @@ controller:
       enabled: true
   resources:
     requests: {memory: 1024Mi}
-    limits: {memory: 1024Mi}
+    limits: {memory: 1536Mi}
 
 dex:
   enabled: false
@@ -71,7 +71,7 @@ repoServer:
       enabled: true
   resources:
     requests: {memory: 256Mi}
-    limits: {memory: 256Mi}
+    limits: {memory: 512Mi}
   containerSecurityContext:
     readOnlyRootFilesystem: true
     runAsNonRoot: true
@@ -113,7 +113,7 @@ redis:
     serviceMonitor: {enabled: true}
   resources:
     requests: {memory: 64Mi}
-    limits: {memory: 64Mi}
+    limits: {memory: 128Mi}
 
 server:
   metrics:
@@ -121,7 +121,7 @@ server:
     serviceMonitor: {enabled: true}
   resources:
     requests: {memory: 128Mi}
-    limits: {memory: 128Mi}
+    limits: {memory: 256Mi}
 
   httproute:
     enabled: true
@@ -144,7 +144,7 @@ applicationSet:
       enabled: true
   resources:
     requests: {memory: 128Mi}
-    limits: {memory: 128Mi}
+    limits: {memory: 256Mi}
 
 notifications:
   enabled: true
