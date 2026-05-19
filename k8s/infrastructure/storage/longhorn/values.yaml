@@ -14,8 +14,9 @@ defaultSettings:
   systemManagedCSIComponentsResourceLimits: '{"csi-attacher":{"requests":{"memory":"128Mi"},"limits":{"memory":"512Mi"}},"csi-provisioner":{"requests":{"memory":"64Mi"},"limits":{"memory":"512Mi"}},"csi-resizer":{"requests":{"memory":"128Mi"},"limits":{"memory":"512Mi"}},"csi-snapshotter":{"requests":{"memory":"64Mi"},"limits":{"memory":"512Mi"}},"longhorn-csi-plugin":{"requests":{"memory":"512Mi"},"limits":{"memory":"4096Mi"}},"node-driver-registrar":{"requests":{"memory":"64Mi"},"limits":{"memory":"128Mi"}},"longhorn-liveness-probe":{"requests":{"memory":"64Mi"},"limits":{"memory":"128Mi"}}}'
   freezeFilesystemForSnapshot: true
   snapshotDataIntegrity: enabled
-  snapshotDataIntegrityCronjob: '0 2 * * *'  # Default: '0 0 */7 * *'
-  snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: true
+  # snapshotDataIntegrityCronjob: '0 0 */7 * *'  # Default
+  snapshotDataIntegrityCronjob: '0 0 * * 0'  # Sunday 00:00 UTC / 02:00 CEST
+  snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: false
   backupCompressionMethod: gzip
   allowRecurringJobWhileVolumeDetached: true
 

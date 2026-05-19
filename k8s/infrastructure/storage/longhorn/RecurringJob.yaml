@@ -11,7 +11,7 @@ spec:
   task: backup
   retain: 7
   concurrency: 1
-  cron: 00 3 * * *  # 03:00 UTC / 05:00 CEST
+  cron: 00 1 * * *  # 01:00 UTC / 03:00 CEST
   # parameters:
   #   full-backup-interval: '7'
   groups: [group1]
