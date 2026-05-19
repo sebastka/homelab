@@ -46,6 +46,7 @@ podSecurityContext:
 # Talos doesn't use systemd — strip /etc/systemd and /lib/systemd mounts
 # which don't exist on the host and cause mkdir failures at OCI spec time.
 nodeCollector:
+  tolerations: [operator: Exists]  # Allow scheduling on control-plane nodes which are tainted with node-role.kubernetes.io/control-plane:NoSchedule
   volumeMounts:
     - {name: var-lib-etcd, mountPath: /var/lib/etcd, readOnly: true}
     - {name: var-lib-kubelet, mountPath: /var/lib/kubelet, readOnly: true}
