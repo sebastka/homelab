@@ -40,9 +40,11 @@ securityContext:
 volumes:
   - {name: tmp-volume, emptyDir: {}}
   - {name: home-config-volume, emptyDir: {}}
+  - {name: trivy-plygin-volume, emptyDir: {}}
 volumeMounts:
   - {name: tmp-volume, mountPath: /tmp}
   - {name: home-config-volume, mountPath: /home/headlamp/.config}
+  - {name: trivy-plygin-volume, mountPath: /headlamp/plugins/trivy}
 
 httproute:
   enabled: false
@@ -60,3 +62,22 @@ pluginsManager:
     allowPrivilegeEscalation: false
     readOnlyRootFilesystem: true
     capabilities: {drop: [ALL]}
+
+initContainers:
+  - name: trivy-plugin
+    # Dockerfile: https://github.com/kubebeam/trivy-headlamp-plugin/blob/main/Dockerfile
+    image: ghcr.io/kubebeam/trivy-headlamp-plugin:v0.3.1
+    command: [/bin/sh, -c]
+    args:
+      - |
+        set -eux
+        cp -r /plugins/trivy-plugin/ /headlamp/plugins/trivy/
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities: {drop: [ALL]}
+    resources:
+      requests: {memory: 24Mi}
+      limits: {memory: 24Mi}
+    volumeMounts:
+      - {name: trivy-plygin-volume, mountPath: /headlamp/plugins/trivy}
