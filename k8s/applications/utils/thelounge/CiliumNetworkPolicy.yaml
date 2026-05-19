@@ -21,5 +21,4 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: thelounge}}
   egress:
     - {toEntities: [world], toPorts: [ports: [{port: '6667', protocol: TCP}, {port: '6697', protocol: TCP}]]}  # irc
-    - {toEntities: [world], toPorts: [ports: [{port: '80', protocol: TCP}, {port: '443', protocol: TCP}]]}  # prefetch
     - {toEndpoints: [{matchLabels: {'k8s:io.kubernetes.pod.namespace': light-ldap, app.kubernetes.io/name: light-ldap}}], toPorts: [ports: [{port: '6360', protocol: TCP}]]}  # ldaps

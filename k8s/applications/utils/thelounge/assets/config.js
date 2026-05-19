@@ -111,7 +111,6 @@ module.exports = {
         //
         // This value is set to `false` by default.
         //prefetch: false,
-        prefetch: true,
 
         // ### `disableMediaPreview`
         //
@@ -123,7 +122,7 @@ module.exports = {
         // This has no effect if `prefetch` is set to `false`.
         //
         // This value is set to `false` by default.
-        disableMediaPreview: false,
+        disableMediaPreview: true,
 
         // ### `prefetchStorage`
 
@@ -144,7 +143,6 @@ module.exports = {
         //
         // This value is set to `false` by default.
         //prefetchStorage: false,
-        prefetchStorage: true,
 
         // ### `prefetchMaxImageSize`
         //
