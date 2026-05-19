@@ -82,6 +82,7 @@ spec:
           readinessProbe: {httpGet: {port: 9000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             - {name: thelounge-config-volume, mountPath: /var/opt/thelounge/config.js, subPath: config.js, readOnly: true}
+            - {name: cluster-ca-volume, mountPath: /etc/ssl/cluster-ca, readOnly: true}
             - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/vapid.json, subPath: vapid.json, readOnly: true}
             # - {name: tmp-volume, mountPath: /tmp}
             - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/logs, subPath: logs}
@@ -92,3 +93,4 @@ spec:
         # - {name: tmp-volume, emptyDir: {}}
         - {name: thelounge-config-volume, configMap: {name: thelounge-config}}
         - {name: thelounge-data-volume, persistentVolumeClaim: {claimName: thelounge-data-pvc}}
+        - {name: cluster-ca-volume, configMap: {name: cluster-ca-bundle}}
