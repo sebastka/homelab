@@ -141,7 +141,7 @@ hubble:
     rollOutPods: true
     resources:
       requests: {memory: 256Mi}
-      limits: {memory: 256Mi}
+      limits: {memory: 512Mi}
     prometheus:
       enabled: false
       port: 9966
