@@ -108,7 +108,7 @@ spec:
                       - 'mirror.gcr.io/aquasec/*'
 
                       # infrastructure/monitoring/headlamp
-                      - docker.io/headlamp-k8s/headlamp
+                      - ghcr.io/headlamp-k8s/headlamp
                       - docker.io/library/node
                       - ghcr.io/kubebeam/trivy-headlamp-plugin
 
