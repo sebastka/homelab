@@ -65,7 +65,6 @@ spec:
         - name: thelounge
           # Dockerfile: https://github.com/thelounge/thelounge-docker/blob/master/Dockerfile
           image: ghcr.io/thelounge/thelounge:4.4.3
-          command: [sleep, infinity]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -83,7 +82,6 @@ spec:
           volumeMounts:
             - {name: thelounge-config-volume, mountPath: /var/opt/thelounge/config.js, subPath: config.js, readOnly: true}
             - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/vapid.json, subPath: vapid.json, readOnly: true}
-            - {name: thelounge-data-volume, mountPath: /mnt/thelounge}
             # - {name: tmp-volume, mountPath: /tmp}
             - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/logs, subPath: logs}
             - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/packages, subPath: packages}
