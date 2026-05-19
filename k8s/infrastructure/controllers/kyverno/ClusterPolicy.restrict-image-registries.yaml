@@ -38,6 +38,8 @@ spec:
                       - ecr-public.aws.com/docker/library/haproxy  # Redis HA: argocd + nextcloud
                       - ecr-public.aws.com/docker/library/redis    # Redis HA: argocd
                       - index.docker.io/valkey/valkey              # common/valkey
+                      - docker.io/library/node
+                      - node
 
                       # infrastructure/network/cilium
                       - 'quay.io/cilium/*'
@@ -109,7 +111,6 @@ spec:
 
                       # infrastructure/monitoring/headlamp
                       - ghcr.io/headlamp-k8s/headlamp
-                      - docker.io/library/node
                       - ghcr.io/kubebeam/trivy-headlamp-plugin
 
                       # infrastructure/monitoring/zabbix
