@@ -40,11 +40,9 @@ securityContext:
 volumes:
   - {name: tmp-volume, emptyDir: {}}
   - {name: home-config-volume, emptyDir: {}}
-  - {name: trivy-plygin-volume, emptyDir: {}}
 volumeMounts:
   - {name: tmp-volume, mountPath: /tmp}
   - {name: home-config-volume, mountPath: /home/headlamp/.config}
-  - {name: trivy-plygin-volume, mountPath: /headlamp/plugins/trivy}
 
 httproute:
   enabled: false
@@ -80,4 +78,4 @@ initContainers:
       requests: {memory: 24Mi}
       limits: {memory: 24Mi}
     volumeMounts:
-      - {name: trivy-plygin-volume, mountPath: /headlamp/plugins/trivy}
+      - {name: plugins-dir, mountPath: /headlamp/plugins}
