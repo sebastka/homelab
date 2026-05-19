@@ -51,8 +51,8 @@ nodeCollector:
     - {name: var-lib-kubelet, mountPath: /var/lib/kubelet, readOnly: true}
     - {name: var-lib-kube-scheduler, mountPath: /var/lib/kube-scheduler, readOnly: true}
     - {name: var-lib-kube-controller-manager, mountPath: /var/lib/kube-controller-manager, readOnly: true}
-    - {name: etc-systemd, mountPath: /etc/systemd, readOnly: true}
-    - {name: lib-systemd, mountPath: /lib/systemd, readOnly: true}
+    - {name: etc-systemd, mountPath: /etc/systemd}
+    - {name: lib-systemd, mountPath: /lib/systemd}
     - {name: etc-kubernetes, mountPath: /etc/kubernetes, readOnly: true}
     - {name: etc-cni-netd, mountPath: /etc/cni/net.d/, readOnly: true}
   volumes:
