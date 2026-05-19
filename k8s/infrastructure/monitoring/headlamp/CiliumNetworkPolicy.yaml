@@ -19,6 +19,5 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: headlamp}}
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Needed for OIDC / Authelia
-    - {toFQDNs: [matchName: registry.npmjs.org], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # For Plugins (npm deps)
-    - {toFQDNs: [{matchName: github.com}, {matchName: codeload.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # For Plugins (source download)
+    - {toFQDNs: [{matchName: registry.npmjs.org}, {matchName: artifacthub.io}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # For Plugins
     - {toEntities: [kube-apiserver]}

@@ -60,7 +60,7 @@ pluginsManager:
       maxConcurrent: 2
     plugins:
       - name: cert-manager
-        source: https://github.com/headlamp-k8s/plugins/cert-manager
+        source: https://artifacthub.io/packages/headlamp/headlamp-plugins/headlamp_cert-manager
         version: 0.1.0
         # dependencies: []
   resources:
