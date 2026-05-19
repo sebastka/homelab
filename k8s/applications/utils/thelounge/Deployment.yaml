@@ -1,6 +1,9 @@
 # https://github.com/thelounge/thelounge
 # https://github.com/thelounge/thelounge-docker
 # https://hub.docker.com/r/thelounge/thelounge/
+
+# When using maxHistory = -1, SQLite will spill a temp sort to /tmp. 
+# To avoid this, "USING INDEX network_channel_time" and adding a "(network, channel, time DESC)" composite index to the "messages" table is recommended.
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -47,7 +50,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 64Mi}
-            limits: {memory: 128Mi}
+            limits: {memory: 512Mi}
           ports:
             - {name: http, containerPort: 9000, protocol: TCP}
             - {name: identd-tcp, containerPort: 9001, protocol: TCP}
