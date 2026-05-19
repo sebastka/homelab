@@ -3,6 +3,7 @@
 ---
 
 config:
+  watchPlugins: true
   oidc:
     secret: {create: false}
     clientID: kube_login
@@ -53,6 +54,15 @@ resources:
 
 pluginsManager:
   enabled: true
+  configContent: |
+    installOptions:
+      parallel: true
+      maxConcurrent: 2
+    plugins:
+      - name: cert-manager
+        source: https://github.com/headlamp-k8s/plugins/cert-manager
+        version: 0.1.0
+        # dependencies: []
   resources:
     requests: {memory: 512Mi}
     limits: {memory: 512Mi}
