@@ -3,6 +3,9 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: require-probes
+  annotations:
+    policies.kyverno.io/title: Require Liveness and Readiness Probes
+    policies.kyverno.io/description: Require all containers in Deployments, StatefulSets, and DaemonSets to define liveness and readiness probes so Kubernetes can properly manage container lifecycle.
 spec:
   background: true
   rules:

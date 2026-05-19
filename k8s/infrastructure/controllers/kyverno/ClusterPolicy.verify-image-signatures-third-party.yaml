@@ -7,6 +7,9 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: verify-image-signatures-third-party
+  annotations:
+    policies.kyverno.io/title: Verify Third-Party Image Signatures
+    policies.kyverno.io/description: Verify Sigstore keyless signatures on images from trusted third-party projects (Cilium, ArgoCD, Kyverno, SPIRE, Longhorn, etc.) to ensure images originate from their official CI pipelines.
 spec:
   background: false
   rules:

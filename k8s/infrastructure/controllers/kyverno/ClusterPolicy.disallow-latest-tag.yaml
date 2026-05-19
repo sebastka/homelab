@@ -3,6 +3,9 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: disallow-latest-tag
+  annotations:
+    policies.kyverno.io/title: Disallow Latest Tag
+    policies.kyverno.io/description: Require all container images to use an explicit, versioned tag. Images using ':latest' or no tag are rejected to ensure reproducible deployments.
 spec:
   background: true
   rules:

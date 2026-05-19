@@ -3,6 +3,9 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: require-requests-limits
+  annotations:
+    policies.kyverno.io/title: Require Resource Requests and Limits
+    policies.kyverno.io/description: Require all containers to define memory requests and limits to prevent resource starvation and ensure predictable scheduling.
 spec:
   background: true
   rules:

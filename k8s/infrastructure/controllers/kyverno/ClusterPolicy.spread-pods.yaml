@@ -4,6 +4,9 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: spread-pods-across-zones
+  annotations:
+    policies.kyverno.io/title: Spread Pods Across Zones
+    policies.kyverno.io/description: Inject a soft topology spread constraint into every non-system Pod to distribute workloads evenly across availability zones.
 spec:
   background: false
   rules:

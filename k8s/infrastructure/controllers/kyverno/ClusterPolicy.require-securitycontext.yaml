@@ -3,6 +3,9 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: require-securitycontext
+  annotations:
+    policies.kyverno.io/title: Require Security Context
+    policies.kyverno.io/description: Require Pods to set runAsNonRoot and seccompProfile at pod level, and require containers to set allowPrivilegeEscalation:false, readOnlyRootFilesystem:true, and drop all capabilities.
 spec:
   background: true
   rules:

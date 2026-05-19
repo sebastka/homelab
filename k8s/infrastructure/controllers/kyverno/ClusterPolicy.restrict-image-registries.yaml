@@ -3,6 +3,9 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: restrict-image-registries
+  annotations:
+    policies.kyverno.io/title: Restrict Image Registries
+    policies.kyverno.io/description: Restrict which image registries can be used in Pods to reduce the attack surface and prevent accidental usage of unapproved images.
 spec:
   background: true
   rules:
