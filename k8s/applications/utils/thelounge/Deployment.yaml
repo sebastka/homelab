@@ -59,6 +59,7 @@ spec:
           livenessProbe: {httpGet: {port: 9000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {httpGet: {port: 9000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
+            - {name: thelounge-data-volume, mountPath: /mnt/thelounge}
             - {name: tmp-volume, mountPath: /tmp}
             - {name: thelounge-data-volume, mountPath: /var/opt/thelounge, subPath: thelounge}
       volumes:
