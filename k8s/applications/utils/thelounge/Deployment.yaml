@@ -71,8 +71,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 64Mi}
-            limits: {memory: 512Mi}
+            requests: {memory: 384Mi}
+            limits: {memory: 768Mi}
           ports:
             - {name: http, containerPort: 9000, protocol: TCP}
             - {name: identd-tcp, containerPort: 9001, protocol: TCP}
