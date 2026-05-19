@@ -14,7 +14,7 @@ spec:
   #       - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [prometheus-operator-crds, grafana-operator]}]
   #       - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [kube-prometheus-stack, loki]}]
   #       - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [thanos, alloy]}]
-  #       - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [grafana, headlamp, hubble, metrics-server, stork, zabbix, trivy]}]
+  #       - matchExpressions: [{key: monitoring.karlsen.fr/app, operator: In, values: [grafana, headlamp, hubble, metrics-server, stork, zabbix]}]
   generators:
     - git:
         repoURL: https://github.com/sebastka/homelab.git

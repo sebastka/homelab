@@ -17,7 +17,6 @@ spec:
     - {namespace: monitoring, server: 'https://kubernetes.default.svc'}
     - {namespace: stork, server: 'https://kubernetes.default.svc'}
     - {namespace: thanos, server: 'https://kubernetes.default.svc'}
-    - {namespace: trivy, server: 'https://kubernetes.default.svc'}
     - {namespace: zabbix, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
     - {group: '*', kind: '*'}
