@@ -54,7 +54,7 @@ resources:
   limits: {memory: 64Mi}
 
 pluginsManager:
-  enabled: false
+  enabled: true
   resources:
     requests: {memory: 512Mi}
     limits: {memory: 512Mi}
