@@ -50,7 +50,8 @@ spec:
               set -eu
               jq -n '{publicKey: env.VAPID_PUBLIC_KEY, privateKey: env.VAPID_PRIVATE_KEY}' \
                 >/mnt/thelounge/vapid.json
-              chmod 600 /mnt/thelounge/vapid.json
+              cp /mnt/config.js /mnt/thelounge/config.js
+              chmod 600 /mnt/thelounge/config.js /mnt/thelounge/vapid.json
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -62,6 +63,7 @@ spec:
             - secretRef: {name: thelounge-secrets}
           volumeMounts:
             - {name: thelounge-data-volume, mountPath: /mnt/thelounge}
+            - {name: thelounge-config-volume, mountPath: /mnt/config.js, subPath: config.js, readOnly: true}
       containers:
         - name: thelounge
           # Dockerfile: https://github.com/thelounge/thelounge-docker/blob/master/Dockerfile
@@ -81,10 +83,10 @@ spec:
           livenessProbe: {httpGet: {port: 9000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {httpGet: {port: 9000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
-            - {name: thelounge-config-volume, mountPath: /var/opt/thelounge/config.js, subPath: config.js, readOnly: true}
-            - {name: cluster-ca-volume, mountPath: /etc/ssl/cluster-ca, readOnly: true}
-            - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/vapid.json, subPath: vapid.json, readOnly: true}
             # - {name: tmp-volume, mountPath: /tmp}
+            - {name: cluster-ca-volume, mountPath: /etc/ssl/cluster-ca, readOnly: true}
+            - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/config.js, subPath: config.js, readOnly: true}
+            - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/vapid.json, subPath: vapid.json, readOnly: true}
             - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/logs, subPath: logs}
             - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/packages, subPath: packages}
             - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/storage, subPath: storage}
