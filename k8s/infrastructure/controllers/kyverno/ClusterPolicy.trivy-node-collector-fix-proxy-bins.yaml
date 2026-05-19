@@ -1,0 +1,45 @@
+# Workaround for trivy-operator node-collector "spec not found" on nodes running Zabbix.
+#
+# Root cause: node-collector's binary lookup for kube-proxy uses `pgrep -l "" | grep 'proxy'`
+# as a last-resort pattern, which matches Zabbix's "proxy poller" worker threads and returns
+# "zabbix_server:" (with trailing colon) as the binary name. When this is substituted into
+# the node-commands YAML template, the colon-space sequence causes yaml.Unmarshal to fail
+# silently, leaving commands=nil and returning "spec not found".
+#
+# Fix: replace the --node-config blob passed to each node-collector Job with a patched version
+# that removes the bare "proxy" entry from proxy.bins. On a Cilium cluster kube-proxy does not
+# run, so this entry never finds a real binary anyway.
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: trivy-node-collector-fix-proxy-bins
+  annotations:
+    policies.kyverno.io/title: Fix trivy node-collector proxy.bins contamination
+    policies.kyverno.io/description: >-
+      Patches the --node-config blob in node-collector Jobs to remove the bare
+      "proxy" binary search pattern that matches Zabbix worker threads.
+spec:
+  background: false
+  rules:
+    - name: patch-node-config-proxy-bins
+      match:
+        any:
+          - resources:
+              kinds: [Job]
+              namespaces: [trivy]
+              operations: [CREATE]
+              selector:
+                matchLabels:
+                  app.kubernetes.io/managed-by: trivy-operator
+                  trivy-operator.resource.kind: Node
+      preconditions:
+        all:
+          - key: "{{ request.object.spec.template.spec.containers[0].args[3] }}"
+            operator: Equals
+            value: "--node-config"
+      mutate:
+        patchesJson6902: |
+          - op: replace
+            path: /spec/template/spec/containers/0/args/4
+            value: "QlpoOTFBWSZTWfaKtD0ACOjZgEAQQAP4UD//3+BQBRt29uc5wo2a0rUgjDBMCYCGjJpgMTSNRAAANABJpSTJqaMmg9RoNACKImmmhJ6NU9T0yjQ9QESKaJqmxk01TaQAFIQDp69f605bIm12umWZuRRRTrliZGDO4qzBtTYb5ibypCvCZiAovBamBCmPRGUU1vEWmSSA+qlaYszaU0SxWk5GJiNxVB5ECB3hoxVkWRYsWLBVUFgwAkCQQLCBglGtXZe6iNgU7RoTZ+DBHLkFOpmDuFaX9QswjS3YzJzrTGUyJnqZRo5zYtYC2NSV6GNjBqwxQoVAqWwHRwIlzJ33gyr2gQHBtLOYrpCCSRDJGh5JxRm4RumJS0TsbiBlhOJzIAZY7i6ocj4DTjvNYZkzSOdhpikxW7HAzETBREjmtOHOVCZOoFE3kgoaKOrkoV7HRDXMwdAjqLohRMGVlJYBRjqpqRJzCFKtVE9Pp2Q8oHxaCApE5ku3GuzWc+S5ATJN7TI3jDJZnMCpIPCOT2NVHhHAsKPYsieAOvsRMKYzdmnRQnYV9oonknMQC7mYiIMqimQBR4Oyu4th91cwJgLIlQqBIF9G5CTPIDoNakIdJamgN1oL2Dj2EoVbSvUAjKqaOe2s+nASFFcFR6sq4R+REho7HhDekZABwd3+K5KHJkCnrgQNwJOS4PkRIbzQu3bqhMK4W22222rS0pbeELuTK0JlllqzNEdnsC6Ij8KOBW5CA+VAPdgB6vwiOxAHlQ8KPsWCnYveg5AOpApkgw3UzRdS5d5NzYV54AIDR2UfJ3BTqw85w4OTlDl02T3CWBkMxPRkUjzLCoLIxiMziMZR6DwFl4KUwRsihcVGdVA8nc9HufHIMFlgp0FfRuj8JmoY4YIdgfGwamEFBQUDIA3zKYgZ9NUVVQiRTBmmxGk7SQIZI7IkF9HVEfGaCFUXd/VG5DoAEI9w0DRB+TvybvRZQQ3aaR27+H+/N9kDhE53OW0NF11GjgkKSqNRHpKkgEPNhd3UWDJTAVQsgtQeEeUDuLpVb2VfKaPto+3BKWhi0kSRLr0y0sqIeYlkVKhmQt+g7aGXG7BOPNm8gyScgGicmSJ/Xmj5BrqIHltU+xtmoGvcwQkpop26lgVE8EALUyjSQiXKai1q6OliAYiJAJKRCkRwWGKRzMAmCOK/KKJ9Vc1DwLoombcF18IH+QOVA/LZQP+LuSKcKEh7RVoegA=="

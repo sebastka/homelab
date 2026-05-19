@@ -17,6 +17,7 @@ patches:
 resources:
   - Namespace.yaml
   - ClusterPolicy.spread-pods.yaml
+  - ClusterPolicy.trivy-node-collector-fix-proxy-bins.yaml
   - ClusterPolicy.require-securitycontext.yaml
   - ClusterPolicy.disallow-latest-tag.yaml
   - ClusterPolicy.require-requests-limits.yaml
