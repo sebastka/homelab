@@ -223,6 +223,20 @@ spec:
     #                 publicKeys: |-
     #                   -----BEGIN PUBLIC KEY-----
     #                   -----END PUBLIC KEY-----
+    - name: verify-falcosecurity
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['docker.io/falcosecurity/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/falcosecurity/*/.github/workflows/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
     - name: verify-synapse
       match: {any: [resources: {kinds: [Pod]}]}
       verifyImages:

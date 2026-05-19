@@ -55,6 +55,12 @@ spec:
                       # infrastructure/controllers/argocd
                       - quay.io/argoproj/argocd
 
+                      # infrastructure/controllers/falco
+                      - docker.io/falcosecurity/falco
+                      - docker.io/falcosecurity/falcoctl
+                      - docker.io/falcosecurity/falcosidekick
+                      - docker.io/falcosecurity/falcosidekick-ui
+
                       # infrastructure/controllers/kyverno
                       - 'ghcr.io/kyverno/*'
                       - 'kyverno/*'
