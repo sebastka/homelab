@@ -67,7 +67,7 @@ spec:
       containers:
         - name: thelounge
           # Dockerfile: https://github.com/thelounge/thelounge-docker/blob/master/Dockerfile
-          image: ghcr.io/thelounge/thelounge:4.4.3
+          image: ghcr.io/thelounge/thelounge:4.5.0
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
