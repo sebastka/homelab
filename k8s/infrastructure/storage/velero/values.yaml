@@ -4,8 +4,8 @@
 
 
 resources:
-  requests: {memory: 512Mi}
-  limits: {memory: 512Mi}
+  requests: {memory: 512Mi, ephemeral-storage: 256Mi}
+  limits: {memory: 512Mi, ephemeral-storage: 1Gi}
 
 upgradeCRDs: false
 
@@ -67,8 +67,8 @@ nodeAgent:
   disableHostPath: true
   useScratchEmptyDir: true
   resources:
-    requests: {memory: 512Mi}
-    limits: {memory: 512Mi}
+    requests: {memory: 512Mi, ephemeral-storage: 256Mi}
+    limits: {memory: 512Mi, ephemeral-storage: 4Gi}
   podSecurityContext:
     # runAsNonRoot: true
     # runAsUser: 65534
