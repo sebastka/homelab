@@ -20,7 +20,7 @@ apiVersion: v1alpha1
 kind: UserVolumeConfig
 name: longhorn-data  # label: u-longhorn-data
 provisioning:
-  diskSelector: {match: 'disk.size > 50u * GiB'}
+  diskSelector: {match: 'disk.size > 96u * GiB'}
   minSize: 1GiB
 filesystem: {type: ext4}
 encryption:

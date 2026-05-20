@@ -40,7 +40,7 @@ nodes:
   - hostname: t01.${CLUSTER_DOMAIN}
     ipAddress: 192.168.1.201
     installDisk: &x-installDisk /dev/sda
-    # installDiskSelector: &x-installDiskSelector 'size < 40 GiB'  # Make sure Talos is installed on the smaller OS disk and not on the extra data disk
+    # installDiskSelector: &x-installDiskSelector 'size < 96 GiB'  # Make sure Talos is installed on the smaller OS disk and not on the extra data disk
     controlPlane: &x-controlPlane true
     ignoreHostname: &x-ignoreHostname true
     networkInterfaces: &x-networkInterfaces
@@ -61,6 +61,7 @@ nodes:
       customization:
         bootloader: sd-boot
         extraKernelArgs:
+          - -lockdown
           - lockdown=integrity  # Needed for Falco/Tetragon when using Secure Boot
         systemExtensions:
           officialExtensions:
@@ -98,6 +99,7 @@ nodes:
       customization:
         bootloader: sd-boot
         extraKernelArgs:
+          - -lockdown
           - lockdown=integrity  # Needed for Falco/Tetragon when using Secure Boot
           - xe.force_probe=7d51
           - i915.force_probe=!7d51
