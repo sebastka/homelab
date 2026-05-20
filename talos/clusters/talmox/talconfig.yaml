@@ -27,6 +27,7 @@ clusterSvcNets: [10.96.0.0/12]
 patches:
   - '@./patches/cilium.yaml'
   - '@./patches/etcd.yaml'
+  - '@./patches/kubelet.yaml'
   - '@./patches/longhorn.yaml'
   - '@./patches/metrics.yaml'
   - '@./patches/oidc.yaml'
