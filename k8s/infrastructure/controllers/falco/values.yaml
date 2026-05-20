@@ -34,7 +34,7 @@ customRules:
       condition: evt.type = oom_kill_thread
       output: >-
         OOM kill detected
-        (node=%k8s.node.name
+        (node=%evt.hostname
         victim_pid=%oom.victim.pid
         victim_comm=%oom.victim.comm
         container=%container.name
