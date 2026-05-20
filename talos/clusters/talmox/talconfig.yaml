@@ -32,6 +32,7 @@ patches:
   - '@./patches/metrics.yaml'
   - '@./patches/oidc.yaml'
   - '@./patches/resources.yaml'
+  - '@./patches/sysctl.yaml'
   - '@./patches/tpm-disk-encryption.yaml'
 
 nodes:
@@ -58,6 +59,8 @@ nodes:
     schematic: &x-schematic
       customization:
         bootloader: sd-boot
+        extraKernelArgs:
+          - lockdown=integrity  # Needed for Falco/Tetragon when using Secure Boot
         systemExtensions:
           officialExtensions:
             - siderolabs/iscsi-tools
@@ -94,6 +97,7 @@ nodes:
       customization:
         bootloader: sd-boot
         extraKernelArgs:
+          - lockdown=integrity  # Needed for Falco/Tetragon when using Secure Boot
           - xe.force_probe=7d51
           - i915.force_probe=!7d51
         systemExtensions:
