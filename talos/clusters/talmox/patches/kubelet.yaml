@@ -6,3 +6,4 @@ machine:
     extraConfig:
       imageGCHighThresholdPercent: 65
       imageGCLowThresholdPercent: 50
+      imageMaximumGCAge: 48h
