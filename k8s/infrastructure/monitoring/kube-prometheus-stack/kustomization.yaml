@@ -13,6 +13,7 @@ resources:
   - HTTPRoute.yaml
   - CiliumNetworkPolicy.alertmanager.yaml
   - CiliumNetworkPolicy.node-exporter.yaml
+  - PrometheusRule.etcd.yaml
   - SealedSecret.alertmanager-ntfy.yaml
 
 helmCharts:
