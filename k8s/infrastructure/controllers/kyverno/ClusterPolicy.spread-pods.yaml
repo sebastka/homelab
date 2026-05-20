@@ -12,7 +12,7 @@ spec:
   rules:
     - name: inject-zone-spread
       match: {any: [resources: {kinds: [Deployment, StatefulSet, Job], operations: [CREATE]}]}
-      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public]}]}}]}
+      exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public, cilium-spire, cilium-secrets]}]}}]}
       mutate:
         patchStrategicMerge:
           spec:
