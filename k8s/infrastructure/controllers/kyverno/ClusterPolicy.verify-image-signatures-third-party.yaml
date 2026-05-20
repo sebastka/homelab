@@ -2,6 +2,7 @@
 # - forgejo: GPG signatures on release binaries only, no container image signing
 # - searxng: not signed
 # - lldap: not signed
+# - velero: not signed (donated to CNCF velero-io org in 2026, no cosign signing implemented)
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
@@ -95,20 +96,6 @@ spec:
               entries:
                 - keyless:
                     subject: 'https://github.com/stakater/Reloader/.github/workflows/*'
-                    issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
-    - name: verify-velero
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: ['docker.io/velero/*']
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/vmware-tanzu/velero/.github/workflows/*'
                     issuer: https://token.actions.githubusercontent.com
                     rekor: {url: https://rekor.sigstore.dev}
     - name: verify-authelia
