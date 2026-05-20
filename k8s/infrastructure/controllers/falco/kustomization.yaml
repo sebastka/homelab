@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: falco
+
+resources:
+  - Namespace.yaml
+  - SealedSecret.falco-ntfy.yaml
+  - HTTPRoute.yaml
+  - CiliumNetworkPolicy.falco.yaml
+  - CiliumNetworkPolicy.falcosidekick.yaml
+  - CiliumNetworkPolicy.falcosidekick-ui.yaml
+
+helmCharts:
+  - name: falco
+    repo: oci://ghcr.io/falcosecurity/charts
+    version: 8.0.5  # renovate: datasource=github-releases depName=falcosecurity/falco
+    releaseName: falco
+    namespace: falco
+    includeCRDs: true
+    valuesFile: values.yaml

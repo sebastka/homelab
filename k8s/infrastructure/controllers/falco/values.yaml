@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=
+# https://github.com/falcosecurity/charts/blob/master/charts/falco/values.yaml
+---
+
+driver:
+  kind: modern_ebpf
+  # loader: {enabled: true}
+
+tty: true
+
+collectors:
+  containerEngine:
+    engines:
+      docker:       {enabled: false}
+      podman:       {enabled: false}
+      containerd:   {enabled: true}
+      cri:          {enabled: false}
+      lxc:          {enabled: false}
+      libvirt_lxc:  {enabled: false}
+      bpm:          {enabled: false}
+
+falcosidekick:
+  enabled: true
+  webui: {enabled: true, redis: {enabled: true}}
+  config:
+    ntfy: {hostport: http://web.ntfy.svc.cluster.local, topic: homelab, checkcert: false, minpriority: warning}
+  extraEnv:
+    - {name: FALCOSIDEKICK_NTFY_TOKEN, valueFrom: {secretKeyRef: {name: falco-ntfy, key: NTFY_AUTH_TOKEN_FALCO}}}
+
+customRules:
+  oom-kill.yaml: |-
+    - rule: OOM Kill Detected
+      desc: Detect kernel OOM kills including Talos system components
+      condition: evt.type = oom_kill_thread
+      output: >-
+        OOM kill detected
+        (node=%k8s.node.name
+        victim_pid=%oom.victim.pid
+        victim_comm=%oom.victim.comm
+        container=%container.name
+        image=%container.image.repository
+        pod=%k8s.pod.name
+        ns=%k8s.ns.name)
+      priority: WARNING
+      tags: [host, container, process, memory]
+
+# Default rules shipped by falco-rules:5.1.0
+# https://github.com/falcosecurity/rules/releases/tag/falco-rules-5.1.0):
+#   01. Directory traversal monitored file read
+#   02. Read sensitive file trusted after startup
+#   03. Read sensitive file untrusted
+#   04. System user interactive
+#   05. Terminal shell in container
+#   06. Contact K8S API Server From Container
+#   07. Netcat Remote Code Execution in Container
+#   08. Search Private Keys or Passwords
+#   09. Clear Log Activities
+#   10. Remove Bulk Data from Disk
+#   11. Create Symlink Over Sensitive Files
+#   12. Create Hardlink Over Sensitive Files
+#   13. Packet socket created in container
+#   14. Redirect STDOUT/STDIN to Network Connection in Container
+#   15. Linux Kernel Module Injection Detected
+#   16. Debugfs Launched in Privileged Container
+#   17. Detect release_agent File Container Escapes
+#   18. PTRACE attached to process
+#   19. PTRACE anti-debug attempt
+#   20. Find AWS Credentials
+#   21. Execution from /dev/shm
+#   22. Drop and execute new binary in container
+#   23. Fileless execution via memfd_create
+#   24. Disallowed SSH Connection Non Standard Port

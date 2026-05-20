@@ -10,6 +10,7 @@ spec:
     - {namespace: argocd, server: 'https://kubernetes.default.svc'}
     - {namespace: kube-system, server: 'https://kubernetes.default.svc'}
     - {namespace: cert-manager, server: 'https://kubernetes.default.svc'}
+    - {namespace: falco, server: 'https://kubernetes.default.svc'}
     - {namespace: intel-device-plugins, server: 'https://kubernetes.default.svc'}
     - {namespace: kyverno, server: 'https://kubernetes.default.svc'}
     - {namespace: nfd, server: 'https://kubernetes.default.svc'}
