@@ -35,8 +35,8 @@ customRules:
       output: >-
         OOM kill detected
         (node=%evt.hostname
-        victim_pid=%oom.victim.pid
-        victim_comm=%oom.victim.comm
+        victim_pid=%proc.pid
+        victim_comm=%proc.name
         container=%container.name
         image=%container.image.repository
         pod=%k8s.pod.name
