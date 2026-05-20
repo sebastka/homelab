@@ -135,8 +135,10 @@ listen-http: ":8080"
 # auth-startup-queries:
 auth-users:
   - "alertmanager:$2a$10$0dC9qXPjXhsB0jyTn2nf8e6RZTrCJ1chbdx8zS/xXgQDb.79NcemO:user"
+  - "falco:*:user"
 auth-access:
   - "alertmanager:homelab:rw"
+  - "falco:homelab:rw"
 # auth-tokens: (injected by init container from NTFY_AUTH_TOKEN_ALERTMANAGER)
 
 # If set, the X-Forwarded-For header (or whatever is configured in proxy-forwarded-header) is used to determine
