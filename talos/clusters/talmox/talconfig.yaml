@@ -30,6 +30,7 @@ patches:
   - '@./patches/kubelet.yaml'
   - '@./patches/longhorn.yaml'
   - '@./patches/metrics.yaml'
+  - '@./patches/network.yaml'
   - '@./patches/oidc.yaml'
   - '@./patches/resources.yaml'
   - '@./patches/sysctl.yaml'

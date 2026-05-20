@@ -3,4 +3,12 @@
 apiVersion: v1alpha1
 kind: StaticHostConfig
 name: 192.168.2.2
-hostnames: [auth.karlsen.fr]
+hostnames: 
+  - auth.karlsen.fr
+  - git.karlsen.fr
+  - ldap.karlsen.fr
+  - mas.karlsen.fr
+  - matrix.karlsen.fr
+  - mta-sts.karlsen.fr
+  - openpgpkey.karlsen.fr
+  - www.karlsen.fr
