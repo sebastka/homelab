@@ -15,7 +15,6 @@ additionalApiServerCertSans:
   - ${CONTROL_PLANE_IP}
   - 192.168.1.202
   - 192.168.1.203
-  - ${CLUSTER_DOMAIN}
   - t01.${CLUSTER_DOMAIN}
   - t02.${CLUSTER_DOMAIN}
   - t03.${CLUSTER_DOMAIN}
