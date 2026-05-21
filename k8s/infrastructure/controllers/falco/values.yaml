@@ -24,10 +24,12 @@ falcosidekick:
   webui: {enabled: true, redis: {enabled: true}}
   config:
     loki: {hostport: http://loki.loki.svc.cluster.local:3100, minimumpriority: debug}
-    webhook: {address: http://web.ntfy.svc.cluster.local:8080/homelab, minimumpriority: warning, checkcert: false}
+    webhook: {address: http://web.ntfy.svc.cluster.local, minimumpriority: warning, checkcert: false}
     extraEnv:
-      - {name: FALCO_NTFY_TOKEN, valueFrom: {secretKeyRef: {name: falco-ntfy, key: NTFY_AUTH_TOKEN_FALCO}}}
-      - {name: WEBHOOK_CUSTOMHEADERS, value: "Authorization:Bearer $(FALCO_NTFY_TOKEN),X-Template:falco,X-Priority:4,X-Tags:falco"}
+      - {name: FALCO_NTFY_TOKEN,       valueFrom: {secretKeyRef: {name: falco-ntfy, key: NTFY_AUTH_TOKEN_FALCO}}}
+      - {name: FALCO_NTFY_TOPIC,       valueFrom: {secretKeyRef: {name: falco-ntfy, key: NTFY_TOPIC}}}
+      - {name: WEBHOOK_ADDRESS,        value: "http://web.ntfy.svc.cluster.local/$(FALCO_NTFY_TOPIC)"}
+      - {name: WEBHOOK_CUSTOMHEADERS,  value: "Authorization:Bearer $(FALCO_NTFY_TOKEN),X-Template:falco,X-Priority:4,X-Tags:falco"}
 
 customRules:
   cilium-cni-false-positives.yaml: |-

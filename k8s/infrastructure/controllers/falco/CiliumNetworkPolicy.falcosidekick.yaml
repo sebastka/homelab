@@ -18,7 +18,7 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: falcosidekick}}
   egress:
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: ntfy, app.kubernetes.io/name: ntfy}}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: ntfy, app.kubernetes.io/name: ntfy}}], toPorts: [ports: [{port: '80', protocol: TCP}]]}
     - {toEndpoints: [{matchLabels: {app.kubernetes.io/name: falcosidekick, app.kubernetes.io/component: ui-redis, k8s:io.kubernetes.pod.namespace: falco}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}  # Redis storage
     - {toEndpoints: [{matchLabels: {app.kubernetes.io/name: falcosidekick, k8s:io.kubernetes.pod.namespace: falco}}], toPorts: [ports: [{port: '2801', protocol: TCP}]]}  # Test connection
     - {toEndpoints: [{matchLabels: {app.kubernetes.io/name: loki, app.kubernetes.io/component: single-binary, k8s:io.kubernetes.pod.namespace: loki}}], toPorts: [ports: [{port: '3100', protocol: TCP}]]}  # Loki output
