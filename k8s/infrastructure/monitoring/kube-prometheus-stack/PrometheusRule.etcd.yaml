@@ -44,4 +44,4 @@ spec:
             severity: critical
           annotations:
             summary: "etcd has had {{ $value | humanize }} leader elections in the last hour on {{ $labels.nodename }}"
-            description: "etcd on node `{{ $labels.nodename }}` has had {{ $value | humanize }} leader elections in the last hour — this is severely elevated and indicates persistent disk I/O or network pressure. Investigate /var disk usage and etcd WAL fsync latency immediately."
+            description: "etcd on node `{{ $labels.nodename }}` has had {{ $value | humanize }} leader elections in the last hour - this is severely elevated and indicates persistent disk I/O or network pressure. Investigate /var disk usage and etcd WAL fsync latency immediately."

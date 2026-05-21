@@ -14,6 +14,7 @@ resources:
   - CiliumNetworkPolicy.alertmanager.yaml
   - CiliumNetworkPolicy.node-exporter.yaml
   - PrometheusRule.etcd.yaml
+  - PrometheusRule.oom.yaml
   - SealedSecret.alertmanager-ntfy.yaml
 
 helmCharts:
