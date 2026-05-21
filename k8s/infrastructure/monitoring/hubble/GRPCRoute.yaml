@@ -1,3 +1,5 @@
+# hubble observe --server tls://hubble-relay.talmox.hera.home.karlsen.fr
+# hubble config set server tls://hubble-relay.talmox.hera.home.karlsen.fr
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: GRPCRoute
