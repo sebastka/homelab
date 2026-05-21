@@ -18,5 +18,5 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: falco}}
   egress:
     - {toEntities: [kube-apiserver]}
-    - {toEndpoints: [{matchLabels: {app.kubernetes.io/name: falcosidekick, k8s:io.kubernetes.pod.namespace: falco}}], toPorts: [ports: [{port: '2801', protocol: TCP}]]}  # Events to Falcosidekick
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: falco, app.kubernetes.io/name: falcosidekick}}], toPorts: [ports: [{port: '2801', protocol: TCP}]]}  # Events to Falcosidekick
     - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # falcoctl rule updates

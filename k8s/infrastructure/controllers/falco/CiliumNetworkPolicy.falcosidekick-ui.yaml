@@ -18,6 +18,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: falcosidekick, app.kubernetes.io/component: ui}}
   egress:
-    - {toEndpoints: [{matchLabels: {app.kubernetes.io/name: falcosidekick, k8s:io.kubernetes.pod.namespace: falco}}], toPorts: [ports: [{port: '2801', protocol: TCP}]]}  # Query Falcosidekick API
-    - {toEndpoints: [{matchLabels: {app.kubernetes.io/name: falcosidekick, app.kubernetes.io/component: ui-redis, k8s:io.kubernetes.pod.namespace: falco}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}  # Redis
-    - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]} 
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: falco, app.kubernetes.io/name: falcosidekick}}], toPorts: [ports: [{port: '2802', protocol: TCP}]]}  # Query Falcosidekick API
+    # - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: falco, app.kubernetes.io/name: falcosidekick, app.kubernetes.io/component: ui-redis}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}  # Redis
+    # - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]} 
