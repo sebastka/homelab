@@ -174,8 +174,6 @@ alertmanager:
               authorization:
                 type: Bearer
                 credentials_file: /etc/alertmanager/secrets/alertmanager-ntfy/token
-              headers:
-                X-Markdown: '1'
 
 thanosRuler:
   thanosRulerSpec:
