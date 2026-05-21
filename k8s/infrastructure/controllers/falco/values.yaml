@@ -29,7 +29,7 @@ falcosidekick:
       - {name: FALCO_NTFY_TOKEN,       valueFrom: {secretKeyRef: {name: falco-ntfy, key: NTFY_AUTH_TOKEN_FALCO}}}
       - {name: FALCO_NTFY_TOPIC,       valueFrom: {secretKeyRef: {name: falco-ntfy, key: NTFY_TOPIC}}}
       - {name: WEBHOOK_ADDRESS,        value: "http://web.ntfy.svc.cluster.local/$(FALCO_NTFY_TOPIC)"}
-      - {name: WEBHOOK_CUSTOMHEADERS,  value: "Authorization:Bearer $(FALCO_NTFY_TOKEN),X-Template:falco,X-Priority:4,X-Tags:falco"}
+      - {name: WEBHOOK_CUSTOMHEADERS,  value: "Authorization:Bearer $(FALCO_NTFY_TOKEN),X-Template:falco,X-Priority:4,X-Tags:falco,X-Markdown:1"}
 
 customRules:
   cilium-cni-false-positives.yaml: |-
