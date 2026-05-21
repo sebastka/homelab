@@ -24,10 +24,17 @@ falcosidekick:
   webui: {enabled: true, redis: {enabled: true}}
   config:
     ntfy: {hostport: http://web.ntfy.svc.cluster.local, topic: homelab, checkcert: false, minpriority: warning}
+    loki: {hostport: http://loki.loki.svc.cluster.local:3100, minimumpriority: debug}
   extraEnv:
     - {name: FALCOSIDEKICK_NTFY_TOKEN, valueFrom: {secretKeyRef: {name: falco-ntfy, key: NTFY_AUTH_TOKEN_FALCO}}}
 
-# customRules:
+customRules:
+  cilium-cni-false-positives.yaml: |-
+    - rule: Drop and execute new binary in container
+      condition: and not (proc.name = "cilium-cni" and proc.pname = "containerd")
+      append: true
+
+# customRules (disabled):
 #   # Event oom_kill_thread is not yet suported by the modern_ebpf driver
 #   oom-kill.yaml: |-
 #     - rule: OOM Kill Detected

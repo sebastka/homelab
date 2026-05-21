@@ -10,6 +10,7 @@ resources:
   - CiliumNetworkPolicy.falco.yaml
   - CiliumNetworkPolicy.falcosidekick.yaml
   - CiliumNetworkPolicy.falcosidekick-ui.yaml
+  - GrafanaDashboard.falcosidekick-loki.yaml
 
 helmCharts:
   - name: falco

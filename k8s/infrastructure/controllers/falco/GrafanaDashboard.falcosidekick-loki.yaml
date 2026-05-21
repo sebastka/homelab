@@ -1,0 +1,16 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: falcosidekick-loki
+  namespace: falco
+spec:
+  allowCrossNamespaceImport: true
+  folder: Falco
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  configMapRef:
+    name: falcosidekick-loki-dashboard-grafana
+    key: falcosidekick-loki-dashboard.json
