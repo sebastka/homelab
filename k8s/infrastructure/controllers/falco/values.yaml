@@ -24,13 +24,10 @@ falcosidekick:
   webui: {enabled: true, redis: {enabled: true}}
   config:
     loki: {hostport: http://loki.loki.svc.cluster.local:3100, minimumpriority: debug}
-    # ntfy is not in the bundled falcosidekick chart template: configure via extraEnv instead
+    webhook: {address: http://web.ntfy.svc.cluster.local:8080/homelab, minimumpriority: warning, checkcert: false}
     extraEnv:
-      - {name: NTFY_HOSTPORT,          value: http://web.ntfy.svc.cluster.local:8080}
-      - {name: NTFY_TOPIC,             value: homelab}
-      - {name: NTFY_CHECKCERT,         value: 'false'}
-      - {name: NTFY_MINIMUMPRIORITY,   value: warning}
-      - {name: NTFY_TOKEN, valueFrom: {secretKeyRef: {name: falco-ntfy, key: NTFY_AUTH_TOKEN_FALCO}}}
+      - {name: FALCO_NTFY_TOKEN, valueFrom: {secretKeyRef: {name: falco-ntfy, key: NTFY_AUTH_TOKEN_FALCO}}}
+      - {name: WEBHOOK_CUSTOMHEADERS, value: "Authorization:Bearer $(FALCO_NTFY_TOKEN),X-Template:falco,X-Priority:4,X-Tags:falco"}
 
 customRules:
   cilium-cni-false-positives.yaml: |-

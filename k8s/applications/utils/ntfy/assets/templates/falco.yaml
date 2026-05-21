@@ -1,0 +1,12 @@
+---
+title: |
+  {{ if or (eq .priority "Critical") (eq .priority "Emergency") (eq .priority "Alert") }}🚨{{ else if eq .priority "Error" }}❌{{ else }}⚠️{{ end }} {{ .rule }}
+message: |
+  **Priority**: {{ .priority }} | **Node**: {{ .hostname }}
+  {{ with index .output_fields "k8s.ns.name" }}**Namespace**: {{ . }}
+  {{ end -}}{{ with index .output_fields "k8s.pod.name" }}**Pod**: {{ . }}
+  {{ end -}}{{ $cname := index .output_fields "container.name" -}}{{ if and $cname (ne $cname "host") (ne $cname "") }}**Container**: {{ $cname }}
+  {{ end -}}{{ with index .output_fields "user.name" }}**User**: {{ . }}
+  {{ end -}}{{ with index .output_fields "proc.exepath" }}**Binary**: {{ . }}
+  {{ end -}}{{ with index .output_fields "proc.cmdline" }}**Command**: {{ . }}
+  {{ end -}}
