@@ -1,0 +1,102 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: falco-events
+  namespace: falco
+spec:
+  allowCrossNamespaceImport: true
+  folder: Falco
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  json: |
+    {
+      "title": "Falco Events",
+      "uid": "falco-events",
+      "schemaVersion": 39,
+      "refresh": "30s",
+      "time": {"from": "now-24h", "to": "now"},
+      "timezone": "browser",
+      "tags": ["falco"],
+      "templating": {
+        "list": [
+          {
+            "name": "datasource",
+            "type": "datasource",
+            "query": "loki",
+            "hide": 0,
+            "label": "Datasource",
+            "multi": false,
+            "includeAll": false,
+            "current": {}
+          },
+          {
+            "name": "priority",
+            "type": "query",
+            "datasource": {"type": "loki", "uid": "${datasource}"},
+            "query": {"label": "priority", "refId": "A", "stream": "", "type": 1},
+            "hide": 0,
+            "label": "Priority",
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".+",
+            "refresh": 2,
+            "sort": 1,
+            "current": {"selected": true, "text": ["All"], "value": ["$__all"]}
+          },
+          {
+            "name": "namespace",
+            "type": "query",
+            "datasource": {"type": "loki", "uid": "${datasource}"},
+            "query": {"label": "k8s_ns_name", "refId": "B", "stream": "", "type": 1},
+            "hide": 0,
+            "label": "Namespace",
+            "multi": true,
+            "includeAll": true,
+            "allValue": ".+",
+            "refresh": 2,
+            "sort": 1,
+            "current": {"selected": true, "text": ["All"], "value": ["$__all"]}
+          }
+        ]
+      },
+      "panels": [
+        {
+          "id": 1,
+          "title": "Events",
+          "type": "logs",
+          "gridPos": {"h": 24, "w": 24, "x": 0, "y": 0},
+          "datasource": {"type": "loki", "uid": "${datasource}"},
+          "options": {
+            "dedupStrategy": "none",
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": true,
+            "showTime": true,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "targets": [
+            {
+              "refId": "A",
+              "datasource": {"type": "loki", "uid": "${datasource}"},
+              "editorMode": "code",
+              "expr": "{priority=~\"$priority\"} | k8s_ns_name =~ \"$namespace\"",
+              "queryType": "range"
+            }
+          ]
+        }
+      ],
+      "annotations": {"list": []},
+      "links": [
+        {
+          "title": "Falcosidekick Stats",
+          "type": "dashboard",
+          "url": "/d/de6ixj4nl1kowc",
+          "tooltip": "Open Falcosidekick Loki dashboard"
+        }
+      ]
+    }
