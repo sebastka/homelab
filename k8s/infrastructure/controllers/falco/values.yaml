@@ -28,7 +28,7 @@ falcosidekick:
     extraEnv:
       - {name: NTFY_HOSTPORT,          value: http://web.ntfy.svc.cluster.local:8080}
       - {name: NTFY_TOPIC,             value: homelab}
-      - {name: NTFY_CHECKCERT,         value: false}
+      - {name: NTFY_CHECKCERT,         value: 'false'}
       - {name: NTFY_MINIMUMPRIORITY,   value: warning}
       - {name: NTFY_TOKEN, valueFrom: {secretKeyRef: {name: falco-ntfy, key: NTFY_AUTH_TOKEN_FALCO}}}
 
