@@ -35,8 +35,8 @@ falcosidekick:
 customRules:
   cilium-cni-false-positives.yaml: |-
     - rule: Drop and execute new binary in container
+      override: {condition: append}
       condition: and not (proc.name = "cilium-cni" and proc.pname = "containerd")
-      append: true
 
 # customRules (disabled):
 #   # Event oom_kill_thread is not yet suported by the modern_ebpf driver
