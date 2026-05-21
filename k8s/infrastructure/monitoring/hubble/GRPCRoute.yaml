@@ -1,0 +1,12 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GRPCRoute
+metadata:
+  name: hubble-relay
+  namespace: kube-system
+spec:
+  parentRefs:
+    - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
+  hostnames: [hubble-relay.talmox.hera.home.karlsen.fr]
+  rules:
+    - backendRefs: [{name: hubble-relay, kind: Service, port: 80}]
