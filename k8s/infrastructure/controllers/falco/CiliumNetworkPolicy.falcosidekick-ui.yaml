@@ -9,15 +9,13 @@ spec:
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '2802', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '2802', protocol: TCP}]]}  # Envoy Gateway
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-falcosidekick-ui-egress
-  namespace: falco
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: falcosidekick, app.kubernetes.io/component: ui}}
-  egress:
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: falco, app.kubernetes.io/name: falcosidekick}}], toPorts: [ports: [{port: '2802', protocol: TCP}]]}  # Query Falcosidekick API
-    # - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: falco, app.kubernetes.io/name: falcosidekick, app.kubernetes.io/component: ui-redis}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}  # Redis
-    # - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]} 
+# ---
+# apiVersion: cilium.io/v2
+# kind: CiliumNetworkPolicy
+# metadata:
+#   name: allow-falcosidekick-ui-egress
+#   namespace: falco
+# spec:
+#   endpointSelector: {matchLabels: {app.kubernetes.io/name: falcosidekick, app.kubernetes.io/component: ui}}
+#   egress:
+#     # - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]} 
