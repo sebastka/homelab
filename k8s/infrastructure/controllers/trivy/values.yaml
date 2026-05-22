@@ -12,7 +12,7 @@ trivyOperator:
 
 operator:
   builtInTrivyServer: true
-  scanJobsConcurrentLimit: 3
+  scanJobsConcurrentLimit: 1
   vulnerabilityScannerEnabled: true
   configAuditScannerEnabled: true  # Should be covered vby Kyverno as well
   # infraAssessmentScannerEnabled: false
@@ -28,7 +28,7 @@ trivy:
   storageSize: 5Gi
   resources:
     requests: {memory: 128Mi}
-    limits: {memory: 512Mi}
+    limits: {memory: 1Gi}
   server:
     resources:
       requests: {memory: 512Mi}
@@ -43,7 +43,7 @@ podSecurityContext:
   runAsNonRoot: true
   seccompProfile: {type: RuntimeDefault}
 
-# Talos doesn't use systemd — strip /etc/systemd and /lib/systemd mounts
+# Talos doesn't use systemd: strip /etc/systemd and /lib/systemd mounts
 # which don't exist on the host and cause mkdir failures at OCI spec time.
 nodeCollector:
   tolerations: [operator: Exists]  # Allow scheduling on control-plane nodes which are tainted with node-role.kubernetes.io/control-plane:NoSchedule
