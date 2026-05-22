@@ -56,3 +56,5 @@ spec:
           readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             - {name: cluster-ca-volume, mountPath: /etc/ssl/cluster-ca, readOnly: true}
+      volumes:
+        - {name: cluster-ca-volume, configMap: {name: cluster-ca-bundle}}
