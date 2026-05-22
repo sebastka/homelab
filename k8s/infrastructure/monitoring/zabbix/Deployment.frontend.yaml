@@ -55,6 +55,6 @@ spec:
           livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
-            - {name: cluster-ca-volume, mountPath: /etc/ssl/cluster-ca, readOnly: true}
+            - {name: cluster-ca-volume, mountPath: /etc/ssl/certs/cluster-root-ca.crt, subPath: cluster-root-ca.crt, readOnly: true}
       volumes:
         - {name: cluster-ca-volume, configMap: {name: cluster-ca-bundle}}
