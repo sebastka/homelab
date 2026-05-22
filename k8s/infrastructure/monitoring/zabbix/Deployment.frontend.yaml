@@ -54,3 +54,5 @@ spec:
           startupProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
           livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            - {name: cluster-ca-volume, mountPath: /etc/ssl/cluster-ca, readOnly: true}

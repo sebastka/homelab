@@ -20,3 +20,4 @@ spec:
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: backend}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Zabbix server API
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {'k8s:io.kubernetes.pod.namespace': light-ldap, app.kubernetes.io/name: light-ldap}}], toPorts: [ports: [{port: '6360', protocol: TCP}]]}  # ldaps
