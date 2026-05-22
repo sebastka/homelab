@@ -26,6 +26,7 @@ loki:
     enable_alertmanager_v2: true
     ring: {kvstore: {store: inmemory}}
     enable_api: true
+  analytics: {reporting_enabled: false}
   limits_config:
     retention_period: 168h  # 7 days
     ingestion_rate_mb: 20
