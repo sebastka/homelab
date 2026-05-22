@@ -400,7 +400,7 @@ module.exports = {
                 primaryKey: "uid",
 
                 // - `baseDN`: LDAP base DN. TheLounge binds directly as
-                //   `uid=<username>,ou=people,dc=karlsen,dc=fr` — no service account needed.
+                //   `uid=<username>,ou=people,dc=karlsen,dc=fr` - no service account needed.
                 baseDN: "ou=people,dc=karlsen,dc=fr",
         },
 
