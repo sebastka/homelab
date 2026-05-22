@@ -14,7 +14,7 @@ operator:
   builtInTrivyServer: true
   scanJobsConcurrentLimit: 1
   vulnerabilityScannerEnabled: true
-  configAuditScannerEnabled: true  # Should be covered vby Kyverno as well
+  configAuditScannerEnabled: false  # Should be covered vby Kyverno as well
   # infraAssessmentScannerEnabled: false
   # clusterComplianceEnabled: false
   scanJobTTL: 10m

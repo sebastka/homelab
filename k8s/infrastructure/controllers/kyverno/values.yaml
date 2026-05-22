@@ -1,3 +1,13 @@
 # yaml-language-server: $schema=
 # https://github.com/kyverno/kyverno/blob/main/charts/kyverno/values.yaml
 ---
+
+features:
+  ttlController:
+    reconciliationInterval: 30m
+  reporting:
+    # validate: true
+    # mutate: true
+    mutateExisting: false
+    # imageVerify: true
+    generate: false

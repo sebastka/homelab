@@ -22,7 +22,7 @@ defaultSettings:
 
 defaultBackupStore:
   backupTarget: nfs://file01.hera.home.karlsen.fr:/mnt/nfs/homelab/longhorn-backup?nfsOptions=soft,timeo=330,retrans=3
-  pollInterval: 60
+  pollInterval: 300
 
 longhornManager:
   resources:

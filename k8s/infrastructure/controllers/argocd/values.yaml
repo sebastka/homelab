@@ -26,6 +26,8 @@ configs:
       enableUserInfoGroups: true
       userInfoPath: /api/oidc/userinfo
     kustomize.buildOptions: --enable-helm
+    timeout.reconciliation: 10m
+    timeout.reconciliation.jitter: 120s
   cmp:
     create: true
   params:
