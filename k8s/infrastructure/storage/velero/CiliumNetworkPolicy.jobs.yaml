@@ -2,6 +2,17 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
+  name: allow-velero-datamover-egress
+  namespace: velero
+spec:
+  endpointSelector: {matchLabels: {velero.io/exposer-pod-group: snapshot-exposer}}
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toFQDNs: [{matchName: hel1.your-objectstorage.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
   name: allow-velero-kubectl-jobs-egress
   namespace: velero
 spec:
