@@ -40,9 +40,11 @@ securityContext:
 volumes:
   - {name: tmp-volume, emptyDir: {}}
   - {name: home-config-volume, emptyDir: {}}
+  - {name: plugins-dir, emptyDir: {}}
 volumeMounts:
   - {name: tmp-volume, mountPath: /tmp}
   - {name: home-config-volume, mountPath: /home/headlamp/.config}
+  - {name: plugins-dir, mountPath: /headlamp/plugins}
 
 httproute:
   enabled: false
@@ -52,7 +54,7 @@ resources:
   limits: {memory: 64Mi}
 
 pluginsManager:
-  enabled: true
+  enabled: false
   resources:
     requests: {memory: 128Mi}
     limits: {memory: 512Mi}
