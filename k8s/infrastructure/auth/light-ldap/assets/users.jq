@@ -51,4 +51,22 @@
   "loginShell": null,
   "sshPublicKey": [],
   "pgpKey": []
+},
+{
+  "id": "zabbix",
+  "password": $ENV.LLDAP_ZABBIX_PASSWORD,
+  "email": "zabbix@karlsen.fr",
+  "displayName": "Zabbix",
+  "firstName": "Zabbix",
+  "lastName": "Service",
+  "avatar_url": null,
+  "pictureUrl": null,
+  "groups": ["lldap_strict_readonly"],
+  "uidNumber": null,
+  "gidNumber": null,
+  "timezone": null,
+  "homeDirectory": null,
+  "loginShell": null,
+  "sshPublicKey": [],
+  "pgpKey": []
 }
