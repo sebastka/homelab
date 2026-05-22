@@ -10,6 +10,7 @@ generatorOptions:
 
 configMapGenerator:
   - {namespace: zabbix, name: zabbix-env, envs: [assets/zabbix.env]}
+  - {namespace: zabbix, name: openldap-conf, files: [ldap.conf=assets/ldap.conf]}
 
 resources:
   - Namespace.yaml
