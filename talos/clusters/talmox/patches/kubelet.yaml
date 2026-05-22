@@ -4,6 +4,8 @@
 machine:
   kubelet:
     extraConfig:
-      imageGCHighThresholdPercent: 65
-      imageGCLowThresholdPercent: 50
-      imageMaximumGCAge: 48h
+      imageGCHighThresholdPercent: 65   # default: 85
+      imageGCLowThresholdPercent: 50    # default: 80
+      imageMaximumGCAge: 48h            # default: 0s (disabled)
+      nodeStatusUpdateFrequency: 20s    # default: 10s
+      syncFrequency: 3m                 # default: 1m
