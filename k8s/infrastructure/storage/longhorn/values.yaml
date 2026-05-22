@@ -19,6 +19,8 @@ defaultSettings:
   snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: false
   backupCompressionMethod: gzip
   allowRecurringJobWhileVolumeDetached: true
+  recurringSuccessfulJobsHistoryLimit: 3
+  recurringFailedJobsHistoryLimit: 3
 
 defaultBackupStore:
   backupTarget: nfs://file01.hera.home.karlsen.fr:/mnt/nfs/homelab/longhorn-backup?nfsOptions=soft,timeo=330,retrans=3

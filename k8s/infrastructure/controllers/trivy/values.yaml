@@ -17,6 +17,9 @@ operator:
   configAuditScannerEnabled: false  # Should be covered vby Kyverno as well
   # infraAssessmentScannerEnabled: false
   # clusterComplianceEnabled: false
+  sbomGenerationEnabled: false
+  scannerReportTTL: 24h
+  cacheReportTTL: 24h
   scanJobTTL: 10m
 
 service:
