@@ -38,7 +38,7 @@ resources:
 helmCharts:
   - name: kyverno
     repo: https://kyverno.github.io/kyverno/
-    version: 3.8.1  # renovate: datasource=github-releases depName=kyverno/kyverno
+    version: 3.8.1  # renovate: datasource=helm registryUrl=https://kyverno.github.io/kyverno/ depName=kyverno
     releaseName: kyverno
     namespace: kyverno
     includeCRDs: true

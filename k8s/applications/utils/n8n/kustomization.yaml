@@ -31,7 +31,7 @@ resources:
 helmCharts:
   - name: n8n
     repo: oci://ghcr.io/n8n-io/n8n-helm-chart
-    version: 1.8.0  # renovate: datasource=github-releases depName=n8n-io/n8n-hosting
+    version: 1.8.0  # renovate: datasource=helm registryUrl=oci://ghcr.io/n8n-io/n8n-helm-chart depName=n8n
     releaseName: n8n
     namespace: n8n
     includeCRDs: true

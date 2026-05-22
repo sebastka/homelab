@@ -17,7 +17,7 @@ resources:
 helmCharts:
   - name: falco
     repo: oci://ghcr.io/falcosecurity/charts
-    version: 8.0.5  # renovate: datasource=github-releases depName=falcosecurity/falco
+    version: 8.0.5  # renovate: datasource=helm registryUrl=oci://ghcr.io/falcosecurity/charts depName=falco
     releaseName: falco
     namespace: falco
     includeCRDs: true
