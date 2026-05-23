@@ -48,11 +48,11 @@ httproute:
   enabled: true
   parentRefs:
     - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
-  hostnames: [whoami, jellyfin, metube]
+  hostnames: [captcha.karlsen.app]
 
 referenceGrant:
   create: true
-  fromNamespaces: [forgejo]
+  fromNamespaces: [whoami, jellyfin, metube]
 
 grafana:
   dashboard:
