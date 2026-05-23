@@ -48,10 +48,7 @@ resources:
   - Namespace.yaml
   - PersistentVolumeClaim.yaml
   - SealedSecret.crowdsec-secrets.yaml
-  - CiliumNetworkPolicy.namespace.yaml
-  - CiliumNetworkPolicy.lapi.yaml
-  - CiliumNetworkPolicy.agent.yaml
-  - CiliumNetworkPolicy.appsec.yaml
+  - CiliumNetworkPolicy.yaml
 
 helmCharts:
   - name: crowdsec
@@ -60,4 +57,4 @@ helmCharts:
     releaseName: crowdsec
     namespace: crowdsec
     includeCRDs: true
-    valuesFile: values.crowdsec.yaml
+    valuesFile: values.yaml

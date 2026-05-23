@@ -1,0 +1,50 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-intra-namespace
+  namespace: crowdsec
+spec:
+  endpointSelector: {}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: crowdsec}]}
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: crowdsec}]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-crowdsec-lapi
+  namespace: crowdsec
+spec:
+  endpointSelector: {matchLabels: {k8s-app: crowdsec, type: lapi}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # envoy-proxy-bouncer
+  egress:
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-crowdsec-agent
+  namespace: crowdsec
+spec:
+  endpointSelector: {matchLabels: {k8s-app: crowdsec, type: agent}}
+  # ingress: []
+  egress:
+    - {toEntities: [cluster], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # LAPI (cluster entity covers pod IPs unresolved by ipcache)
+    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-crowdsec-appsec
+  namespace: crowdsec
+spec:
+  endpointSelector: {matchLabels: {k8s-app: crowdsec, type: appsec}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '7422', protocol: TCP}]]}  # envoy-proxy-bouncer WAF
+  egress:
+    - {toEntities: [cluster], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # LAPI (cluster entity covers pod IPs unresolved by ipcache)
+    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
