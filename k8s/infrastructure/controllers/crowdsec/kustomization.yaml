@@ -51,6 +51,7 @@ resources:
   - CiliumNetworkPolicy.namespace.yaml
   - CiliumNetworkPolicy.lapi.yaml
   - CiliumNetworkPolicy.agent.yaml
+  - CiliumNetworkPolicy.appsec.yaml
 
 helmCharts:
   - name: crowdsec
