@@ -17,4 +17,5 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {k8s-app: crowdsec, type: agent}}
   egress:
+    - {toEntities: [cluster], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # LAPI (cluster entity covers pod IPs unresolved by ipcache)
     - {toFQDNs: [{matchPattern: '*.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
