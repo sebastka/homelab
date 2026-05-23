@@ -51,6 +51,7 @@ spec:
 
                       # infrastructure/network/envoy-gateway
                       - 'docker.io/envoyproxy/*'
+                      - ghcr.io/kdwils/envoy-proxy-bouncer
 
                       # infrastructure/controllers/argocd
                       - quay.io/argoproj/argocd
