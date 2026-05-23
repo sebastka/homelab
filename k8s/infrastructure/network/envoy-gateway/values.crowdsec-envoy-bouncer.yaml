@@ -16,6 +16,10 @@ config:
     lapiURL: http://crowdsec-service.crowdsec.svc.cluster.local:8080
     apiKeySecretRef: {name: crowdsec-secrets, key: api-key}
 
+resources:
+  requests: {memory: 64Mi}
+  limits: {memory: 128Mi}
+
 # securityPolicy:
 #   create: true
 #   gatewayName: default
