@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kdwils/envoy-proxy-crowdsec-bouncer/refs/heads/main/charts/envoy-proxy-bouncer/values.schema.json
+# https://github.com/kdwils/envoy-proxy-crowdsec-bouncer/blob/main/charts/envoy-proxy-bouncer/values.yaml
+---
+
+fullnameOverride: envoy-proxy-bouncer-karlsenfr
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile: {type: RuntimeDefault}
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: {drop: [ALL]}
+
+resources:
+  requests: {memory: 64Mi}
+  limits: {memory: 128Mi}
+
+# https://github.com/kdwils/envoy-proxy-crowdsec-bouncer/blob/main/docs/examples/config/example.yaml
+config:
+  bouncer:
+    enabled: true
+    metrics: true
+    lapiURL: http://crowdsec-service.crowdsec.svc.cluster.local:8080
+    apiKeySecretRef: {name: crowdsec-secrets, key: bouncer-api-key-karlsenfr}
+  waf:
+    enabled: false
+    # appSecURL: http://crowdsec-appsec-service:7422
+    #  apiKeySecretRef: {name: crowdsec-secrets, key: waf-api-key}
+  prometheus:
+    enabled: true
+    serviceMonitor: {enabled: true}
+  captcha:
+    enabled: true
+    provider: turnstile
+    siteKey: 0x4AAAAAADU9am0X6mW_Fcqg
+    secretKeySecretRef: {name: crowdsec-secrets, key: turnstile-secret-key}
+    signingKeySecretRef: {name: crowdsec-secrets, key: captcha-jwt-signing-key-karlsenfr}
+    callbackURL: https://captcha.karlsen.fr/captcha/callback
+    cookieDomain: karlsen.fr
+    cookieName: __Secure-crowdsec_captcha
+    secureCookie: true
+    disableChallengeReplayProtection: false
+  # webhook: {}
+  # templates: {}
+
+httproute:
+  enabled: true
+  parentRefs:
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-fr}
+  hostnames: [captcha.karlsen.fr]
+
+referenceGrant:
+  create: true
+  fromNamespaces: [forgejo, whoami, homepage, matrix-authentication-service, authelia, synapse]
+
+grafana:
+  dashboard:
+    enabled: true
+    folder: CrowdSec

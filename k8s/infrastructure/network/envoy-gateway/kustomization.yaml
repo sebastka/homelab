@@ -39,7 +39,16 @@ helmCharts:
   - name: envoy-proxy-bouncer
     repo: oci://ghcr.io/kdwils/charts
     version: 0.6.1  # renovate: datasource=helm registryUrl=oci://ghcr.io/kdwils/charts depName=envoy-proxy-bouncer
-    releaseName: envoy-proxy-bouncer
+    releaseName: envoy-proxy-bouncer-karlsenfr
     namespace: envoy-gateway-system
     includeCRDs: true
-    valuesFile: values.crowdsec-envoy-bouncer.yaml
+    valuesFile: values.crowdsec-envoy-bouncer-karlsenfr.yaml
+
+  - name: envoy-proxy-bouncer
+    repo: oci://ghcr.io/kdwils/charts
+    version: 0.6.1  # renovate: datasource=helm registryUrl=oci://ghcr.io/kdwils/charts depName=envoy-proxy-bouncer
+    releaseName: envoy-proxy-bouncer-karlsenapp
+    namespace: envoy-gateway-system
+    includeCRDs: true
+    valuesFile: values.crowdsec-envoy-bouncer-karlsenapp.yaml
+
