@@ -1,0 +1,62 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: crowdsec
+
+patches:
+  # Fix missing namespace in resources created by the helm chart
+  - target:
+      kind: (DaemonSet|Deployment|Service|ConfigMap|Secret|ServiceAccount|Job)
+    patch: |
+      - {op: add, path: /metadata/namespace, value: crowdsec}
+  # # Use custom rootless image for crowdsecurity/crowdsec
+  # - target: {kind: Deployment, name: crowdsec-lapi}
+  #   patch: |
+  #     apiVersion: apps/v1
+  #     kind: Deployment
+  #     metadata: {name: crowdsec-lapi}
+  #     spec: {template: {spec: {containers: [{name: crowdsec-lapi, image: ghcr.io/sebastka/crowdsec:1.7.8, imagePullPolicy: Always}]}}}
+  # - target: {kind: DaemonSet, name: crowdsec-agent}
+  #   patch: |
+  #     apiVersion: apps/v1
+  #     kind: DaemonSet
+  #     metadata: {name: crowdsec-agent}
+  #     spec: {template: {spec: {initContainers: [{name: wait-for-lapi-and-register, image: ghcr.io/sebastka/crowdsec:1.7.8, imagePullPolicy: Always}], containers: [{name: crowdsec-agent, image: ghcr.io/sebastka/crowdsec:1.7.8, imagePullPolicy: Always}]}}}
+  - target: {kind: Pod, name: 'crowdsec-test-.*'}
+    patch: |
+      # Fix missing namespace and add securityContext to test pod
+      - op: add
+        path: /metadata/namespace
+        value: crowdsec
+      # Add securityContext to test pod to ensure it can run in the cluster
+      - op: add
+        path: /spec/securityContext
+        value:
+          runAsNonRoot: true
+          runAsUser: 1000
+          fsGroup: 1000
+          seccompProfile: {type: RuntimeDefault}
+      # Add securityContext to test pod containers to ensure they can run in the cluster
+      - op: add
+        path: /spec/containers/0/securityContext
+        value:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: {drop: [ALL]}
+
+resources:
+  - Namespace.yaml
+  - PersistentVolumeClaim.yaml
+  - SealedSecret.crowdsec-secrets.yaml
+  - CiliumNetworkPolicy.namespace.yaml
+  - CiliumNetworkPolicy.lapi.yaml
+  - CiliumNetworkPolicy.agent.yaml
+
+helmCharts:
+  - name: crowdsec
+    repo: https://crowdsecurity.github.io/helm-charts
+    version: 0.24.0  # renovate: datasource=helm depName=crowdsec registryUrl=https://crowdsecurity.github.io/helm-charts
+    releaseName: crowdsec
+    namespace: crowdsec
+    includeCRDs: true
+    valuesFile: values.crowdsec.yaml

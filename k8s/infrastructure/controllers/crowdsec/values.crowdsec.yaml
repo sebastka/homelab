@@ -1,0 +1,114 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/crowdsecurity/helm-charts/refs/heads/main/charts/crowdsec/values.schema.json
+# https://github.com/crowdsecurity/helm-charts/blob/main/charts/crowdsec/values.yaml
+# https://docs.crowdsec.net/u/getting_started/installation/kubernetes/
+# https://docs.crowdsec.net/docs/next/configuration/values_parameters/
+# https://docs.crowdsec.net/u/bouncers/envoy/
+# https://docs.crowdsec.net/docs/next/appsec/quickstart/envoy-gateway
+---
+
+image:
+  kubectl:
+    tag: 1.36.0  # renovate: datasource=docker depName=docker.io/alpine/kubectl
+
+container_runtime: containerd
+
+agent:
+  hostVarLog: false
+  podSecurityContext:
+  #   runAsNonRoot: true
+  #   runAsUser: 1000
+  #   runAsGroup: 1000
+  #   fsGroup: 1000
+  #   fsGroupChangePolicy: Always
+    seccompProfile: {type: RuntimeDefault}
+  securityContext:
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    capabilities: {drop: [ALL]}
+  wait_for_lapi:
+    securityContext:
+      capabilities: {drop: [ALL]}
+  persistentVolume:
+    config: {existingClaim: crowdsec-data-pvc, subPath: agent-config}
+    resources:
+      requests: {memory: 64Mi}
+      limits: {memory: 256Mi}
+  acquisition:
+    - {namespace: envoy-gateway-system, podName: 'envoy-gateway-default-*', poll_without_inotify: true, program: envoy}
+  env:
+    - {name: COLLECTIONS, value: yanis-kouidri/envoy}
+    - {name: DEBUG, value: 'true'}
+
+lapi:
+  podSecurityContext:
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+    # fsGroupChangePolicy: Always
+    seccompProfile: {type: RuntimeDefault}
+  securityContext:
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    capabilities: {drop: [ALL]}
+  persistentVolume:
+    data: {existingClaim: crowdsec-data-pvc, subPath: lapi-data}
+    config: {existingClaim: crowdsec-data-pvc, subPath: lapi-config}
+    resources:
+      requests: {memory: 64Mi}
+      limits: {memory: 256Mi}
+  env:
+    # - {name: ENROLL_KEY, valueFrom: {secretKeyRef: {name: crowdsec-secrets, key: ENROLL_KEY}}}  # Covered by envFrom below
+    - {name: ENROLL_INSTANCE_NAME, value: talmox}
+    - {name: ENROLL_TAGS, value: k8s talos homelab}
+    # - {name: BOUNCER_KEY_envoy_XXX, valueFrom: {secretKeyRef: {name: crowdsec-secrets, key: BOUNCER_KEY_envoy_XXX}}}  # Covered by envFrom below
+  envFrom:
+    - secretRef: {name: crowdsec-secrets}
+
+appsec:
+  enabled: true
+  podSecurityContext:
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+    # fsGroupChangePolicy: OnRootMismatch
+    seccompProfile: {type: RuntimeDefault}
+  securityContext:
+    allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    capabilities: {drop: [ALL]}
+  resources:
+    requests: {memory: 64Mi}
+    limits: {memory: 256Mi}
+  acquisitions:
+    - appsec_configs: [crowdsecurity/appsec-default]
+      labels: {type: appsec}
+      listen_addr: 0.0.0.0:7422
+      path: /
+      source: appsec
+  env:
+    - {name: COLLECTIONS, value: crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules}
+
+config:
+  config.yaml.local: |
+    api:
+      client:
+        unregister_on_exit: true  # the log processor will remove delete itself from LAPI when stopping
+      server:
+        auto_registration: # Activate if not using TLS for authentication
+          enabled: true
+          token: "${REGISTRATION_TOKEN}" # Auto-generated and handled by the chart
+          allowed_ranges: ['127.0.0.1/32', '192.168.0.0/16', '10.0.0.0/8', '172.16.0.0/12']
+
+    # https://docs.crowdsec.net/docs/configuration/crowdsec_configuration/#configuration-directives
+    db_config:
+      type: postgresql
+      user: crowdsec
+      password: ${DB_PASSWORD}
+      db_name: crowdsec
+      host: db02.hera.home.karlsen.fr
+      port: 5432
+      sslmode: disable
+      # max_open_conns
+      flush: {bouncers_autodelete: {api_key: 1h}, agents_autodelete: {login_password: 6h, cert: 6h}}

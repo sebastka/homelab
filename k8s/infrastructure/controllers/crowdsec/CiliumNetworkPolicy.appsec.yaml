@@ -1,0 +1,20 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-crowdsec-appsec-ingress
+  namespace: crowdsec
+spec:
+  endpointSelector: {matchLabels: {k8s-app: crowdsec, type: appsec}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '7422', protocol: TCP}]]}  # envoy-proxy-bouncer
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-crowdsec-appsec-egress
+  namespace: crowdsec
+spec:
+  endpointSelector: {matchLabels: {k8s-app: crowdsec, type: appsec}}
+  egress:
+    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}

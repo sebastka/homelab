@@ -1,0 +1,17 @@
+# https://juliushinze.de/posts/paperless-on-k8s/
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: crowdsec-data-pvc
+  namespace: crowdsec
+  labels:
+    app.kubernetes.io/name: crowdsec
+    recurring-job.longhorn.io/source: crowdsec
+    recurring-job-group.longhorn.io/group1: enabled
+    backup.velero.io/nightly-hetzner: enabled
+spec:
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 1Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: crowdsec-data-pv

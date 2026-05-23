@@ -1,0 +1,20 @@
+# ---
+# apiVersion: cilium.io/v2
+# kind: CiliumNetworkPolicy
+# metadata:
+#   name: allow-crowdsec-agent-ingress
+#   namespace: crowdsec
+# spec:
+#   endpointSelector: {matchLabels: {k8s-app: crowdsec, type: agent}}
+#   ingress:
+#     - {fromEntities: [host], toPorts: [ports: [{port: '8082', protocol: TCP}]]}  # Host probes
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-crowdsec-agent-egress
+  namespace: crowdsec
+spec:
+  endpointSelector: {matchLabels: {k8s-app: crowdsec, type: agent}}
+  egress:
+    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}

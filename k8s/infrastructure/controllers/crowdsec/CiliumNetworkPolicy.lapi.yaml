@@ -1,0 +1,21 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-crowdsec-lapi-ingress
+  namespace: crowdsec
+spec:
+  endpointSelector: {matchLabels: {k8s-app: crowdsec, type: lapi}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # envoy-proxy-bouncer
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-crowdsec-lapi-egress
+  namespace: crowdsec
+spec:
+  endpointSelector: {matchLabels: {k8s-app: crowdsec, type: lapi}}
+  egress:
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
