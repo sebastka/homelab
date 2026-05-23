@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kdwils/envoy-proxy-crowdsec-bouncer/refs/heads/main/charts/envoy-proxy-bouncer/values.schema.json
+# https://github.com/kdwils/envoy-proxy-crowdsec-bouncer/blob/main/charts/envoy-proxy-bouncer/values.yaml
+---
+
+config:
+  bouncer:
+    enabled: true
+    lapiURL: http://crowdsec-service.crowdsec.svc.cluster.local:8080
+    apiKeySecretRef: {name: crowdsec-secrets, key: api-key}
+
+# securityPolicy:
+#   create: true
+#   gatewayName: default
+#   gatewayNamespace: gateway

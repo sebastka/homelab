@@ -31,3 +31,11 @@ helmCharts:
     namespace: envoy-gateway-system
     includeCRDs: true
     valuesFile: values.yaml
+
+  - name: envoy-proxy-bouncer
+    repo: oci://ghcr.io/kdwils/charts
+    version: 0.6.1  # renovate: datasource=helm registryUrl=oci://ghcr.io/kdwils/charts depName=gateway-helm
+    releaseName: envoy-proxy-bouncer
+    namespace: envoy-gateway-system
+    includeCRDs: true
+    valuesFile: values.yaml
