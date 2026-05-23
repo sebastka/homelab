@@ -16,7 +16,8 @@ resources:
   - Job.karlsenfr-sync.yaml
   - Deployment.yaml
   - Service.yaml
-  - HTTPRoute.yaml
+  - HTTPRoute.karlsenapp.yaml
+  - HTTPRoute.karlsenfr.yaml
+  - HTTPRoute.karlsenorg.yaml
   - SecurityPolicy.yaml
-  - CiliumNetworkPolicy.website.yaml
-  - CiliumNetworkPolicy.karlsenfr-sync.yaml
+  - CiliumNetworkPolicy.yaml

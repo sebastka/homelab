@@ -4,11 +4,37 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: allow-all-http
+  name: allow-all-http-karlsen-fr
   namespace: homepage
 spec:
   targetRefs:
-    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: karlsen-fr}
+  # authorization: {defaultAction: Allow}
+  extAuth:
+    failOpen: false
+    grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenfr, port: 8080}]}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-all-http-karlsen-org
+  namespace: homepage
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: karlsen-org}
+  # authorization: {defaultAction: Allow}
+  extAuth:
+    failOpen: false
+    grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenfr, port: 8080}]}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-all-http-karlsen-app
+  namespace: homepage
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: karlsen-app}
   # authorization: {defaultAction: Allow}
   extAuth:
     failOpen: false

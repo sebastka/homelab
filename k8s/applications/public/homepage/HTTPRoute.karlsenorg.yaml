@@ -1,0 +1,50 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: karlsen-org
+  namespace: homepage
+spec:
+  parentRefs:
+    - {namespace: gateway, name: default, sectionName: https-karlsen-org}
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-org}
+  hostnames:
+    - karlsen.org
+    - www.karlsen.org
+  rules:
+    - matches: [path: {type: PathPrefix, value: /}]
+      backendRefs: [{name: web, kind: Service, port: 80}]
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              # - {name: Access-Control-Allow-Origin, value: '*'}
+              - {name: Content-Security-Policy, value: "default-src 'none'; style-src-elem 'self'; script-src-elem 'self'; img-src 'self'; connect-src 'self'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
+              - &HSTS {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
+              - &XCTO {name: X-Content-Type-Options, value: nosniff}
+              - &XFO {name: X-Frame-Options, value: DENY}
+              - &CORP {name: Cross-Origin-Resource-Policy, value: same-origin}
+              - &COEP {name: Cross-Origin-Embedder-Policy, value: require-corp}
+              - &COOP {name: Cross-Origin-Opener-Policy, value: same-origin}
+              - &RP {name: Referrer-Policy, value: no-referrer}
+              - &PP {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
+              - &IP {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
+              # - &RE {name: Reporting-Endpoints, value: ''}
+
+    - matches: [path: {type: PathPrefix, value: /.well-known}]
+      backendRefs: [{name: web, kind: Service, port: 80}]
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              - {name: Access-Control-Allow-Origin, value: '*'}
+              - {name: Content-Security-Policy, value: default-src 'none';}
+              - *HSTS
+              - *XCTO
+              - *XFO
+              - *CORP
+              - *COEP
+              - *COOP
+              - *RP
+              - *PP
+              - *IP

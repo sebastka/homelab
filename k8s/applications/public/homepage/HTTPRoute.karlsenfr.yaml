@@ -2,23 +2,15 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: web
+  name: karlsen-fr
   namespace: homepage
 spec:
   parentRefs:
     - {namespace: gateway, name: default, sectionName: https-karlsen-fr}
     - {namespace: gateway, name: default, sectionName: https-wc-karlsen-fr}
-    - {namespace: gateway, name: default, sectionName: https-karlsen-org}
-    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-org}
-    - {namespace: gateway, name: default, sectionName: https-karlsen-app}
-    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
   hostnames:
     - karlsen.fr
     - www.karlsen.fr
-    - karlsen.org
-    - www.karlsen.org
-    - karlsen.app
-    - www.karlsen.app
     - openpgpkey.karlsen.fr
     - mta-sts.karlsen.fr
   rules:
