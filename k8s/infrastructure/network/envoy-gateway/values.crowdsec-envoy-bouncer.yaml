@@ -2,6 +2,14 @@
 # https://github.com/kdwils/envoy-proxy-crowdsec-bouncer/blob/main/charts/envoy-proxy-bouncer/values.yaml
 ---
 
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile: {type: RuntimeDefault}
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: {drop: [ALL]}
+
 config:
   bouncer:
     enabled: true
