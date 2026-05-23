@@ -16,6 +16,10 @@ patches:
     patch: |
       - {op: replace, path: /spec/ingress/0/fromEndpoints/0/matchLabels/k8s:io.kubernetes.pod.namespace, value: envoy-gateway-system}
       - {op: remove, path: /spec/ingress/0/fromEndpoints/0/matchLabels/app.kubernetes.io~1name}
+  # Fix missing namespace in resources created by the helm chart
+  - target: {kind: Deployment, name: envoy-proxy-bouncer}
+    patch: |
+      - {op: add, path: /metadata/namespace, value: envoy-gateway-system}
 
 resources:
   - Namespace.yaml
