@@ -52,7 +52,7 @@ httproute:
 
 referenceGrant:
   create: true
-  fromNamespaces: [whoami, jellyfin, metube]
+  fromNamespaces: [whoami, jellyfin, metube, homepage]
 
 grafana:
   dashboard:
