@@ -24,9 +24,9 @@ config:
     lapiURL: http://crowdsec-service.crowdsec.svc.cluster.local:8080
     apiKeySecretRef: {name: crowdsec-secrets, key: bouncer-api-key-karlsenapp}
   waf:
-    enabled: false
-    # appSecURL: http://crowdsec-appsec-service:7422
-    #  apiKeySecretRef: {name: crowdsec-secrets, key: waf-api-key}
+    enabled: true
+    appSecURL: http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422
+    apiKeySecretRef: {name: crowdsec-secrets, key: bouncer-api-key-karlsenapp}
   prometheus:
     enabled: true
     serviceMonitor: {enabled: true}
