@@ -10,7 +10,14 @@ service:
     type: ClusterIP
     port: 3000
   ssh:
-    type: ClusterIP
+    labels:
+      arp.cilium.io/announce-service: default-arp-l2-announcement-policy
+      arp.cilium.io/ip-pool: default-arp-ip-pool
+    annotations:
+      lbipam.cilium.io/ips: 192.168.2.12
+      service.cilium.io/forwarding-mode: snat
+    type: LoadBalancer
+    externalTrafficPolicy: Local
     port: 22
 
 ingress:
