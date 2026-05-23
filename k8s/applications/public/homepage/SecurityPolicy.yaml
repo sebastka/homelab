@@ -9,8 +9,7 @@ metadata:
 spec:
   targetRefs:
     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
-  authorization:
-    defaultAction: Allow
+  authorization: {defaultAction: Allow}
   extAuth:
     failOpen: false
     grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenfr, port: 8080}]}
