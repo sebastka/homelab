@@ -9,6 +9,7 @@ metadata:
 spec:
   targetRefs:
     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+    - {kind: Service, name: forgejo-ssh}
   # authorization: {defaultAction: Allow}
   extAuth:
     failOpen: false
