@@ -22,10 +22,10 @@ metadata:
 spec:
   targetRefs:
     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: karlsen-org}
-  # authorization: {defaultAction: Allow}
-  extAuth:
-    failOpen: false
-    grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenfr, port: 8080}]}
+  authorization: {defaultAction: Allow}
+  # extAuth:
+  #   failOpen: false
+  #   grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenorg, port: 8080}]}
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
@@ -38,4 +38,4 @@ spec:
   # authorization: {defaultAction: Allow}
   extAuth:
     failOpen: false
-    grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenfr, port: 8080}]}
+    grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenapp, port: 8080}]}
