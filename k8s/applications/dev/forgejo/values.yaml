@@ -14,7 +14,7 @@ service:
       arp.cilium.io/announce-service: default-arp-l2-announcement-policy
       arp.cilium.io/ip-pool: default-arp-ip-pool
     annotations:
-      lbipam.cilium.io/ips: 192.168.2.12
+      lbipam.cilium.io/ips: 192.168.2.13
       service.cilium.io/forwarding-mode: snat
     type: LoadBalancer
     externalTrafficPolicy: Local
