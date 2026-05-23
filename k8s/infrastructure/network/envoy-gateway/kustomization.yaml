@@ -38,7 +38,7 @@ helmCharts:
 
   - name: envoy-proxy-bouncer
     repo: oci://ghcr.io/kdwils/charts
-    version: 0.6.1  # renovate: datasource=helm registryUrl=oci://ghcr.io/kdwils/charts depName=gateway-helm
+    version: 0.6.1  # renovate: datasource=helm registryUrl=oci://ghcr.io/kdwils/charts depName=envoy-proxy-bouncer
     releaseName: envoy-proxy-bouncer
     namespace: envoy-gateway-system
     includeCRDs: true
