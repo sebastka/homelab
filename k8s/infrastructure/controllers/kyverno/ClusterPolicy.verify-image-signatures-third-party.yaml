@@ -188,7 +188,7 @@ spec:
     - name: verify-kubernetes
       match: {any: [resources: {kinds: [Pod]}]}
       verifyImages:
-        - imageReferences: ['registry.k8s.io/*']
+        - imageReferences: ['registry.k8s.io/*', '!registry.k8s.io/git-sync/*']
           failureAction: Audit
           mutateDigest: false
           verifyDigest: false
@@ -198,6 +198,20 @@ spec:
                 - keyless:
                     subject: k8s-infra-gcb@k8s-infra-release-prod.iam.gserviceaccount.com
                     issuer: https://accounts.google.com
+                    rekor: {url: https://rekor.sigstore.dev}
+    - name: verify-git-sync
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['registry.k8s.io/git-sync/*']
+          failureAction: Audit
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/kubernetes/git-sync/.github/workflows/*'
+                    issuer: https://token.actions.githubusercontent.com
                     rekor: {url: https://rekor.sigstore.dev}
     # - name: verify-bitnami  # Enterprise only -- Disabled
     #   match: {any: [resources: {kinds: [Pod]}]}
