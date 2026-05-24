@@ -21,12 +21,24 @@
 #   code.forgejo.org/forgejo/forgejo (GPG only, no container image signing)
 #   docker.io/lldap/lldap
 #   docker.io/velero/{velero,velero-plugin-for-aws} (donated to CNCF velero-io in 2026, not signed yet)
-#   docker.io/grafana/alloy
+#   docker.io/grafana/{alloy,grafana,loki}; docker.io/longhornio/*
+#   quay.io/cilium/{hubble-ui,hubble-ui-backend}
+#
+# OCI referrer cosign/sign/v1 format: incompatible with Kyverno 3.8.x type: Cosign (.sig tag only)
+# and type: SigstoreBundle (expects newer bundle spec). Revisit when Kyverno adds support.
+#   quay.io/cilium/* (cilium, cilium-operator, cilium-envoy, hubble-relay, operator-generic)
+#   quay.io/argoproj/{argocd,argocd-extension-installer}
+#   quay.io/prometheus-operator/* (v0.90+; was .sig tag in v0.82)
+#   docker.io/zabbix/*
+#   ghcr.io/home-operations/*
+#   docker.io/falcosecurity/falcoctl
+#   ghcr.io/jkroepke/*
+#   ghcr.io/element-hq/matrix-authentication-service; docker.io/vectorim/element-web
 #
 # Personally signed, not via GHA OIDC (not added: tied to dominik@suess.wtf personal account):
 #   ghcr.io/grafana/grafana-operator
 #
-# Attestations only:
+# Attestations only, no .sig signatures:
 #   reg.kyverno.io/kyverno/*; ghcr.io/kyverno/*
 ---
 apiVersion: kyverno.io/v1
@@ -51,38 +63,8 @@ spec:
             - count: 1
               entries:
                 - keyless:
-                    subject: 'https://github.com/sebastka/containers/.github/workflows/*'
+                    subject: 'https://github.com/sebastka/*/.github/workflows/*'
                     issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
-    - name: verify-cilium
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: ['quay.io/cilium/*']
-          type: Cosign
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/cilium/cilium/.github/workflows/*'
-                    issuer: 'https://token.actions.githubusercontent.com'
-                    rekor: {url: https://rekor.sigstore.dev}
-    - name: verify-argocd
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: ['quay.io/argoproj/*', 'quay.io/argoprojlabs/*']
-          type: SigstoreBundle
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/argoproj/argo-cd/.github/workflows/*'
-                    issuer: 'https://token.actions.githubusercontent.com'
                     rekor: {url: https://rekor.sigstore.dev}
     - name: verify-cloudnative-pg
       match: {any: [resources: {kinds: [Pod]}]}
@@ -189,36 +171,6 @@ spec:
                     subject: 'https://github.com/thanos-io/thanos/.github/workflows/*'
                     issuer: https://token.actions.githubusercontent.com
                     rekor: {url: https://rekor.sigstore.dev}
-    - name: verify-grafana
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: ['docker.io/grafana/*', '!docker.io/grafana/alloy']
-          type: Cosign
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/grafana/*'
-                    issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
-    - name: verify-longhorn
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: ['docker.io/longhornio/*']
-          type: Cosign
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/longhorn/*'
-                    issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
     - name: verify-kubernetes
       match: {any: [resources: {kinds: [Pod]}]}
       verifyImages:
@@ -232,6 +184,10 @@ spec:
               entries:
                 - keyless:
                     subject: k8s-infra-gcb@k8s-infra-release-prod.iam.gserviceaccount.com
+                    issuer: https://accounts.google.com
+                    rekor: {url: https://rekor.sigstore.dev}
+                - keyless:
+                    subject: krel-trust@k8s-releng-prod.iam.gserviceaccount.com
                     issuer: https://accounts.google.com
                     rekor: {url: https://rekor.sigstore.dev}
     - name: verify-git-sync
@@ -264,18 +220,6 @@ spec:
                     subject: 'https://github.com/element-hq/synapse/.github/workflows/docker.yml@refs/tags/v*'
                     issuer: https://token.actions.githubusercontent.com
                     rekor: {url: https://rekor.sigstore.dev}
-        - imageReferences: [ghcr.io/element-hq/matrix-authentication-service, docker.io/vectorim/element-web]
-          type: SigstoreBundle
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/element-hq/*/.github/workflows/*'
-                    issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
     - name: verify-trust-manager
       match: {any: [resources: {kinds: [Pod]}]}
       verifyImages:
@@ -306,36 +250,6 @@ spec:
                     subject: 'https://github.com/falcosecurity/falco/.github/workflows/*'
                     issuer: https://token.actions.githubusercontent.com
                     rekor: {url: https://rekor.sigstore.dev}
-    - name: verify-falcoctl
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: [docker.io/falcosecurity/falcoctl]
-          type: SigstoreBundle
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/falcosecurity/falcoctl/.github/workflows/*'
-                    issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
-    - name: verify-prometheus-operator
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: ['quay.io/prometheus-operator/*']
-          type: Cosign
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/prometheus-operator/prometheus-operator/.github/workflows/*'
-                    issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
     - name: verify-trivy-operator
       match: {any: [resources: {kinds: [Pod]}]}
       verifyImages:
@@ -351,55 +265,10 @@ spec:
                     subject: 'https://github.com/aquasecurity/trivy-operator/.github/workflows/*'
                     issuer: https://token.actions.githubusercontent.com
                     rekor: {url: https://rekor.sigstore.dev}
-    - name: verify-zabbix
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: ['docker.io/zabbix/*']
-          type: SigstoreBundle
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/zabbix/zabbix-docker/.github/workflows/*'
-                    issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
-    - name: verify-jkroepke
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: ['ghcr.io/jkroepke/*']
-          type: SigstoreBundle
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/jkroepke/*/.github/workflows/*'
-                    issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
-    - name: verify-home-operations
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: ['ghcr.io/home-operations/*']
-          type: SigstoreBundle
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/home-operations/containers/.github/workflows/*'
-                    issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
     - name: verify-cert-manager
       match: {any: [resources: {kinds: [Pod]}]}
       verifyImages:
-        - imageReferences: ['quay.io/jetstack/cert-manager-controller', 'quay.io/jetstack/cert-manager-cainjector', 'quay.io/jetstack/cert-manager-webhook', 'quay.io/jetstack/cert-manager-startupapicheck']
+        - imageReferences: [quay.io/jetstack/cert-manager-controller, quay.io/jetstack/cert-manager-cainjector, quay.io/jetstack/cert-manager-webhook, quay.io/jetstack/cert-manager-startupapicheck]
           type: Cosign
           failureAction: Audit
           mutateDigest: false
@@ -423,18 +292,3 @@ spec:
                       0damfUmspuK9DTQFL2crpeaqJSG9RA+OuPZLxGD1IMURTsPJB7kXhPtmceeirBnw
                       sVcRHHDitVt8oO/x4Wus1c0CAwEAAQ==
                       -----END PUBLIC KEY-----
-    # - name: verify-bitnami  # Enterprise only -- Disabled
-    #   match: {any: [resources: {kinds: [Pod]}]}
-    #   verifyImages:
-    #     - imageReferences: ['docker.io/bitnami/*']
-    #       type: Cosign
-    #       failureAction: Audit
-    #       mutateDigest: false
-    #       verifyDigest: false
-    #       attestors:
-    #         - count: 1
-    #           entries:
-    #             - keys:
-    #                 publicKeys: |-
-    #                   -----BEGIN PUBLIC KEY-----
-    #                   -----END PUBLIC KEY-----
