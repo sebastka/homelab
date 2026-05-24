@@ -72,7 +72,7 @@ spec:
 
                       # infrastructure/controllers/kyverno
                       - reg.kyverno.io/kyverno/kyverno-cli
-                      - reg.kyverno.io/kyverno/kyverno/kyvernopre
+                      - reg.kyverno.io/kyverno/kyvernopre
                       - reg.kyverno.io/kyverno/kyverno
                       - reg.kyverno.io/kyverno/background-controller
                       - reg.kyverno.io/kyverno/cleanup-controller
