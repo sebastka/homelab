@@ -22,4 +22,3 @@ resources:
   - SealedSecret.oidc.yaml
   - SecurityPolicy.yaml
   - CiliumNetworkPolicy.yaml
-  - CiliumNetworkPolicy.valkey.yaml
