@@ -25,7 +25,9 @@
 #   quay.io/cilium/{hubble-ui,hubble-ui-backend}
 #
 # OCI referrer cosign/sign/v1 format: incompatible with Kyverno 3.8.x type: Cosign (.sig tag only)
-# and type: SigstoreBundle (expects newer bundle spec). Revisit when Kyverno adds support.
+# and type: SigstoreBundle (expects newer bundle spec). Rules below are commented out: uncomment
+# when Kyverno adds support for cosign/sign/v1 OCI referrer format.
+#   ghcr.io/sebastka/*
 #   quay.io/cilium/* (cilium, cilium-operator, cilium-envoy, hubble-relay, operator-generic)
 #   quay.io/argoproj/{argocd,argocd-extension-installer}
 #   quay.io/prometheus-operator/* (v0.90+; was .sig tag in v0.82)
@@ -51,21 +53,21 @@ metadata:
 spec:
   background: true
   rules:
-    - name: verify-sebastka-images
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: ['ghcr.io/sebastka/*']
-          type: Cosign
-          failureAction: Audit  # Enforce
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/sebastka/*/.github/workflows/*'
-                    issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
+    # - name: verify-sebastka-images  # OCI referrer cosign/sign/v1 - uncomment when Kyverno supports it
+    #   match: {any: [resources: {kinds: [Pod]}]}
+    #   verifyImages:
+    #     - imageReferences: ['ghcr.io/sebastka/*']
+    #       type: SigstoreBundle
+    #       failureAction: Audit  # Enforce
+    #       mutateDigest: false
+    #       verifyDigest: false
+    #       attestors:
+    #         - count: 1
+    #           entries:
+    #             - keyless:
+    #                 subject: 'https://github.com/sebastka/*/.github/workflows/*'
+    #                 issuer: https://token.actions.githubusercontent.com
+    #                 rekor: {url: https://rekor.sigstore.dev}
     - name: verify-cloudnative-pg
       match: {any: [resources: {kinds: [Pod]}]}
       verifyImages:
@@ -220,6 +222,19 @@ spec:
                     subject: 'https://github.com/element-hq/synapse/.github/workflows/docker.yml@refs/tags/v*'
                     issuer: https://token.actions.githubusercontent.com
                     rekor: {url: https://rekor.sigstore.dev}
+        # OCI referrer cosign/sign/v1 - uncomment when Kyverno supports it:
+        # - imageReferences: [ghcr.io/element-hq/matrix-authentication-service, docker.io/vectorim/element-web]
+        #   type: SigstoreBundle
+        #   failureAction: Audit
+        #   mutateDigest: false
+        #   verifyDigest: false
+        #   attestors:
+        #     - count: 1
+        #       entries:
+        #         - keyless:
+        #             subject: 'https://github.com/element-hq/*/.github/workflows/*'
+        #             issuer: https://token.actions.githubusercontent.com
+        #             rekor: {url: https://rekor.sigstore.dev}
     - name: verify-trust-manager
       match: {any: [resources: {kinds: [Pod]}]}
       verifyImages:
@@ -292,3 +307,109 @@ spec:
                       0damfUmspuK9DTQFL2crpeaqJSG9RA+OuPZLxGD1IMURTsPJB7kXhPtmceeirBnw
                       sVcRHHDitVt8oO/x4Wus1c0CAwEAAQ==
                       -----END PUBLIC KEY-----
+    # OCI referrer cosign/sign/v1 format - uncomment all rules below when Kyverno adds support
+    # - name: verify-cilium  # OCI referrer cosign/sign/v1
+    #   match: {any: [resources: {kinds: [Pod]}]}
+    #   verifyImages:
+    #     - imageReferences: ['quay.io/cilium/*', '!quay.io/cilium/hubble-ui', '!quay.io/cilium/hubble-ui-backend']
+    #       type: SigstoreBundle
+    #       failureAction: Audit
+    #       mutateDigest: false
+    #       verifyDigest: false
+    #       attestors:
+    #         - count: 1
+    #           entries:
+    #             - keyless:
+    #                 subject: 'https://github.com/cilium/*/.github/workflows/*'
+    #                 issuer: https://token.actions.githubusercontent.com
+    #                 rekor: {url: https://rekor.sigstore.dev}
+    # - name: verify-argocd  # OCI referrer cosign/sign/v1
+    #   match: {any: [resources: {kinds: [Pod]}]}
+    #   verifyImages:
+    #     - imageReferences: ['quay.io/argoproj/*', 'quay.io/argoprojlabs/*']
+    #       type: SigstoreBundle
+    #       failureAction: Audit
+    #       mutateDigest: false
+    #       verifyDigest: false
+    #       attestors:
+    #         - count: 1
+    #           entries:
+    #             - keyless:
+    #                 subject: 'https://github.com/argoproj/argo-cd/.github/workflows/*'
+    #                 issuer: https://token.actions.githubusercontent.com
+    #                 rekor: {url: https://rekor.sigstore.dev}
+    # - name: verify-prometheus-operator  # OCI referrer cosign/sign/v1 (v0.90+)
+    #   match: {any: [resources: {kinds: [Pod]}]}
+    #   verifyImages:
+    #     - imageReferences: ['quay.io/prometheus-operator/*']
+    #       type: SigstoreBundle
+    #       failureAction: Audit
+    #       mutateDigest: false
+    #       verifyDigest: false
+    #       attestors:
+    #         - count: 1
+    #           entries:
+    #             - keyless:
+    #                 subject: 'https://github.com/prometheus-operator/prometheus-operator/.github/workflows/*'
+    #                 issuer: https://token.actions.githubusercontent.com
+    #                 rekor: {url: https://rekor.sigstore.dev}
+    # - name: verify-zabbix  # OCI referrer cosign/sign/v1
+    #   match: {any: [resources: {kinds: [Pod]}]}
+    #   verifyImages:
+    #     - imageReferences: ['docker.io/zabbix/*']
+    #       type: SigstoreBundle
+    #       failureAction: Audit
+    #       mutateDigest: false
+    #       verifyDigest: false
+    #       attestors:
+    #         - count: 1
+    #           entries:
+    #             - keyless:
+    #                 subject: 'https://github.com/zabbix/zabbix-docker/.github/workflows/*'
+    #                 issuer: https://token.actions.githubusercontent.com
+    #                 rekor: {url: https://rekor.sigstore.dev}
+    # - name: verify-falcoctl  # OCI referrer cosign/sign/v1
+    #   match: {any: [resources: {kinds: [Pod]}]}
+    #   verifyImages:
+    #     - imageReferences: [docker.io/falcosecurity/falcoctl]
+    #       type: SigstoreBundle
+    #       failureAction: Audit
+    #       mutateDigest: false
+    #       verifyDigest: false
+    #       attestors:
+    #         - count: 1
+    #           entries:
+    #             - keyless:
+    #                 subject: 'https://github.com/falcosecurity/falcoctl/.github/workflows/*'
+    #                 issuer: https://token.actions.githubusercontent.com
+    #                 rekor: {url: https://rekor.sigstore.dev}
+    # - name: verify-jkroepke  # OCI referrer cosign/sign/v1
+    #   match: {any: [resources: {kinds: [Pod]}]}
+    #   verifyImages:
+    #     - imageReferences: ['ghcr.io/jkroepke/*']
+    #       type: SigstoreBundle
+    #       failureAction: Audit
+    #       mutateDigest: false
+    #       verifyDigest: false
+    #       attestors:
+    #         - count: 1
+    #           entries:
+    #             - keyless:
+    #                 subject: 'https://github.com/jkroepke/*/.github/workflows/*'
+    #                 issuer: https://token.actions.githubusercontent.com
+    #                 rekor: {url: https://rekor.sigstore.dev}
+    # - name: verify-home-operations  # OCI referrer cosign/sign/v1
+    #   match: {any: [resources: {kinds: [Pod]}]}
+    #   verifyImages:
+    #     - imageReferences: ['ghcr.io/home-operations/*']
+    #       type: SigstoreBundle
+    #       failureAction: Audit
+    #       mutateDigest: false
+    #       verifyDigest: false
+    #       attestors:
+    #         - count: 1
+    #           entries:
+    #             - keyless:
+    #                 subject: 'https://github.com/home-operations/containers/.github/workflows/*'
+    #                 issuer: https://token.actions.githubusercontent.com
+    #                 rekor: {url: https://rekor.sigstore.dev}
