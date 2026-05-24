@@ -29,7 +29,7 @@ spec:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-application-controller}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-applicationset-controller}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
   egress:
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-redis}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: valkey}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
     - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}
 ---
 apiVersion: cilium.io/v2
