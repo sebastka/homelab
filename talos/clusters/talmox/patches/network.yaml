@@ -3,7 +3,7 @@
 apiVersion: v1alpha1
 kind: StaticHostConfig
 name: 192.168.2.2
-hostnames: 
+hostnames:
   - auth.karlsen.fr
   - git.karlsen.fr
   - ldap.karlsen.fr
