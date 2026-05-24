@@ -19,7 +19,12 @@
     {
       "matchUpdateTypes": ["patch", "digest"],
       "automerge": true
-    }
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["docker.io/searxng/searxng"],
+      "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-(?<build>[a-f0-9]+)$"
+    },
   ],
   "hostRules": [
     {
