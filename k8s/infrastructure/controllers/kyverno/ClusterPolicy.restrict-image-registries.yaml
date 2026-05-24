@@ -28,6 +28,7 @@ spec:
                       - 'ghcr.io/sebastka/*'
                       - docker.io/library/alpine
                       - docker.io/alpine/kubectl
+                      - docker.io/alpine/git
                       - docker.io/library/busybox
                       - docker.io/mikefarah/yq
                       - docker.io/nginxinc/nginx-unprivileged
@@ -75,6 +76,8 @@ spec:
                       # infrastructure/controllers/sealed-secrets
 
                       # infrastructure/controllers/trivy
+                      - 'ghcr.io/aquasecurity/*'
+                      - 'mirror.gcr.io/aquasec/*'
 
                       # infrastructure/database/cloudnative-pg
                       # - ghcr.io/cloudnative-pg/cloudnative-pg
@@ -82,6 +85,51 @@ spec:
                       # infrastructure/database/database-backup
                       - docker.io/library/postgres
                       - docker.io/library/mariadb
+
+                      # infrastructure/monitoring/alloy
+                      # (docker.io/grafana/alloy covered by docker.io/grafana/* below)
+
+                      # infrastructure/monitoring/grafana
+
+                      # infrastructure/monitoring/grafana-operator
+                      - ghcr.io/grafana/grafana-operator
+
+                      # infrastructure/monitoring/headlamp
+                      - ghcr.io/headlamp-k8s/headlamp
+                      - ghcr.io/kubebeam/trivy-headlamp-plugin
+
+                      # infrastructure/monitoring/kube-prometheus-stack
+                      - quay.io/prometheus/alertmanager
+                      - quay.io/prometheus/prometheus
+                      - quay.io/prometheus-operator/admission-webhook
+                      - quay.io/prometheus-operator/prometheus-config-reloader
+                      - quay.io/prometheus-operator/prometheus-operator
+                      - ghcr.io/jkroepke/kube-webhook-certgen
+
+                      # infrastructure/monitoring/loki
+                      - 'docker.io/grafana/*'
+                      - memcached
+                      - prom/memcached-exporter
+                      - docker.io/kiwigrid/k8s-sidecar
+                      - ghcr.io/jkroepke/access-log-exporter
+
+                      # infrastructure/monitoring/metrics-server
+
+                      # infrastructure/monitoring/prometheus-operator-crds
+
+                      # infrastructure/monitoring/stork
+
+                      # infrastructure/monitoring/thanos
+                      - quay.io/thanos/thanos
+                      - rustfs/rc
+
+                      # infrastructure/monitoring/zabbix
+                      - docker.io/zabbix/zabbix-server-pgsql
+                      - docker.io/zabbix/zabbix-web-nginx-pgsql
+
+                      # infrastructure/monitoring/policy-reporter
+                      # kyverno/* (line 50) covers all policy-reporter images
+                      - ghcr.io/oliver006/redis_exporter
 
                       # infrastructure/network/cilium
                       - quay.io/cilium/cilium
@@ -97,58 +145,27 @@ spec:
                       - ghcr.io/spiffe/spire-agent
                       - ghcr.io/spiffe/spire-server
 
+                      # infrastructure/network/coredns
+
                       # infrastructure/network/envoy-gateway
                       - 'docker.io/envoyproxy/*'
                       - ghcr.io/kdwils/envoy-proxy-bouncer
 
+                      # infrastructure/network/gateway
+
+                      # infrastructure/network/tailscale
+
                       # infrastructure/storage/longhorn
                       - 'longhornio/*'
+
+                      # infrastructure/network/snapshots-controller
 
                       # infrastructure/storage/velero
                       - docker.io/velero/velero
                       - docker.io/velero/velero-plugin-for-aws
                       - registry.k8s.io/kubectl
 
-                      # infrastructure/monitoring/kube-prometheus-stack
-                      - quay.io/prometheus/alertmanager
-                      - quay.io/prometheus/prometheus
-                      - quay.io/prometheus-operator/admission-webhook
-                      - quay.io/prometheus-operator/prometheus-config-reloader
-                      - quay.io/prometheus-operator/prometheus-operator
-                      - ghcr.io/jkroepke/kube-webhook-certgen
-
-                      # infrastructure/monitoring/thanos
-                      - quay.io/thanos/thanos
-                      - rustfs/rc
-
-                      # infrastructure/monitoring/grafana-operator
-                      - ghcr.io/grafana/grafana-operator
-
-                      # infrastructure/monitoring/alloy
-                      # (docker.io/grafana/alloy covered by docker.io/grafana/* below)
-
-                      # infrastructure/monitoring/loki
-                      - 'docker.io/grafana/*'
-                      - memcached
-                      - prom/memcached-exporter
-                      - docker.io/kiwigrid/k8s-sidecar
-                      - ghcr.io/jkroepke/access-log-exporter
-
-                      # infrastructure/monitoring/policy-reporter
-                      # kyverno/* (line 50) covers all policy-reporter images
-                      - ghcr.io/oliver006/redis_exporter
-
-                      # infrastructure/monitoring/trivy
-                      - 'ghcr.io/aquasecurity/*'
-                      - 'mirror.gcr.io/aquasec/*'
-
-                      # infrastructure/monitoring/headlamp
-                      - ghcr.io/headlamp-k8s/headlamp
-                      - ghcr.io/kubebeam/trivy-headlamp-plugin
-
-                      # infrastructure/monitoring/zabbix
-                      - docker.io/zabbix/zabbix-server-pgsql
-                      - docker.io/zabbix/zabbix-web-nginx-pgsql
+                      # applications/dev/debian-debug
 
                       # applications/dev/forgejo
                       - code.forgejo.org/forgejo/forgejo
@@ -168,11 +185,12 @@ spec:
                       # applications/media/opentogethertube
                       - docker.io/dyc3/opentogethertube
 
+                      # applications/media/vert
+
                       # applications/public/element
                       - docker.io/vectorim/element-web
 
                       # application/public/homepage
-                      - docker.io/alpine/git
 
                       # applications/public/slink
                       # - docker.io/anirdev/slink
@@ -182,6 +200,8 @@ spec:
 
                       # applications/utils/deluge
                       - ghcr.io/home-operations/deluge
+
+                      # applications/utils/element-admin
 
                       # applications/utils/glance
                       - docker.io/glanceapp/glance
