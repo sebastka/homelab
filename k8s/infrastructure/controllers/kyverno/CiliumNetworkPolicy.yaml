@@ -36,6 +36,7 @@ spec:
   # ingress: []
   egress:
     - {toEntities: [kube-apiserver]}
+    - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
