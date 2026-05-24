@@ -18,6 +18,7 @@ resources:
 
 # https://github.com/kdwils/envoy-proxy-crowdsec-bouncer/blob/main/docs/examples/config/example.yaml
 config:
+  trustedProxies: ["10.244.0.0/16"]
   bouncer:
     enabled: true
     metrics: true

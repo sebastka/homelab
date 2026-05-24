@@ -32,9 +32,14 @@ agent:
       limits: {memory: 256Mi}
   acquisition:
     - {namespace: envoy-gateway-system, podName: 'envoy-gateway-default-*', poll_without_inotify: true, program: envoy}
+    # - {namespace: nextcloud, podName: 'nextcloud-*', program: nextcloud}
+    - {namespace: forgejo, podName: 'forgejo-*', program: forgejo}
+    - {namespace: authelia, podName: 'authelia-*', program: authelia}
+    - {namespace: synapse, podName: 'synapse-*', program: synapse}
+    - {namespace: matrix-authentication-service, podName: 'mas-*', program: http}
   env:
-    - {name: COLLECTIONS, value: yanis-kouidri/envoy}
-    - {name: DEBUG, value: 'true'}
+    - {name: COLLECTIONS, value: yanis-kouidri/envoy crowdsecurity/nextcloud LePresidente/forgejo}
+    - {name: DEBUG, value: 'false'}
 
 lapi:
   podSecurityContext:
@@ -45,8 +50,8 @@ lapi:
     # fsGroupChangePolicy: Always
     seccompProfile: {type: RuntimeDefault}
   securityContext:
-    # allowPrivilegeEscalation: false
-    # readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
     capabilities: {drop: [ALL]}
   persistentVolume:
     data: {existingClaim: crowdsec-data-pvc, subPath: lapi-data}
@@ -73,7 +78,7 @@ appsec:
     seccompProfile: {type: RuntimeDefault}
   securityContext:
     allowPrivilegeEscalation: false
-    # readOnlyRootFilesystem: true
+    readOnlyRootFilesystem: true
     capabilities: {drop: [ALL]}
   resources:
     requests: {memory: 64Mi}
@@ -95,8 +100,8 @@ config:
       server:
         auto_registration: # Activate if not using TLS for authentication
           enabled: true
-          token: "${REGISTRATION_TOKEN}" # Auto-generated and handled by the chart
-          allowed_ranges: ['127.0.0.1/32', '192.168.0.0/16', '10.0.0.0/8', '172.16.0.0/12']
+          token: "${REGISTRATION_TOKEN}"  # Auto-generated and handled by the chart
+          allowed_ranges: ['10.244.0.0/16']  # Pod CIDR
 
     # https://docs.crowdsec.net/docs/configuration/crowdsec_configuration/#configuration-directives
     db_config:
@@ -108,4 +113,4 @@ config:
       port: 5432
       sslmode: disable
       # max_open_conns
-      flush: {bouncers_autodelete: {api_key: 1h}, agents_autodelete: {login_password: 6h, cert: 6h}}
+      flush: {bouncers_autodelete: {api_key: 6h}, agents_autodelete: {login_password: 6h, cert: 6h}}
