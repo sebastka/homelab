@@ -13,5 +13,4 @@ resources:
   - SealedSecret.postgres-secrets.yaml
   - CronJob.MariaDB.yaml
   - CronJob.Postgres.yaml
-  - CiliumNetworkPolicy.mariadb.yaml
-  - CiliumNetworkPolicy.postgres.yaml
+  - CiliumNetworkPolicy.yaml

@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-homepage-ingress
+  name: allow-homepage
   namespace: homepage
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: homepage}}
@@ -14,7 +14,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-job-egress
+  name: allow-syncjob
   namespace: homepage
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: karlsenfr-sync}}

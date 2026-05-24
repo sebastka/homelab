@@ -1,0 +1,63 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-main
+  namespace: velero
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: velero, name: velero}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8085', protocol: TCP}]]}  # Readiness/liveness probe
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [ports: [{port: '8085', protocol: TCP}]]}  # Prometheus
+    - {toEntities: [kube-apiserver]}
+    - {toFQDNs: [{matchName: hel1.your-objectstorage.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # S3 backup storage
+  # egress: []
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-nodeagent
+  namespace: velero
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: velero, name: node-agent}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8085', protocol: TCP}]]}  # Readiness/liveness probe
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [ports: [{port: '8085', protocol: TCP}]]}  # Prometheus
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toFQDNs: [{matchName: hel1.your-objectstorage.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # S3 data movement
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-datamover
+  namespace: velero
+spec:
+  endpointSelector: {matchLabels: {velero.io/exposer-pod-group: snapshot-exposer}}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toFQDNs: [{matchName: hel1.your-objectstorage.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-kubectljobs
+  namespace: velero
+spec:
+  endpointSelector: {matchLabels: {component: kubectl-job}}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-repomaintenance
+  namespace: velero
+spec:
+  endpointSelector: {matchExpressions: [{key: velero.io/repo-name, operator: Exists}]}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toFQDNs: [{matchName: hel1.your-objectstorage.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}

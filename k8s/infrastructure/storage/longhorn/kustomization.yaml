@@ -13,9 +13,7 @@ resources:
   - RecurringJob.yaml
   # - GrafanaDashboard.control-plane.yaml
   # - GrafanaDashboard.data-plane.yaml
-  - CiliumNetworkPolicy.namespace.yaml
-  - CiliumNetworkPolicy.longhorn-manager.yaml
-  - CiliumNetworkPolicy.longhorn-ui.yaml
+  - CiliumNetworkPolicy.yaml
 
 patches:
   - target:

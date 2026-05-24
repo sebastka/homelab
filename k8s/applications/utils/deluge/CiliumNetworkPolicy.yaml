@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-deluged-ingress
+  name: allow-deluged
   namespace: deluge
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: deluged}}
@@ -10,13 +10,18 @@ spec:
     - {fromEntities: [host], toPorts: [ports: [{port: '58846', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: deluge, app.kubernetes.io/name: deluge-web}], toPorts: [ports: [{port: '58846', protocol: TCP}]]}  # deluge-web
     - {fromEntities: [world], toPorts: [ports: [{port: '6881', protocol: TCP}, {port: '6881', protocol: UDP}]]}  # torrent
+  egress:
+    - {toEntities: [world]}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-deluged-egress
+  name: allow-delugeweb
   namespace: deluge
 spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: deluged}}
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: deluge-web}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8112', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8112', protocol: TCP}]]}  # Envoy Gateway
   egress:
-    - {toEntities: [world]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: deluge, app.kubernetes.io/name: deluged}}], toPorts: [ports: [{port: '58846', protocol: TCP}]]}  # deluged

@@ -11,11 +11,7 @@ resources:
   - ClusterIssuer.le.yaml
   - cluster-ca.yaml
   - Bundle.cluster-ca-bundle.yaml
-  - CiliumNetworkPolicy.cert-manager.controller.yaml
-  - CiliumNetworkPolicy.cert-manager.webhook.yaml
-  - CiliumNetworkPolicy.cert-manager.cainjector.yaml
-  - CiliumNetworkPolicy.cert-manager.startupapicheck.yaml
-  - CiliumNetworkPolicy.trust-manager.yaml
+  - CiliumNetworkPolicy.yaml
   # - GrafanaDashboard.yaml
 
 helmCharts:

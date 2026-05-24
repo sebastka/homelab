@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-loki-ingress
+  name: allow-loki
   namespace: loki
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: loki}}
@@ -12,14 +12,6 @@ spec:
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}}], toPorts: [{ports: [{port: '3100', protocol: TCP}]}]}  # Grafana queries
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [{ports: [{port: '3100', protocol: TCP}]}]}  # Prometheus scrape
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [{ports: [{port: '3100', protocol: TCP}]}]}  # Envoy Gateway
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-loki-egress
-  namespace: loki
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: loki}}
   egress:
     - {toEntities: [kube-apiserver]}  # Ring membership / leader election
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: loki}}], toPorts: [{ports: [{port: '11211', protocol: TCP}]}]}  # Memcached

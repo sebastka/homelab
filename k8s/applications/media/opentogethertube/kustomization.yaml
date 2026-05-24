@@ -13,12 +13,6 @@ configMapGenerator:
 components:
   - ../../../common/valkey
 
-patches:
-  - target: {kind: CiliumNetworkPolicy, name: allow-valkey-ingress}
-    patch: |
-      - {op: replace, path: /spec/ingress/0/fromEndpoints/0/matchLabels/app.kubernetes.io~1name, value: opentogethertube}
-      - {op: replace, path: /spec/ingress/0/fromEndpoints/0/matchLabels/k8s:io.kubernetes.pod.namespace, value: opentogethertube}
-
 images:
   - {name: docker.io/dyc3/opentogethertube, newTag: latest, digest: sha256:feec95f418e7d438b632bb05311bfa522d5e40f13d019e2146216a49e5b53d93}
 

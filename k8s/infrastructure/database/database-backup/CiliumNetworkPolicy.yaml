@@ -1,0 +1,22 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-mariadb-backup
+  namespace: databases-backup
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: mariadb-backup}}
+  # ingress: []
+  egress:
+    - {toFQDNs: [matchPattern: db01.hera.home.karlsen.fr], toPorts: [ports: [{port: '3306', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-postgres-backup
+  namespace: databases-backup
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: postgres-backup}}
+  # ingress: []
+  egress:
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}

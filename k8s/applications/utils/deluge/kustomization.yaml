@@ -23,5 +23,4 @@ resources:
   - Services.yaml
   - HTTPRoute.yaml
   - SecurityPolicy.yaml
-  - CiliumNetworkPolicy.deluged.yaml
-  - CiliumNetworkPolicy.deluge-web.yaml
+  - CiliumNetworkPolicy.yaml

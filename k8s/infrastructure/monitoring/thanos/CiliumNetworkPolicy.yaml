@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-thanos-ingress
+  name: allow-thanos
   namespace: thanos
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/component: query}}
@@ -10,13 +10,5 @@ spec:
     - {fromEntities: [host], toPorts: [{ports: [{port: '9090', protocol: TCP}]}]}  # Health probes
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}}], toPorts: [{ports: [{port: '9090', protocol: TCP}]}]}  # Grafana datasource
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [{ports: [{port: '9090', protocol: TCP}]}]}  # Prometheus scrape
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-thanos-egress
-  namespace: thanos
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/component: query}}
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: prometheus}}], toPorts: [{ports: [{port: '10901', protocol: TCP}]}]}  # Prometheus sidecar gRPC

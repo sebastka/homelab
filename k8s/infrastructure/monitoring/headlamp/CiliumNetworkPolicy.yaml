@@ -2,21 +2,13 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-headlamp-ingress
+  name: allow-headlamp
   namespace: headlamp
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: headlamp}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '4466', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '4466', protocol: TCP}]]}  # Envoy Gateway
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-headlamp-egress
-  namespace: headlamp
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: headlamp}}
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Needed for OIDC / Authelia
     - {toEntities: [kube-apiserver]}

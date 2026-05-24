@@ -12,12 +12,6 @@ configMapGenerator:
 components:
   - ../../../common/valkey
 
-patches:
-  - target: {kind: CiliumNetworkPolicy, name: allow-valkey-ingress}
-    patch: |
-      - {op: replace, path: /spec/ingress/0/fromEndpoints/0/matchLabels/app.kubernetes.io~1name, value: searxng}
-      - {op: replace, path: /spec/ingress/0/fromEndpoints/0/matchLabels/k8s:io.kubernetes.pod.namespace, value: searxng}
-
 resources:
   - Namespace.yaml
   - SealedSecret.searxng-secrets.yaml
@@ -28,3 +22,4 @@ resources:
   - SealedSecret.oidc.yaml
   - SecurityPolicy.yaml
   - CiliumNetworkPolicy.yaml
+  - CiliumNetworkPolicy.valkey.yaml

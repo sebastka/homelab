@@ -2,20 +2,24 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-operator-ingress
+  name: allow-operator
   namespace: intel-device-plugins
 spec:
   endpointSelector: {matchLabels: {control-plane: controller-manager}}
   ingress:
     - {fromEntities: [host], toPorts: [{ports: [{port: '8081', protocol: TCP}]}]}  # Host health probes
     - {fromEntities: [kube-apiserver], toPorts: [{ports: [{port: '9443', protocol: TCP}]}]}  # Webhook
+  egress:
+    - {toEntities: [kube-apiserver]}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-operator-egress
+  name: allow-gpu
   namespace: intel-device-plugins
 spec:
-  endpointSelector: {matchLabels: {control-plane: controller-manager}}
+  endpointSelector: {matchLabels: {app: intel-gpu-plugin}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
   egress:
     - {toEntities: [kube-apiserver]}

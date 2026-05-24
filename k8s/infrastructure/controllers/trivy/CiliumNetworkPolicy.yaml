@@ -1,0 +1,38 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-trivy-operator
+  namespace: trivy
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: trivy-operator}}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}  # Watch resources cluster-wide
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: trivy, app.kubernetes.io/name: trivy-server}}], toPorts: [{ports: [{port: '4954', protocol: TCP}]}]}
+    - {toFQDNs: [{matchName: registry.k8s.io}, {matchName: mirror.gcr.io}, {matchName: ghcr.io}, {matchName: quay.io}, {matchName: docker.io}, {matchName: check.trivy.dev}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-trivy-scanjob
+  namespace: trivy
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/component: scan-job}}
+  # ingress: []
+  egress:
+    - {toEntities: [world]}  # Pull target images from all registries
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: trivy, app.kubernetes.io/name: trivy-server}}], toPorts: [{ports: [{port: '4954', protocol: TCP}]}]}  # Submit to trivy server
+    - {toFQDNs: [{matchName: registry.k8s.io}, {matchName: mirror.gcr.io}, {matchName: ghcr.io}, {matchName: quay.io}, {matchName: docker.io}, {matchName: check.trivy.dev}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-trivy-server
+  namespace: trivy
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: trivy-server}}
+  ingress:
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: trivy, app.kubernetes.io/component: scan-job}}], toPorts: [{ports: [{port: '4954', protocol: TCP}]}]}  # Scan jobs
+  egress:
+    - {toEntities: [world]}  # Download and refresh vuln DB from ghcr.io

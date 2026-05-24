@@ -1,0 +1,53 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-n8n-main
+  namespace: n8n
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: n8n, app.kubernetes.io/component: main}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '5678', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '5678', protocol: TCP}]]}  # Envoy Gateway
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: n8n, app.kubernetes.io/name: valkey}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toFQDNs: [matchPattern: '*.n8n.io'], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-n8n-webhookprocessor
+  namespace: n8n
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: n8n, app.kubernetes.io/component: webhook-processor}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '5678', protocol: TCP}]]}  # Envoy Gateway
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: n8n, app.kubernetes.io/name: valkey}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-n8n-worker
+  namespace: n8n
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: n8n, app.kubernetes.io/component: worker}}
+  # ingress: []
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: n8n, app.kubernetes.io/name: valkey}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toEntities: [world]}  # cluster, host
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-valkey
+  namespace: argocd
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: valkey}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: n8n}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+  # egress: []

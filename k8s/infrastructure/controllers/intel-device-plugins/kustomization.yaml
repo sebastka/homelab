@@ -28,8 +28,7 @@ patches:
 
 resources:
   - Namespace.yaml
-  - CiliumNetworkPolicy.operator.yaml
-  - CiliumNetworkPolicy.gpu.yaml
+  - CiliumNetworkPolicy.yaml
 
 helmCharts:
   - name: intel-device-plugins-operator

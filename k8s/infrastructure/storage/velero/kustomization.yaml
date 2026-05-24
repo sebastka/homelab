@@ -6,9 +6,7 @@ namespace: velero
 resources:
   - Namespace.yaml
   - SealedSecret.hetzner-s3.yaml
-  - CiliumNetworkPolicy.main.yaml
-  - CiliumNetworkPolicy.node-agent.yaml
-  - CiliumNetworkPolicy.jobs.yaml
+  - CiliumNetworkPolicy.yaml
 
 helmCharts:
   - name: velero

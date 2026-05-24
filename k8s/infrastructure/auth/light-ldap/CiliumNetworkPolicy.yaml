@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-lldap-ingress
+  name: allow-lldap
   namespace: light-ldap
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: light-ldap}}
@@ -13,14 +13,18 @@ spec:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: light-ldap, app.kubernetes.io/name: bootstrap}], toPorts: [ports: [{port: '17170', protocol: TCP}]]}  # bootstrap job
     # - {fromEntities: [cluster], toPorts: [ports: [{port: '3890', protocol: TCP}]]}
     - {fromEntities: [cluster], toPorts: [ports: [{port: '6360', protocol: TCP}]]}
+  egress:
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-lldap-egress
+  name: allow-bootstrap
   namespace: light-ldap
 spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: light-ldap}}
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: bootstrap}}
+  # ingress: []
   egress:
-    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
-    - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: light-ldap, app.kubernetes.io/name: light-ldap}], toPorts: [ports: [{port: '17170', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Avatar

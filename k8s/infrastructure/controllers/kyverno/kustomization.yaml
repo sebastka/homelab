@@ -3,6 +3,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: kyverno
 
+components:
+  - ../../../common/images
+
+images:
+  - {name: ghcr.io/kyverno/readiness-checker, newTag: latest, digest: sha256:f6b71ec78ce69172ae9b0161f72c978909355e94bed8e260cdc4de282a5ec41b}
+
 # Wave 0: CRDs + Operator
 # Wave 1: CiliumNetworkPolicies
 # Wave 2: ClusterPolicies
@@ -13,9 +19,6 @@ patches:
   - target: {kind: ClusterPolicy}
     patch: |
       - {op: add, path: /metadata/annotations, value: {argocd.argoproj.io/sync-wave: '2'}}
-
-images:
-  - {name: ghcr.io/kyverno/readiness-checker, newTag: latest, digest: sha256:f6b71ec78ce69172ae9b0161f72c978909355e94bed8e260cdc4de282a5ec41b}
 
 resources:
   - Namespace.yaml
@@ -28,14 +31,7 @@ resources:
   - ClusterPolicy.require-probes.yaml
   - ClusterPolicy.restrict-image-registries.yaml
   - ClusterPolicy.verify-image-signatures.yaml
-  - CiliumNetworkPolicy.namespace.yaml
-  - CiliumNetworkPolicy.migrate-resources.yaml
-  - CiliumNetworkPolicy.rm-webhooks.yaml
-  - CiliumNetworkPolicy.scale-to-zero.yaml
-  - CiliumNetworkPolicy.admission.yaml
-  - CiliumNetworkPolicy.background.yaml
-  - CiliumNetworkPolicy.cleanup.yaml
-  - CiliumNetworkPolicy.reports.yaml
+  - CiliumNetworkPolicy.yaml
 
 helmCharts:
   - name: kyverno

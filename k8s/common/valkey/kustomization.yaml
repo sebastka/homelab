@@ -6,4 +6,3 @@ resources:
   - ServiceAccount.yaml
   - Deployment.valkey.yaml
   - Service.yaml
-  - CiliumNetworkPolicy.yaml

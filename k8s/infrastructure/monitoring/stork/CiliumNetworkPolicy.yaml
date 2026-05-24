@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-stork-ingress
+  name: allow-stork
   namespace: stork
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: stork}}
@@ -10,14 +10,6 @@ spec:
     - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Prometheus
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-stork-egress
-  namespace: stork
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: stork}}
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: light-ldap, app.kubernetes.io/name: light-ldap}}], toPorts: [ports: [{port: '6360', protocol: TCP}]]}
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}

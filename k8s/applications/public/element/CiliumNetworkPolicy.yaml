@@ -2,10 +2,11 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-element-ingress
+  name: allow-element
   namespace: element
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: element}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
+  # egress: []

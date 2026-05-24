@@ -25,24 +25,15 @@ spec:
                     operator: NotIn
                     value:
                       # Shared (used in multiple places)
-                      - alpine
-                      - docker.io/alpine/git
-                      - alpine/kubectl
-                      - busybox
-                      - docker.io/busybox
-                      - docker.io/library/busybox
-                      - public.ecr.aws/docker/library/busybox  # ArgoCD redis-ha
-                      - kubectl
-                      - docker.io/mikefarah/yq
                       - 'ghcr.io/sebastka/*'
+                      - docker.io/library/alpine
+                      - docker.io/alpine/kubectl
+                      - docker.io/library/busybox
+                      - docker.io/mikefarah/yq
                       - docker.io/nginxinc/nginx-unprivileged
-                      - registry.k8s.io/git-sync/git-sync          # paperless + homepage
-                      - ghcr.io/jkroepke/access-log-exporter       # kube-prometheus-stack + loki
-                      - ecr-public.aws.com/docker/library/haproxy  # Redis HA: argocd + nextcloud
-                      - ecr-public.aws.com/docker/library/redis    # Redis HA: argocd
-                      - docker.io/valkey/valkey                    # common/valkey
+                      - registry.k8s.io/git-sync/git-sync
+                      - docker.io/valkey/valkey
                       - docker.io/library/node
-                      - node
 
                       # infrastructure/network/cilium
                       - 'quay.io/cilium/*'
@@ -54,6 +45,7 @@ spec:
                       - ghcr.io/kdwils/envoy-proxy-bouncer
 
                       # infrastructure/controllers/argocd
+                      # ecr-public.aws.com/docker/library/haproxy
                       - quay.io/argoproj/argocd
 
                       # infrastructure/controllers/falco
@@ -110,6 +102,7 @@ spec:
                       - memcached
                       - prom/memcached-exporter
                       - docker.io/kiwigrid/k8s-sidecar
+                      - ghcr.io/jkroepke/access-log-exporter
 
                       # infrastructure/monitoring/policy-reporter
                       # kyverno/* (line 50) covers all policy-reporter images
@@ -153,6 +146,9 @@ spec:
 
                       # applications/public/element
                       - docker.io/vectorim/element-web
+
+                      # application/public/homepage
+                      - docker.io/alpine/git
 
                       # applications/public/slink
                       # - docker.io/anirdev/slink

@@ -1,0 +1,9 @@
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+images:
+  - {name: alpine, newName: docker.io/library/alpine, newTag: 3.23.4, digest: sha256:5b10f432ef3da1b8d4c7eb6c487f2f5a8f096bc91145e68878dd4a5019afde11}
+  - {name: alpine/kubectl, newName: docker.io/alpine/kubectl, newTag: 1.36.1, digest: sha256:21da3ea4223f6f0f829d38ed0c56b0837fafa569c229998af5293a822348e83f}
+  - {name: busybox, newName: docker.io/library/busybox, newTag: 1.38.0-glibc, digest: sha256:3ba030337caebbfc2232b22b1e435eb213b28e5844a34942c74555bf904a265a}
+  - {name: public.ecr.aws/docker/library/busybox, newName: docker.io/library/busybox, newTag: 1.38.0-glibc, digest: sha256:3ba030337caebbfc2232b22b1e435eb213b28e5844a34942c74555bf904a265a}

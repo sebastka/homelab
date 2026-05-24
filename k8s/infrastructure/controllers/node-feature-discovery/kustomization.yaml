@@ -5,9 +5,7 @@ namespace: nfd
 
 resources:
   - Namespace.yaml
-  - CiliumNetworkPolicy.master.yaml
-  - CiliumNetworkPolicy.worker.yaml
-  - CiliumNetworkPolicy.gc.yaml
+  - CiliumNetworkPolicy.yaml
 
 # https://github.com/kubernetes-sigs/node-feature-discovery
 helmCharts:

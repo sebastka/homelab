@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-jellyfin-ingress
+  name: allow-jellyfin
   namespace: jellyfin
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: jellyfin}}
@@ -10,13 +10,5 @@ spec:
     - {fromEntities: [host], toPorts: [ports: [{port: '8096', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8096', protocol: TCP}]]}  # Envoy Gateway
     # - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '7359', protocol: TCP}]]}  # Envoy Gateway
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-jellyfin-egress
-  namespace: jellyfin
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: jellyfin}}
   egress:
     - {toEntities: [world]}  # cluster, host

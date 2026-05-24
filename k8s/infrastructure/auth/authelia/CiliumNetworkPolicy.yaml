@@ -2,24 +2,28 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-authelia-ingress
+  name: allow-authelia
   namespace: authelia
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: authelia}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '9091', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '9091', protocol: TCP}]]}  # Envoy Gateway
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-authelia-egress
-  namespace: authelia
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: authelia}}
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: authelia, app.kubernetes.io/name: valkey}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: light-ldap, app.kubernetes.io/name: light-ldap}}], toPorts: [ports: [{port: '6360', protocol: TCP}]]}
     - {toFQDNs: [matchName: db01.hera.home.karlsen.fr], toPorts: [ports: [{port: '3306', protocol: TCP}]]}
     - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}
     - {toFQDNs: [matchName: time.cloudflare.com], toPorts: [ports: [{port: '123', protocol: UDP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-valkey
+  namespace: argocd
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: valkey}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: authelia, app.kubernetes.io/name: authelia}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+  # egress: []

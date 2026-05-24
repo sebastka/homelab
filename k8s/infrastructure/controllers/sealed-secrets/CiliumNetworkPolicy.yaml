@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-sealedsecrets-ingress
+  name: allow-sealedsecrets
   namespace: sealed-secrets
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: sealed-secrets}}
@@ -10,13 +10,5 @@ spec:
     - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}  # Prometheus
     - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Kube API Server
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-sealedsecrets-egress
-  namespace: sealed-secrets
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: sealed-secrets}}
   egress:
     - {toEntities: [kube-apiserver]}

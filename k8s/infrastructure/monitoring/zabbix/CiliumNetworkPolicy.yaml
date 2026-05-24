@@ -1,0 +1,30 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-backend
+  namespace: zabbix
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: backend}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Host probes
+    - {fromCIDR: [192.168.0.0/16], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From Zabbix agents for active checks
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: frontend}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From frontend
+  egress:
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toCIDR: [192.168.0.0/16]}  # To LAN hosts: passive checks (10050), ICMP, MariaDB, etc.
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-frontend
+  namespace: zabbix
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: frontend}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
+  egress:
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: backend}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Zabbix server API
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {'k8s:io.kubernetes.pod.namespace': light-ldap, app.kubernetes.io/name: light-ldap}}], toPorts: [ports: [{port: '6360', protocol: TCP}]]}  # ldaps

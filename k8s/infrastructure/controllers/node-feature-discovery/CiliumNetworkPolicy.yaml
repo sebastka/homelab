@@ -1,0 +1,38 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-nfd-gc
+  namespace: nfd
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: node-feature-discovery, role: gc}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-nfd-master
+  namespace: nfd
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: node-feature-discovery, role: master}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: node-feature-discovery, role: worker}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Worker gRPC
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-nfd-worker
+  namespace: nfd
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: node-feature-discovery, role: worker}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+  egress:
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: node-feature-discovery, role: master}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # gRPC to master
+    - {toEntities: [kube-apiserver]}  # NodeFeature CRs

@@ -1,0 +1,65 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-paperless
+  namespace: paperless
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: paperless}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8000', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8000', protocol: TCP}]]}
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: valkey}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: tika}], toPorts: [ports: [{port: '9998', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: gotenberg}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Needed for OIDC / Authelia
+    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}
+    - {toFQDNs: [{matchName: api.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-gotenberg
+  namespace: paperless
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: gotenberg}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: paperless}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
+  # egress: []
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-tika
+  namespace: paperless
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: tika}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '9998', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: paperless}], toPorts: [ports: [{port: '9998', protocol: TCP}]]}
+  # egress: []
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-valkey
+  namespace: argocd
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: valkey}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: paperless}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-syncjob
+  namespace: paperless
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: tessdata-sync}}
+  # ingress: []
+  egress:
+    - {toFQDNs: [{matchName: github.com}, {matchName: objects.githubusercontent.com}, {matchName: codeload.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}

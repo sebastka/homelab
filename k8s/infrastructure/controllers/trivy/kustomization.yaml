@@ -5,9 +5,7 @@ namespace: trivy
 
 resources:
   - Namespace.yaml
-  - CiliumNetworkPolicy.operator.yaml
-  - CiliumNetworkPolicy.server.yaml
-  - CiliumNetworkPolicy.scanjob.yaml
+  - CiliumNetworkPolicy.yaml
   - GrafanaDashboard.yaml
 
 helmCharts:

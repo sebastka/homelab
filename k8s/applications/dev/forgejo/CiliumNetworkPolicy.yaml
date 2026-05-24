@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-forgejo-ingress
+  name: allow-forgejo
   namespace: forgejo
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: forgejo}}
@@ -10,14 +10,6 @@ spec:
     - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '2222', protocol: TCP}]]}  # Envoy Gateway
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Envoy Gateway
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-forgejo-egress
-  namespace: forgejo
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: forgejo}}
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Needed for OIDC / Authelia
     - {toFQDNs: [matchName: db01.hera.home.karlsen.fr], toPorts: [ports: [{port: '3306', protocol: TCP}]]}

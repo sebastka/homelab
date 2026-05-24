@@ -110,12 +110,10 @@ repoServer:
           name: custom-tools
 
 redis:
-  metrics:
-    enabled: true
-    serviceMonitor: {enabled: true}
-  resources:
-    requests: {memory: 64Mi}
-    limits: {memory: 128Mi}
+  enabled: false
+externalRedis:
+  host: valkey
+  port: 6379
 
 server:
   metrics:

@@ -3,6 +3,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: monitoring
 
+components:
+  - ../../../common/images
+
 patches:
   - target: {group: monitoring.coreos.com, version: v1, kind: Prometheus, name: kube-prometheus-stack-prometheus}
     patch: |-
@@ -11,8 +14,7 @@ patches:
 resources:
   - Namespace.yaml
   - HTTPRoute.yaml
-  - CiliumNetworkPolicy.alertmanager.yaml
-  - CiliumNetworkPolicy.node-exporter.yaml
+  - CiliumNetworkPolicy.yaml
   - PrometheusRule.etcd.yaml
   - PrometheusRule.oom.yaml
   - SealedSecret.alertmanager-ntfy.yaml

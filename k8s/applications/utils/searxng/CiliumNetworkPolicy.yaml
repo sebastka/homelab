@@ -2,21 +2,25 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-searxng-ingress
+  name: allow-searxng
   namespace: searxng
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: searxng}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
+  egress:
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: searxng, app.kubernetes.io/name: valkey}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toEntities: [world], toPorts: [ports: [{port: '80', protocol: TCP}, {port: '443', protocol: TCP}]]}  # Internet access for search engines
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-searxng-egress
-  namespace: searxng
+  name: allow-valkey
+  namespace: argocd
 spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: searxng}}
-  egress:
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: searxng, app.kubernetes.io/name: valkey}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
-    - {toEntities: [world], toPorts: [ports: [{port: '80', protocol: TCP}, {port: '443', protocol: TCP}]]}  # Internet access for search engines
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: valkey}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: searxng, app.kubernetes.io/name: searxng}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+  # egress: []

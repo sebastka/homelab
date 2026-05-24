@@ -28,5 +28,4 @@ resources:
   - Service.yaml
   - HTTPRoute.yaml
   - TCPRoute.yaml
-  - CiliumNetworkPolicy.light-ldap.yaml
-  - CiliumNetworkPolicy.bootstrap.yaml
+  - CiliumNetworkPolicy.yaml

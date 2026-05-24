@@ -3,6 +3,9 @@
 ---
 
 features:
+  # policyExceptions:
+  #   enabled: true
+  #   namespace: kyverno
   ttlController:
     reconciliationInterval: 30m
   reporting:

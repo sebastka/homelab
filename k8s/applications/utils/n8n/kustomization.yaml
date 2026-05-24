@@ -12,21 +12,13 @@ configMapGenerator:
 components:
   - ../../../common/valkey
 
-patches:
-  - target: {kind: CiliumNetworkPolicy, name: allow-valkey-ingress}
-    patch: |
-      - {op: replace, path: /spec/ingress/0/fromEndpoints/0/matchLabels/app.kubernetes.io~1name, value: n8n}
-      - {op: replace, path: /spec/ingress/0/fromEndpoints/0/matchLabels/k8s:io.kubernetes.pod.namespace, value: n8n}
-
 resources:
   - Namespace.yaml
   - SealedSecret.oidc.yaml
   - SealedSecret.n8n-secrets.yaml
   - HTTPRoute.yaml
   - SecurityPolicy.yaml
-  - CiliumNetworkPolicy.main.yaml
-  - CiliumNetworkPolicy.webhook-processor.yaml
-  - CiliumNetworkPolicy.worker.yaml
+  - CiliumNetworkPolicy.yaml
 
 helmCharts:
   - name: n8n

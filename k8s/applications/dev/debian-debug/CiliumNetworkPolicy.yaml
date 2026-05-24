@@ -2,9 +2,10 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-debian-debug-egress
+  name: allow-debiandebug
   namespace: debian-debug
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: debian-debug}}
+  # ingress: []
   egress:
     - {toEntities: [world, cluster, host]}  # = all

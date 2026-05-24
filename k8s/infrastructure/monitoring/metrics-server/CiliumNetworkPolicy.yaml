@@ -2,21 +2,13 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-metricsserver-ingress
+  name: allow-metricsserver
   namespace: metrics-server
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: metrics-server}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '10250', protocol: TCP}]]}  # Host probes
     - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '10250', protocol: TCP}]]}  # Aggregated API
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-metricsserver-egress
-  namespace: metrics-server
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: metrics-server}}
   egress:
     - {toEntities: [host, remote-node], toPorts: [ports: [{port: '10250', protocol: TCP}]]}  # Kubelet scraping
     - {toEntities: [kube-apiserver]}

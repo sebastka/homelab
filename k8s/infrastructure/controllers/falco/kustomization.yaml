@@ -10,10 +10,7 @@ resources:
   - Namespace.yaml
   - SealedSecret.falco-ntfy.yaml
   - HTTPRoute.yaml
-  - CiliumNetworkPolicy.namespace.yaml
-  - CiliumNetworkPolicy.falco.yaml
-  - CiliumNetworkPolicy.falcosidekick.yaml
-  - CiliumNetworkPolicy.falcosidekick-ui.yaml
+  - CiliumNetworkPolicy.yaml
   - GrafanaDashboard.falcosidekick-loki.yaml
   - GrafanaDashboard.falco-events.yaml
 

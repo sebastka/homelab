@@ -1,0 +1,94 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-intra-namespace
+  namespace: kyverno
+spec:
+  endpointSelector: {}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: kyverno}]}
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: kyverno}]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-admission
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: kyverno-admission-controller}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '9443', protocol: TCP}]]}  # Host probes
+    - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '9443', protocol: TCP}]]}  # Webhook calls
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: prometheus}], toPorts: [ports: [{port: '8000', protocol: TCP}]]}
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-background
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: kyverno-background-controller}}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-cleanup
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: kyverno-cleanup-controller}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '9443', protocol: TCP}]]}  # Host probes
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-migrateresources
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {job-name: kyverno-migrate-resources}}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-reports
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: kyverno-reports-controller}}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-rmwebhooks
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {job-name: kyverno-rm-webhooks}}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-scaletozero
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {job-name: kyverno-scale-to-zero}}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}

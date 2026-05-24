@@ -20,5 +20,4 @@ resources:
   - Deployment.frontend.yaml
   - Service.yaml
   - HTTPRoute.yaml
-  - CiliumNetworkPolicy.backend.yaml
-  - CiliumNetworkPolicy.frontend.yaml
+  - CiliumNetworkPolicy.yaml

@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-ntfy-ingress
+  name: allow-ntfy
   namespace: ntfy
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: ntfy}}
@@ -10,14 +10,6 @@ spec:
     - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
     # - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway / Covered by cluster policy below
     - {fromEntities: [cluster], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-ntfy-egress
-  namespace: ntfy
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: ntfy}}
   egress:
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}

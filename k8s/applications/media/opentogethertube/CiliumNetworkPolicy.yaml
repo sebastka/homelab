@@ -2,22 +2,26 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-opentogethertube-ingress
+  name: allow-opentogethertube
   namespace: opentogethertube
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: opentogethertube}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Envoy Gateway
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-opentogethertube-egress
-  namespace: opentogethertube
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: opentogethertube}}
   egress:
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: opentogethertube, app.kubernetes.io/name: valkey}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toEntities: [world]}  # cluster, host
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-valkey
+  namespace: argocd
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: valkey}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: opentogethertube, app.kubernetes.io/name: opentogethertube}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+  # egress: []
