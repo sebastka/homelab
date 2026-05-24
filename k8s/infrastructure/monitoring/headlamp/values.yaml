@@ -66,7 +66,7 @@ pluginsManager:
 initContainers:
   - name: trivy-plugin
     # Dockerfile: https://github.com/kubebeam/trivy-headlamp-plugin/blob/main/Dockerfile
-    image: ghcr.io/kubebeam/trivy-headlamp-plugin:v0.3.1@sha256:31444c18f6f5f6e15049af8890c8fd05156f95bd62589a0ddb68ed4691dd1ca3
+    image: ghcr.io/kubebeam/trivy-headlamp-plugin:v0.3.2@sha256:59851559c7df7606403f6929ba89e085fccbdc1e7aa894a6fe031709109b6062
     command: [/bin/sh, -c]
     args:
       - |
