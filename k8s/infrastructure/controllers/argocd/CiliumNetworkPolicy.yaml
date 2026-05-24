@@ -44,7 +44,7 @@ spec:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8083', protocol: TCP}]]}  # metrics
   egress:
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-redis}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-valkey}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-repo-server}}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-application-controller}}], toPorts: [ports: [{port: '8082', protocol: TCP}]]}
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-applicationset-controller}}], toPorts: [ports: [{port: '7000', protocol: TCP}]]}
