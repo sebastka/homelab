@@ -38,7 +38,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       initContainers:
         - name: site-setup
-          image: docker.io/alpine/git:v2.52.0
+          image: docker.io/alpine/git:v2.52.0@sha256:3136372ed3c9e112d5a2620c66a6803e1b0b7f14a428fcbd0c5028bec4256430
           command: ['/bin/sh', '-c']
           args:
             - |
@@ -79,7 +79,7 @@ spec:
       containers:
         - name: nginx
           # Dockerfile: https://github.com/nginx/docker-nginx-unprivileged/blob/main/Dockerfile-alpine-slim.template
-          image: docker.io/nginxinc/nginx-unprivileged:1.31.0-alpine-slim
+          image: docker.io/nginxinc/nginx-unprivileged:1.31.0-alpine-slim@sha256:01cb6604af2fd0dce17f7aab60759e47ad288bec0425ad4b43e749369d2eecca
           command: [nginx]
           args: ['-c', '/etc/nginx/nginx.custom.conf', '-g', 'daemon off;']
           securityContext:

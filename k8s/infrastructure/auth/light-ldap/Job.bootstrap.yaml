@@ -36,7 +36,7 @@ spec:
       initContainers:
         - name: init-schemas
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/jq/Dockerfile
-          image: ghcr.io/sebastka/jq:2026.5.5  # renovate: datasource=docker depName=ghcr.io/sebastka/jq
+          image: ghcr.io/sebastka/jq:2026.5.5@sha256:479f83cb1a9aa6f36628470498457421bfd0be006c6f86bc581bd1bd8c178b16  # renovate: datasource=docker depName=ghcr.io/sebastka/jq
           command: [/bin/sh, -c]
           args:
             - |
@@ -60,7 +60,7 @@ spec:
       containers:
         - name: lldap-bootstrap
           # Dockerfile: https://github.com/lldap/lldap/blob/main/Dockerfile
-          image: docker.io/lldap/lldap:v0.6.3-alpine-rootless
+          image: docker.io/lldap/lldap:v0.6.3-alpine-rootless@sha256:ba2c50930ea998eefd5454aa678a7977448019248b1827da87d330df0b71c284
           command: [/app/bootstrap.sh]
           securityContext:
             allowPrivilegeEscalation: false

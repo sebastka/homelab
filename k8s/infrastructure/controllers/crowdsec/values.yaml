@@ -8,7 +8,7 @@
 
 image:
   kubectl:
-    tag: 1.36.0  # renovate: datasource=docker depName=docker.io/alpine/kubectl
+    tag: 1.36.0@sha256:1ee9df6316d4fb13a9cfb42b6e0b8541ea055a275f2b08cfc63233e114b02815  # renovate: datasource=docker depName=docker.io/alpine/kubectl currentValue=1.36.0 currentDigest=sha256:1ee9df6316d4fb13a9cfb42b6e0b8541ea055a275f2b08cfc63233e114b02815
 
 container_runtime: containerd
 

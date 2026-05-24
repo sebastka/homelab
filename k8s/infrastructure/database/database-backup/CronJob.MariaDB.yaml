@@ -38,7 +38,8 @@ spec:
             seccompProfile: {type: RuntimeDefault}
           containers:
             - name: mariadb-backup
-              image: docker.io/mariadb:12.2.2-noble
+              # Dockerfile: https://github.com/MariaDB/mariadb-docker/blob/master/12.3/Dockerfile
+              image: docker.io/mariadb:12.2.2-noble@sha256:350261292d0129fd4b24f537dcf05ecd3ebe34d39d5b592af551f38310e7a167
               command: ['/bin/sh', '-c']
               args:
                 - |

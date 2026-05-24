@@ -37,7 +37,7 @@ spec:
       # initContainers:
       #   - name: init-dirs
       #     # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
-      #     image: ghcr.io/alexta69/metube:2026.04.28
+      #     image: ghcr.io/alexta69/metube:2026.04.28@sha256:caf21da7d83a4003b429ef1126e9c1499f36f8401a1f8a7b158f70b94ade8edd
       #     command: [/bin/sh, '-c']
       #     args:
       #       - |
@@ -57,7 +57,7 @@ spec:
       containers:
         - name: metube
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
-          image: ghcr.io/alexta69/metube:2026.04.28
+          image: ghcr.io/alexta69/metube:2026.04.28@sha256:caf21da7d83a4003b429ef1126e9c1499f36f8401a1f8a7b158f70b94ade8edd
           command: [python3, app/main.py]
           securityContext:
             allowPrivilegeEscalation: false
@@ -83,7 +83,7 @@ spec:
             - {name: ytdl-options, mountPath: /mnt/ytdl-options.json, subPath: ytdl-options.json}
         - name: bgutils-pot
           # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
-          image: ghcr.io/alexta69/metube:2026.04.28
+          image: ghcr.io/alexta69/metube:2026.04.28@sha256:caf21da7d83a4003b429ef1126e9c1499f36f8401a1f8a7b158f70b94ade8edd
           command: [bgutil-pot, server]
           securityContext:
             allowPrivilegeEscalation: false

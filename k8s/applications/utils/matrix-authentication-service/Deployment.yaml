@@ -37,7 +37,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       initContainers:
         - name: config-merger
-          image: docker.io/mikefarah/yq:4.53.2
+          image: docker.io/mikefarah/yq:4.53.2@sha256:0cb4a78491b6e62ee8a9bf4fbeacbd15b5013d19bc420591b05383a696315e60
           command: ['/bin/sh', '-c']
           args:
             - |
@@ -62,7 +62,7 @@ spec:
       containers:
         - name: matrix-authentication-service
           # Dockerfile: https://github.com/element-hq/matrix-authentication-service/blob/main/Dockerfile
-          image: ghcr.io/element-hq/matrix-authentication-service:1.17.0
+          image: ghcr.io/element-hq/matrix-authentication-service:1.17.0@sha256:295aea98d9a6c63fbf70236470bade92ffc2f448c2fefc77459bb8314c27dca3
           args: [--config, /config/config.yaml]
           securityContext:
             allowPrivilegeEscalation: false

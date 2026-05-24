@@ -38,7 +38,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       initContainers:
         - name: migrate
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15@sha256:6c86cad803970ea782683a8e80e7403444c5bf3cf70de63b4d3c8e87500db92f
           command: [python3, manage.py, migrate, --noinput]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -60,7 +60,7 @@ spec:
       containers:
         - name: consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15@sha256:6c86cad803970ea782683a8e80e7403444c5bf3cf70de63b4d3c8e87500db92f
           command: [python3, "manage.py", "document_consumer"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -83,7 +83,7 @@ spec:
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15@sha256:6c86cad803970ea782683a8e80e7403444c5bf3cf70de63b4d3c8e87500db92f
           command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -104,7 +104,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
         - name: worker
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15@sha256:6c86cad803970ea782683a8e80e7403444c5bf3cf70de63b4d3c8e87500db92f
           command: [celery, "--app", "paperless", "worker", "--loglevel", "INFO"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -132,7 +132,7 @@ spec:
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15@sha256:6c86cad803970ea782683a8e80e7403444c5bf3cf70de63b4d3c8e87500db92f
           command: [granian, "--interface", "asginl", "--no-access-log", "--ws", "paperless.asgi:application"]
           securityContext:
             allowPrivilegeEscalation: false
