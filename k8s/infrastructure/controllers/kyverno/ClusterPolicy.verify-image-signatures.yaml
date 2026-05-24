@@ -15,7 +15,7 @@ metadata:
     policies.kyverno.io/title: Verify Image Signatures
     policies.kyverno.io/description: Verify Sigstore keyless signatures on images to ensure images originate from their official CI pipelines.
 spec:
-  background: false
+  background: true
   rules:
     - name: verify-sebastka-images
       match: {any: [resources: {kinds: [Pod]}]}
