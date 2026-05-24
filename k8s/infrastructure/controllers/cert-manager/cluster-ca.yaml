@@ -19,7 +19,7 @@ spec:
   commonName: Karlsen Homelab Cluster Root CA
   subject:
     organizations: [Karlsen]
-    countries: [NO]
+    countries: ['NO']
     organizationalUnits: [Homelab]
   secretName: cluster-root-ca-secret
   privateKey: {algorithm: ECDSA, size: 521}

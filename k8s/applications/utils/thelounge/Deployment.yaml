@@ -2,7 +2,7 @@
 # https://github.com/thelounge/thelounge-docker
 # https://hub.docker.com/r/thelounge/thelounge/
 
-# When using maxHistory = -1, SQLite will spill a temp sort to /tmp. 
+# When using maxHistory = -1, SQLite will spill a temp sort to /tmp.
 # To avoid this, "USING INDEX network_channel_time" and adding a "(network, channel, time DESC)" composite index to the "messages" table is recommended.
 ---
 apiVersion: apps/v1

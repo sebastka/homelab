@@ -121,6 +121,7 @@ notifier:
     disable_html_emails: true
 
 # https://www.authelia.com/configuration/identity-providers/introduction/
+# yamllint disable rule:braces
 identity_providers:
   oidc:
     # hmac_secret: AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET
@@ -331,6 +332,7 @@ identity_providers:
         userinfo_signed_response_alg: none
         id_token_signed_response_alg: ES256
         token_endpoint_auth_method: client_secret_basic
+  # yamllint enable rule:braces
 
 # https://www.authelia.com/configuration/miscellaneous/privacy-policy/
 # privacy_policy: {}
