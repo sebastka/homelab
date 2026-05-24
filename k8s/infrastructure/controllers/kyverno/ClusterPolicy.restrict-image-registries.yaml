@@ -35,6 +35,54 @@ spec:
                       - docker.io/valkey/valkey
                       - docker.io/library/node
 
+                      # infrastructure/auth/authelia
+                      - docker.io/authelia/authelia
+
+                      # infrastructure/auth/light-ldap
+                      - docker.io/lldap/lldap
+
+                      # infrastructure/controllers/argocd
+                      # ecr-public.aws.com/docker/library/haproxy
+                      - quay.io/argoproj/argocd
+
+                      # infrastructure/controllers/cert-manager
+                      - quay.io/jetstack/cert-manager-cainjector
+                      - quay.io/jetstack/cert-manager-controller
+                      - quay.io/jetstack/cert-manager-webhook
+                      - quay.io/jetstack/cert-manager-startupapicheck
+                      - quay.io/jetstack/trust-manager
+
+                      # infrastructure/controllers/crowdsec
+
+                      # infrastructure/controllers/falco
+                      - docker.io/falcosecurity/falco
+                      - docker.io/falcosecurity/falcoctl
+                      - docker.io/falcosecurity/falcosidekick
+                      - docker.io/falcosecurity/falcosidekick-ui
+
+                      # infrastructure/controllers/intel-device-plugins
+
+                      # infrastructure/controllers/kyverno
+                      - 'ghcr.io/kyverno/*'
+                      - 'kyverno/*'
+
+                      # infrastructure/controllers/node-feature-discovery
+                      - registry.k8s.io/nfd/node-feature-discovery
+
+                      # infrastructure/controllers/reloader
+                      - ghcr.io/stakater/reloader
+
+                      # infrastructure/controllers/sealed-secrets
+
+                      # infrastructure/controllers/trivy
+
+                      # infrastructure/database/cloudnative-pg
+                      # - ghcr.io/cloudnative-pg/cloudnative-pg
+
+                      # infrastructure/database/database-backup
+                      - docker.io/library/postgres
+                      - docker.io/library/mariadb
+
                       # infrastructure/network/cilium
                       - quay.io/cilium/cilium
                       - quay.io/cilium/startup-script
@@ -52,40 +100,6 @@ spec:
                       # infrastructure/network/envoy-gateway
                       - 'docker.io/envoyproxy/*'
                       - ghcr.io/kdwils/envoy-proxy-bouncer
-
-                      # infrastructure/controllers/argocd
-                      # ecr-public.aws.com/docker/library/haproxy
-                      - quay.io/argoproj/argocd
-
-                      # infrastructure/controllers/cert-manager
-                      - quay.io/jetstack/cert-manager-cainjector
-                      - quay.io/jetstack/cert-manager-controller
-                      - quay.io/jetstack/cert-manager-webhook
-                      - quay.io/jetstack/cert-manager-startupapicheck
-                      - quay.io/jetstack/trust-manager
-
-                      # infrastructure/controllers/falco
-                      - docker.io/falcosecurity/falco
-                      - docker.io/falcosecurity/falcoctl
-                      - docker.io/falcosecurity/falcosidekick
-                      - docker.io/falcosecurity/falcosidekick-ui
-
-                      # infrastructure/controllers/kyverno
-                      - 'ghcr.io/kyverno/*'
-                      - 'kyverno/*'
-
-                      # infrastructure/controllers/reloader
-                      - ghcr.io/stakater/reloader
-
-                      # infrastructure/controllers/node-feature-discovery
-                      - registry.k8s.io/nfd/node-feature-discovery
-
-                      # infrastructure/database/cloudnative-pg
-                      # - ghcr.io/cloudnative-pg/cloudnative-pg
-
-                      # infrastructure/database/database-backup
-                      - docker.io/postgres
-                      - docker.io/mariadb
 
                       # infrastructure/storage/longhorn
                       - 'longhornio/*'
@@ -135,12 +149,6 @@ spec:
                       # infrastructure/monitoring/zabbix
                       - docker.io/zabbix/zabbix-server-pgsql
                       - docker.io/zabbix/zabbix-web-nginx-pgsql
-
-                      # infrastructure/auth/authelia
-                      - docker.io/authelia/authelia
-
-                      # infrastructure/auth/light-ldap
-                      - docker.io/lldap/lldap
 
                       # applications/dev/forgejo
                       - code.forgejo.org/forgejo/forgejo
