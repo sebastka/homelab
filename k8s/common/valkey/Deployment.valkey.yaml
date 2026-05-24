@@ -35,7 +35,7 @@ spec:
       containers:
         - name: valkey
           # Dockerfile: https://github.com/valkey-io/valkey-container/blob/mainline/9.0/alpine/Dockerfile
-          image: index.docker.io/valkey/valkey:9.1.0-alpine3.23
+          image: docker.io/valkey/valkey:9.1.0-alpine3.23
           args: [--save, ""]
           securityContext:
             allowPrivilegeEscalation: false

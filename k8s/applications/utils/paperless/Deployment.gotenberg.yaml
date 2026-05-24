@@ -35,7 +35,7 @@ spec:
       containers:
         - name: gotenberg
           # Dockerfile: https://github.com/gotenberg/gotenberg/blob/main/build/Dockerfile
-          image: index.docker.io/gotenberg/gotenberg:8.32
+          image: docker.io/gotenberg/gotenberg:8.32
           args:
             - gotenberg
             - --chromium-disable-javascript=true

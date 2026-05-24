@@ -40,7 +40,7 @@ spec:
                       - ghcr.io/jkroepke/access-log-exporter       # kube-prometheus-stack + loki
                       - ecr-public.aws.com/docker/library/haproxy  # Redis HA: argocd + nextcloud
                       - ecr-public.aws.com/docker/library/redis    # Redis HA: argocd
-                      - index.docker.io/valkey/valkey              # common/valkey
+                      - docker.io/valkey/valkey              # common/valkey
                       - docker.io/library/node
                       - node
 
@@ -149,7 +149,7 @@ spec:
                       - ghcr.io/alexta69/metube
 
                       # applications/media/opentogethertube
-                      - index.docker.io/dyc3/opentogethertube
+                      - docker.io/dyc3/opentogethertube
 
                       # applications/public/element
                       - docker.io/vectorim/element-web
@@ -193,8 +193,8 @@ spec:
 
                       # applications/utils/paperless
                       - ghcr.io/paperless-ngx/paperless-ngx
-                      - index.docker.io/apache/tika
-                      - index.docker.io/gotenberg/gotenberg
+                      - docker.io/apache/tika
+                      - docker.io/gotenberg/gotenberg
 
                       # applications/utils/qbittorrent
                       # - ghcr.io/qbittorrent/qbittorrent

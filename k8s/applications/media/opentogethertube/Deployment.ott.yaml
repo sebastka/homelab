@@ -37,7 +37,7 @@ spec:
       initContainers:
         - name: migrate-db
           # Dockerfile: https://hub.docker.com/r/opentogethertube/opentogethertube/dockerfile
-          image: index.docker.io/dyc3/opentogethertube:latest
+          image: docker.io/dyc3/opentogethertube:latest
           command: [yarn, workspace, ott-server, run, sequelize-cli, db:migrate]
           securityContext:
             allowPrivilegeEscalation: false
@@ -56,7 +56,7 @@ spec:
       containers:
         - name: opentogethertube
           # Dockerfile: https://hub.docker.com/r/opentogethertube/opentogethertube/dockerfile
-          image: index.docker.io/dyc3/opentogethertube:latest
+          image: docker.io/dyc3/opentogethertube:latest
           command: [yarn, run, start]
           securityContext:
             allowPrivilegeEscalation: false

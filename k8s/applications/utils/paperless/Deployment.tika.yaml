@@ -35,7 +35,7 @@ spec:
       containers:
         - name: tika
           # Dockerfile: https://github.com/apache/tika-docker/blob/main/minimal/Dockerfile
-          image: index.docker.io/apache/tika:3.3.0.0-full
+          image: docker.io/apache/tika:3.3.0.0-full
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
