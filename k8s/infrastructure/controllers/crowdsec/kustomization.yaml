@@ -34,6 +34,10 @@ patches:
           readOnlyRootFilesystem: true
           capabilities: {drop: [ALL]}
 
+images:
+  - {name: crowdsec/crowdsec, newName: docker.io/crowdsecurity/crowdsec}
+  - {name: curlimages/curl, newName: docker.io/alpine/curl, newTag: 8.19.0, digest: sha256:23b60dc412cd453aba2841da0ee8bc6ad8da32263c557fcc9eccd52840f4ca43}
+
 resources:
   - Namespace.yaml
   - PersistentVolumeClaim.yaml
