@@ -17,9 +17,6 @@ spec:
         message: "All container images must use an explicit tag: not ':latest' and not untagged."
         foreach:
           - list: "request.object.spec.[containers, initContainers][]"
-            preconditions:
-              all:
-                - {key: "{{ element.image }}", operator: NotEquals, value: docker.io/dyc3/opentogethertube:latest}
             deny:
               conditions:
                 any:
