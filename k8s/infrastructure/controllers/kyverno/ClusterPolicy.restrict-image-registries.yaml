@@ -25,7 +25,6 @@ spec:
                     operator: NotIn
                     value:
                       # Shared (used in multiple places)
-                      - 'ghcr.io/sebastka/*'
                       - docker.io/library/alpine
                       - docker.io/alpine/kubectl
                       - docker.io/alpine/git
@@ -45,6 +44,8 @@ spec:
                       # infrastructure/controllers/argocd
                       # ecr-public.aws.com/docker/library/haproxy
                       - quay.io/argoproj/argocd
+                      - quay.io/argoprojlabs/argocd-extension-installer
+                      # - ghcr.io/dexidp/dex
 
                       # infrastructure/controllers/cert-manager
                       - quay.io/jetstack/cert-manager-cainjector
@@ -55,6 +56,7 @@ spec:
                       - quay.io/jetstack/trust-pkg-debian-bookworm
 
                       # infrastructure/controllers/crowdsec
+                      - docker.io/crowdsecurity/crowdsec
 
                       # infrastructure/controllers/falco
                       - docker.io/falcosecurity/falco
@@ -63,10 +65,17 @@ spec:
                       - docker.io/falcosecurity/falcosidekick-ui
 
                       # infrastructure/controllers/intel-device-plugins
+                      - intel/intel-deviceplugin-operator
+                      - intel/intel-gpu-plugin
 
                       # infrastructure/controllers/kyverno
-                      - 'ghcr.io/kyverno/*'
-                      - 'kyverno/*'
+                      - reg.kyverno.io/kyverno/kyverno-cli
+                      - reg.kyverno.io/kyverno/kyverno/kyvernopre
+                      - reg.kyverno.io/kyverno/kyverno
+                      - reg.kyverno.io/kyverno/background-controller
+                      - reg.kyverno.io/kyverno/cleanup-controller
+                      - reg.kyverno.io/kyverno/reports-controller
+                      - ghcr.io/kyverno/readiness-checker
 
                       # infrastructure/controllers/node-feature-discovery
                       - registry.k8s.io/nfd/node-feature-discovery
@@ -75,10 +84,12 @@ spec:
                       - ghcr.io/stakater/reloader
 
                       # infrastructure/controllers/sealed-secrets
+                      - docker.io/bitnami/sealed-secrets-controller
 
                       # infrastructure/controllers/trivy
-                      - 'ghcr.io/aquasecurity/*'
-                      - 'mirror.gcr.io/aquasec/*'
+                      # - 'ghcr.io/aquasecurity/*'
+                      - mirror.gcr.io/aquasec/trivy-operator
+                      - mirror.gcr.io/aquasec/trivy
 
                       # infrastructure/database/cloudnative-pg
                       # - ghcr.io/cloudnative-pg/cloudnative-pg
@@ -88,9 +99,10 @@ spec:
                       - docker.io/library/mariadb
 
                       # infrastructure/monitoring/alloy
-                      # (docker.io/grafana/alloy covered by docker.io/grafana/* below)
+                      - docker.io/grafana/alloy
 
                       # infrastructure/monitoring/grafana
+                      - docker.io/grafana/grafana
 
                       # infrastructure/monitoring/grafana-operator
                       - ghcr.io/grafana/grafana-operator
@@ -102,35 +114,34 @@ spec:
                       # infrastructure/monitoring/kube-prometheus-stack
                       - quay.io/prometheus/alertmanager
                       - quay.io/prometheus/prometheus
+                      - quay.io/prometheus/node-exporter
                       - quay.io/prometheus-operator/admission-webhook
                       - quay.io/prometheus-operator/prometheus-config-reloader
                       - quay.io/prometheus-operator/prometheus-operator
                       - ghcr.io/jkroepke/kube-webhook-certgen
+                      - registry.k8s.io/kube-state-metrics/kube-state-metrics
 
                       # infrastructure/monitoring/loki
-                      - 'docker.io/grafana/*'
+                      - docker.io/grafana/loki
                       - memcached
                       - prom/memcached-exporter
                       - docker.io/kiwigrid/k8s-sidecar
                       - ghcr.io/jkroepke/access-log-exporter
 
                       # infrastructure/monitoring/metrics-server
+                      - registry.k8s.io/metrics-server/metrics-server
 
                       # infrastructure/monitoring/prometheus-operator-crds
 
                       # infrastructure/monitoring/stork
+                      - ghcr.io/sebastka/stork
 
                       # infrastructure/monitoring/thanos
                       - quay.io/thanos/thanos
-                      - rustfs/rc
 
                       # infrastructure/monitoring/zabbix
                       - docker.io/zabbix/zabbix-server-pgsql
                       - docker.io/zabbix/zabbix-web-nginx-pgsql
-
-                      # infrastructure/monitoring/policy-reporter
-                      # kyverno/* (line 50) covers all policy-reporter images
-                      - ghcr.io/oliver006/redis_exporter
 
                       # infrastructure/network/cilium
                       - quay.io/cilium/cilium
@@ -149,7 +160,9 @@ spec:
                       # infrastructure/network/coredns
 
                       # infrastructure/network/envoy-gateway
-                      - 'docker.io/envoyproxy/*'
+                      - docker.io/envoyproxy/envoy
+                      - docker.io/envoyproxy/gateway
+                      - docker.io/envoyproxy/ratelimit
                       - ghcr.io/kdwils/envoy-proxy-bouncer
 
                       # infrastructure/network/gateway
@@ -157,9 +170,20 @@ spec:
                       # infrastructure/network/tailscale
 
                       # infrastructure/storage/longhorn
-                      - 'longhornio/*'
+                      - docker.io/longhornio/csi-attacher
+                      - docker.io/longhornio/csi-node-driver-registrar
+                      - docker.io/longhornio/csi-provisioner
+                      - docker.io/longhornio/csi-resizer
+                      - docker.io/longhornio/csi-snapshotter
+                      - docker.io/longhornio/livenessprobe
+                      - docker.io/longhornio/longhorn-engine
+                      - docker.io/longhornio/longhorn-instance-manager
+                      - docker.io/longhornio/longhorn-manager
+                      - docker.io/longhornio/longhorn-share-manager
+                      - docker.io/longhornio/longhorn-ui
 
                       # infrastructure/network/snapshots-controller
+                      - registry.k8s.io/sig-storage/snapshot-controller
 
                       # infrastructure/storage/velero
                       - docker.io/velero/velero
@@ -167,12 +191,13 @@ spec:
                       - registry.k8s.io/kubectl
 
                       # applications/dev/debian-debug
+                      - ghcr.io/sebastka/debian-debug
 
                       # applications/dev/forgejo
                       - code.forgejo.org/forgejo/forgejo
 
                       # applications/dev/harbor
-                      - 'goharbor/*'
+                      # - 'goharbor/*'
 
                       # applications/dev/whoami
                       - ghcr.io/traefik/whoami
@@ -203,6 +228,7 @@ spec:
                       - ghcr.io/home-operations/deluge
 
                       # applications/utils/element-admin
+                      - ghcr.io/sebastka/element-admin
 
                       # applications/utils/glance
                       - docker.io/glanceapp/glance
