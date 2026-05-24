@@ -13,3 +13,10 @@ ignore: |
 rules:
   line-length: disable
   comments-indentation: disable
+  colons:
+    max-spaces-before: 0
+    max-spaces-after: -1   # -1 = unlimited, disables the after-colon check
+  commas:
+    max-spaces-before: 0
+    min-spaces-after: 1
+    max-spaces-after: -1   # -1 = unlimited, disables the after-comma check
