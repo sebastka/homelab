@@ -82,6 +82,21 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
+  name: allow-applicationsetcontroller
+  namespace: argocd
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: argocd-applicationset-controller}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # metrics
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-server}], toPorts: [ports: [{port: '7000', protocol: TCP}]]}  # webhooks
+  egress:
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-repo-server}}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-redis}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
   name: allow-valkey
   namespace: argocd
 spec:
