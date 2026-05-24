@@ -21,7 +21,7 @@ spec:
               conditions:
                 all:
                   # Strip :tag and @sha256:digest before matching so each entry covers all versions.
-                  - key: "{{ element.image | regex_replace_all_literal(':[^/:@]+$|@sha256:[a-f0-9]+$', @, '') }}"
+                  - key: "{{ element.image | regex_replace_all_literal(':[^/:@]+@sha256:[a-f0-9]+$|@sha256:[a-f0-9]+$|:[^/:@]+$', @, '') }}"
                     operator: NotIn
                     value:
                       # Shared (used in multiple places)
