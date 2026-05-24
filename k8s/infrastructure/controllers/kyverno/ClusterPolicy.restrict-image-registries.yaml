@@ -64,6 +64,7 @@ spec:
                       - docker.io/falcosecurity/falcoctl
                       - docker.io/falcosecurity/falcosidekick
                       - docker.io/falcosecurity/falcosidekick-ui
+                      - docker.io/redis/redis-stack
 
                       # infrastructure/controllers/intel-device-plugins
                       - intel/intel-deviceplugin-operator
