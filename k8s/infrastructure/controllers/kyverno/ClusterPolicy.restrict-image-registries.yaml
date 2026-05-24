@@ -27,6 +27,7 @@ spec:
                       # Shared (used in multiple places)
                       - docker.io/library/alpine
                       - docker.io/alpine/kubectl
+                      - docker.io/alpine/curl
                       - docker.io/alpine/git
                       - docker.io/library/busybox
                       - docker.io/mikefarah/yq
