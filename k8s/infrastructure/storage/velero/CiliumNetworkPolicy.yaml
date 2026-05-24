@@ -9,9 +9,9 @@ spec:
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '8085', protocol: TCP}]]}  # Readiness/liveness probe
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [ports: [{port: '8085', protocol: TCP}]]}  # Prometheus
+  egress:
     - {toEntities: [kube-apiserver]}
     - {toFQDNs: [{matchName: hel1.your-objectstorage.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # S3 backup storage
-  # egress: []
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
