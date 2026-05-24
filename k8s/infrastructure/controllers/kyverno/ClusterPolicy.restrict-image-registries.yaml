@@ -52,6 +52,7 @@ spec:
                       - quay.io/jetstack/cert-manager-webhook
                       - quay.io/jetstack/cert-manager-startupapicheck
                       - quay.io/jetstack/trust-manager
+                      - quay.io/jetstack/trust-pkg-debian-bookworm
 
                       # infrastructure/controllers/crowdsec
 
