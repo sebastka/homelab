@@ -10,13 +10,27 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: verify-image-signatures-third-party
+  name: verify-image-signatures
   annotations:
-    policies.kyverno.io/title: Verify Third-Party Image Signatures
-    policies.kyverno.io/description: Verify Sigstore keyless signatures on images from trusted third-party projects (Cilium, ArgoCD, Kyverno, SPIRE, Longhorn, etc.) to ensure images originate from their official CI pipelines.
+    policies.kyverno.io/title: Verify Image Signatures
+    policies.kyverno.io/description: Verify Sigstore keyless signatures on images to ensure images originate from their official CI pipelines.
 spec:
   background: false
   rules:
+    - name: verify-sebastka-images
+      match: {any: [resources: {kinds: [Pod]}]}
+      verifyImages:
+        - imageReferences: ['ghcr.io/sebastka/*']
+          failureAction: Audit  # Enforce
+          mutateDigest: false
+          verifyDigest: false
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: 'https://github.com/sebastka/containers/.github/workflows/*'
+                    issuer: https://token.actions.githubusercontent.com
+                    rekor: {url: https://rekor.sigstore.dev}
     - name: verify-cilium
       match: {any: [resources: {kinds: [Pod]}]}
       verifyImages:
