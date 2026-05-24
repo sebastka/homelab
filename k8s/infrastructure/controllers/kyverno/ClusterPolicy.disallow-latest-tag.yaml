@@ -13,7 +13,7 @@ spec:
       match: {any: [resources: {kinds: [Pod]}]}
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public]}]}}]}
       validate:
-        failureAction: Audit
+        failureAction: Enforce
         message: "All container images must use an explicit tag: not ':latest' and not untagged."
         foreach:
           - list: "request.object.spec.[containers, initContainers][]"
