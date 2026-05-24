@@ -40,7 +40,7 @@ spec:
                       - ghcr.io/jkroepke/access-log-exporter       # kube-prometheus-stack + loki
                       - ecr-public.aws.com/docker/library/haproxy  # Redis HA: argocd + nextcloud
                       - ecr-public.aws.com/docker/library/redis    # Redis HA: argocd
-                      - docker.io/valkey/valkey              # common/valkey
+                      - docker.io/valkey/valkey                    # common/valkey
                       - docker.io/library/node
                       - node
 
