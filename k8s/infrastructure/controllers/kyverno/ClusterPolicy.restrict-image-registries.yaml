@@ -26,15 +26,16 @@ spec:
                     value:
                       # Shared (used in multiple places)
                       - docker.io/library/alpine
+                      - docker.io/library/node
+                      - docker.io/library/busybox
                       - docker.io/alpine/kubectl
                       - docker.io/alpine/curl
                       - docker.io/alpine/git
-                      - docker.io/library/busybox
+                      - docker.io/valkey/valkey
                       - docker.io/mikefarah/yq
                       - docker.io/nginxinc/nginx-unprivileged
                       - registry.k8s.io/git-sync/git-sync
-                      - docker.io/valkey/valkey
-                      - docker.io/library/node
+                      - ghcr.io/sebastka/jq
 
                       # infrastructure/auth/authelia
                       - docker.io/authelia/authelia
