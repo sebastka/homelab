@@ -48,6 +48,13 @@ spec:
                       # ecr-public.aws.com/docker/library/haproxy
                       - quay.io/argoproj/argocd
 
+                      # infrastructure/controllers/cert-manager
+                      - quay.io/jetstack/cert-manager-cainjector
+                      - quay.io/jetstack/cert-manager-controller
+                      - quay.io/jetstack/cert-manager-webhook
+                      - quay.io/jetstack/cert-manager-startupapicheck
+                      - quay.io/jetstack/trust-manager
+
                       # infrastructure/controllers/falco
                       - docker.io/falcosecurity/falco
                       - docker.io/falcosecurity/falcoctl
