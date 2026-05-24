@@ -7,13 +7,13 @@ metadata:
     policies.kyverno.io/title: Restrict Image Registries
     policies.kyverno.io/description: Restrict which image registries can be used in Pods to reduce the attack surface and prevent accidental usage of unapproved images.
 spec:
-  background: true
+  background: false
   rules:
     - name: check-registries
       match: {any: [resources: {kinds: [Pod]}]}
       exclude: {any: [resources: {namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: In, values: [kube-system, kube-node-lease, kube-public]}]}}]}
       validate:
-        failureAction: Audit  # Switch to Enforce once policy-reporter shows zero violations
+        failureAction: Enforce
         message: "One or more images are not in the allowlist: {{ request.object.spec.[containers, initContainers, ephemeralContainers][].image | join(', ', @) }}. Add the image to ClusterPolicy/restrict-image-registries to permit it."
         foreach:
           - list: 'request.object.spec.[containers, initContainers, ephemeralContainers][]'
