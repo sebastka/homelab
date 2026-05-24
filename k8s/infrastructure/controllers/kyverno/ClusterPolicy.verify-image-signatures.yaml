@@ -6,6 +6,7 @@
 # - falcoctl: signed but uses OCI-referrer-only format (no .sig tag); Kyverno 3.8.x looks for .sig tag
 #   and reports "no signatures found". Other falcosecurity images (falco, falcosidekick, falcosidekick-ui)
 #   have .sig tags and verify correctly.
+# - grafana/alloy: not signed on Docker Hub
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
@@ -174,7 +175,7 @@ spec:
     - name: verify-grafana
       match: {any: [resources: {kinds: [Pod]}]}
       verifyImages:
-        - imageReferences: ['docker.io/grafana/*']
+        - imageReferences: ['docker.io/grafana/*', '!docker.io/grafana/alloy']
           failureAction: Audit
           mutateDigest: false
           verifyDigest: false
