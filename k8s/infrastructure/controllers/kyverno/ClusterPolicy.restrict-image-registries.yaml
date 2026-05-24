@@ -36,7 +36,16 @@ spec:
                       - docker.io/library/node
 
                       # infrastructure/network/cilium
-                      - 'quay.io/cilium/*'
+                      - quay.io/cilium/cilium
+                      - quay.io/cilium/startup-script
+                      - quay.io/cilium/cilium-operator
+                      - quay.io/cilium/cilium-envoy
+                      - quay.io/cilium/certgen
+                      - quay.io/cilium/hubble-relay
+                      - quay.io/cilium/hubble-ui-backend
+                      - quay.io/cilium/hubble-ui
+                      - quay.io/cilium/operator-generic
+                      - quay.io/cilium/clustermesh-apiserver
                       - ghcr.io/spiffe/spire-agent
                       - ghcr.io/spiffe/spire-server
 
