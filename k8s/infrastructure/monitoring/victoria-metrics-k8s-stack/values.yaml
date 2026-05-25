@@ -64,7 +64,7 @@ alertmanager:
         target_matchers: [severity = info]
         equal: [namespace, alertname]
     route:
-      group_by: [namespace, alertname]
+      group_by: ['...']
       group_wait: 30s
       group_interval: 5m
       repeat_interval: 12h
@@ -84,7 +84,7 @@ alertmanager:
               http_headers:
                 X-Template: {values: [prometheus]}
                 X-Priority: {values: ['4']}
-                X-Tags: {values: [prometheus]}
+                X-Tags: {values: [victoriametrics, alertmanager]}
                 X-Markdown: {values: ['1']}
 
 grafana:
