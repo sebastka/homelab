@@ -114,7 +114,7 @@ kubeScheduler:
         regex: pod
 
 nodeExporter:
-  enabled: true
+  enabled: false  # Managed by victoria-metrics-k8s-stack
 
 prometheus-node-exporter:
   prometheus:
