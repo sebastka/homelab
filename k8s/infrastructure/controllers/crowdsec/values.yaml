@@ -96,7 +96,7 @@ config:
   config.yaml.local: |
     api:
       client:
-        unregister_on_exit: true  # the log processor will remove delete itself from LAPI when stopping
+        unregister_on_exit: false
       server:
         auto_registration: # Activate if not using TLS for authentication
           enabled: true
