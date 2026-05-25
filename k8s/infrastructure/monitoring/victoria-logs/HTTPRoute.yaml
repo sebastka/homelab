@@ -10,4 +10,4 @@ spec:
   hostnames: [victorialogs.talmox.hera.home.karlsen.fr]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
-      backendRefs: [{name: victoria-logs-victoria-logs-single, kind: Service, port: 9428}]
+      backendRefs: [{name: victoria-logs-single-server, kind: Service, port: 9428}]
