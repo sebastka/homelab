@@ -10,18 +10,7 @@ spec:
     kubernetes:
       envoyService:
         externalTrafficPolicy: Local
-      envoyDeployment:
-        pod:
-          affinity:
-            podAntiAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
-                - weight: 100
-                  podAffinityTerm:
-                    labelSelector:
-                      matchLabels:
-                        app.kubernetes.io/component: proxy
-                        app.kubernetes.io/managed-by: envoy-gateway
-                    topologyKey: kubernetes.io/hostname
+      envoyDaemonSet: {}
   # logging:
   #   level:
   #     default: info  # warn
