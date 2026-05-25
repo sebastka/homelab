@@ -154,6 +154,17 @@ kubeScheduler:
       - action: labeldrop
         regex: pod
 
+kubelet:
+  vmScrape:
+    spec:
+      relabelConfigs:
+        - sourceLabels: [__meta_kubernetes_node_name]
+          targetLabel: node
+        - sourceLabels: [__metrics_path__]
+          targetLabel: metrics_path
+        - targetLabel: job
+          replacement: kubelet
+
 nodeExporter:
   enabled: true
 
