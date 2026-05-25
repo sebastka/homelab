@@ -1,0 +1,13 @@
+---
+crds:
+  plain: true
+  cleanup:
+    enabled: false  # Prevent CRD deletion on helm uninstall
+
+admissionWebhooks:
+  policy: Ignore  # Non-blocking; safe during initial install
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: {drop: [ALL]}

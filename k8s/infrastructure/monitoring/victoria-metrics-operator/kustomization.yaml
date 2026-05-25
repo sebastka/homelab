@@ -1,0 +1,16 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+
+resources:
+  - CiliumNetworkPolicy.yaml
+
+helmCharts:
+  - name: victoria-metrics-operator
+    repo: oci://ghcr.io/victoriametrics/helm-charts
+    version: 0.63.1  # renovate: datasource=helm registryUrl=oci://ghcr.io/victoriametrics/helm-charts depName=victoria-metrics-operator
+    releaseName: victoria-metrics-operator
+    namespace: monitoring
+    includeCRDs: true
+    valuesFile: values.yaml

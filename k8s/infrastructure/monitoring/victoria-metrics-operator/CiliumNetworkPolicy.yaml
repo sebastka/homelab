@@ -1,0 +1,13 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-victoria-metrics-operator
+  namespace: monitoring
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: victoria-metrics-operator}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+    - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '9443', protocol: TCP}]]}  # Admission webhook
+  egress:
+    - {toEntities: [kube-apiserver]}  # Watch and manage VM custom resources

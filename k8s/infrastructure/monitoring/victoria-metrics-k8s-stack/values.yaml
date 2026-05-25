@@ -4,10 +4,7 @@
 ---
 
 victoria-metrics-operator:
-  enabled: true
-  crds:
-    cleanup:
-      enabled: false  # Prevent CRD deletion on helm uninstall
+  enabled: false  # Managed by victoria-metrics-operator-crds app
 
 vmsingle:
   enabled: true
@@ -90,6 +87,16 @@ alertmanager:
 
 grafana:
   enabled: false
+
+defaultDashboards:
+  defaultTimezone: Europe/Oslo
+  grafanaOperator:
+    enabled: true
+    spec:
+      instanceSelector:
+        matchLabels:
+          app: grafana
+      allowCrossNamespaceImport: true
 
 defaultRules:
   create: true
