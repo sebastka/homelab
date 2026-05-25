@@ -3,6 +3,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: monitoring
 
+images:
+  - {name: victoriametrics/victoria-metrics, newName: docker.io/victoriametrics/victoria-metrics}
+
 resources:
   # - Namespace.yaml  # Enable when kube-prometheus-stack is removed
   - CiliumNetworkPolicy.yaml
