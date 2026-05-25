@@ -5,64 +5,27 @@ metadata:
   name: &x-project monitoring
   namespace: argocd
   labels:
-    fr.karlsen: *x-project
+    karlsen.fr/project: *x-project
 spec:
   generators:
     - git:
         repoURL: https://github.com/sebastka/homelab.git
         revision: HEAD
         directories:
-          - path: k8s/infrastructure/monitoring/*
-          - {path: k8s/infrastructure/monitoring/kube-prometheus-stack, exclude: true}
-          - {path: k8s/infrastructure/monitoring/thanos, exclude: true}
-          - {path: k8s/infrastructure/monitoring/loki, exclude: true}
+          - path: k8s/infrastructure/monitoring/*/overlays/*
   template:
     metadata:
-      name: '{{ path.basename }}'
+      name: '{{ path[3] }}-{{ path[5] }}'
       labels:
-        fr.karlsen: *x-project
-        # monitoring.karlsen.fr/app: '{{ path.basename }}'
+        karlsen.fr/cluster: '{{ path[5] }}'
+        karlsen.fr/project: *x-project
     spec:
       project: *x-project
       sources:
         - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
-      destination: {name: in-cluster, namespace: argocd}
+      destination: {namespace: default, name: '{{ path[5] }}'}
       syncPolicy:
-        syncOptions:
-          # - ApplyOutOfSyncOnly
-          - ServerSideApply=true
-        automated:
-          prune: false
-          selfHeal: true
-          enabled: true
-# ---
-# apiVersion: argoproj.io/v1alpha1
-# kind: ApplicationSet
-# metadata:
-#   name: &x-project monitoring
-#   namespace: argocd
-#   labels:
-#     karlsen.fr/project: *x-project
-# spec:
-#   generators:
-#     - git:
-#         repoURL: https://github.com/sebastka/homelab.git
-#         revision: HEAD
-#         directories:
-#           - path: k8s/infrastructure/monitoring/*/overlays/*
-#   template:
-#     metadata:
-#       name: '{{ path[3] }}-{{ path[5] }}'
-#       labels:
-#         karlsen.fr/cluster: '{{ path[5] }}'
-#         karlsen.fr/project: *x-project
-#     spec:
-#       project: *x-project
-#       sources:
-#         - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
-#       destination: {namespace: default, name: '{{ path[5] }}'}
-#       syncPolicy:
-#         automated: {allowEmpty: false, enabled: true, prune: true, selfHeal: true}
-#         # managedNamespaceMetadata:
-#         retry: {backoff: {duration: 5s, factor: 2, maxDuration: 3m}, limit: 5, refresh: true}
-#         syncOptions: [ServerSideApply=true]
+        automated: {allowEmpty: false, enabled: true, prune: false, selfHeal: true}
+        # managedNamespaceMetadata:
+        retry: {backoff: {duration: 5s, factor: 2, maxDuration: 3m}, limit: 5, refresh: true}
+        syncOptions: [ServerSideApply=true]
