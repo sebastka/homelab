@@ -16,3 +16,4 @@ spec:
       datasourceName: default
   grafanaCom:
     id: 20340
+    revision: 1  # renovate: datasource=grafana-dashboards depName=20340

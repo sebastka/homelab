@@ -12,7 +12,7 @@ resources:
   - cluster-ca.yaml
   - Bundle.cluster-ca-bundle.yaml
   - CiliumNetworkPolicy.yaml
-  # - GrafanaDashboard.yaml
+  - GrafanaDashboard.yaml
 
 helmCharts:
   - name: cert-manager
