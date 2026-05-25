@@ -53,7 +53,7 @@ lapi:
     # fsGroupChangePolicy: Always
     seccompProfile: {type: Unconfined}  # RuntimeDefault blocks fork/exec of notification plugins
   securityContext:
-    allowPrivilegeEscalation: false
+    # allowPrivilegeEscalation: false  # Breaks fork/exec of notification plugins
     # readOnlyRootFilesystem: true
     capabilities: {drop: [ALL]}
   persistentVolume:
