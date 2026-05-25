@@ -13,6 +13,6 @@ helmCharts:
     releaseName: victoria-metrics-k8s-stack
     namespace: monitoring
     includeCRDs: false
-    valuesFile: ../../base/values.yaml
+    valuesFile: values.yaml
     valuesInline:
       kubeEtcd: {endpoints: [192.168.1.201, 192.168.1.202, 192.168.1.203]}

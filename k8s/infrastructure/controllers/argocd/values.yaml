@@ -25,7 +25,7 @@ configs:
       requestedScopes: [openid, email, groups, profile]
       enableUserInfoGroups: true
       userInfoPath: /api/oidc/userinfo
-    kustomize.buildOptions: --enable-helm
+    kustomize.buildOptions: --enable-helm --load-restrictor LoadRestrictionsNone
     timeout.reconciliation: 10m
     timeout.reconciliation.jitter: 120s
   cmp:

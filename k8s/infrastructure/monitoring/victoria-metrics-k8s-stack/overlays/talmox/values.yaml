@@ -1,0 +1,167 @@
+# yaml-language-server: $schema=
+# https://github.com/VictoriaMetrics/helm-charts/blob/master/charts/victoria-metrics-k8s-stack/values.yaml
+# https://docs.victoriametrics.com/operator/
+---
+
+victoria-metrics-operator:
+  enabled: false  # Managed by victoria-metrics-operator-crds app
+
+vmsingle:
+  enabled: true
+  spec:
+    image: {repository: docker.io/victoriametrics/victoria-metrics}
+    retentionPeriod: "90d"
+    storage:
+      storageClassName: longhorn-encrypted
+      volumeName: victoriametrics-data-pv
+      accessModes: [ReadWriteOnce]
+      resources: {requests: {storage: 10Gi}}
+    resources:
+      requests: {memory: 256Mi}
+      limits: {memory: 1Gi}
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities: {drop: [ALL]}
+
+vmagent:
+  enabled: true
+  spec:
+    image: {repository: docker.io/victoriametrics/vmagent}
+    externalLabels: {cluster: talmox}
+    nodeScrapeSelector: {}
+    nodeScrapeNamespaceSelector: {}
+    resources:
+      requests: {memory: 128Mi}
+      limits: {memory: 512Mi}
+  rbac:
+    namespaced: false
+
+vmalert:
+  enabled: true
+  spec:
+    image: {repository: docker.io/victoriametrics/vmalert}
+    resources:
+      requests: {memory: 64Mi}
+      limits: {memory: 128Mi}
+
+alertmanager:
+  enabled: true
+  spec:
+    image: {repository: docker.io/prom/alertmanager}
+    secrets: [alertmanager-ntfy]
+    resources:
+      requests: {memory: 64Mi}
+      limits: {memory: 64Mi}
+  config:
+    global:
+      resolve_timeout: 5m
+    inhibit_rules:
+      - source_matchers: [severity = critical]
+        target_matchers: [severity =~ "warning|info"]
+        equal: [namespace, alertname]
+      - source_matchers: [severity = warning]
+        target_matchers: [severity = info]
+        equal: [namespace, alertname]
+    route:
+      group_by: ['...']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: ntfy
+      routes:
+        - {receiver: "null", matchers: [alertname = Watchdog]}
+    receivers:
+      - name: "null"
+      - name: ntfy
+        webhook_configs:
+          - url_file: /etc/vm/secrets/alertmanager-ntfy/url
+            send_resolved: true
+            http_config:
+              authorization:
+                type: Bearer
+                credentials_file: /etc/vm/secrets/alertmanager-ntfy/token
+              http_headers:
+                X-Template: {values: [prometheus]}
+                X-Priority: {values: ['4']}
+                X-Tags: {values: [victoriametrics, alertmanager]}
+                X-Markdown: {values: ['1']}
+
+grafana:
+  enabled: false
+
+defaultDashboards:
+  defaultTimezone: Europe/Oslo
+  grafanaOperator:
+    enabled: true
+    spec:
+      instanceSelector:
+        matchLabels:
+          app: grafana
+      allowCrossNamespaceImport: true
+
+defaultRules:
+  create: true
+
+kubeProxy:
+  enabled: false  # Cilium replaces kube-proxy
+
+# https://github.com/siderolabs/talos/discussions/7214
+kubeControllerManager:
+  enabled: true
+  serviceMonitor:
+    relabelings:
+      - sourceLabels: [__meta_kubernetes_pod_node_name]
+        separator: ;
+        regex: ^(.*)$
+        targetLabel: nodename
+        replacement: $1
+        action: replace
+    metricRelabelings:
+      - action: labeldrop
+        regex: pod
+
+kubeEtcd:
+  enabled: true
+  # endpoints: injected per-cluster via overlays/<cluster>/kustomization.yaml valuesInline
+  service: {port: 2381, targetPort: 2381}
+  vmScrape:
+    spec:
+      endpoints: [{port: http-metrics, scheme: http}]
+      jobLabel: app.kubernetes.io/component
+      namespaceSelector: {matchNames: []}
+
+kubeScheduler:
+  enabled: true
+  serviceMonitor:
+    relabelings:
+      - sourceLabels: [__meta_kubernetes_pod_node_name]
+        separator: ;
+        regex: ^(.*)$
+        targetLabel: nodename
+        replacement: $1
+        action: replace
+    metricRelabelings:
+      - action: labeldrop
+        regex: pod
+
+kubelet:
+  vmScrape:
+    spec:
+      relabelConfigs:
+        - sourceLabels: [__meta_kubernetes_node_name]
+          targetLabel: node
+        - sourceLabels: [__metrics_path__]
+          targetLabel: metrics_path
+        - targetLabel: job
+          replacement: kubelet
+
+nodeExporter:
+  enabled: true
+
+prometheus-node-exporter:
+  prometheus:
+    monitor:
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          targetLabel: node
