@@ -2,6 +2,22 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
+  name: falcosidekick-loki
+  namespace: falco
+spec:
+  allowCrossNamespaceImport: true
+  folder: Falco
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  configMapRef:
+    name: falcosidekick-loki-dashboard-grafana
+    key: falcosidekick-loki-dashboard.json
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
   name: falco-events
   namespace: falco
 spec:
@@ -25,7 +41,7 @@ spec:
           {
             "name": "datasource",
             "type": "datasource",
-            "query": "loki",
+            "query": "victoriametrics-logs-datasource",
             "hide": 0,
             "label": "Datasource",
             "multi": false,
@@ -34,31 +50,21 @@ spec:
           },
           {
             "name": "priority",
-            "type": "query",
-            "datasource": {"type": "loki", "uid": "${datasource}"},
-            "query": {"label": "priority", "refId": "A", "stream": "", "type": 1},
+            "type": "textbox",
             "hide": 0,
             "label": "Priority",
-            "multi": true,
-            "includeAll": true,
-            "allValue": ".+",
-            "refresh": 2,
-            "sort": 1,
-            "current": {"selected": true, "text": ["All"], "value": ["$__all"]}
+            "options": [{"selected": true, "text": ".+", "value": ".+"}],
+            "query": ".+",
+            "current": {"selected": true, "text": ".+", "value": ".+"}
           },
           {
             "name": "namespace",
-            "type": "query",
-            "datasource": {"type": "loki", "uid": "${datasource}"},
-            "query": {"label": "k8s_ns_name", "refId": "B", "stream": "", "type": 1},
+            "type": "textbox",
             "hide": 0,
             "label": "Namespace",
-            "multi": true,
-            "includeAll": true,
-            "allValue": ".+",
-            "refresh": 2,
-            "sort": 1,
-            "current": {"selected": true, "text": ["All"], "value": ["$__all"]}
+            "options": [{"selected": true, "text": ".+", "value": ".+"}],
+            "query": ".+",
+            "current": {"selected": true, "text": ".+", "value": ".+"}
           }
         ]
       },
@@ -68,7 +74,7 @@ spec:
           "title": "Events",
           "type": "logs",
           "gridPos": {"h": 24, "w": 24, "x": 0, "y": 0},
-          "datasource": {"type": "loki", "uid": "${datasource}"},
+          "datasource": {"type": "victoriametrics-logs-datasource", "uid": "${datasource}"},
           "options": {
             "dedupStrategy": "none",
             "enableLogDetails": true,
@@ -82,7 +88,7 @@ spec:
           "targets": [
             {
               "refId": "A",
-              "datasource": {"type": "loki", "uid": "${datasource}"},
+              "datasource": {"type": "victoriametrics-logs-datasource", "uid": "${datasource}"},
               "editorMode": "code",
               "expr": "{priority=~\"$priority\"} | k8s_ns_name =~ \"$namespace\"",
               "queryType": "range"

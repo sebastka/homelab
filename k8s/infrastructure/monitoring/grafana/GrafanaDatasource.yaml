@@ -50,9 +50,9 @@ spec:
       app: grafana
   datasource:
     name: Victoria Logs
-    type: loki
+    type: victoriametrics-logs-datasource
     access: proxy
-    url: http://victoria-logs-single-server.victoria-logs.svc.cluster.local:9428/select
+    url: http://victoria-logs-single-server.victoria-logs.svc.cluster.local:9428
     jsonData:
       timeout: 60
       maxLines: 1000

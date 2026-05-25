@@ -5,7 +5,7 @@
   "links": [],
   "panels": [
     {
-      "datasource": {"type": "loki", "uid": "${datasource}"},
+      "datasource": {"type": "victoriametrics-logs-datasource", "uid": "${datasource}"},
       "fieldConfig": {
         "defaults": {
           "color": {"mode": "palette-classic"},
@@ -26,7 +26,7 @@
       },
       "targets": [
         {
-          "datasource": {"type": "loki", "uid": "${datasource}"},
+          "datasource": {"type": "victoriametrics-logs-datasource", "uid": "${datasource}"},
           "editorMode": "code",
           "expr": "sum by (namespace) (count_over_time({cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod\", container=~\"$container\"} |~ \"$search\" [$__interval]))",
           "instant": false,
@@ -39,7 +39,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {"type": "loki", "uid": "${datasource}"},
+      "datasource": {"type": "victoriametrics-logs-datasource", "uid": "${datasource}"},
       "gridPos": {"h": 32, "w": 24, "x": 0, "y": 6},
       "id": 2,
       "options": {
@@ -54,7 +54,7 @@
       },
       "targets": [
         {
-          "datasource": {"type": "loki", "uid": "${datasource}"},
+          "datasource": {"type": "victoriametrics-logs-datasource", "uid": "${datasource}"},
           "editorMode": "code",
           "expr": "{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod\", container=~\"$container\"} |~ \"$search\"",
           "queryType": "range",
@@ -76,7 +76,7 @@
         "includeAll": false,
         "name": "datasource",
         "options": [],
-        "query": "loki",
+        "query": "victoriametrics-logs-datasource",
         "refresh": 1,
         "type": "datasource",
         "label": "Datasource"

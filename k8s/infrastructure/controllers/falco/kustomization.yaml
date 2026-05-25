@@ -11,8 +11,7 @@ resources:
   - SealedSecret.falco-ntfy.yaml
   - HTTPRoute.yaml
   - CiliumNetworkPolicy.yaml
-  - GrafanaDashboard.falcosidekick-loki.yaml
-  - GrafanaDashboard.falco-events.yaml
+  - GrafanaDashboard.yaml
 
 helmCharts:
   - name: falco
