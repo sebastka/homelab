@@ -29,6 +29,8 @@ vmagent:
   spec:
     image: {repository: docker.io/victoriametrics/vmagent}
     externalLabels: {cluster: talmox}
+    nodeScrapeSelector: {}
+    nodeScrapeNamespaceSelector: {}
     resources:
       requests: {memory: 128Mi}
       limits: {memory: 512Mi}
