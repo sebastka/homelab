@@ -28,13 +28,12 @@ vmagent:
   enabled: true
   spec:
     image: {repository: docker.io/victoriametrics/vmagent}
-  rbac:
-    namespaced: false
-  spec:
     externalLabels: {cluster: talmox}
     resources:
       requests: {memory: 128Mi}
       limits: {memory: 512Mi}
+  rbac:
+    namespaced: false
 
 vmalert:
   enabled: true
