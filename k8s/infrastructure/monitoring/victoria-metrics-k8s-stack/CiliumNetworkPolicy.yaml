@@ -1,0 +1,65 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-intra-namespace
+  namespace: monitoring
+spec:
+  endpointSelector: {}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}]}
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-vmsingle
+  namespace: monitoring
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: vmsingle}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8428', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '8428', protocol: TCP}]]}  # Envoy Gateway web UI
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}}], toPorts: [ports: [{port: '8428', protocol: TCP}]]}  # Grafana datasource
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: crowdsec}}], toPorts: [ports: [{port: '8428', protocol: TCP}]]}  # CrowdSec notification plugin
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-vmagent
+  namespace: monitoring
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: vmagent}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8429', protocol: TCP}]]}  # Host probes
+  egress:
+    - {toEntities: [kube-apiserver]}  # Service discovery + config reads
+    - {toEntities: [host, remote-node], toPorts: [ports: [{port: '10250', protocol: TCP}]]}  # Kubelet metrics
+    - {toEntities: [cluster]}  # Pod scraping across all namespaces
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-vmalertmanager
+  namespace: monitoring
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: vmalertmanager}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '9093', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '9093', protocol: TCP}]]}  # Envoy Gateway web UI
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}}], toPorts: [ports: [{port: '9093', protocol: TCP}]]}  # Grafana datasource
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: vmalertmanager}], toPorts: [ports: [{port: '9094', protocol: TCP}]]}  # Alertmanager mesh
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: vmalertmanager}], toPorts: [ports: [{port: '9094', protocol: TCP}]]}  # Alertmanager mesh
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: ntfy, app.kubernetes.io/name: ntfy}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # ntfy notifications
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-node-exporter
+  namespace: monitoring
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: prometheus-node-exporter}}
+  ingress:
+    - {fromEntities: [host, remote-node], toPorts: [ports: [{port: '9100', protocol: TCP}]]}  # Host probes + vmagent scraping

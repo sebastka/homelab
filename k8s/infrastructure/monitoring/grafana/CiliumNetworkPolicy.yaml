@@ -14,6 +14,7 @@ spec:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: thanos, app.kubernetes.io/component: query}}], toPorts: [ports: [{port: '9090', protocol: TCP}]]}  # Thanos Query datasource
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: alertmanager}], toPorts: [ports: [{port: '9093', protocol: TCP}]]}  # Alertmanager datasource
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: loki, app.kubernetes.io/name: loki}}], toPorts: [ports: [{port: '3100', protocol: TCP}]]}  # Loki datasource
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: vmsingle}}], toPorts: [ports: [{port: '8428', protocol: TCP}]]}  # VictoriaMetrics datasource
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Needed for OIDC / Authelia
     - {toFQDNs: [{matchName: grafana.com}, {matchPattern: '*.grafana.com'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Grafana plugin catalog / update checks
     - {toFQDNs: [{matchName: storage.googleapis.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Google Cloud Storage for Grafana plugins

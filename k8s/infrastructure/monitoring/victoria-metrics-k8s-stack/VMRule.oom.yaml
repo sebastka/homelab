@@ -1,0 +1,21 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: oom
+  namespace: monitoring
+spec:
+  groups:
+    - name: oom
+      rules:
+        - alert: ContainerOOMKilled
+          expr: |
+            increase(kube_pod_container_status_restarts_total[5m]) > 0
+              and on (namespace, pod, container)
+            kube_pod_container_status_last_terminated_reason{reason="OOMKilled"} == 1
+          for: 0m
+          labels:
+            severity: warning
+          annotations:
+            summary: "OOMKilled: {{ $labels.container }} in {{ $labels.namespace }}/{{ $labels.pod }}"
+            description: "Container `{{ $labels.container }}` in pod `{{ $labels.pod }}` ({{ $labels.namespace }}) was OOMKilled. Consider raising its memory limit."

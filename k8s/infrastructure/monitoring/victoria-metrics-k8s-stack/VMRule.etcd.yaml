@@ -1,0 +1,47 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: etcd
+  namespace: monitoring
+spec:
+  groups:
+    - name: etcd.disk
+      rules:
+        - alert: EtcdHighWalFsyncDuration
+          expr: histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket[5m])) > 0.01
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "etcd WAL fsync p99 above 10ms on {{ $labels.nodename }}"
+            description: "etcd WAL fsync p99 is {{ $value | humanizeDuration }} on node `{{ $labels.nodename }}`. Elevated disk latency on the etcd volume causes heartbeat timeouts and leader elections.\n\nThreshold: 10ms"
+
+        - alert: EtcdHighBackendCommitDuration
+          expr: histogram_quantile(0.99, rate(etcd_disk_backend_commit_duration_seconds_bucket[5m])) > 0.025
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "etcd backend commit p99 above 25ms on {{ $labels.nodename }}"
+            description: "etcd backend commit p99 is {{ $value | humanizeDuration }} on node `{{ $labels.nodename }}`. Indicates disk I/O pressure on the etcd data volume.\n\nThreshold: 25ms"
+
+    - name: etcd.leadership
+      rules:
+        - alert: EtcdLeaderChange
+          expr: increase(etcd_server_leader_changes_seen_total[1h]) > 1
+          for: 0m
+          labels:
+            severity: warning
+          annotations:
+            summary: "etcd leader changed {{ $value | humanize }} time(s) in the last hour on {{ $labels.nodename }}"
+            description: "etcd on node `{{ $labels.nodename }}` has seen {{ $value | humanize }} leader election(s) in the last hour. Each election is a period of cluster unavailability and cascades to control plane component restarts."
+
+        - alert: EtcdFrequentLeaderChanges
+          expr: increase(etcd_server_leader_changes_seen_total[1h]) > 5
+          for: 0m
+          labels:
+            severity: critical
+          annotations:
+            summary: "etcd has had {{ $value | humanize }} leader elections in the last hour on {{ $labels.nodename }}"
+            description: "etcd on node `{{ $labels.nodename }}` has had {{ $value | humanize }} leader elections in the last hour - this is severely elevated and indicates persistent disk I/O or network pressure. Investigate /var disk usage and etcd WAL fsync latency immediately."

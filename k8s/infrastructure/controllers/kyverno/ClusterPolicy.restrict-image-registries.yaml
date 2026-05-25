@@ -34,6 +34,7 @@ spec:
                       - docker.io/valkey/valkey
                       - docker.io/mikefarah/yq
                       - docker.io/nginxinc/nginx-unprivileged
+                      - registry.k8s.io/kubectl
                       - registry.k8s.io/git-sync/git-sync
                       - ghcr.io/sebastka/jq
 
@@ -142,6 +143,17 @@ spec:
                       # infrastructure/monitoring/thanos
                       - quay.io/thanos/thanos
 
+                      # infrastructure/monitoring/victoria-metrics-k8s-stack
+                      - docker.io/victoriametrics/operator
+                      - docker.io/victoriametrics/victoria-metrics
+                      - docker.io/victoriametrics/vmagent
+                      - docker.io/victoriametrics/vmalert
+                      - docker.io/prom/alertmanager
+                      - docker.io/prometheus/node-exporter
+                      - registry.k8s.io/kube-state-metrics/kube-state-metrics
+                      - registry.k8s.io/kubectl
+                      - quay.io/brancz/kube-rbac-proxy
+
                       # infrastructure/monitoring/zabbix
                       - docker.io/zabbix/zabbix-server-pgsql
                       - docker.io/zabbix/zabbix-web-nginx-pgsql
@@ -191,7 +203,7 @@ spec:
                       # infrastructure/storage/velero
                       - docker.io/velero/velero
                       - docker.io/velero/velero-plugin-for-aws
-                      - registry.k8s.io/kubectl
+                      # - registry.k8s.io/kubectl
 
                       # applications/dev/debian-debug
                       - ghcr.io/sebastka/debian-debug

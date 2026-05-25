@@ -14,3 +14,19 @@ spec:
   configMapRef:
     name: grafana-operator-dashboard
     key: grafana-operator.json
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: kubernetes-logs
+  namespace: grafana
+spec:
+  allowCrossNamespaceImport: true
+  folder: Loki
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  configMapRef:
+    name: kubernetes-logs-dashboard
+    key: kubernetes-logs.json

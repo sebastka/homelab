@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+
+components:
+  - ../../../common/images
+
+resources:
+  - Namespace.yaml
+  - CiliumNetworkPolicy.yaml
+  - VMRule.etcd.yaml
+  - VMRule.oom.yaml
+  - SealedSecret.alertmanager-ntfy.yaml
+  # HTTPRoute.yaml excluded until kube-prometheus-stack is removed (same resource names would conflict)
+
+helmCharts:
+  - name: victoria-metrics-k8s-stack
+    repo: oci://ghcr.io/victoriametrics/helm-charts
+    version: 0.79.1  # renovate: datasource=helm registryUrl=oci://ghcr.io/victoriametrics/helm-charts depName=victoria-metrics-k8s-stack
+    releaseName: victoria-metrics
+    namespace: monitoring
+    includeCRDs: false
+    valuesFile: values.yaml
