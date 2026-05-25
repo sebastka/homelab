@@ -7,3 +7,4 @@ resources:
   - AppProject.yaml
   - Application.infrastructure.yaml
   - Application.applications.yaml
+  - Namespace.fallback.yaml
