@@ -10,7 +10,7 @@ resources:
 helmCharts:
   - name: reloader
     repo: oci://ghcr.io/stakater/charts
-    version: 2.2.11  # renovate: datasource=helm registryUrl=oci://ghcr.io/stakater/charts depName=reloader
+    version: 2.2.12  # renovate: datasource=helm registryUrl=oci://ghcr.io/stakater/charts depName=reloader
     releaseName: reloader
     namespace: reloader
     includeCRDs: true
