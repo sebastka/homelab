@@ -10,6 +10,7 @@ defaultSettings:
   defaultDataLocality: best-effort
   defaultDataPath: /var/mnt/longhorn-data
   allowCollectingLonghornUsageMetrics: false
+  upgradeChecker: false
   replicaAutoBalance: best-effort
   systemManagedCSIComponentsResourceLimits: '{"csi-attacher":{"requests":{"memory":"128Mi"},"limits":{"memory":"512Mi"}},"csi-provisioner":{"requests":{"memory":"64Mi"},"limits":{"memory":"512Mi"}},"csi-resizer":{"requests":{"memory":"128Mi"},"limits":{"memory":"512Mi"}},"csi-snapshotter":{"requests":{"memory":"64Mi"},"limits":{"memory":"512Mi"}},"longhorn-csi-plugin":{"requests":{"memory":"512Mi"},"limits":{"memory":"4096Mi"}},"node-driver-registrar":{"requests":{"memory":"64Mi"},"limits":{"memory":"128Mi"}},"longhorn-liveness-probe":{"requests":{"memory":"64Mi"},"limits":{"memory":"128Mi"}}}'
   freezeFilesystemForSnapshot: true
