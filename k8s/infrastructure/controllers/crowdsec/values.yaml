@@ -78,7 +78,7 @@ appsec:
     seccompProfile: {type: RuntimeDefault}
   securityContext:
     allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
+    # readOnlyRootFilesystem: true
     capabilities: {drop: [ALL]}
   resources:
     requests: {memory: 64Mi}
@@ -96,7 +96,7 @@ config:
   config.yaml.local: |
     api:
       client:
-        unregister_on_exit: false
+        unregister_on_exit: true
       server:
         auto_registration: # Activate if not using TLS for authentication
           enabled: true
