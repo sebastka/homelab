@@ -51,6 +51,7 @@ spec:
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}}], toPorts: [ports: [{port: '9093', protocol: TCP}]]}  # Grafana datasource
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: vmalertmanager}], toPorts: [ports: [{port: '9094', protocol: TCP}]]}  # Alertmanager mesh
   egress:
+    - {toEntities: [kube-apiserver]}  # config-reloader secret reads
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: vmalertmanager}], toPorts: [ports: [{port: '9094', protocol: TCP}]]}  # Alertmanager mesh
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: ntfy, app.kubernetes.io/name: ntfy}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # ntfy notifications
 ---
