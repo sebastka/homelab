@@ -122,7 +122,14 @@ kubeControllerManager:
         regex: pod
 
 kubeEtcd:
-  enabled: false  # Moved to VMNodeScrape.etcd.yaml
+  enabled: true
+  # endpoints: injected per-cluster via overlays/<cluster>/kustomization.yaml valuesInline
+  service: {port: 2381, targetPort: 2381}
+  vmScrape:
+    spec:
+      endpoints: [{port: http-metrics, scheme: http}]
+      jobLabel: app.kubernetes.io/component
+      namespaceSelector: {matchNames: []}
 
 kubeScheduler:
   enabled: true

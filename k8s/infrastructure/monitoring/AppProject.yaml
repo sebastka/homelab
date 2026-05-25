@@ -7,17 +7,15 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
-    - {namespace: kube-system, server: 'https://kubernetes.default.svc'}
-    - {namespace: alloy, server: 'https://kubernetes.default.svc'}
-    - {namespace: grafana, server: 'https://kubernetes.default.svc'}
-    - {namespace: headlamp, server: 'https://kubernetes.default.svc'}
-    # - {namespace: loki, server: 'https://kubernetes.default.svc'}
-    - {namespace: metrics-server, server: 'https://kubernetes.default.svc'}
-    - {namespace: monitoring, server: 'https://kubernetes.default.svc'}
-    - {namespace: stork, server: 'https://kubernetes.default.svc'}
-    # - {namespace: thanos, server: 'https://kubernetes.default.svc'}
-    - {namespace: victoria-logs, server: 'https://kubernetes.default.svc'}
-    - {namespace: zabbix, server: 'https://kubernetes.default.svc'}
+    - {namespace: argocd,         name: talmox}
+    - {namespace: kube-system,    name: talmox}
+    - {namespace: alloy,          name: talmox}
+    - {namespace: grafana,        name: talmox}
+    - {namespace: headlamp,       name: talmox}
+    - {namespace: metrics-server, name: talmox}
+    - {namespace: monitoring,     name: talmox}
+    - {namespace: stork,          name: talmox}
+    - {namespace: victoria-logs,  name: talmox}
+    - {namespace: zabbix,         name: talmox}
   clusterResourceWhitelist:
     - {group: '*', kind: '*'}
