@@ -14,15 +14,3 @@ spec:
   egress:
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: alertmanager}], toPorts: [ports: [{port: '9094', protocol: TCP}]]}  # Alertmanager mesh
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: ntfy, app.kubernetes.io/name: ntfy}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # ntfy notifications
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-node-exporter
-  namespace: monitoring
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: prometheus-node-exporter}}
-  ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '9100', protocol: TCP}]]}  # Host probes
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: prometheus}], toPorts: [ports: [{port: '9100', protocol: TCP}]]}  # Prometheus
-  # egress: []
