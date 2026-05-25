@@ -28,7 +28,7 @@
         {
           "datasource": {"type": "loki", "uid": "${datasource}"},
           "editorMode": "code",
-          "expr": "sum by (namespace) (count_over_time({cluster=\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod\", container=~\"$container\"} |~ \"$search\" [$__interval]))",
+          "expr": "sum by (namespace) (count_over_time({cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod\", container=~\"$container\"} |~ \"$search\" [$__interval]))",
           "instant": false,
           "legendFormat": "{{namespace}}",
           "queryType": "range",
@@ -56,7 +56,7 @@
         {
           "datasource": {"type": "loki", "uid": "${datasource}"},
           "editorMode": "code",
-          "expr": "{cluster=\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod\", container=~\"$container\"} |~ \"$search\"",
+          "expr": "{cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod\", container=~\"$container\"} |~ \"$search\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -82,11 +82,12 @@
         "label": "Datasource"
       },
       {
-        "current": {"selected": true, "text": "talmox", "value": "talmox"},
+        "current": {"selected": true, "text": ".*", "value": ".*"},
         "hide": 0,
         "name": "cluster",
-        "query": "talmox",
-        "type": "constant",
+        "options": [{"selected": true, "text": ".*", "value": ".*"}],
+        "query": ".*",
+        "type": "textbox",
         "label": "Cluster"
       },
       {
