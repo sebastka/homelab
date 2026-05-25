@@ -51,7 +51,7 @@ lapi:
     # runAsGroup: 1000
     # fsGroup: 1000
     # fsGroupChangePolicy: Always
-    seccompProfile: {type: RuntimeDefault}
+    seccompProfile: {type: Unconfined}  # RuntimeDefault blocks fork/exec of notification plugins
   securityContext:
     allowPrivilegeEscalation: false
     # readOnlyRootFilesystem: true
