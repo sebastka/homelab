@@ -23,7 +23,7 @@ spec:
       project: *x-project
       sources:
         - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
-      destination: {namespace: default, name: '{{ path[5] }}'}
+      destination: {namespace: fallback, name: '{{ path[5] }}'}
       syncPolicy:
         automated: {allowEmpty: false, enabled: true, prune: false, selfHeal: true}
         # managedNamespaceMetadata:

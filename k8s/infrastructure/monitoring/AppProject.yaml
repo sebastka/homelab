@@ -7,7 +7,7 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd,         name: talmox}
+    - {namespace: fallback,       name: talmox}
     - {namespace: kube-system,    name: talmox}
     - {namespace: alloy,          name: talmox}
     - {namespace: grafana,        name: talmox}
