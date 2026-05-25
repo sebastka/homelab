@@ -20,7 +20,7 @@ resources:
 helmCharts:
   - name: thanos
     repo: oci://ghcr.io/thanos-community/helm-charts
-    version: 0.13.1  # renovate: datasource=helm registryUrl=oci://ghcr.io/thanos-community/helm-charts depName=thanos
+    version: 0.16.0  # renovate: datasource=helm registryUrl=oci://ghcr.io/thanos-community/helm-charts depName=thanos
     releaseName: thanos
     namespace: thanos
     valuesFile: values.yaml
