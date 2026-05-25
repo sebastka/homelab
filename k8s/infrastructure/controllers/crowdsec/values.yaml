@@ -51,7 +51,7 @@ lapi:
     seccompProfile: {type: RuntimeDefault}
   securityContext:
     allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
+    # readOnlyRootFilesystem: true
     capabilities: {drop: [ALL]}
   persistentVolume:
     data: {existingClaim: crowdsec-data-pvc, subPath: lapi-data}
