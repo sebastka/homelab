@@ -11,4 +11,4 @@ spec:
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [{ports: [{port: '12345', protocol: TCP}]}]}  # Prometheus scrape
   egress:
     - {toEntities: [kube-apiserver]}  # Pod discovery + log streaming via Kubernetes API
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: loki, app.kubernetes.io/name: loki}}], toPorts: [{ports: [{port: '3100', protocol: TCP}]}]}  # Log push
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: victoria-logs, app.kubernetes.io/name: victoria-logs-single}}], toPorts: [{ports: [{port: '9428', protocol: TCP}]}]}  # Log push

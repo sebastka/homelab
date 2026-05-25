@@ -15,6 +15,7 @@ spec:
           - path: k8s/infrastructure/monitoring/*
           - {path: k8s/infrastructure/monitoring/kube-prometheus-stack, exclude: true}
           - {path: k8s/infrastructure/monitoring/thanos, exclude: true}
+          - {path: k8s/infrastructure/monitoring/loki, exclude: true}
   template:
     metadata:
       name: '{{ path.basename }}'

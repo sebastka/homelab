@@ -1,0 +1,14 @@
+# https://juliushinze.de/posts/paperless-on-k8s/
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: victorialogs-data-pvc
+  namespace: victoria-logs
+  labels:
+    app.kubernetes.io/name: victoria-logs-single
+spec:
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 10Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: victorialogs-data-pv

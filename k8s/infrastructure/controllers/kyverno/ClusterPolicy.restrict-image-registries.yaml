@@ -124,12 +124,12 @@ spec:
                       # - ghcr.io/jkroepke/kube-webhook-certgen
                       # - registry.k8s.io/kube-state-metrics/kube-state-metrics
 
-                      # infrastructure/monitoring/loki
-                      - docker.io/grafana/loki
-                      - memcached
-                      - prom/memcached-exporter
-                      - docker.io/kiwigrid/k8s-sidecar
-                      - ghcr.io/jkroepke/access-log-exporter
+                      # # infrastructure/monitoring/loki
+                      # - docker.io/grafana/loki
+                      # - memcached
+                      # - prom/memcached-exporter
+                      # - docker.io/kiwigrid/k8s-sidecar
+                      # - ghcr.io/jkroepke/access-log-exporter
 
                       # infrastructure/monitoring/metrics-server
                       - registry.k8s.io/metrics-server/metrics-server
@@ -141,6 +141,9 @@ spec:
 
                       # infrastructure/monitoring/thanos
                       # - quay.io/thanos/thanos
+
+                      # infrastructure/monitoring/victoria-logs
+                      - docker.io/victoriametrics/victoria-logs
 
                       # infrastructure/monitoring/victoria-metrics-k8s-stack
                       - docker.io/victoriametrics/operator

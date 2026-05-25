@@ -74,10 +74,10 @@ alloy:
         forward_to = [loki.write.default.receiver]
       }
 
-      // Push logs to Loki
+      // Push logs to VictoriaLogs (Loki-compatible push API)
       loki.write "default" {
         endpoint {
-          url = "http://loki.loki.svc.cluster.local:3100/loki/api/v1/push"
+          url = "http://victoria-logs-single-server.victoria-logs.svc.cluster.local:9428/insert/loki/api/v1/push"
         }
         external_labels = {cluster = "talmox"}
       }
