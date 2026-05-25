@@ -26,6 +26,8 @@ vmsingle:
 
 vmagent:
   enabled: true
+  spec:
+    image: {repository: docker.io/victoriametrics/vmagent}
   rbac:
     namespaced: false
   spec:
@@ -37,6 +39,7 @@ vmagent:
 vmalert:
   enabled: true
   spec:
+    image: {repository: docker.io/victoriametrics/vmalert}
     resources:
       requests: {memory: 64Mi}
       limits: {memory: 128Mi}

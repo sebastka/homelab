@@ -115,15 +115,14 @@ spec:
                       - ghcr.io/headlamp-k8s/headlamp
                       - ghcr.io/kubebeam/trivy-headlamp-plugin
 
-                      # infrastructure/monitoring/kube-prometheus-stack
-                      - quay.io/prometheus/alertmanager
-                      - quay.io/prometheus/prometheus
-                      - quay.io/prometheus/node-exporter
-                      - quay.io/prometheus-operator/admission-webhook
-                      - quay.io/prometheus-operator/prometheus-config-reloader
-                      - quay.io/prometheus-operator/prometheus-operator
-                      - ghcr.io/jkroepke/kube-webhook-certgen
-                      - registry.k8s.io/kube-state-metrics/kube-state-metrics
+                      # # infrastructure/monitoring/kube-prometheus-stack
+                      # - quay.io/prometheus/alertmanager
+                      # - quay.io/prometheus/prometheus
+                      # - quay.io/prometheus-operator/admission-webhook
+                      # - quay.io/prometheus-operator/prometheus-config-reloader
+                      # - quay.io/prometheus-operator/prometheus-operator
+                      # - ghcr.io/jkroepke/kube-webhook-certgen
+                      # - registry.k8s.io/kube-state-metrics/kube-state-metrics
 
                       # infrastructure/monitoring/loki
                       - docker.io/grafana/loki
@@ -141,7 +140,7 @@ spec:
                       - ghcr.io/sebastka/stork
 
                       # infrastructure/monitoring/thanos
-                      - quay.io/thanos/thanos
+                      # - quay.io/thanos/thanos
 
                       # infrastructure/monitoring/victoria-metrics-k8s-stack
                       - docker.io/victoriametrics/operator
@@ -149,7 +148,8 @@ spec:
                       - docker.io/victoriametrics/vmagent
                       - docker.io/victoriametrics/vmalert
                       - docker.io/prom/alertmanager
-                      - docker.io/prometheus/node-exporter
+                      # - docker.io/prometheus/node-exporter
+                      - quay.io/prometheus/node-exporter
                       - registry.k8s.io/kube-state-metrics/kube-state-metrics
                       - registry.k8s.io/kubectl
                       - quay.io/brancz/kube-rbac-proxy
