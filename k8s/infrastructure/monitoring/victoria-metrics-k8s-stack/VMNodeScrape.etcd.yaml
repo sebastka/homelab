@@ -1,0 +1,17 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMNodeScrape
+metadata:
+  name: etcd
+  namespace: monitoring
+spec:
+  scheme: http
+  path: /metrics
+  port: '2381'
+  selector:
+    matchExpressions:
+      - {key: node-role.kubernetes.io/control-plane, operator: Exists}
+  jobLabel: etcd
+  relabelConfigs:
+    - sourceLabels: [__meta_kubernetes_node_name]
+      targetLabel: node

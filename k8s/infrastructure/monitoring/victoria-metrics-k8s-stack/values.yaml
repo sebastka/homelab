@@ -122,23 +122,7 @@ kubeControllerManager:
         regex: pod
 
 kubeEtcd:
-  enabled: true
-  service:
-    selector:
-      # etcd doesn't run as a container,
-      # but most probably runs on the same nodes that host a controller
-      k8s-app: kube-controller-manager
-  serviceMonitor:
-    relabelings:
-      - sourceLabels: [__meta_kubernetes_pod_node_name]
-        separator: ;
-        regex: ^(.*)$
-        targetLabel: nodename
-        replacement: $1
-        action: replace
-    metricRelabelings:
-      - action: labeldrop
-        regex: pod
+  enabled: false  # Moved to VMNodeScrape.etcd.yaml
 
 kubeScheduler:
   enabled: true

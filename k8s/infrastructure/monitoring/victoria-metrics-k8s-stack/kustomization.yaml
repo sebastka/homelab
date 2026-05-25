@@ -8,6 +8,7 @@ resources:
   - CiliumNetworkPolicy.yaml
   - VMRule.etcd.yaml
   - VMRule.oom.yaml
+  - VMNodeScrape.etcd.yaml
   - SealedSecret.alertmanager-ntfy.yaml
   - HTTPRoute.yaml
 
