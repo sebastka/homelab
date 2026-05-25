@@ -102,6 +102,43 @@ appsec:
     - {name: COLLECTIONS, value: crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules}
 
 config:
+  profiles.yaml: |
+    name: default_ip_remediation
+    filters:
+      - Alert.Remediation == true && Alert.GetScope() == "Ip"
+    decisions:
+      - type: ban
+        duration: 4h
+    notifications:
+      - http_default
+    on_success: break
+    ---
+    name: default_range_remediation
+    filters:
+      - Alert.Remediation == true && Alert.GetScope() == "Range"
+    decisions:
+      - type: ban
+        duration: 4h
+    notifications:
+      - http_default
+    on_success: break
+
+  notifications:
+    http.yaml: |
+      type: http
+      name: http_default
+      log_level: info
+      format: >
+        {{- range $Alert := . -}}
+        {{- range .Decisions -}}
+        {"metric":{"__name__":"cs_lapi_decision","instance":"talmox","country":"{{$Alert.Source.Cn}}","asname":"{{$Alert.Source.AsName}}","asnumber":"{{$Alert.Source.AsNumber}}","latitude":"{{$Alert.Source.Latitude}}","longitude":"{{$Alert.Source.Longitude}}","iprange":"{{$Alert.Source.Range}}","scenario":"{{.Scenario}}","type":"{{.Type}}","duration":"{{.Duration}}","scope":"{{.Scope}}","ip":"{{.Value}}"},"values":[1],"timestamps":[{{now|unixEpoch}}000]}
+        {{- end }}
+        {{- end -}}
+      url: http://vmsingle-victoria-metrics-k8s-stack.monitoring.svc.cluster.local:8428/api/v1/import
+      method: POST
+      headers:
+        Content-Type: application/json
+
   config.yaml.local: |
     api:
       client:

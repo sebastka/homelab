@@ -25,6 +25,9 @@ spec:
   instanceSelector:
     matchLabels:
       app: grafana
+  datasources:
+    - inputName: DS_VICTORIAMETRICS
+      datasourceName: VictoriaMetrics
   grafanaCom:
     id: 21689
     revision: 1  # renovate: datasource=grafana-dashboards depName=21689
