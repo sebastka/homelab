@@ -28,6 +28,8 @@ vmsingle:
 
 vmagent:
   enabled: true
+  rbac:
+    namespaced: false
   spec:
     externalLabels: {cluster: talmox}
     serviceMonitorNamespaceSelector: {}
