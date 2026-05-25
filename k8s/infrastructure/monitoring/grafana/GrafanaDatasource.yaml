@@ -13,26 +13,10 @@ spec:
     name: Prometheus
     type: prometheus
     access: proxy
-    url: http://thanos-query.thanos.svc.cluster.local:9090
+    url: http://vmsingle-victoria-metrics-k8s-stack.monitoring.svc.cluster.local:8428
     isDefault: true
     jsonData:
       timeInterval: 30s
----
-apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDatasource
-metadata:
-  name: victoria-metrics
-  namespace: grafana
-spec:
-  allowCrossNamespaceImport: true
-  instanceSelector:
-    matchLabels:
-      app: grafana
-  datasource:
-    name: VictoriaMetrics
-    type: prometheus
-    access: proxy
-    url: http://vmsingle-victoria-metrics.monitoring.svc.cluster.local:8428
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
@@ -48,7 +32,7 @@ spec:
     name: Alertmanager
     type: alertmanager
     access: proxy
-    url: http://alertmanager-operated.monitoring.svc.cluster.local:9093
+    url: http://vmalertmanager-victoria-metrics-k8s-stack.monitoring.svc.cluster.local:9093
     isDefault: false
     jsonData:
       handleGrafanaManagedAlerts: false

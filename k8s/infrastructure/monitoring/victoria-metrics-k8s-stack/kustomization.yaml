@@ -8,7 +8,7 @@ resources:
   - CiliumNetworkPolicy.yaml
   - VMRule.etcd.yaml
   - VMRule.oom.yaml
-  # - SealedSecret.alertmanager-ntfy.yaml  # Enable when kube-prometheus-stack is removed
+  - SealedSecret.alertmanager-ntfy.yaml
   - HTTPRoute.yaml
 
 helmCharts:

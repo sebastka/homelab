@@ -17,7 +17,6 @@ resources:
   - CiliumNetworkPolicy.yaml
   - PrometheusRule.etcd.yaml
   - PrometheusRule.oom.yaml
-  - SealedSecret.alertmanager-ntfy.yaml
 
 helmCharts:
   - name: kube-prometheus-stack

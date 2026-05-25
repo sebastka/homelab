@@ -141,6 +141,7 @@ grafana:
     folder: Kubernetes
 
 alertmanager:
+  enabled: false
   alertmanagerSpec:
     secrets: [alertmanager-ntfy]
     resources:
