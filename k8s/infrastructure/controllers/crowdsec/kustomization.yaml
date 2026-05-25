@@ -43,6 +43,7 @@ resources:
   - PersistentVolumeClaim.yaml
   - SealedSecret.crowdsec-secrets.yaml
   - CiliumNetworkPolicy.yaml
+  - GrafanaDashboard.yaml
 
 helmCharts:
   - name: crowdsec
