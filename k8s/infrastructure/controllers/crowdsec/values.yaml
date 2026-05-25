@@ -38,7 +38,7 @@ agent:
     - {namespace: synapse, podName: 'synapse-*', program: synapse}
     - {namespace: matrix-authentication-service, podName: 'mas-*', program: http}
   env:
-    - {name: COLLECTIONS, value: yanis-kouidri/envoy crowdsecurity/nextcloud LePresidente/forgejo}
+    - {name: COLLECTIONS, value: yanis-kouidri/envoy crowdsecurity/nextcloud}
     - {name: DEBUG, value: 'false'}
 
 lapi:
