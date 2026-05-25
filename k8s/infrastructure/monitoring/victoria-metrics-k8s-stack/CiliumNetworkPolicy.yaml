@@ -57,7 +57,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-node-exporter
+  name: allow-node-exporter-new
   namespace: monitoring
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: prometheus-node-exporter}}

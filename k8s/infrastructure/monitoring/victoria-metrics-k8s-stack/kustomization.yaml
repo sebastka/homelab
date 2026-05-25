@@ -7,12 +7,12 @@ components:
   - ../../../common/images
 
 resources:
-  - Namespace.yaml
+  # - Namespace.yaml  # Enable when kube-prometheus-stack is removed
   - CiliumNetworkPolicy.yaml
   - VMRule.etcd.yaml
   - VMRule.oom.yaml
-  - SealedSecret.alertmanager-ntfy.yaml
-  # HTTPRoute.yaml excluded until kube-prometheus-stack is removed (same resource names would conflict)
+  # - SealedSecret.alertmanager-ntfy.yaml  # Enable when kube-prometheus-stack is removed
+  - HTTPRoute.yaml
 
 helmCharts:
   - name: victoria-metrics-k8s-stack
