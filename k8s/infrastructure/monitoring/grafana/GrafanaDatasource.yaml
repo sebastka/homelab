@@ -49,7 +49,7 @@ spec:
     matchLabels:
       app: grafana
   datasource:
-    name: Loki
+    name: Victoria Logs
     type: loki
     access: proxy
     url: http://victoria-logs-single-server.victoria-logs.svc.cluster.local:9428/select
