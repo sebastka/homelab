@@ -57,6 +57,18 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
+  name: allow-kube-state-metrics
+  namespace: monitoring
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: kube-state-metrics}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+  egress:
+    - {toEntities: [kube-apiserver]}  # List/watch all cluster resources
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
   name: allow-node-exporter-new
   namespace: monitoring
 spec:
