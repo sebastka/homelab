@@ -1,0 +1,49 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: kubernetes-logs
+  namespace: victoria-logs
+spec:
+  allowCrossNamespaceImport: true
+  folder: Logs
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+      dashboards: grafana
+  configMapRef:
+    name: kubernetes-logs-dashboard
+    key: kubernetes-logs.json
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: victorialogs-explorer
+  namespace: victoria-logs
+spec:
+  allowCrossNamespaceImport: true
+  folder: Logs
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+      dashboards: grafana
+  grafanaCom:
+    id: 22759
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: victorialogs-single-node
+  namespace: victoria-logs
+spec:
+  allowCrossNamespaceImport: true
+  folder: Logs
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+      dashboards: grafana
+  grafanaCom:
+    id: 22084
