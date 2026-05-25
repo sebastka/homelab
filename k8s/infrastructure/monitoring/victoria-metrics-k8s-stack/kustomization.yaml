@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: monitoring
 
 resources:
-  # - Namespace.yaml  # Enable when kube-prometheus-stack is removed
+  - Namespace.yaml
   - CiliumNetworkPolicy.yaml
   - VMRule.etcd.yaml
   - VMRule.oom.yaml
