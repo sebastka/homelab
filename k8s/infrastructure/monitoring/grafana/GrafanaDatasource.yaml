@@ -52,7 +52,7 @@ spec:
     name: Loki
     type: loki
     access: proxy
-    url: http://victoria-logs-single-server.victoria-logs.svc.cluster.local:9428
+    url: http://victoria-logs-single-server.victoria-logs.svc.cluster.local:9428/select
     jsonData:
       timeout: 60
       maxLines: 1000
