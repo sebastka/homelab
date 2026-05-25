@@ -3,6 +3,9 @@
 # https://docs.victoriametrics.com/operator/
 ---
 
+configReloader:
+  image: {repository: docker.io/victoriametrics/operator}
+
 crds:
   plain: false  # Rendered from templates; plain: true makes CRDs immutable (no auto-upgrade)
   cleanup: {enabled: false}  # Prevent CRD deletion on helm uninstall
