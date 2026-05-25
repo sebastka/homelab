@@ -25,6 +25,15 @@
       "datasourceTemplate": "{{datasource}}",
       "depNameTemplate": "{{depName}}",
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)Grafana\\.yaml$/"],
+      "matchStrings": [
+        "'[^\\s']+\\s+(?<currentValue>[^\\s']+)'[^#]*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)"
+      ],
+      "datasourceTemplate": "{{datasource}}",
+      "depNameTemplate": "{{depName}}"
     }
   ],
   "packageRules": [
