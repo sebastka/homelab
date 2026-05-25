@@ -12,11 +12,12 @@ spec:
     - {namespace: alloy, server: 'https://kubernetes.default.svc'}
     - {namespace: grafana, server: 'https://kubernetes.default.svc'}
     - {namespace: headlamp, server: 'https://kubernetes.default.svc'}
-    - {namespace: loki, server: 'https://kubernetes.default.svc'}
+    # - {namespace: loki, server: 'https://kubernetes.default.svc'}
     - {namespace: metrics-server, server: 'https://kubernetes.default.svc'}
     - {namespace: monitoring, server: 'https://kubernetes.default.svc'}
     - {namespace: stork, server: 'https://kubernetes.default.svc'}
-    - {namespace: thanos, server: 'https://kubernetes.default.svc'}
+    # - {namespace: thanos, server: 'https://kubernetes.default.svc'}
+    - {namespace: victorialogs, server: 'https://kubernetes.default.svc'}
     - {namespace: zabbix, server: 'https://kubernetes.default.svc'}
   clusterResourceWhitelist:
     - {group: '*', kind: '*'}
