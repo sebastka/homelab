@@ -17,3 +17,18 @@ spec:
   grafanaCom:
     id: 20340
     revision: 1  # renovate: datasource=grafana-dashboards depName=20340
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: trust-manager
+spec:
+  allowCrossNamespaceImport: true
+  folder: cert-manager
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  configMapRef:
+    name: trust-manager-dashboard
+    key: trust-manager.json

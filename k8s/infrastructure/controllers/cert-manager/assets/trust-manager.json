@@ -1,0 +1,184 @@
+{
+  "title": "Trust Manager",
+  "uid": "trust-manager",
+  "tags": ["cert-manager", "trust-manager"],
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "1m",
+  "time": {"from": "now-3h", "to": "now"},
+  "timezone": "browser",
+  "editable": true,
+  "graphTooltip": 1,
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "label": "Datasource",
+        "hide": 0,
+        "refresh": 1,
+        "multi": false,
+        "includeAll": false
+      },
+      {
+        "name": "namespace",
+        "type": "query",
+        "label": "Namespace",
+        "datasource": {"type": "prometheus", "uid": "${datasource}"},
+        "query": {"query": "label_values(up{job=\"trust-manager\"}, namespace)", "refId": "StandardVariableQuery"},
+        "hide": 0,
+        "refresh": 2,
+        "sort": 1,
+        "multi": false,
+        "includeAll": false
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1, "type": "row", "title": "Overview", "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0}, "panels": []
+    },
+    {
+      "id": 2, "type": "stat", "title": "Status",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"h": 4, "w": 4, "x": 0, "y": 1},
+      "options": {
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "colorMode": "background", "graphMode": "none", "orientation": "auto", "textMode": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [{"type": "value", "options": {"1": {"text": "Up", "color": "green", "index": 0}, "0": {"text": "Down", "color": "red", "index": 1}}}],
+          "thresholds": {"mode": "absolute", "steps": [{"color": "red", "value": null}, {"color": "green", "value": 1}]},
+          "color": {"mode": "thresholds"}
+        }
+      },
+      "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "up{job=\"trust-manager\", namespace=\"$namespace\"}", "legendFormat": "trust-manager", "refId": "A", "instant": true}]
+    },
+    {
+      "id": 3, "type": "stat", "title": "Reconcile Rate (5m)",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"h": 4, "w": 5, "x": 4, "y": 1},
+      "options": {
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "colorMode": "value", "graphMode": "area", "orientation": "auto", "textMode": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]},
+          "color": {"mode": "thresholds"}
+        }
+      },
+      "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(rate(controller_runtime_reconcile_total{job=\"trust-manager\", namespace=\"$namespace\"}[5m]))", "legendFormat": "reconciles/s", "refId": "A", "instant": true}]
+    },
+    {
+      "id": 4, "type": "stat", "title": "Error Rate (5m)",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"h": 4, "w": 5, "x": 9, "y": 1},
+      "options": {
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "colorMode": "background", "graphMode": "area", "orientation": "auto", "textMode": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "red", "value": 0.001}]},
+          "color": {"mode": "thresholds"}
+        }
+      },
+      "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(rate(controller_runtime_reconcile_total{job=\"trust-manager\", namespace=\"$namespace\", result=\"error\"}[5m]))", "legendFormat": "errors/s", "refId": "A", "instant": true}]
+    },
+    {
+      "id": 5, "type": "stat", "title": "Work Queue Depth",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"h": 4, "w": 5, "x": 14, "y": 1},
+      "options": {
+        "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false},
+        "colorMode": "background", "graphMode": "area", "orientation": "auto", "textMode": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 10}, {"color": "red", "value": 50}]},
+          "color": {"mode": "thresholds"}
+        }
+      },
+      "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum(workqueue_depth{job=\"trust-manager\", namespace=\"$namespace\"})", "legendFormat": "depth", "refId": "A", "instant": true}]
+    },
+    {
+      "id": 6, "type": "row", "title": "Reconcile", "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 5}, "panels": []
+    },
+    {
+      "id": 7, "type": "timeseries", "title": "Reconcile Rate",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 6},
+      "options": {"tooltip": {"mode": "multi", "sort": "none"}, "legend": {"displayMode": "list", "placement": "bottom", "showLegend": true}},
+      "fieldConfig": {"defaults": {"unit": "ops", "custom": {"drawStyle": "line", "lineInterpolation": "linear", "lineWidth": 1, "fillOpacity": 10, "spanNulls": false}}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "sum by (result) (rate(controller_runtime_reconcile_total{job=\"trust-manager\", namespace=\"$namespace\"}[5m]))", "legendFormat": "{{result}}", "refId": "A"}]
+    },
+    {
+      "id": 8, "type": "timeseries", "title": "Reconcile Duration",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 6},
+      "options": {"tooltip": {"mode": "multi", "sort": "none"}, "legend": {"displayMode": "list", "placement": "bottom", "showLegend": true}},
+      "fieldConfig": {"defaults": {"unit": "s", "custom": {"drawStyle": "line", "lineInterpolation": "linear", "lineWidth": 1, "fillOpacity": 10, "spanNulls": false}}},
+      "targets": [
+        {"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "histogram_quantile(0.50, sum by (le) (rate(controller_runtime_reconcile_time_seconds_bucket{job=\"trust-manager\", namespace=\"$namespace\"}[5m])))", "legendFormat": "P50", "refId": "A"},
+        {"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "histogram_quantile(0.95, sum by (le) (rate(controller_runtime_reconcile_time_seconds_bucket{job=\"trust-manager\", namespace=\"$namespace\"}[5m])))", "legendFormat": "P95", "refId": "B"},
+        {"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "histogram_quantile(0.99, sum by (le) (rate(controller_runtime_reconcile_time_seconds_bucket{job=\"trust-manager\", namespace=\"$namespace\"}[5m])))", "legendFormat": "P99", "refId": "C"}
+      ]
+    },
+    {
+      "id": 9, "type": "row", "title": "Work Queue", "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 14}, "panels": []
+    },
+    {
+      "id": 10, "type": "timeseries", "title": "Queue Depth",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 15},
+      "options": {"tooltip": {"mode": "multi", "sort": "none"}, "legend": {"displayMode": "list", "placement": "bottom", "showLegend": true}},
+      "fieldConfig": {"defaults": {"unit": "short", "custom": {"drawStyle": "line", "lineInterpolation": "linear", "lineWidth": 1, "fillOpacity": 10, "spanNulls": false}}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "workqueue_depth{job=\"trust-manager\", namespace=\"$namespace\"}", "legendFormat": "{{name}}", "refId": "A"}]
+    },
+    {
+      "id": 11, "type": "timeseries", "title": "Queue Add Rate",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 15},
+      "options": {"tooltip": {"mode": "multi", "sort": "none"}, "legend": {"displayMode": "list", "placement": "bottom", "showLegend": true}},
+      "fieldConfig": {"defaults": {"unit": "ops", "custom": {"drawStyle": "line", "lineInterpolation": "linear", "lineWidth": 1, "fillOpacity": 10, "spanNulls": false}}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "rate(workqueue_adds_total{job=\"trust-manager\", namespace=\"$namespace\"}[5m])", "legendFormat": "{{name}}", "refId": "A"}]
+    },
+    {
+      "id": 12, "type": "row", "title": "Runtime", "collapsed": false,
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 23}, "panels": []
+    },
+    {
+      "id": 13, "type": "timeseries", "title": "Memory (RSS)",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 24},
+      "options": {"tooltip": {"mode": "multi", "sort": "none"}, "legend": {"displayMode": "list", "placement": "bottom", "showLegend": true}},
+      "fieldConfig": {"defaults": {"unit": "bytes", "custom": {"drawStyle": "line", "lineInterpolation": "linear", "lineWidth": 1, "fillOpacity": 10, "spanNulls": false}}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "process_resident_memory_bytes{job=\"trust-manager\", namespace=\"$namespace\"}", "legendFormat": "RSS", "refId": "A"}]
+    },
+    {
+      "id": 14, "type": "timeseries", "title": "CPU Usage",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 24},
+      "options": {"tooltip": {"mode": "multi", "sort": "none"}, "legend": {"displayMode": "list", "placement": "bottom", "showLegend": true}},
+      "fieldConfig": {"defaults": {"unit": "percentunit", "custom": {"drawStyle": "line", "lineInterpolation": "linear", "lineWidth": 1, "fillOpacity": 10, "spanNulls": false}}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "rate(process_cpu_seconds_total{job=\"trust-manager\", namespace=\"$namespace\"}[5m])", "legendFormat": "CPU", "refId": "A"}]
+    },
+    {
+      "id": 15, "type": "timeseries", "title": "Goroutines",
+      "datasource": {"type": "prometheus", "uid": "${datasource}"},
+      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 24},
+      "options": {"tooltip": {"mode": "multi", "sort": "none"}, "legend": {"displayMode": "list", "placement": "bottom", "showLegend": true}},
+      "fieldConfig": {"defaults": {"unit": "short", "custom": {"drawStyle": "line", "lineInterpolation": "linear", "lineWidth": 1, "fillOpacity": 10, "spanNulls": false}}},
+      "targets": [{"datasource": {"type": "prometheus", "uid": "${datasource}"}, "expr": "go_goroutines{job=\"trust-manager\", namespace=\"$namespace\"}", "legendFormat": "goroutines", "refId": "A"}]
+    }
+  ]
+}

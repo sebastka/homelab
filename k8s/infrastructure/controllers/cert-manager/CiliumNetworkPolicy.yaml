@@ -8,6 +8,7 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: cert-manager}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '9402', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9402', protocol: TCP}]]}  # Prometheus
   egress:
     - {toEntities: [kube-apiserver]}
     - {toFQDNs: [{matchName: acme-v02.api.letsencrypt.org}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
@@ -23,6 +24,7 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: cainjector}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '9402', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9402', protocol: TCP}]]}  # Prometheus
   egress:
     - {toEntities: [kube-apiserver]}
 ---
@@ -59,6 +61,7 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: trust-manager}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '6060', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9402', protocol: TCP}]]}  # Prometheus
     - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '6443', protocol: TCP}]]}  # kube-apiserver admission calls
   egress:
     - {toEntities: [kube-apiserver]}
