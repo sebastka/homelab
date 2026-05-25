@@ -21,6 +21,7 @@ resources:
   - EnvoyProxy.yaml
   - GatewayClass.yaml
   - SealedSecret.crowdsec-secrets.yaml
+  - GrafanaDashboard.crowdsec.yaml
 
 helmCharts:
   - name: gateway-helm

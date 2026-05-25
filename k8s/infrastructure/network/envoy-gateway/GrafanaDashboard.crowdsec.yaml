@@ -1,0 +1,30 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: crowdsec-bouncer-karlsenfr
+spec:
+  allowCrossNamespaceImport: true
+  folder: CrowdSec
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  configMapRef:
+    name: envoy-proxy-bouncer-karlsenfr-dashboard
+    key: bouncer.json
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: crowdsec-bouncer-karlsenapp
+spec:
+  allowCrossNamespaceImport: true
+  folder: CrowdSec
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  configMapRef:
+    name: envoy-proxy-bouncer-karlsenapp-dashboard
+    key: bouncer.json
