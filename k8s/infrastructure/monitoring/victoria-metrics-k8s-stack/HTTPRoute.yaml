@@ -10,7 +10,7 @@ spec:
   hostnames: [victoriametrics.talmox.hera.home.karlsen.fr]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
-      backendRefs: [{name: vmsingle-victoria-metrics, kind: Service, port: 8428}]
+      backendRefs: [{name: vmsingle-victoria-metrics-k8s-stack, kind: Service, port: 8428}]
 # ---
 # apiVersion: gateway.networking.k8s.io/v1
 # kind: HTTPRoute
