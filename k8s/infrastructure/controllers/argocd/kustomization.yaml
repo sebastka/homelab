@@ -18,6 +18,7 @@ resources:
   # - service-monitors/argocd-redis.yaml
   # - service-monitors/argocd-repo-server.yaml
   # - service-monitors/argocd-server.yaml
+  - SealedSecret.cluster-talmox.yaml
   - SealedSecret.oidc.yaml
   - SealedSecret.argocd-notifications-secret.yaml
   - CiliumNetworkPolicy.yaml
