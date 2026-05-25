@@ -9,6 +9,8 @@ victoria-metrics-operator:
 vmsingle:
   enabled: true
   spec:
+    image:
+      repository: docker.io/victoriametrics/victoria-metrics
     retentionPeriod: "90d"
     storage:
       storageClassName: longhorn-encrypted
