@@ -229,6 +229,9 @@ spec:
                       # applications/media/opentogethertube
                       - docker.io/dyc3/opentogethertube
 
+                      # applications/media/radarr
+                      - ghcr.io/home-operations/radarr
+
                       # applications/media/vert
 
                       # applications/public/element
