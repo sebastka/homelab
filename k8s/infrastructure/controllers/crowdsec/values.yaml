@@ -57,8 +57,8 @@ lapi:
     # readOnlyRootFilesystem: true
     # capabilities: {drop: [ALL]}  # Fails
     # capabilities: {drop: [ALL], add: [CHOWN, DAC_OVERRIDE, FOWNER, FSETID, KILL, SETGID, SETUID]}  # Test: Works with these caps
-    capabilities: {drop: [ALL], add: [CHOWN, DAC_OVERRIDE, FOWNER]}  # Test: ~1/4 of the default caps
-    # capabilities: {drop: [ALL], add: [FSETID, KILL, SETGID, SETUID]}  # Test: ~1/4 of the default caps
+    # capabilities: {drop: [ALL], add: [CHOWN, DAC_OVERRIDE, FOWNER]}  # Test: ~1/4 of the default caps
+    capabilities: {drop: [ALL], add: [FSETID, KILL, SETGID, SETUID]}  # Test: ~1/4 of the default caps
   persistentVolume:
     data: {existingClaim: crowdsec-data-pvc, subPath: lapi-data}
     config: {existingClaim: crowdsec-data-pvc, subPath: lapi-config}
