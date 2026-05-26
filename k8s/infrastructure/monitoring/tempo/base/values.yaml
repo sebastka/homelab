@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=
+# https://github.com/grafana-community/helm-charts/blob/main/charts/tempo/values.yaml
+---
+
+tempo:
+  resources:
+    requests: {memory: 256Mi}
+    limits: {memory: 512Mi}
+  reportingEnabled: false
+  storage:
+    trace:
+      backend: local
+      local: {path: /var/tempo/traces}
+      wal: {path: /var/tempo/wal}
+  receivers:
+    otlp:
+      protocols:
+        grpc: {endpoint: 0.0.0.0:4317}
+        http: {endpoint: 0.0.0.0:4318}
+  # podSecurityContext  # Does not exist
+  #   seccompProfile: {type: RuntimeDefault} 
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+    runAsGroup: 10001
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities: {drop: [ALL]}
+
+tempoQuery:
+  enabled: false
+  resources:
+    requests: {memory: 256Mi}
+    limits: {memory: 512Mi}
+  # podSecurityContext  # Does not exist
+  #   seccompProfile: {type: RuntimeDefault} 
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+    runAsGroup: 10001
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities: {drop: [ALL]}
+
+securityContext:
+  runAsUser: 10001
+  runAsGroup: 10001
+  fsGroup: 10001
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: {drop: [ALL]}
+
+serviceAccount:
+  create: true
+  automountServiceAccountToken: false
+
+serviceMonitor:
+  enabled: true
+
+persistence:
+  enabled: true
+  storageClassName: longhorn-encrypted
+  size: 10Gi
+  accessModes: [ReadWriteOnce]

@@ -1,0 +1,19 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: tempo
+  namespace: tempo
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  datasource:
+    name: Tempo
+    type: tempo
+    url: http://tempo.tempo.svc.cluster.local:3200
+    access: proxy
+    isDefault: false
+    jsonData:
+      httpMethod: GET

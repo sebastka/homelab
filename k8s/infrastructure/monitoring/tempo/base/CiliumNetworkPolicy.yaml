@@ -1,0 +1,16 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-tempo
+  namespace: tempo
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: tempo}}
+  ingress:
+    - {fromEntities: [host], toPorts: [{ports: [{port: '3200', protocol: TCP}]}]}  # Health probes
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: alloy}}], toPorts: [{ports: [{port: '4317', protocol: TCP}, {port: '4318', protocol: TCP}]}]}  # Alloy trace push (OTLP gRPC/HTTP)
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}}], toPorts: [{ports: [{port: '3200', protocol: TCP}]}]}  # Grafana queries
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [{ports: [{port: '3200', protocol: TCP}]}]}  # Prometheus scrape
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [{ports: [{port: '3200', protocol: TCP}]}]}  # Envoy Gateway
+  egress:
+    - {toEntities: [kube-apiserver]}

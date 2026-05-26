@@ -13,6 +13,7 @@ spec:
         revision: HEAD
         directories:
           - path: k8s/infrastructure/monitoring/*/overlays/*
+          - {path: k8s/infrastructure/monitoring/tempo/overlays/*, exclude: true}
   template:
     metadata:
       name: '{{ path[3] }}-{{ path[5] }}'
