@@ -55,7 +55,11 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /cache, subPath: jellyfin-cache}
             - {name: config-volume, mountPath: /config, subPath: jellyfin-config}
-            - {name: media-volume, mountPath: /mnt/media, readOnly: true}
+            - {name: media-volume, mountPath: /mnt/media/nb_dl, subPath: deluge/downloads/nb_dl, readOnly: true}
+            - {name: media-volume, mountPath: /mnt/media/other, subPath: deluge/downloads/other, readOnly: true}
+            - {name: media-volume, mountPath: /mnt/media/ptp_dl, subPath: deluge/downloads/ptp_dl, readOnly: true}
+            - {name: media-volume, mountPath: /mnt/media/ptp_up, subPath: deluge/downloads/ptp_up, readOnly: true}
+            - {name: media-volume, mountPath: /mnt/media/jellyfin, subPath: jellyfin, readOnly: true}
           startupProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
           livenessProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 10, periodSeconds: 30}
           readinessProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 10, periodSeconds: 30}
