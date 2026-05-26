@@ -2,7 +2,6 @@
 
 ## Projects to test
 
-- [Kyverno](https://github.com/kyverno/kyverno)
 - [Navidrome](https://github.com/navidrome/navidrome)
 - [Invidious](https://github.com/iv-org/invidious) / [Viewtube](https://github.com/ViewTube/viewtube)
 - [redlib](https://github.com/redlib-org/redlib/)
@@ -13,7 +12,8 @@
 - Metube -> [Pinchflat](https://github.com/kieraneglin/pinchflat)?
 - [Chaos Mesh](https://github.com/chaos-mesh/chaos-mesh)
 - [portracker](https://github.com/mostafa-wahied/portracker)
-- [rclone](https://rclone.org/drive/#making-your-own-client-id)
+- [carpal](https://github.com/peeley/carpal)
+- [TeXlyre](https://github.com/TeXlyre/texlyre)
 
 ## Sources / Inspirations
 

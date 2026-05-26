@@ -23,3 +23,9 @@ values.*.default.yaml
 # Talos
 talos/temp.json
 *.sops.yaml
+
+# WIP
+joplin
+nextcloud
+qbittorrent
+radarr
