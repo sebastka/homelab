@@ -55,7 +55,7 @@ lapi:
   securityContext:
     allowPrivilegeEscalation: false
     # readOnlyRootFilesystem: true
-    capabilities: {drop: [ALL], add: [CHOWN, DAC_OVERRIDE, KILL, SETGID, SETUID]}  # FSETID, FOWNER
+    capabilities: {drop: [ALL], add: [CHOWN, DAC_OVERRIDE, SETGID, SETUID]}  # FSETID, FOWNER, KILL
   persistentVolume:
     data: {existingClaim: crowdsec-data-pvc, subPath: lapi-data}
     config: {existingClaim: crowdsec-data-pvc, subPath: lapi-config}
