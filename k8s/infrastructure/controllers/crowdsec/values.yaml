@@ -55,7 +55,9 @@ lapi:
   securityContext:
     allowPrivilegeEscalation: false
     # readOnlyRootFilesystem: true
-    # capabilities: {drop: [ALL]}
+    # capabilities: {drop: [ALL]}  # Fails
+    capabilities: {drop: [ALL], add: [CHOWN, DAC_OVERRIDE, FOWNER, FSETID, KILL, SETGID, SETUID]}  # Test: Half of the default caps
+    # capabilities: {drop: [ALL], add: [SETPCAP, NET_BIND_SERVICE, NET_RAW, SYS_CHROOT, MKNOD, AUDIT_WRITE, SETFCAP]}  # Test: Other half of the default caps
   persistentVolume:
     data: {existingClaim: crowdsec-data-pvc, subPath: lapi-data}
     config: {existingClaim: crowdsec-data-pvc, subPath: lapi-config}
