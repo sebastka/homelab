@@ -9,6 +9,8 @@ spec:
   ingress:
     - {fromEntities: [host], toPorts: [{ports: [{port: '12345', protocol: TCP}]}]}  # Health probes
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [{ports: [{port: '12345', protocol: TCP}]}]}  # Prometheus scrape
+    - {fromEntities: [cluster], toPorts: [{ports: [{port: '4317', protocol: TCP}, {port: '4318', protocol: TCP}]}]}  # OTLP trace ingestion from instrumented apps
   egress:
     - {toEntities: [kube-apiserver]}  # Pod discovery + log streaming via Kubernetes API
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: victoria-logs, app.kubernetes.io/name: victoria-logs-single}}], toPorts: [{ports: [{port: '9428', protocol: TCP}]}]}  # Log push
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: tempo, app.kubernetes.io/name: tempo}}], toPorts: [{ports: [{port: '4317', protocol: TCP}]}]}  # Trace push to Tempo

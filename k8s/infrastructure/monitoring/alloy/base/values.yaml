@@ -82,6 +82,24 @@ alloy:
         external_labels = {cluster = "talmox"}
       }
 
+      // Receive OTLP traces from instrumented applications
+      otelcol.receiver.otlp "default" {
+        grpc { endpoint = "0.0.0.0:4317" }
+        http { endpoint = "0.0.0.0:4318" }
+
+        output {
+          traces = [otelcol.exporter.otlp.tempo.input]
+        }
+      }
+
+      // Forward traces to Tempo
+      otelcol.exporter.otlp "tempo" {
+        client {
+          endpoint = "tempo.tempo.svc.cluster.local:4317"
+          tls { insecure = true }
+        }
+      }
+
 configReloader:
   securityContext:
     allowPrivilegeEscalation: false
