@@ -7,7 +7,7 @@
     "k8s/**/charts/**"
   ],
   "prHourlyLimit": 10,
-  "minimumReleaseAge": "3 days",
+  "minimumReleaseAge": "1 day",
   "labels": ["renovate"],
   "semanticCommits": "enabled",
   "kubernetes": {
@@ -38,14 +38,31 @@
   ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["patch", "digest"],
-      "automerge": true
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "docker.io/library/alpine",
+        "docker.io/library/busybox",
+        "docker.io/alpine/kubectl",
+        "docker.io/alpine/curl",
+        "docker.io/alpine/git",
+        "docker.io/mikefarah/yq",
+        "docker.io/nginxinc/nginx-unprivileged",
+        "docker.io/valkey/valkey",
+        "registry.k8s.io/kubectl",
+        "registry.k8s.io/metrics-server/metrics-server",
+        "ghcr.io/maxmind/geoipupdate",
+        "ghcr.io/traefik/whoami",
+        "ghcr.io/sebastka/**"
+      ],
+      "automerge": true,
+      "schedule": ["after 4am and before 6am"],
+      "timezone": "Europe/Oslo"
     },
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["docker.io/searxng/searxng"],
       "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-(?<build>[a-f0-9]+)$"
-    },
+    }
   ],
   "hostRules": [
     {
