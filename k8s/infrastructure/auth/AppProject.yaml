@@ -7,10 +7,10 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
-    - {namespace: light-ldap, server: 'https://kubernetes.default.svc'}
-    - {namespace: authelia, server: 'https://kubernetes.default.svc'}
+    - {namespace: argocd,     server: talmox}
+    - {namespace: light-ldap, server: talmox}
+    - {namespace: authelia,   server: talmox}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
-    - {group: rbac.authorization.k8s.io, kind: ClusterRole}  # Needed by users
+    - {group: rbac.authorization.k8s.io, kind: ClusterRole}         # Needed by users
     - {group: rbac.authorization.k8s.io, kind: ClusterRoleBinding}  # Needed by users
