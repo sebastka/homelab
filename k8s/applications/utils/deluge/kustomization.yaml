@@ -13,6 +13,7 @@ configMapGenerator:
 
 resources:
   - Namespace.yaml
+  - Certificate.deluged-tls.yaml
   - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
   - ServiceAccounts.yaml

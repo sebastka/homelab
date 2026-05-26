@@ -132,10 +132,13 @@ spec:
           readinessProbe: {httpGet: {port: 8112, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           env:
             - {name: TZ, value: Europe/Oslo}
+            - {name: SSL_CERT_FILE, value: /etc/ssl/certs/cluster-root-ca.crt}  # Python's RPC client does not validate TLS certs by default, so this should not be needed.
             # - {name: DELUGE_BIN, value: deluge-web}
           volumeMounts:
             - {name: deluge-web-config-volume, mountPath: /config}
+            - {name: cluster-ca-volume, mountPath: /etc/ssl/certs/cluster-root-ca.crt, subPath: cluster-root-ca.crt, readOnly: true}
             - {name: tmp-volume, mountPath: /tmp}
       volumes:
         - {name: deluge-web-config-volume, emptyDir: {}}
+        - {name: cluster-ca-volume, configMap: {name: cluster-ca-bundle}}
         - {name: tmp-volume, emptyDir: {}}

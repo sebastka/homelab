@@ -43,10 +43,12 @@ spec:
             - |
               set -eu
               mkdir -p /config/plugins/.python-eggs
-              rm -f /config/auth /config/core.conf /config/autoadd.conf # /config/label.conf
+              rm -f /config/auth /config/core.conf /config/autoadd.conf /config/daemon.cert /config/daemon.pkey # /config/label.conf
               cp /tmp/core.conf /tmp/autoadd.conf /config/
               printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
                 >/config/auth
+              cp /mnt/tls/tls.crt /config/daemon.cert
+              cp /mnt/tls/tls.key /config/daemon.pkey
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -61,6 +63,7 @@ spec:
             - {name: deluged-conf-volume, mountPath: /tmp/autoadd.conf, subPath: autoadd.conf}
             # - {name: deluged-conf-volume, mountPath: /tmp/label.conf, subPath: label.conf}
             - {name: deluged-config-volume, mountPath: /config}
+            - {name: deluged-tls-volume, mountPath: /mnt/tls, readOnly: true}
       containers:
         - name: deluged
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
@@ -96,4 +99,5 @@ spec:
         - {name: deluged-conf-volume, configMap: {name: deluged-conf}}
         - {name: deluged-config-volume, persistentVolumeClaim: {claimName: deluged-config-pvc}}
         - {name: downloads-volume, persistentVolumeClaim: {claimName: deluge-downloads-pvc}}
+        - {name: deluged-tls-volume, secret: {secretName: deluged-tls}}
         - {name: tmp-volume, emptyDir: {}}
