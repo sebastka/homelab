@@ -9,6 +9,7 @@ spec:
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '58846', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: deluge, app.kubernetes.io/name: deluge-web}], toPorts: [ports: [{port: '58846', protocol: TCP}]]}  # deluge-web
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: radarr, app.kubernetes.io/name: radarr}], toPorts: [ports: [{port: '58846', protocol: TCP}]]}  # radarr
     - {fromEntities: [world], toPorts: [ports: [{port: '6881', protocol: TCP}, {port: '6881', protocol: UDP}]]}  # torrent
   egress:
     - {toEntities: [world]}
