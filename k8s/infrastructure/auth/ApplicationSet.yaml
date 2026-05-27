@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: &x-project auth
+  name: &x-project auth-old
   namespace: argocd
   labels:
     karlsen.fr/project: *x-project
@@ -34,7 +34,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: &x-project auth-new
+  name: &x-project auth
   namespace: argocd
   labels:
     karlsen.fr/project: *x-project

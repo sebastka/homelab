@@ -10,14 +10,12 @@ configMapGenerator:
   - {namespace: authelia, name: authelia-configuration, files: [configuration.yaml=assets/configuration.yaml]}
 
 components:
-  - ../../../common/valkey
+  - ../../../../common/valkey
 
 resources:
   - Namespace.yaml
   # - Secret.jwk.yaml
   - Certificates.yaml
-  - SealedSecret.authelia-secrets.yaml
-  - SealedSecret.client-secrets.yaml
   - ServiceAccount.yaml
   - Deployment.authelia.yaml
   - Service.yaml

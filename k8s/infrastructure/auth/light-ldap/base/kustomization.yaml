@@ -19,13 +19,9 @@ configMapGenerator:
 
 resources:
   - Namespace.yaml
-  - SealedSecret.lldap-secrets.yaml
-  - SealedSecret.bootstrap-secrets.yaml
   - ServiceAccount.yaml
   - Job.bootstrap.yaml
   - Certificate.yaml
   - Deployment.yaml
   - Service.yaml
-  - HTTPRoute.yaml
-  - TCPRoute.yaml
   - CiliumNetworkPolicy.yaml
