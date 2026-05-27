@@ -7,9 +7,10 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
-    - {namespace: whoami, server: 'https://kubernetes.default.svc'}
-    - {namespace: harbor, server: 'https://kubernetes.default.svc'}
-    - {namespace: forgejo, server: 'https://kubernetes.default.svc'}
+    - {namespace: fallback, name: talmox}
+    - {namespace: argocd,   name: talmox}
+    - {namespace: whoami,   name: talmox}
+    - {namespace: harbor,   name: talmox}
+    - {namespace: forgejo,  name: talmox}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}

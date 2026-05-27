@@ -7,11 +7,12 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
-    - {namespace: jellyfin, server: 'https://kubernetes.default.svc'}
-    - {namespace: metube, server: 'https://kubernetes.default.svc'}
-    - {namespace: opentogethertube, server: 'https://kubernetes.default.svc'}
-    - {namespace: vert, server: 'https://kubernetes.default.svc'}
+    - {namespace: fallback,         name: talmox}
+    - {namespace: argocd,           name: talmox}
+    - {namespace: jellyfin,         name: talmox}
+    - {namespace: metube,           name: talmox}
+    - {namespace: opentogethertube, name: talmox}
+    # - {namespace: vert,             name: talmox}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
     - {group: '', kind: PersistentVolume}  # Needed by Jellyfin

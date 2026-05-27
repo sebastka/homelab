@@ -7,9 +7,10 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
-    - {namespace: kube-system, server: 'https://kubernetes.default.svc'}
-    - {namespace: longhorn-system, server: 'https://kubernetes.default.svc'}
-    - {namespace: velero, server: 'https://kubernetes.default.svc'}
+    - {namespace: fallback,         name: talmox}
+    - {namespace: argocd,           name: talmox}
+    - {namespace: kube-system,      name: talmox}
+    - {namespace: longhorn-system,  name: talmox}
+    - {namespace: velero,           name: talmox}
   clusterResourceWhitelist:
     - {group: '*', kind: '*'}

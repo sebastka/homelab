@@ -7,12 +7,13 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
-    - {namespace: kube-system, server: 'https://kubernetes.default.svc'}
-    - {namespace: cilium-secrets, server: 'https://kubernetes.default.svc'}
-    - {namespace: cilium-spire, server: 'https://kubernetes.default.svc'}
-    - {namespace: envoy-gateway-system, server: 'https://kubernetes.default.svc'}
-    - {namespace: gateway, server: 'https://kubernetes.default.svc'}
-    - {namespace: tailscale, server: 'https://kubernetes.default.svc'}
+    - {namespace: fallback,             name: talmox}
+    - {namespace: argocd,               name: talmox}
+    - {namespace: kube-system,          name: talmox}
+    - {namespace: cilium-secrets,       name: talmox}
+    - {namespace: cilium-spire,         name: talmox}
+    - {namespace: envoy-gateway-system, name: talmox}
+    - {namespace: gateway,              name: talmox}
+    - {namespace: tailscale,            name: talmox}
   clusterResourceWhitelist:
     - {group: '*', kind: '*'}

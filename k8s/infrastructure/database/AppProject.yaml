@@ -7,8 +7,9 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
-    - {namespace: databases-backup, server: 'https://kubernetes.default.svc'}
+    - {namespace: fallback,          name: talmox}
+    - {namespace: argocd,            name: talmox}
+    - {namespace: databases-backup,  name: talmox}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
     - {group: '', kind: PersistentVolume}  # Needed by database-backup

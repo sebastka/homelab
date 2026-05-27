@@ -9,5 +9,5 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd, server: 'https://kubernetes.default.svc'}
+    - {namespace: argocd, name: talmox}
   clusterResourceWhitelist: []
