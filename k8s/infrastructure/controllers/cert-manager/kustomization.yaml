@@ -16,7 +16,7 @@ resources:
 
 configMapGenerator:
   - {name: trust-manager-dashboard, options: {disableNameSuffixHash: true}, files: [trust-manager.json=assets/trust-manager.json]}
-    
+
 helmCharts:
   - name: cert-manager
     repo: oci://quay.io/jetstack/charts
