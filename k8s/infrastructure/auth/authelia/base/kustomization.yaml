@@ -19,6 +19,5 @@ resources:
   - ServiceAccount.yaml
   - Deployment.authelia.yaml
   - Service.yaml
-  - HTTPRoute.yaml
   - SecurityPolicy.yaml
   - CiliumNetworkPolicy.yaml
