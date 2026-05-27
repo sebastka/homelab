@@ -7,7 +7,6 @@ metadata:
   labels:
     karlsen.fr/project: *x-project
 spec:
-  syncPolicy: {preserveResourcesOnDeletion: true}
   generators:
     - git:
         repoURL: https://github.com/sebastka/homelab.git
@@ -26,7 +25,7 @@ spec:
         - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
       destination: {namespace: fallback, name: '{{ path[5] }}'}
       syncPolicy:
-        automated: {allowEmpty: false, enabled: true, prune: false, selfHeal: true}
+        automated: {allowEmpty: false, enabled: true, prune: true, selfHeal: true}
         # managedNamespaceMetadata:
         retry: {backoff: {duration: 5s, factor: 2, maxDuration: 3m}, limit: 5, refresh: true}
         syncOptions: [ServerSideApply=true]
