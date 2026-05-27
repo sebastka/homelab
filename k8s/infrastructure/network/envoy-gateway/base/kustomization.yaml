@@ -8,7 +8,7 @@ kind: Kustomization
 namespace: envoy-gateway-system
 
 components:
-  - ../../../common/valkey
+  - ../../../../common/valkey
 
 patches:
   # Fix missing namespace in resources created by the helm chart
