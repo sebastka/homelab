@@ -7,5 +7,5 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd, name: talmox}
+    - {namespace: argocd, name: in-cluster}
   clusterResourceWhitelist: []

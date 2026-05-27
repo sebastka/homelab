@@ -5,7 +5,7 @@ metadata:
   name: &x-project applications
   namespace: argocd
   labels:
-    fr.karlsen: *x-project
+    karlsen.fr/project: *x-project
 spec:
   generators:
     - git:
@@ -17,18 +17,14 @@ spec:
     metadata:
       name: '{{ path.basename }}'
       labels:
-        fr.karlsen: *x-project
-      finalizers:
-        - resources-finalizer.argocd.argoproj.io
+        karlsen.fr/project: *x-project
     spec:
       project: *x-project
       sources:
         - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
-      destination: {name: in-cluster, namespace: argocd}
+      destination: {namespace: argocd, name: in-cluster}
       syncPolicy:
-        syncOptions:
-          - ServerSideApply=true
-        automated:
-          prune: true
-          selfHeal: true
-          enabled: true
+        automated: {allowEmpty: false, enabled: true, prune: true, selfHeal: true}
+        # managedNamespaceMetadata:
+        retry: {backoff: {duration: 5s, factor: 2, maxDuration: 3m}, limit: 5, refresh: true}
+        syncOptions: [ServerSideApply=true]

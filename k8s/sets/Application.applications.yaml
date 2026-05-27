@@ -5,16 +5,14 @@ metadata:
   name: &x-project applications
   namespace: argocd
   labels:
-    fr.karlsen: *x-project
+    karlsen.fr/project: *x-project
 spec:
   sources:
     - {repoURL: https://github.com/sebastka/homelab.git, path: k8s/applications, targetRevision: HEAD}
-  destination: {name: in-cluster, namespace: argocd}
+  destination: {namespace: argocd, name: in-cluster}
   project: app-of-apps
   syncPolicy:
-    syncOptions:
-      - ServerSideApply=true
-    automated:
-      prune: true
-      selfHeal: true
-      enabled: true
+    automated: {allowEmpty: false, enabled: true, prune: true, selfHeal: true}
+    # managedNamespaceMetadata:
+    retry: {backoff: {duration: 5s, factor: 2, maxDuration: 3m}, limit: 5, refresh: true}
+    syncOptions: [ServerSideApply=true]
