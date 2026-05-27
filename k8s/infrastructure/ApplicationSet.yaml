@@ -22,7 +22,7 @@ spec:
       project: *x-project
       sources:
         - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
-      destination: {namespace: argocd, name: in-cluster}
+      destination: {namespace: argocd, server: 'https://kubernetes.default.svc'}
       syncPolicy:
         automated: {allowEmpty: false, enabled: true, prune: true, selfHeal: true}
         # managedNamespaceMetadata:

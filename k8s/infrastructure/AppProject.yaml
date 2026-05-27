@@ -8,6 +8,5 @@ metadata:
     argocd.argoproj.io/sync-wave: '-1'
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
-  destinations:
-    - {namespace: argocd, server: '*'}
+  destinations: [{namespace: argocd, server: 'https://kubernetes.default.svc'}]
   clusterResourceWhitelist: []
