@@ -40,6 +40,7 @@ metadata:
   labels:
     karlsen.fr/project: *x-project
 spec:
+  syncPolicy: {preserveResourcesOnDeletion: true}
   generators:
     - git:
         repoURL: https://github.com/sebastka/homelab.git
