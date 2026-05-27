@@ -7,9 +7,9 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: argocd,     server: talmox}
-    - {namespace: light-ldap, server: talmox}
-    - {namespace: authelia,   server: talmox}
+    - {namespace: argocd,     name: talmox}
+    - {namespace: light-ldap, name: talmox}
+    - {namespace: authelia,   name: talmox}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
     - {group: rbac.authorization.k8s.io, kind: ClusterRole}         # Needed by users
