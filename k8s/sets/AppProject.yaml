@@ -6,5 +6,5 @@ metadata:
   namespace: argocd
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
-  destinations: [{namespace: argocd, name: in-cluster}]
+  destinations: [{namespace: argocd, server: '*'}]
   clusterResourceWhitelist: []
