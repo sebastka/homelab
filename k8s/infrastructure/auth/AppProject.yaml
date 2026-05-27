@@ -8,7 +8,6 @@ spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
     - {namespace: fallback,   name: talmox}
-    - {namespace: argocd,     name: talmox}
     - {namespace: light-ldap, name: talmox}
     - {namespace: authelia,   name: talmox}
   clusterResourceWhitelist:
