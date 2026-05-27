@@ -13,7 +13,6 @@ resources:
   - Service.yaml
   - GRPCRoute.yaml
   - GrafanaDashboard.yaml
-  - ServiceMonitor.yaml
   - SealedSecret.cluster-talmox.yaml
   - SealedSecret.oidc.yaml
   - SealedSecret.argocd-notifications-secret.yaml
