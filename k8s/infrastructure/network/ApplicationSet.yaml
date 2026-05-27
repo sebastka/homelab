@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: &x-project network-new
+  name: &x-project network
   namespace: argocd
   labels:
     karlsen.fr/project: *x-project
