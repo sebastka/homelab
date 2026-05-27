@@ -7,9 +7,9 @@ metadata:
 spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
-    - {namespace: fallback,          name: talmox}
-    - {namespace: argocd,            name: talmox}
-    - {namespace: databases-backup,  name: talmox}
+    - {namespace: fallback,         name: talmox}
+    - {namespace: argocd,           name: talmox}
+    - {namespace: databases-backup, name: talmox}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
     - {group: '', kind: PersistentVolume}  # Needed by database-backup

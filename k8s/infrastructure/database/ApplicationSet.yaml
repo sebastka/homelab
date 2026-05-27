@@ -5,8 +5,9 @@ metadata:
   name: &x-project database
   namespace: argocd
   labels:
-    fr.karlsen: *x-project
+    karlsen.fr/project: *x-project
 spec:
+  syncPolicy: {preserveResourcesOnDeletion: true}
   generators:
     - git:
         repoURL: https://github.com/sebastka/homelab.git
@@ -18,17 +19,15 @@ spec:
     metadata:
       name: '{{ path.basename }}'
       labels:
-        fr.karlsen: *x-project
+        karlsen.fr/cluster: talmox
+        karlsen.fr/project: *x-project
     spec:
       project: *x-project
       sources:
         - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
-      destination: {name: in-cluster, namespace: argocd}
+      destination: {namespace: fallback, name: talmox}
       syncPolicy:
-        syncOptions:
-          # - ApplyOutOfSyncOnly
-          - ServerSideApply=true
-        automated:
-          prune: true
-          selfHeal: true
-          enabled: true
+        automated: {allowEmpty: false, enabled: true, prune: false, selfHeal: true}
+        # managedNamespaceMetadata:
+        retry: {backoff: {duration: 5s, factor: 2, maxDuration: 3m}, limit: 5, refresh: true}
+        syncOptions: [ServerSideApply=true]
