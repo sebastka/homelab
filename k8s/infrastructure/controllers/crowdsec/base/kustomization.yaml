@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: crowdsec
 
 components:
-  - ../../../common/images
+  - ../../../../common/images
 
 patches:
   # Fix missing namespace in resources created by the helm chart

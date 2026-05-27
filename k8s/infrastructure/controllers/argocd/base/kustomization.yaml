@@ -5,19 +5,15 @@ kind: Kustomization
 namespace: argocd
 
 components:
-  - ../../../common/images
-  - ../../../common/valkey
+  - ../../../../common/images
+  - ../../../../common/valkey
 
 resources:
   - Namespace.yaml
   - Service.yaml
   - GRPCRoute.yaml
-  # - GrafanaDashboard.yaml
-  # - service-monitors/argocd-application-controller.yaml
-  # - service-monitors/argocd-applicationset-controller.yaml
-  # - service-monitors/argocd-redis.yaml
-  # - service-monitors/argocd-repo-server.yaml
-  # - service-monitors/argocd-server.yaml
+  - GrafanaDashboard.yaml
+  - ServiceMonitor.yaml
   - SealedSecret.cluster-talmox.yaml
   - SealedSecret.oidc.yaml
   - SealedSecret.argocd-notifications-secret.yaml

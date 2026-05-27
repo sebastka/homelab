@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: kyverno
 
 components:
-  - ../../../common/images
+  - ../../../../common/images
 
 images:
   - {name: ghcr.io/kyverno/readiness-checker, newTag: latest, digest: sha256:f6b71ec78ce69172ae9b0161f72c978909355e94bed8e260cdc4de282a5ec41b}

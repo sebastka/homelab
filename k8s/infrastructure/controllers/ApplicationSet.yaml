@@ -7,38 +7,6 @@ metadata:
   labels:
     karlsen.fr/project: *x-project
 spec:
-  syncPolicy: {preserveResourcesOnDeletion: true}
-  generators:
-    - git:
-        repoURL: https://github.com/sebastka/homelab.git
-        revision: HEAD
-        directories:
-          - path: k8s/infrastructure/controllers/*
-  template:
-    metadata:
-      name: '{{ path.basename }}'
-      labels:
-        karlsen.fr/cluster: talmox
-        karlsen.fr/project: *x-project
-    spec:
-      project: *x-project
-      sources:
-        - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
-      destination: {namespace: fallback, name: talmox}
-      syncPolicy:
-        automated: {allowEmpty: false, enabled: true, prune: false, selfHeal: true}
-        # managedNamespaceMetadata:
-        retry: {backoff: {duration: 5s, factor: 2, maxDuration: 3m}, limit: 5, refresh: true}
-        syncOptions: [ServerSideApply=true]
----
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-metadata:
-  name: &x-project controllers-new
-  namespace: argocd
-  labels:
-    karlsen.fr/project: *x-project
-spec:
   generators:
     - git:
         repoURL: https://github.com/sebastka/homelab.git
