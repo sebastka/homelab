@@ -7,21 +7,6 @@ resources:
   - CiliumLoadBalancerIPPool.yaml
   # - SealedSecret.cilium-ca.yaml
 
-patches:
-  - target: {kind: Namespace, name: cilium-spire}
-    patch: |
-      apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: cilium-spire
-        labels:
-          pod-security.kubernetes.io/enforce: privileged
-          pod-security.kubernetes.io/enforce-version: latest
-          pod-security.kubernetes.io/audit: privileged
-          pod-security.kubernetes.io/audit-version: latest
-          pod-security.kubernetes.io/warn: privileged
-          pod-security.kubernetes.io/warn-version: latest
-
 helmCharts:
   - name: cilium
     repo: oci://quay.io/cilium/charts
