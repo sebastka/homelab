@@ -1,0 +1,12 @@
+# https://docs.cilium.io/en/stable/network/lb-ipam/
+---
+apiVersion: cilium.io/v2
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: default-arp-ip-pool
+spec:
+  blocks:
+    - cidr: 192.168.3.0/24
+  serviceSelector:
+    matchLabels:
+      arp.cilium.io/ip-pool: default-arp-ip-pool

@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ../../base
   - CiliumLoadBalancerIPPool.yaml
-  - SealedSecret.cilium-ca.yaml
+  # - SealedSecret.cilium-ca.yaml
 
 helmCharts:
   - name: cilium
@@ -16,8 +16,8 @@ helmCharts:
     includeCRDs: true
     valuesFile: ../../base/values.yaml
     valuesInline:
-      cluster: {id: 1, name: talmox}
-      ipv4NativeRoutingCIDR: 10.244.0.0/16  # Pod CIDR
+      cluster: {id: 2, name: hyades}
+      ipv4NativeRoutingCIDR: 10.245.0.0/16  # Pod CIDR
       encryption:
         strictMode:
           egress:

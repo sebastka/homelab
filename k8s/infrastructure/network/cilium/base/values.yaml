@@ -2,9 +2,8 @@
 # https://artifacthub.io/packages/helm/cilium/cilium?modal=values
 # https://github.com/cilium/cilium/tree/main/install/kubernetes/cilium
 ---
-cluster:
-  name: talmox
-  id: 1
+
+# cluster: {id: 1, name: XXX}  # Set in overlay
 
 # Talos specific
 kubeProxyReplacement: true
@@ -85,7 +84,7 @@ cni:
 
 # https://docs.cilium.io/en/stable/network/concepts/routing/
 routingMode: native
-ipv4NativeRoutingCIDR: 10.244.0.0/16
+# ipv4NativeRoutingCIDR: 10.244.0.0/16  # Set in overlay
 autoDirectNodeRoutes: true
 
 gatewayAPI:
@@ -104,7 +103,7 @@ encryption:
   strictMode:
     egress:
       enabled: true
-      cidr: 10.244.0.0/16
+      # cidr: 10.244.0.0/16  # Set in overlay
 
 envoy:
   enabled: true
@@ -166,24 +165,23 @@ k8sClientRateLimit:
   qps: 50
   burst: 100
 
-# clustermesh:
-#   apiserver:
-#     metrics:
-#       enabled: true
-#       port: 9962
-#       serviceMonitor:
-#         enabled: false
-#     resources:
-#       requests: {memory: 256Mi}
-#       limits: {memory: 256Mi}
-#     etcd:
-#       resources:
-#         requests: {memory: 256Mi}
-#         limits: {memory: 256Mi}
-#     kvstoremesh:
-#       resources:
-#         requests: {memory: 256Mi}
-#         limits: {memory: 256Mi}
+clustermesh:
+  apiserver:
+    metrics:
+      enabled: true
+      port: 9962
+      serviceMonitor: {enabled: true}
+    resources:
+      requests: {memory: 256Mi}
+      limits: {memory: 256Mi}
+    etcd:
+      resources:
+        requests: {memory: 256Mi}
+        limits: {memory: 256Mi}
+    kvstoremesh:
+      resources:
+        requests: {memory: 256Mi}
+        limits: {memory: 256Mi}
 
 # mTLS
 authentication:

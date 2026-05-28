@@ -8,9 +8,13 @@ spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
     - {namespace: fallback,             name: talmox}
+    - {namespace: fallback,             name: hyades}
     - {namespace: kube-system,          name: talmox}
+    - {namespace: kube-system,          name: hyades}
     - {namespace: cilium-secrets,       name: talmox}
+    - {namespace: cilium-secrets,       name: hyades}
     - {namespace: cilium-spire,         name: talmox}
+    - {namespace: cilium-spire,         name: hyades}
     - {namespace: envoy-gateway-system, name: talmox}
     - {namespace: gateway,              name: talmox}
     - {namespace: tailscale,            name: talmox}

@@ -23,18 +23,8 @@ patches:
           pod-security.kubernetes.io/warn-version: latest
 
 resources:
-  - CiliumLoadBalancerIPPool.yaml
   - CiliumL2AnnouncementPolicy.yaml
   - CiliumClusterwideNetworkPolicy.mtls.yaml
   - CiliumClusterwideNetworkPolicy.default-deny.yaml
   - VMRule.network-policy-drops.yaml
   - GrafanaDashboard.yaml
-
-helmCharts:
-  - name: cilium
-    repo: oci://quay.io/cilium/charts
-    version: 1.19.4  # renovate: datasource=helm registryUrl=oci://quay.io/cilium/charts depName=cilium
-    releaseName: cilium
-    namespace: kube-system
-    includeCRDs: true
-    valuesFile: values.yaml
