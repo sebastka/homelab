@@ -6,7 +6,7 @@ resources:
   - ../../base
   - CiliumLoadBalancerIPPool.yaml
   - SealedSecret.cilium-ca.yaml
-  - VMRule.network-policy-drops.yaml
+  - VMRule.yaml
   - GrafanaDashboard.yaml
 
 helmCharts:
@@ -24,3 +24,32 @@ helmCharts:
         strictMode:
           egress:
             cidr: 10.244.0.0/15  # Covers pod CIDR for both talmox and hyades
+      operator:
+        prometheus:
+          enabled: true
+          serviceMonitor:
+            enabled: true
+      envoy:
+        prometheus:
+          enabled: true
+          serviceMonitor:
+            enabled: true
+      clustermesh:
+        apiserver:
+          serviceMonitor:
+            enabled: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      hubble:
+        metrics:
+          serviceMonitor:
+            enabled: true
+        relay:
+          prometheus:
+            enabled: true
+            serviceMonitor:
+              enabled: true
+        ui:
+          enabled: true

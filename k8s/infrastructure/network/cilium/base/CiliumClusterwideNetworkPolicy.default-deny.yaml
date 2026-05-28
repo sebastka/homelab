@@ -3,6 +3,8 @@ apiVersion: cilium.io/v2
 kind: CiliumClusterwideNetworkPolicy
 metadata:
   name: default-deny
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   endpointSelector: {matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets, envoy-gateway-system]}]}
   ingressDeny: [{}]
@@ -12,6 +14,8 @@ apiVersion: cilium.io/v2
 kind: CiliumClusterwideNetworkPolicy
 metadata:
   name: allow-dns-egress
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   endpointSelector: {matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets, envoy-gateway-system]}]}
   egress:
