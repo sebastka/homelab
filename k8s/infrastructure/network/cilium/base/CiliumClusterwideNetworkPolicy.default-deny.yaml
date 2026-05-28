@@ -5,6 +5,7 @@ metadata:
   name: default-deny
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpointSelector: {matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets, envoy-gateway-system]}]}
   ingressDeny: [{}]
@@ -16,6 +17,7 @@ metadata:
   name: allow-dns-egress
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpointSelector: {matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets, envoy-gateway-system]}]}
   egress:

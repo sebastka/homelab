@@ -7,6 +7,7 @@ metadata:
   name: default-arp-l2-announcement-policy
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
   namespace: kube-system
 spec:
   externalIPs: true

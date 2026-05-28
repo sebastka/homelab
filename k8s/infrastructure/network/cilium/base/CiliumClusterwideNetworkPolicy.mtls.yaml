@@ -5,6 +5,7 @@ metadata:
   name: require-mtls
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpointSelector: {matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, envoy-gateway-system, metrics-server, intel-device-plugins]}]}
   ingress:
