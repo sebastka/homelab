@@ -26,5 +26,3 @@ resources:
   - CiliumL2AnnouncementPolicy.yaml
   - CiliumClusterwideNetworkPolicy.mtls.yaml
   - CiliumClusterwideNetworkPolicy.default-deny.yaml
-  - VMRule.network-policy-drops.yaml
-  - GrafanaDashboard.yaml

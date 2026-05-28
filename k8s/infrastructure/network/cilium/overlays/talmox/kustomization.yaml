@@ -6,6 +6,8 @@ resources:
   - ../../base
   - CiliumLoadBalancerIPPool.yaml
   - SealedSecret.cilium-ca.yaml
+  - VMRule.network-policy-drops.yaml
+  - GrafanaDashboard.yaml
 
 helmCharts:
   - name: cilium
