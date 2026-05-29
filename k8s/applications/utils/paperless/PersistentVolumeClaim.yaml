@@ -11,7 +11,7 @@ metadata:
     recurring-job-group.longhorn.io/group1: enabled
     backup.velero.io/nightly-hetzner: enabled
 spec:
-  accessModes: [ReadWriteOncePod]
+  accessModes: [ReadWriteOnce]
   resources: {requests: {storage: 20Gi}}
   storageClassName: longhorn-encrypted
   volumeName: paperless-data-pv
