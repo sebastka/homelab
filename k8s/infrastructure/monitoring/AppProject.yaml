@@ -8,6 +8,7 @@ spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
     - {namespace: default,        name: talmox}
+    - {namespace: default,        name: hyades}
     - {namespace: kube-system,    name: talmox}
     - {namespace: alloy,          name: talmox}
     - {namespace: grafana,        name: talmox}
