@@ -47,4 +47,4 @@ spec:
                 - {name: GF_SECURITY_ADMIN_USER, valueFrom: {secretKeyRef: {name: admin-credentials, key: username}}}
                 - {name: GF_SECURITY_ADMIN_PASSWORD, valueFrom: {secretKeyRef: {name: admin-credentials, key: password}}}
                 - {name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET, valueFrom: {secretKeyRef: {name: oidc, key: client-secret}}}
-                - {name: GF_INSTALL_PLUGINS, value: 'victoriametrics-logs-datasource 0.27.1'}  # renovate: datasource=grafana depName=victoriametrics-logs-datasource
+                - {name: GF_INSTALL_PLUGINS, value: 'victoriametrics-logs-datasource 0.27.1'}  # renovate: datasource=custom.grafana-plugins depName=victoriametrics-logs-datasource

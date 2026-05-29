@@ -87,6 +87,15 @@
       "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-(?<build>[a-f0-9]+)$"
     }
   ],
+  "customDatasources": {
+    "grafana-plugins": {
+      "defaultRegistryUrlTemplate": "https://grafana.com/api/plugins/{{packageName}}/versions",
+      "format": "json",
+      "transformTemplates": [
+        "{\"releases\": .items | map({\"version\": .version})}"
+      ]
+    }
+  },
   "hostRules": [
     {
       "matchHost": "docker.io",
