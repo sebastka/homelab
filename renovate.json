@@ -18,12 +18,13 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/(^|/)values\\.yaml$/"],
+      "managerFilePatterns": ["/(^|/)values\\.yaml$/", "/(^|/)kustomization\\.yaml$/"],
       "matchStrings": [
-        ":\\s*(?<currentValue>\\S+)\\s*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(?:\\s+versioning=(?<versioning>\\S+))?"
+        ":\\s*(?<currentValue>\\S+)\\s*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)(?:\\s+registryUrl=(?<registryUrl>\\S+))?\\s+depName=(?<depName>\\S+)(?:\\s+versioning=(?<versioning>\\S+))?"
       ],
       "datasourceTemplate": "{{datasource}}",
       "depNameTemplate": "{{depName}}",
+      "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{/if}}",
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     },
     {
@@ -37,6 +38,12 @@
     }
   ],
   "packageRules": [
+    {
+      "matchManagers": ["kustomize"],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["code.forgejo.org/forgejo-helm/forgejo"],
+      "enabled": false
+    },
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": [
