@@ -52,6 +52,8 @@
         "registry.k8s.io/metrics-server/metrics-server",
         "ghcr.io/maxmind/geoipupdate",
         "ghcr.io/traefik/whoami",
+        "docker.io/apache/tika",
+        "docker.io/gotenberg/gotenberg",
         "ghcr.io/sebastka/**"
       ],
       "automerge": true,
