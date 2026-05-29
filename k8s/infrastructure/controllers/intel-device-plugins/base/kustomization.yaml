@@ -41,7 +41,7 @@ helmCharts:
 
   - name: intel-device-plugins-gpu
     repo: oci://ghcr.io/intel/helm-charts
-    version: 0.35.0  # renovate: datasource=helm registryUrl=oci://ghcr.io/intel/helm-charts depName=intel-device-plugins-gpu
+    version: 0.36.0  # renovate: datasource=helm registryUrl=oci://ghcr.io/intel/helm-charts depName=intel-device-plugins-gpu
     namespace: intel-device-plugins
     releaseName: intel-device-plugins-gpu
     includeCRDs: true
