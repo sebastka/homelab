@@ -35,7 +35,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       containers:
         - name: git-sync
-          image: registry.k8s.io/git-sync/git-sync:v4.6.0@sha256:228a26d5f55ac5ae9c51635812570ba0073e0b1e0bd8fc3a653a0523b918c092  # renovate: datasource=docker depName=registry.k8s.io/git-sync/git-sync
+          image: registry.k8s.io/git-sync/git-sync:v4.7.0@sha256:d232fd13474ba1b46dba431af2b1411b9d9afacda55ae644d2a32e43975128dd  # renovate: datasource=docker depName=registry.k8s.io/git-sync/git-sync
           args:
             - --repo=https://github.com/sebastka/sebastka.github.io.git
             - --root=/mnt/karlsenfr
