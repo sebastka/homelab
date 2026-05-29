@@ -92,7 +92,7 @@
       "defaultRegistryUrlTemplate": "https://grafana.com/api/plugins/{{packageName}}/versions",
       "format": "json",
       "transformTemplates": [
-        "{\"releases\": .items | map({\"version\": .version})}"
+        "{\"releases\": $map(items, function($v) { {\"version\": $v.version} })}"
       ]
     }
   },
