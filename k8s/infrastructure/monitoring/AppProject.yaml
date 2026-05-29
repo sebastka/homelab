@@ -10,6 +10,7 @@ spec:
     - {namespace: default,        name: talmox}
     - {namespace: default,        name: hyades}
     - {namespace: kube-system,    name: talmox}
+    - {namespace: kube-system,    name: hyades}
     - {namespace: alloy,          name: talmox}
     - {namespace: grafana,        name: talmox}
     - {namespace: headlamp,       name: talmox}
