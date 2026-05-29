@@ -13,6 +13,7 @@ spec:
     - {namespace: grafana,        name: talmox}
     - {namespace: headlamp,       name: talmox}
     - {namespace: metrics-server, name: talmox}
+    - {namespace: metrics-server, name: hyades}
     - {namespace: monitoring,     name: talmox}
     - {namespace: stork,          name: talmox}
     # - {namespace: tempo,          name: talmox}
