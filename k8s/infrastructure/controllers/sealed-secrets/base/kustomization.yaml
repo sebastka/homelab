@@ -5,7 +5,6 @@ namespace: sealed-secrets
 
 resources:
   - Namespace.yaml
-  # - Secret.certs.yaml
   - CiliumNetworkPolicy.yaml
 
 helmCharts:
