@@ -18,14 +18,21 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/(^|/)values\\.yaml$/", "/(^|/)kustomization\\.yaml$/"],
+      "managerFilePatterns": ["/(^|/)values\\.yaml$/"],
       "matchStrings": [
-        ":\\s*(?<currentValue>\\S+)\\s*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)(?:\\s+registryUrl=(?<registryUrl>\\S+))?\\s+depName=(?<depName>\\S+)(?:\\s+versioning=(?<versioning>\\S+))?"
+        ":\\s*(?<currentValue>\\S+)\\s*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(?:\\s+versioning=(?<versioning>\\S+))?"
       ],
       "datasourceTemplate": "{{datasource}}",
       "depNameTemplate": "{{depName}}",
-      "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{/if}}",
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["k8s/applications/dev/forgejo/kustomization\\.yaml"],
+      "matchStrings": ["version:\\s*(?<currentValue>[^\\s#]+)"],
+      "datasourceTemplate": "gitea-releases",
+      "depNameTemplate": "forgejo-helm/forgejo",
+      "registryUrlTemplate": "https://code.forgejo.org"
     },
     {
       "customType": "regex",
