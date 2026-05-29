@@ -18,7 +18,7 @@ tempo:
         grpc: {endpoint: 0.0.0.0:4317}
         http: {endpoint: 0.0.0.0:4318}
   # podSecurityContext  # Does not exist
-  #   seccompProfile: {type: RuntimeDefault} 
+  #   seccompProfile: {type: RuntimeDefault}
   securityContext:
     runAsNonRoot: true
     runAsUser: 10001
@@ -33,7 +33,7 @@ tempoQuery:
     requests: {memory: 256Mi}
     limits: {memory: 512Mi}
   # podSecurityContext  # Does not exist
-  #   seccompProfile: {type: RuntimeDefault} 
+  #   seccompProfile: {type: RuntimeDefault}
   securityContext:
     runAsNonRoot: true
     runAsUser: 10001

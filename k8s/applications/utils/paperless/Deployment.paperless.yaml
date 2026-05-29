@@ -163,7 +163,7 @@ spec:
       volumes:
         - {name: tmp-volume, emptyDir: {}}
         - {name: cache-volume, emptyDir: {}}
-        - {name: scripts-volume, configMap: {name: paperless-scripts, defaultMode: 0755}}
+        - {name: scripts-volume, configMap: {name: paperless-scripts, defaultMode: 493}}  # 0o755 = 493
         - {name: settings-volume, configMap: {name: paperless-settings}}
         - {name: tessdata-volume, persistentVolumeClaim: {claimName: paperless-tessdata-pvc}}
         - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-pvc}}

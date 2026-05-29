@@ -4,15 +4,13 @@ extends: default
 
 ignore: |
   **/charts
-  Secret.*.yaml
-  *.enc.yaml
+  *.sops.yaml
   values.default.yaml
   values.*.default.yaml
   k8s/infrastructure/auth/authelia/assets/configuration.yaml
 
 rules:
   line-length: disable
-  comments-indentation: disable
   colons:
     max-spaces-before: 0
     max-spaces-after: -1   # -1 = unlimited, disables the after-colon check
@@ -20,3 +18,11 @@ rules:
     max-spaces-before: 0
     min-spaces-after: 1
     max-spaces-after: -1   # -1 = unlimited, disables the after-comma check
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: false
+  braces:
+    max-spaces-inside: 1
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
