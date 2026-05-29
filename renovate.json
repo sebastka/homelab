@@ -39,6 +39,16 @@
     },
     {
       "customType": "regex",
+      "managerFilePatterns": ["/(^|/)kustomization\\.yaml$/"],
+      "matchStrings": [
+        "(?:releases/download/|[?&]ref=)(?<currentValue>v[^\\s/?&]+)[^\\s]*\\s*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(?:\\s+versioning=(?<versioning>\\S+))?"
+      ],
+      "datasourceTemplate": "{{datasource}}",
+      "depNameTemplate": "{{depName}}",
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    },
+    {
+      "customType": "regex",
       "managerFilePatterns": ["/(^|/)Grafana\\.yaml$/"],
       "matchStrings": [
         "'[^\\s']+\\s+(?<currentValue>[^\\s']+)'[^#]*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)"
