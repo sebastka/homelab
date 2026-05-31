@@ -191,6 +191,7 @@ authentication:
       enabled: true
       install:
         enabled: true
+        existingNamespace: true
         server:
           dataStorage:
             enabled: false
