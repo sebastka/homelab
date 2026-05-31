@@ -6,7 +6,7 @@ keyrenewperiod: 8766h  # ~ 1 year
 
 resources:
   requests: {memory: 32Mi}
-  limits: {memory: 32Mi}
+  limits: {memory: 64Mi}
 
 containerSecurityContext:
   allowPrivilegeEscalation: false
