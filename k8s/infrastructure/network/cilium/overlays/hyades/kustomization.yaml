@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ../../base
   - CiliumLoadBalancerIPPool.yaml
-  # - SealedSecret.cilium-ca.yaml
+  - SealedSecret.cilium-ca.yaml
 
 helmCharts:
   - name: cilium
