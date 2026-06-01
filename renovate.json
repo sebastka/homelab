@@ -78,6 +78,7 @@
         "ghcr.io/sebastka/**"
       ],
       "automerge": true,
+      "minimumReleaseAge": "0 days",
       "schedule": ["after 4am and before 6am"],
       "timezone": "Europe/Oslo"
     },
