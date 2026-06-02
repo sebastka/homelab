@@ -27,10 +27,10 @@ cgroup:
 operator:
   rollOutPods: true
   prometheus:
-    enabled: false
+    enabled: true
     metricsService: true
     port: 9963
-    serviceMonitor: {enabled: false}
+    serviceMonitor: {enabled: true}
   dashboards:
     enabled: true
   resources:
@@ -108,10 +108,10 @@ encryption:
 envoy:
   enabled: true
   prometheus:
-    enabled: false
+    enabled: true
     port: "9964"
     serviceMonitor:
-      enabled: false
+      enabled: true
   securityContext:
     capabilities:
       keepCapNetBindService: true
@@ -133,7 +133,7 @@ hubble:
       - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
     enableOpenMetrics: true
     port: 9965
-    serviceMonitor: {enabled: false}
+    serviceMonitor: {enabled: true}
     dashboards: {enabled: true}
   relay:
     enabled: true
@@ -142,10 +142,10 @@ hubble:
       requests: {memory: 256Mi}
       limits: {memory: 512Mi}
     prometheus:
-      enabled: false
+      enabled: true
       port: 9966
       serviceMonitor:
-        enabled: false
+        enabled: true
   ui:
     enabled: false
     rollOutPods: true
@@ -208,11 +208,11 @@ authentication:
             limits: {memory: 128Mi}
 
 prometheus:
-  enabled: false
+  enabled: true
   metricsService: true
   port: 9962
   serviceMonitor:
-    enabled: false
+    enabled: true
     trustCRDsExist: true
 
 dashboards:

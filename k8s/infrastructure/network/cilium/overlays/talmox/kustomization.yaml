@@ -23,35 +23,10 @@ helmCharts:
         strictMode:
           egress:
             cidr: 10.244.0.0/15  # Covers pod CIDR for both talmox and hyades
-      operator:
-        prometheus:
-          enabled: true
-          serviceMonitor:
-            enabled: true
-      envoy:
-        prometheus:
-          enabled: true
-          serviceMonitor:
-            enabled: true
       clustermesh:
         apiserver:
           service:
             labels: {arp.cilium.io/ip-pool: default-arp-ip-pool}
             annotations: {lbipam.cilium.io/ips: 192.168.2.100}
-          serviceMonitor:
-            enabled: true
-      prometheus:
-        enabled: true
-        serviceMonitor:
-          enabled: true
-      hubble:
-        metrics:
-          serviceMonitor:
-            enabled: true
-        relay:
-          prometheus:
-            enabled: true
-            serviceMonitor:
-              enabled: true
         ui:
           enabled: true
