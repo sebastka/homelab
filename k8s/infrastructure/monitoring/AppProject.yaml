@@ -17,6 +17,7 @@ spec:
     - {namespace: metrics-server, name: talmox}
     - {namespace: metrics-server, name: hyades}
     - {namespace: monitoring,     name: talmox}
+    - {namespace: monitoring,     name: hyades}
     - {namespace: stork,          name: talmox}
     # - {namespace: tempo,          name: talmox}
     - {namespace: victoria-logs,  name: talmox}
