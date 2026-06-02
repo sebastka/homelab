@@ -17,6 +17,11 @@ helmCharts:
     valuesFile: ../../base/values.yaml
     valuesInline:
       cluster: {id: 2, name: hyades}
+      clustermesh:
+        apiserver:
+          service:
+            labels: {arp.cilium.io/ip-pool: default-arp-ip-pool}
+            annotations: {lbipam.cilium.io/ips: 192.168.3.100}
       ipv4NativeRoutingCIDR: 10.245.0.0/16  # Pod CIDR
       encryption:
         strictMode:

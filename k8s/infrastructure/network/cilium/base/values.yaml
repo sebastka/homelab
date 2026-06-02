@@ -166,7 +166,10 @@ k8sClientRateLimit:
   burst: 100
 
 clustermesh:
+  useAPIServer: true
   apiserver:
+    service:
+      type: LoadBalancer
     metrics:
       enabled: true
       port: 9962
