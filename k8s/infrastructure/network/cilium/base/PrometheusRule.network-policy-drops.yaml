@@ -9,7 +9,14 @@ spec:
     - name: cilium.drops
       rules:
         - alert: NetworkPolicyDroppingPackets
-          expr: sum(rate(hubble_drop_total{reason="POLICY_DENIED"}[2m])) by (source_namespace, destination_namespace, direction) > 0
+          expr: |
+            label_replace(
+              label_replace(
+                sum(rate(hubble_drop_total{reason="POLICY_DENIED"}[2m])) by (source_namespace, destination_namespace, direction),
+                "destination_namespace", "external", "destination_namespace", "^$"
+              ),
+              "source_namespace", "external", "source_namespace", "^$"
+            ) > 0
           for: 2m
           labels:
             severity: warning
