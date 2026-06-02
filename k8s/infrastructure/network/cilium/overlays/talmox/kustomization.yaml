@@ -25,6 +25,9 @@ helmCharts:
             cidr: 10.244.0.0/15  # Covers pod CIDR for both talmox and hyades
       clustermesh:
         apiserver:
+          tls:
+            server:
+              extraIPs: [192.168.2.100]
           service:
             labels: {arp.cilium.io/ip-pool: default-arp-ip-pool, arp.cilium.io/announce-service: default-arp-l2-announcement-policy}
             annotations: {lbipam.cilium.io/ips: 192.168.2.100}
