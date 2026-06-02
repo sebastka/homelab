@@ -25,8 +25,8 @@ containerSecurityContext:
 
 metrics:
   enabled: true
-  serviceMonitor: {enabled: false}
-  prometheusRule: {enabled: false}
+  serviceMonitor: {enabled: true}
+  prometheusRule: {enabled: true}
 
 initContainers:
   - name: velero-plugin-for-aws
