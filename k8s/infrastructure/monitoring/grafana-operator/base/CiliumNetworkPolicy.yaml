@@ -12,4 +12,4 @@ spec:
   egress:
     - {toEntities: [kube-apiserver]}
     - {toEndpoints: [matchLabels: {app: grafana, k8s:io.kubernetes.pod.namespace: grafana}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Grafana API
-    - {toFQDNs: [{matchName: grafana.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # grafanaCom dashboard fetch
+    - {toFQDNs: [{matchName: grafana.com}, {matchName: raw.githubusercontent.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # grafanaCom dashboard fetch
