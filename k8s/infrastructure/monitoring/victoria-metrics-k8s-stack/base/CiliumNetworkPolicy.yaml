@@ -35,7 +35,7 @@ spec:
     - {fromEntities: [host], toPorts: [ports: [{port: '8429', protocol: TCP}]]}  # Host probes
   egress:
     - {toEntities: [kube-apiserver]}  # Service discovery + config reads
-    - {toEntities: [host, remote-node], toPorts: [ports: [{port: '10250', protocol: TCP}, {port: '2381', protocol: TCP}]]}  # Kubelet metrics + etcd metrics
+    - {toEntities: [host, remote-node], toPorts: [ports: [{port: '10250', protocol: TCP}, {port: '10257', protocol: TCP}, {port: '10259', protocol: TCP}, {port: '2381', protocol: TCP}]]}  # Kubelet + controller-manager + scheduler + etcd metrics
     - {toEntities: [cluster]}  # Pod scraping across all namespaces
 ---
 apiVersion: cilium.io/v2
