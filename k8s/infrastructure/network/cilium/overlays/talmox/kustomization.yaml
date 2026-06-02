@@ -36,3 +36,9 @@ helmCharts:
       hubble:
         ui:
           enabled: true
+        tls:
+          caBundle:
+            enabled: true
+            name: cilium-ca
+            key: ca.crt
+            useSecret: true
