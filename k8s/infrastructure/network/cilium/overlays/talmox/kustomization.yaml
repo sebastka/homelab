@@ -27,7 +27,7 @@ helmCharts:
         apiserver:
           tls:
             server:
-              extraIPs: [192.168.2.100]
+              extraIpAddresses: [192.168.2.100]
           service:
             labels: {arp.cilium.io/ip-pool: default-arp-ip-pool, arp.cilium.io/announce-service: default-arp-l2-announcement-policy}
             annotations: {lbipam.cilium.io/ips: 192.168.2.100}
