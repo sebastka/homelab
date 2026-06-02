@@ -4,4 +4,7 @@ kind: ConfigMap
 metadata:
   name: clustermesh-remote-users
   namespace: kube-system
-data: {}
+data:
+  users.yaml: |
+    users:
+      - {name: remote, role: remote}
