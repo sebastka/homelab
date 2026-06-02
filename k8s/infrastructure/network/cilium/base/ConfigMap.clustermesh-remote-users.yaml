@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: clustermesh-remote-users
+  namespace: kube-system
+data: {}

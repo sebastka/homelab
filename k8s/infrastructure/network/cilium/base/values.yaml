@@ -173,7 +173,7 @@ clustermesh:
     metrics:
       enabled: true
       port: 9962
-      serviceMonitor: {enabled: false}
+      serviceMonitor: {enabled: true}
     resources:
       requests: {memory: 256Mi}
       limits: {memory: 256Mi}
@@ -182,6 +182,7 @@ clustermesh:
         requests: {memory: 256Mi}
         limits: {memory: 256Mi}
     kvstoremesh:
+      enabled: true
       resources:
         requests: {memory: 256Mi}
         limits: {memory: 256Mi}

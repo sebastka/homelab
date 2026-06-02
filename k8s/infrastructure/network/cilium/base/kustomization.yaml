@@ -10,4 +10,5 @@ resources:
   - CiliumL2AnnouncementPolicy.yaml
   - CiliumClusterwideNetworkPolicy.mtls.yaml
   - CiliumClusterwideNetworkPolicy.default-deny.yaml
+  - ConfigMap.clustermesh-remote-users.yaml
   - VMRule.yaml
