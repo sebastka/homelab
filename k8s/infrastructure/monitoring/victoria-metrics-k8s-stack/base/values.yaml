@@ -71,6 +71,7 @@ alertmanager:
       receiver: ntfy
       routes:
         - {receiver: "null", matchers: [alertname = Watchdog]}
+        - {receiver: "null", matchers: [alertname = RecordingRulesNoData, severity = info]}
     receivers:
       - name: "null"
       - name: ntfy
