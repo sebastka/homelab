@@ -1,6 +1,6 @@
 ---
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
 metadata:
   name: network-policy-drops
   namespace: kube-system
@@ -14,7 +14,7 @@ spec:
               label_replace(
                 label_replace(
                   label_replace(
-                    sum(rate(hubble_drop_total{reason="POLICY_DENIED"}[2m])) by (source_namespace, source_workload, destination_namespace, destination_workload, destination_ip, destination, direction),
+                    sum(rate(hubble_drop_total{reason="POLICY_DENIED"}[2m])) by (cluster, source_namespace, source_workload, destination_namespace, destination_workload, destination_ip, destination, direction),
                     "destination_namespace", "external", "destination_namespace", "^$"
                   ),
                   "source_namespace", "external", "source_namespace", "^$"
@@ -28,4 +28,4 @@ spec:
             severity: warning
           annotations:
             summary: "Network policy dropping {{ $labels.direction }} traffic"
-            description: "Cilium is dropping {{ $labels.direction }} packets due to a network policy.\n\nSource: `{{ $labels.source_namespace }}`/`{{ $labels.source_workload }}`\nDestination: `{{ $labels.destination_namespace }}`/`{{ $labels.destination_workload }}`{{ if eq $labels.destination_namespace \"external\" }} (`{{ $labels.destination_ip }}`{{ if $labels.destination }} / `{{ $labels.destination }}`{{ end }}){{ end }}"
+            description: "Cilium is dropping {{ $labels.direction }} packets due to a network policy.\n\nCluster: `{{ $labels.cluster }}`\nSource: `{{ $labels.source_namespace }}`/`{{ $labels.source_workload }}`\nDestination: `{{ $labels.destination_namespace }}`/`{{ $labels.destination_workload }}`{{ if eq $labels.destination_namespace \"external\" }} (`{{ $labels.destination_ip }}`{{ if $labels.destination }} / `{{ $labels.destination }}`{{ end }}){{ end }}"

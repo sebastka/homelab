@@ -10,3 +10,4 @@ resources:
   - CiliumL2AnnouncementPolicy.yaml
   - CiliumClusterwideNetworkPolicy.mtls.yaml
   - CiliumClusterwideNetworkPolicy.default-deny.yaml
+  - VMRule.yaml
