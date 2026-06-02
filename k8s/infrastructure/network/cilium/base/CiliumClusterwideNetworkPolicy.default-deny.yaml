@@ -19,7 +19,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  endpointSelector: {}
+  endpointSelector: {matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets, envoy-gateway-system]}]}
   ingress:
     - fromEntities: [health]
   egress:
