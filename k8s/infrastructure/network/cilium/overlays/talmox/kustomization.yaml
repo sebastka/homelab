@@ -6,6 +6,8 @@ resources:
   - ../../base
   - CiliumLoadBalancerIPPool.yaml
   - SealedSecret.cilium-ca.yaml
+  - SealedSecret.cilium-clustermesh.yaml
+  - SealedSecret.cilium-kvstoremesh.yaml
   - GrafanaDashboard.yaml
 
 helmCharts:
