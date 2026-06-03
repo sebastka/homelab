@@ -33,7 +33,7 @@ longhornManager:
     limits: {memory: 4096Mi}
   updateStrategy:
     rollingUpdate:
-      maxUnavailable: '1'  # Serial upgrade of longhorn-manager pods
+      maxUnavailable: '35%'  # 1/3 node: serial upgrade of longhorn-manager pods
 
 persistence:
   reclaimPolicy: Retain
