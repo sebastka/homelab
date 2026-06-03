@@ -29,7 +29,7 @@ defaultBackupStore:
 longhornManager:
   resources:
     requests: {memory: 2048Mi}
-    limits: {memory: 4096Mi}
+    limits: {memory: 8192Mi}
   updateStrategy:
     rollingUpdate:
       maxUnavailable: '35%'  # 1/3 node: serial upgrade of longhorn-manager pods
