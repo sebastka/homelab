@@ -6,7 +6,6 @@
 ---
 
 defaultSettings:
-  defaultReplicaCount: 2
   defaultDataLocality: best-effort
   defaultDataPath: /var/mnt/longhorn-data
   allowCollectingLonghornUsageMetrics: false
