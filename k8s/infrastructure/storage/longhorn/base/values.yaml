@@ -30,7 +30,7 @@ defaultBackupStore:
 longhornManager:
   resources:
     requests: {memory: 1024Mi}
-    limits: {memory: 1536Mi}
+    limits: {memory: 2048Mi}
 
 persistence:
   reclaimPolicy: Retain
