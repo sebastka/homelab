@@ -31,6 +31,9 @@ longhornManager:
   resources:
     requests: {memory: 1024Mi}
     limits: {memory: 2048Mi}
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: '1'  # Serial upgrade of longhorn-manager pods
 
 persistence:
   reclaimPolicy: Retain
