@@ -5,13 +5,13 @@ metadata:
   name: wc-karlsen-org-certificate
   namespace: gateway
 spec:
+  # isCA: false
   secretName: wc-karlsen-org-certificate
-  dnsNames:
-    - '*.karlsen.org'
-  issuerRef:
-    group: cert-manager.io
-    kind: ClusterIssuer
-    name: cloudflare-dns01-issuer
-  usages:
-    - digital signature
-    - key encipherment
+  # commonName:
+  dnsNames: ['*.karlsen.org']
+  # subject: {}
+  # privateKey: {}
+  issuerRef: {group: cert-manager.io, kind: ClusterIssuer, name: cloudflare-dns01-issuer}
+  usages: [digital signature, key encipherment]
+  # duration:
+  # renewBefore:

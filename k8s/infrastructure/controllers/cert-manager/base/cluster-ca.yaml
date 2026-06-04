@@ -16,14 +16,15 @@ metadata:
   namespace: cert-manager
 spec:
   isCA: true
-  commonName: Karlsen Homelab Cluster Root CA
-  subject:
-    organizations: [Karlsen]
-    countries: ['NO']
-    organizationalUnits: [Homelab]
   secretName: cluster-root-ca-secret
+  commonName: Karlsen Homelab Cluster Root CA
+  # dnsNames: []
+  subject: {organizations: [Karlsen], countries: ['NO'], organizationalUnits: [Homelab]}
   privateKey: {algorithm: ECDSA, size: 521}
   issuerRef: {group: cert-manager.io, kind: ClusterIssuer, name: selfsigned-issuer}
+  # usages: []
+  # duration
+  # renewBefore
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
