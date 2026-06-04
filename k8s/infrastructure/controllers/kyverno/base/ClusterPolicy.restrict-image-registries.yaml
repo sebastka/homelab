@@ -44,6 +44,9 @@ spec:
                       # infrastructure/auth/light-ldap
                       - docker.io/lldap/lldap
 
+                      # infrastructure/auth/step-ca
+                      - cr.smallstep.com/smallstep/step-ca
+
                       # infrastructure/controllers/argocd
                       # ecr-public.aws.com/docker/library/haproxy
                       - quay.io/argoproj/argocd
