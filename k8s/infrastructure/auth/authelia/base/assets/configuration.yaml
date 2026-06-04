@@ -315,6 +315,23 @@ identity_providers:
         id_token_signed_response_alg: ES256
         token_endpoint_auth_method: client_secret_basic
 
+      - client_id: step-ca
+        client_name: Step CA
+        public: true
+        authorization_policy: two_factor
+        pre_configured_consent_duration: 3 months
+        claims_policy: embed_id_token_claims
+        require_pkce: true
+        pkce_challenge_method: S256
+        redirect_uris: [http://127.0.0.1:10000]
+        scopes: [openid, email, profile]
+        response_types: [code]
+        grant_types: [authorization_code]
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        id_token_signed_response_alg: ES256
+        token_endpoint_auth_method: none
+
       - client_id: tailscale
         client_name: Tailscale
         client_secret: {{ secret "/secrets/client-secrets/tailscale" }}
