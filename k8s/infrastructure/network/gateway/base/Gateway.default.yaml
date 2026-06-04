@@ -35,7 +35,13 @@ spec:
       port: 636
       allowedRoutes: {namespaces: {from: Selector, selector: {matchLabels: {app.kubernetes.io/name: light-ldap}}}}
       tls: {mode: Passthrough}
-      # tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: wc-karlsen-fr-certificate}]}
+
+    - name: step-ca
+      protocol: TLS
+      hostname: ca.karlsen.fr
+      port: 443
+      allowedRoutes: {namespaces: {from: All}}
+      tls: {mode: Passthrough}
 
     - name: http
       protocol: HTTP
