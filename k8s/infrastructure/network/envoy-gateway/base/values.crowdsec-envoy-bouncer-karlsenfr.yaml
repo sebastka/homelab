@@ -53,7 +53,7 @@ httproute:
 
 referenceGrant:
   create: true
-  fromNamespaces: [forgejo, whoami, homepage, matrix-authentication-service, authelia, synapse]
+  fromNamespaces: [forgejo, authelia, homepage]
 
 grafana:
   dashboard:
