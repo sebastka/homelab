@@ -103,8 +103,6 @@ gitea:
       START_SSH_SERVER: 'true'
       SSH_SERVER_USE_PROXY_PROTOCOL: 'false'
       SSH_CREATE_AUTHORIZED_KEYS_FILE: 'true'
-      REVERSE_PROXY_LIMIT: '1'
-      REVERSE_PROXY_TRUSTED_PROXIES: 10.244.0.0/16
     database:
       DB_TYPE: mysql
       HOST: db01.hera.home.karlsen.fr
@@ -113,6 +111,8 @@ gitea:
     security:
       INSTALL_LOCK: 'true'
       GLOBAL_TWO_FACTOR_REQUIREMENT: all
+      REVERSE_PROXY_LIMIT: '1'
+      REVERSE_PROXY_TRUSTED_PROXIES: 10.244.0.0/16
       COOKIE_REMEMBER_NAME: __Host-forgejo_remember_token
       # COOKIE_REMEMBER_SAMESITE: strict  # Made up?
       # COOKIE_REMEMBER_SECURE: 'true'  # Made up?
