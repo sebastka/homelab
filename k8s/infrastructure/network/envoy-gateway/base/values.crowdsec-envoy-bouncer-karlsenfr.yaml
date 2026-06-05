@@ -37,7 +37,7 @@ config:
     siteKey: 0x4AAAAAADU9am0X6mW_Fcqg
     secretKeySecretRef: {name: crowdsec-secrets, key: turnstile-secret-key}
     signingKeySecretRef: {name: crowdsec-secrets, key: captcha-jwt-signing-key-karlsenfr}
-    callbackURL: https://captcha.karlsen.fr/captcha/callback
+    callbackURL: https://captcha.karlsen.fr
     cookieDomain: karlsen.fr
     cookieName: __Secure-crowdsec_captcha
     secureCookie: true
