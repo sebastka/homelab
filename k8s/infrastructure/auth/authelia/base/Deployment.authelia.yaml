@@ -56,9 +56,9 @@ spec:
             - secretRef: {name: authelia-secrets}
           ports:
             - {name: http, protocol: TCP, containerPort: 9091}
-          startupProbe: {httpGet: {port: 9091, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
-          livenessProbe: {httpGet: {port: 9091, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
-          readinessProbe: {httpGet: {port: 9091, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          startupProbe: {httpGet: {port: 9091, path: /api/health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 9091, path: /api/health}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 9091, path: /api/health}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             - {name: authelia-config-volume, mountPath: /config/configuration.yml, subPath: 'configuration.yaml', readOnly: true}
             - {name: jwk-rsa-volume, mountPath: /secrets/jwk-rsa/tls.key, subPath: tls.key, readOnly: true}
