@@ -4,7 +4,8 @@ kind: Kustomization
 namespace: element
 
 configMapGenerator:
-  - {name: element-config, files: [config.json=assets/config.json]}
+  - {name: element-config, files: [config.json=assets/config.json, config.element.karlsen.app.json=assets/config.element.karlsen.app.json]}
+  - {name: element-nginx, files: [real_ip.conf=assets/real_ip.conf]}
 
 resources:
   - Namespace.yaml

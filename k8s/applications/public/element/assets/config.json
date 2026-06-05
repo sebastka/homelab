@@ -1,10 +1,4 @@
 {
-    "default_server_config": {
-        "m.homeserver": {
-            "base_url": "https://matrix.karlsen.fr",
-            "server_name": "karlsen.fr"
-        }
-    },
     "disable_custom_urls": true,
     "disable_guests": true,
     "disable_login_language_selector": false,
@@ -24,9 +18,6 @@
     },
     "default_federate": true,
     "default_theme": "light",
-    "room_directory": {
-        "servers": ["matrix.org", "karlsen.fr"]
-    },
     "enable_presence_by_hs_url": {
         "https://matrix.org": false,
         "https://matrix-client.matrix.org": false

@@ -1,0 +1,11 @@
+{
+    "default_server_config": {
+        "m.homeserver": {
+            "base_url": "https://matrix.karlsen.fr",
+            "server_name": "karlsen.fr"
+        }
+    },
+    "room_directory": {
+        "servers": ["matrix.org", "karlsen.fr"]
+    }
+}
