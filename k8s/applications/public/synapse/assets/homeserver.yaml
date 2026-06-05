@@ -151,7 +151,8 @@ matrix_authentication_service:
   endpoint: https://mas.karlsen.fr
   secret_path: /secrets/mas-shared.key
 
-# Experimental features
+# Experimental features:
+# https://github.com/element-hq/synapse/blob/master/synapse/config/experimental.py
 experimental_features:
   # msc1767_enabled: false  # MSC1767 (2019-01-01): Extensible Events - new event format enabling rich content types
   msc2409_to_device_messages_enabled: true  # MSC2409 (2020-01-14): Send to-device messages to app services (presence/typing/read receipts already sent)
