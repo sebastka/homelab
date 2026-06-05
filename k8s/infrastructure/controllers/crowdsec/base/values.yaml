@@ -9,7 +9,7 @@
 container_runtime: containerd
 
 agent:
-  hostVarLog: false
+  hostVarLog: true
   lapiURL: http://crowdsec-service.crowdsec.svc.cluster.local:8080
   podSecurityContext:
   #   runAsNonRoot: true
@@ -34,14 +34,19 @@ agent:
     - {namespace: envoy-gateway-system, podName: 'envoy-gateway-default-*', poll_without_inotify: true, program: envoy}
     # - {namespace: nextcloud, podName: 'nextcloud-*', program: nextcloud}
     - {namespace: forgejo, podName: 'forgejo-*', program: forgejo}
+    - {namespace: paperless, podName: 'paperless-*', program: nginx}
+    - {namespace: paperless, podName: 'paperless-*', program: paperless-ngx}
     - {namespace: authelia, podName: 'authelia-*', program: authelia}
-    - {namespace: synapse, podName: 'synapse-*', program: synapse}
-    - {namespace: matrix-authentication-service, podName: 'mas-*', program: http}
+    - {namespace: element, podName: 'element-*', program: nginx}
+    - {namespace: homepage, podName: 'homepage-*', program: nginx}
+    - {namespace: jellyfin, podName: 'jellyfin-*', program: jellyfin}
+    # - {namespace: synapse, podName: 'synapse-*', program: synapse}
+    # - {namespace: matrix-authentication-service, podName: 'synapse-*', program: matrix-authentication-service}
   metrics:
     enabled: true
     serviceMonitor: {enabled: true}
   env:
-    - {name: COLLECTIONS, value: yanis-kouidri/envoy crowdsecurity/nextcloud}
+    - {name: COLLECTIONS, value: yanis-kouidri/envoy crowdsecurity/nginx LePresidente/gitea LePresidente/authelia andreasbrett/paperless-ngx LePresidente/jellyfin}  # crowdsecurity/nextcloud
     - {name: DEBUG, value: 'false'}
 
 lapi:
