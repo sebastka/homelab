@@ -12,8 +12,6 @@ configMapGenerator:
 resources:
   - Namespace.yaml
   - ServiceAccount.yaml
-  - PersistentVolumeClaim.yaml
-  - Job.karlsenfr-sync.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.karlsenapp.yaml

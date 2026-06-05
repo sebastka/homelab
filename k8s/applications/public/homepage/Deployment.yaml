@@ -36,46 +36,6 @@ spec:
         fsGroup: 65532
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
-      initContainers:
-        - name: site-setup
-          image: docker.io/alpine/git:v2.52.0@sha256:8786a6a02273827d0aa039d174aacd5e017fcce9aba0af62596d991970cab01a
-          command: ['/bin/sh', '-c']
-          args:
-            - |
-              set -eux
-
-              # Clean up and init dirs
-              rm -rf /mnt/www-data/www /mnt/www-data/other /mnt/www-data/openpgpkey /mnt/www-data/mta-sts
-              mkdir -p /mnt/www-data/www /mnt/www-data/other /mnt/www-data/openpgpkey /mnt/www-data/mta-sts
-
-              # Homepage: www.karlsen.fr
-              cp -a /mnt/karlsenfr/sebastka.github.io.git/* /mnt/karlsenfr/sebastka.github.io.git/.[!.]* /mnt/www-data/www
-              rm -rf /mnt/www-data/www/.git /mnt/www-data/www/bin /mnt/www-data/www/.nojekyll /mnt/www-data/www/README.md
-
-              # Other tlds (org|app) and karlsen.fr:
-              cp -a /mnt/karlsenfr/sebastka.github.io.git/.well-known /mnt/www-data/other/
-              printf -- '<!DOCTYPE html><html lang="en"><head><title>Karlsen.fr</title><meta http-equiv="refresh" content="0; URL=https://www.karlsen.fr"></head></html>' >/mnt/www-data/other/index.html
-
-              # WKD: openpgpkey.karlsen.fr
-              mkdir -p /mnt/www-data/openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
-              cp /mnt/www-data/other/index.html /mnt/www-data/openpgpkey/index.html
-              cp /mnt/karlsenfr/sebastka.github.io.git/.well-known/openpgpkey/hu/* /mnt/www-data/openpgpkey/.well-known/openpgpkey/karlsen.fr/hu/
-              touch /mnt/www-data/openpgpkey/.well-known/openpgpkey/karlsen.fr/policy
-
-              # MTA-STS:
-              mkdir -p /mnt/www-data/mta-sts/.well-known
-              printf -- 'version: STSv1\nmode: testing\nmx: mx.domeneshop.no\nmax_age: 86400\n' >/mnt/www-data/mta-sts/.well-known/mta-sts.txt
-              cp /mnt/www-data/other/index.html /mnt/www-data/mta-sts/index.html
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities: {drop: [ALL]}
-          resources:
-            requests: {memory: 24Mi}
-            limits: {memory: 24Mi}
-          volumeMounts:
-            - {name: karlsenfr-volume, mountPath: /mnt/karlsenfr, readOnly: true}
-            - {name: wwwdata-volume, mountPath: /mnt/www-data}
       containers:
         - name: nginx
           # Dockerfile: https://github.com/nginx/docker-nginx-unprivileged/blob/main/Dockerfile-alpine-slim.template
@@ -102,9 +62,11 @@ spec:
             - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/uwsgi_temp, subPath: uwsgi_temp, readOnly: true}
             - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: nginx.custom.conf, readOnly: true}
             - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/sites.conf, subPath: 'sites.conf', readOnly: true}
-            - {name: wwwdata-volume, mountPath: /mnt/www-data, readOnly: true}
+            - {name: karlsenfr-volume, mountPath: /mnt/karlsenfr/mta-sts, subPath: /mnt/karlsenfr/mta-sts, readOnly: true}
+            - {name: karlsenfr-volume, mountPath: /mnt/karlsenfr/openpgpkey, subPath: /mnt/karlsenfr/openpgpkey, readOnly: true}
+            - {name: karlsenfr-volume, mountPath: /mnt/karlsenfr/other, subPath: /mnt/karlsenfr/other, readOnly: true}
+            - {name: karlsenfr-volume, mountPath: /mnt/karlsenfr/www, subPath: /mnt/karlsenfr/www, readOnly: true}
       volumes:
         - {name: nginx-config-volume, configMap: {name: nginx-config}}
-        - {name: karlsenfr-volume, persistentVolumeClaim: {claimName: homepage-karlsenfr-pvc}}
-        - {name: wwwdata-volume, emptyDir: {}}
+        - {name: karlsenfr-volume, image: {reference: ghcr.io/sebastka/karlsen-fr:6698cfc@sha256:d4c1000322fcccf4ba1572c635f86029c75d586728ab8f27d64135488f504f73}}
         - {name: var-cache-nginx-volume, emptyDir: {}}
