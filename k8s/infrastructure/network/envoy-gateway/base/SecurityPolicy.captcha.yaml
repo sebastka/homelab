@@ -1,0 +1,22 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-captcha-karlsenfr
+  namespace: envoy-gateway-system
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: envoy-proxy-bouncer-karlsenfr}
+  authorization:
+    defaultAction: Allow
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-captcha-karlsenapp
+  namespace: envoy-gateway-system
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: envoy-proxy-bouncer-karlsenapp}
+  authorization:
+    defaultAction: Allow

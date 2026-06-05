@@ -22,6 +22,7 @@ resources:
   - GatewayClass.yaml
   - SealedSecret.crowdsec-secrets.yaml
   - GrafanaDashboard.crowdsec.yaml
+  - SecurityPolicy.captcha.yaml
 
 helmCharts:
   - name: gateway-helm
