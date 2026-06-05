@@ -153,17 +153,49 @@ matrix_authentication_service:
 
 # Experimental features
 experimental_features:
-  # Enable QR code login (requires Synapse 1.106+)
-  # Transfers crypto identity without needing password/passphrase
-  msc4108_enabled: true
-  msc3882_enabled: true
-
-  # Bridge encryption features (experimental)
-  # NOTE: As of Synapse 1.144.0, MSC4190 has compatibility issues with MAS
-  # Keep these enabled for future compatibility, but bridges should disable encryption for now
-  # msc4190_enabled: true
-  # msc3202_device_masquerading: true
-  # msc3202_transaction_extensions: true
-  msc2409_to_device_messages_enabled: true
+  # msc1767_enabled: false  # MSC1767 (2019-01-01): Extensible Events - new event format enabling rich content types
+  msc2409_to_device_messages_enabled: true  # MSC2409 (2020-01-14): Send to-device messages to app services (presence/typing/read receipts already sent)
+  # msc2654_enabled: false  # MSC2654 (2020-06-24): Unread counts (enabling may cause incorrect counts for previously calculated push actions)
+  # msc2815_enabled: false  # MSC2815 (2020-10-10): Allow room moderators to view redacted event content
+  # msc3026_enabled: false  # MSC3026 (2021-02-23): Busy presence state
+  # msc3202_transaction_extensions: false  # MSC3202 (2021-05-18): Send device list changes, OTK counts, and fallback key usage to app services
+  msc3381_polls_enabled: false # MSC3381 (2021-09-07): Polls (push rules for poll events via MSC3930)
+  # msc3391_enabled: false  # MSC3391 (2021-09-09): Removing account data
+  # msc3575_enabled: true   # MSC3575 (2021-12-20): Native Sliding Sync support (replaces sliding sync proxy) - enabled by default in Synapse
+  msc3664_enabled: false    # MSC3664 (2022-01-21): Push rules to match on related events
+  # msc3720_enabled: false  # MSC3720 (2022-02-09): Account status endpoint
+  msc3773_enabled: false    # MSC3773 (2022-04-15): Thread notifications
+  # msc3814_enabled: false  # MSC3814 (2022-05-12): Dehydrated devices with SSSS
+  msc3848_enabled: false    # MSC3848 (2022-07-19): Introduce errcodes for specific event sending failures
+  # msc3866: {enabled: false, require_approval_for_new_accounts: false}  # MSC3866 (2022-08-12): Require admin approval before new accounts can be used
+  # msc3874_enabled: false  # MSC3874 (2022-08-23): Filter /messages with rel_types / not_rel_types
+  # msc3881_enabled: false  # MSC3881 (2022-09-05): Remotely toggle push notifications for another client
+  msc3882_enabled: true     # MSC3882 (2022-09-05): Allow an existing session to sign in a new session (companion to MSC4108)
+  # msc3890_enabled: false  # MSC3890 (2022-09-13): Remotely silence local notifications (requires msc3391_enabled: true)
+  msc3912_enabled: false    # MSC3912 (2022-10-18): Relation-based redactions
+  # msc3983_appservice_otk_claims: false        # MSC3983 (2023-03-23): Proxy one-time key claim requests to exclusive app services
+  # msc3984_appservice_key_query: false         # MSC3984 (2023-03-24): Proxy key queries to exclusive app services
+  # msc4028_push_encrypted_events: false        # MSC4028 (2023-06-13): Push all encrypted events to clients regardless of content
+  # msc4069_profile_inhibit_propagation: false  # MSC4069 (2023-10-23): Inhibit profile update propagation to rooms
+  # msc4076_enabled: false  # MSC4076 (2023-11-12): Add disable_badge_count to pusher configuration
+  msc4108_enabled: true     # MSC4108 (2024-02-22): QR code login - transfer E2EE identity without password/passphrase; requires MAS
+  # msc4133_enabled: false  # MSC4133 (2024-04-19): Custom profile fields
+  # msc4143_enabled: false  # MSC4143 (2024-05-10): MatrixRTC transport using Livekit backend
+  # msc4155_enabled: false  # MSC4155 (2024-06-13): Invite filtering
+  # msc4169_enabled: false  # MSC4169 (2024-07-07): Backwards-compatible redaction sending via /send
+  msc4210_enabled: false    # MSC4210 (2024-10-03): Remove legacy mention fallbacks
+  msc4222_enabled: false    # MSC4222 (2024-10-29): Add state_after to sync v2
+  # msc4235_enabled: false  # MSC4235 (2024-12-02): Add via param to space hierarchy endpoint
+  # msc4242_enabled: false  # MSC4242 (2024-12-17): State DAGs - new room version for improved state resolution
+  # msc4263_limit_key_queries_to_users_who_share_rooms: false  # MSC4263 (2025-02-04): Prevent MXID enumeration via key queries - limit to users sharing rooms
+  # msc4267_enabled: false  # MSC4267 (2025-02-17): Automatically forget rooms on leave
+  msc4277_enabled: false    # MSC4277 (2025-03-21): Harmonize reporting endpoints - ignore score param, always return HTTP 200
+  msc4293_enabled: false    # MSC4293 (2025-05-27): Redact events when a user is kicked or banned
+  # msc4306_enabled: false  # MSC4306 (2025-07-08): Thread subscriptions (MSC4308 extends this to Sliding Sync)
+  # msc4354_enabled: false  # MSC4354 (2025-09-16): Sticky events - events pinned to the top of a room (pre-existing events unaffected)
+  # msc4370_enabled: false  # MSC4370 (2025-10-17): Get extremities federation endpoint
+  # msc4388_mode: "off"     # MSC4388 (2025-12-10): Secure out-of-band channel for QR sign-in; requires MAS (off/open/authenticated)
+  # msc4450_enabled: false  # MSC4450 (2026-04-14): Identity provider selection for legacy SSO (m.login.sso) - not applicable with MAS
+  # msc4452_enabled: false  # MSC4452 (2026-04-21): Advertise URL preview capability - returns 403 when url_preview_enabled is false
 
 # vim:ft=yaml
