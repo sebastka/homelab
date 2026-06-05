@@ -21,7 +21,7 @@ resources:
 helmCharts:
   - name: kube-prometheus-stack
     repo: oci://ghcr.io/prometheus-community/charts
-    version: 86.1.0  # renovate: datasource=helm registryUrl=oci://ghcr.io/prometheus-community/charts depName=kube-prometheus-stack
+    version: 86.1.1  # renovate: datasource=helm registryUrl=oci://ghcr.io/prometheus-community/charts depName=kube-prometheus-stack
     releaseName: kube-prometheus-stack
     namespace: monitoring
     includeCRDs: false
