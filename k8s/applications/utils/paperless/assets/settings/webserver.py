@@ -1,12 +1,22 @@
 import paperless.settings as _base
 import datetime as _dt
 import logging as _log
-import time as _time
 
 # Import all settings from paperless.settings, including private _names excluded by `import *`
 globals().update({k: v for k, v in vars(_base).items() if not (k.startswith("__") and k.endswith("__"))})
 
-LOGGING["loggers"]["granian.access"]["handlers"] = ["file_paperless", "console"]
+# Use the nginx combined log format for access logs
+LOGGING["formatters"]["nginx_combined"] = {"format": "%(message)s"}
+LOGGING["handlers"]["nginx_access"] = {
+    "class": "logging.StreamHandler",
+    "formatter": "nginx_combined",
+    "stream": "ext://sys.stdout",
+}
+LOGGING["loggers"]["granian.access"] = {
+    "handlers": ["nginx_access"],
+    "level": "INFO",
+    "propagate": False,
+}
 
 _access_logger = _log.getLogger("granian.access")
 
@@ -18,19 +28,20 @@ class AccessLogMiddleware:
         self.get_response = get_response
 
     async def __call__(self, request):
-        t0 = _time.perf_counter()
         response = await self.get_response(request)
-        dt_ms = (_time.perf_counter() - t0) * 1000
         xff = request.META.get("HTTP_X_FORWARDED_FOR", "")
         addr = xff.split(",")[0].strip() if xff else request.META.get("REMOTE_ADDR", "-")
         _access_logger.info(
-            "[%s] %s - \"%s %s\" %d %.3f",
-            _dt.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %z"),
+            '%s - - [%s] "%s %s %s" %d %s "%s" "%s"',
             addr,
+            _dt.datetime.now().astimezone().strftime("%d/%b/%Y:%H:%M:%S %z"),
             request.method,
             request.get_full_path(),
+            request.META.get("SERVER_PROTOCOL", "HTTP/1.1"),
             response.status_code,
-            dt_ms,
+            response.get("Content-Length", "-"),
+            request.META.get("HTTP_REFERER", "-"),
+            request.META.get("HTTP_USER_AGENT", "-"),
         )
         return response
 
