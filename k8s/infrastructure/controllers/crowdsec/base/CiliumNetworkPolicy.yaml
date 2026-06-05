@@ -22,7 +22,7 @@ spec:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # envoy-proxy-bouncer
   egress:
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
-    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}, {matchPattern: '*.api.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: vmsingle}}], toPorts: [ports: [{port: '8428', protocol: TCP}]]}  # notification plugin
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: ntfy, app.kubernetes.io/name: ntfy}}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # ntfy notification plugin
 ---
@@ -36,7 +36,7 @@ spec:
   # ingress: []
   egress:
     - {toEntities: [cluster], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # LAPI (cluster entity covers pod IPs unresolved by ipcache)
-    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}, {matchPattern: '*.api.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
@@ -49,4 +49,4 @@ spec:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '7422', protocol: TCP}]]}  # envoy-proxy-bouncer WAF
   egress:
     - {toEntities: [cluster], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # LAPI (cluster entity covers pod IPs unresolved by ipcache)
-    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+    - {toFQDNs: [{matchPattern: '*.crowdsec.net'}, {matchPattern: '*.api.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
