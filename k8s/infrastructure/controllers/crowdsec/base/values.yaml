@@ -119,14 +119,14 @@ config:
     filters:
       - Alert.Remediation == true && Alert.GetScope() == "Ip"
     decisions: [{type: ban, duration: 4h}]
-    notifications: [http_default]
+    notifications: [http_default, http_ntfy]
     on_success: break
     ---
     name: default_range_remediation
     filters:
       - Alert.Remediation == true && Alert.GetScope() == "Range"
     decisions: [{type: ban, duration: 4h}]
-    notifications: [http_default]
+    notifications: [http_default, http_ntfy]
     on_success: break
 
   notifications:

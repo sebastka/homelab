@@ -1,0 +1,12 @@
+---
+type: http
+name: http_ntfy
+log_level: info
+format: "{{range .}}{{.Source.IP}}{{if .Source.Cn}} ({{.Source.Cn}}){{end}} banned: {{(index .Decisions 0).Scenario}}\n{{end}}"
+url: http://web.ntfy.svc.cluster.local/homelab
+method: POST
+headers:
+  X-Title: CrowdSec
+  X-Priority: high
+  X-Tags: crowdsec,ban
+  Authorization: Bearer ${NTFY_AUTH_TOKEN_CROWDSEC}

@@ -12,6 +12,15 @@ patches:
       kind: (DaemonSet|Deployment|Service|ConfigMap|Secret|ServiceAccount|Job)
     patch: |
       - {op: add, path: /metadata/namespace, value: crowdsec}
+  # Mount ntfy notification plugin into LAPI
+  - target: {kind: Deployment, name: crowdsec-lapi}
+    patch: |
+      - op: add
+        path: /spec/template/spec/volumes/-
+        value: {name: crowdsec-notifications-ntfy, configMap: {name: crowdsec-notifications-ntfy}}
+      - op: add
+        path: /spec/template/spec/containers/0/volumeMounts/-
+        value: {name: crowdsec-notifications-ntfy, mountPath: /etc/crowdsec_data/notifications/http_ntfy.yaml, subPath: http_ntfy.yaml, readOnly: true}
   - target: {kind: Pod, name: 'crowdsec-test-.*'}
     patch: |
       # Fix missing namespace and add securityContext to test pod
@@ -37,6 +46,12 @@ patches:
 images:
   - {name: crowdsecurity/crowdsec, newName: docker.io/crowdsecurity/crowdsec}
   - {name: curlimages/curl, newName: docker.io/alpine/curl, newTag: 8.19.0, digest: sha256:23b60dc412cd453aba2841da0ee8bc6ad8da32263c557fcc9eccd52840f4ca43}
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - {namespace: crowdsec, name: crowdsec-notifications-ntfy, files: [http_ntfy.yaml=assets/http_ntfy.yaml]}
 
 resources:
   - Namespace.yaml

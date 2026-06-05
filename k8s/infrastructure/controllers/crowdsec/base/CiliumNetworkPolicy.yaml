@@ -24,6 +24,7 @@ spec:
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toFQDNs: [{matchPattern: '*.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: vmsingle}}], toPorts: [ports: [{port: '8428', protocol: TCP}]]}  # notification plugin
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: ntfy, app.kubernetes.io/name: ntfy}}], toPorts: [ports: [{port: '80', protocol: TCP}]]}  # ntfy notification plugin
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
