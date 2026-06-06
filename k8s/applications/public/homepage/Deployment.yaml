@@ -55,18 +55,18 @@ spec:
           livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
-            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/client_temp, subPath: client_temp, readOnly: true}
-            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/fastcgi_temp, subPath: fastcgi_temp, readOnly: true}
-            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/proxy_temp, subPath: proxy_temp, readOnly: true}
-            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/scgi_temp, subPath: scgi_temp, readOnly: true}
-            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/uwsgi_temp, subPath: uwsgi_temp, readOnly: true}
-            - {name: nginx-config-volume, mountPath: /etc/nginx/nginx.custom.conf, subPath: nginx.custom.conf, readOnly: true}
-            - {name: nginx-config-volume, mountPath: /etc/nginx/conf.d/sites.conf, subPath: 'sites.conf', readOnly: true}
-            - {name: karlsenfr-volume, mountPath: /mnt/karlsenfr/mta-sts, subPath: /mnt/karlsenfr/mta-sts, readOnly: true}
-            - {name: karlsenfr-volume, mountPath: /mnt/karlsenfr/openpgpkey, subPath: /mnt/karlsenfr/openpgpkey, readOnly: true}
-            - {name: karlsenfr-volume, mountPath: /mnt/karlsenfr/other, subPath: /mnt/karlsenfr/other, readOnly: true}
-            - {name: karlsenfr-volume, mountPath: /mnt/karlsenfr/www, subPath: /mnt/karlsenfr/www, readOnly: true}
+            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/client_temp,  subPath: client_temp,              readOnly: true}
+            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/fastcgi_temp, subPath: fastcgi_temp,             readOnly: true}
+            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/proxy_temp,   subPath: proxy_temp,               readOnly: true}
+            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/scgi_temp,    subPath: scgi_temp,                readOnly: true}
+            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/uwsgi_temp,   subPath: uwsgi_temp,               readOnly: true}
+            - {name: nginx-config-volume,    mountPath: /etc/nginx/nginx.custom.conf,  subPath: nginx.custom.conf,        readOnly: true}
+            - {name: nginx-config-volume,    mountPath: /etc/nginx/conf.d/sites.conf,  subPath: 'sites.conf',             readOnly: true}
+            - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/mta-sts,        subPath: mnt/karlsenfr/mta-sts,    readOnly: true}
+            - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/openpgpkey,     subPath: mnt/karlsenfr/openpgpkey, readOnly: true}
+            - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/other,          subPath: mnt/karlsenfr/other,      readOnly: true}
+            - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/www,            subPath: mnt/karlsenfr/www,        readOnly: true}
       volumes:
-        - {name: nginx-config-volume, configMap: {name: nginx-config}}
-        - {name: karlsenfr-volume, image: {reference: ghcr.io/sebastka/karlsen-fr:6698cfc@sha256:d4c1000322fcccf4ba1572c635f86029c75d586728ab8f27d64135488f504f73}}
+        - {name: nginx-config-volume,    configMap: {name: nginx-config}}
+        - {name: karlsenfr-volume,       image: {reference: ghcr.io/sebastka/karlsen-fr:6698cfc@sha256:d4c1000322fcccf4ba1572c635f86029c75d586728ab8f27d64135488f504f73}}
         - {name: var-cache-nginx-volume, emptyDir: {}}
