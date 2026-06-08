@@ -23,7 +23,7 @@ resources:
 helmCharts:
   - name: argo-cd
     repo: oci://ghcr.io/argoproj/argo-helm
-    version: 9.5.19  # renovate: datasource=helm registryUrl=oci://ghcr.io/argoproj/argo-helm depName=argo-cd
+    version: 9.5.20  # renovate: datasource=helm registryUrl=oci://ghcr.io/argoproj/argo-helm depName=argo-cd
     releaseName: argocd
     namespace: argocd
     includeCRDs: true
