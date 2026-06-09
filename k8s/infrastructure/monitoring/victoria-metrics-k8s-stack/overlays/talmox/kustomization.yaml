@@ -9,7 +9,7 @@ resources:
 helmCharts:
   - name: victoria-metrics-k8s-stack
     repo: oci://ghcr.io/victoriametrics/helm-charts
-    version: 0.81.0  # renovate: datasource=helm registryUrl=oci://ghcr.io/victoriametrics/helm-charts depName=victoria-metrics-k8s-stack
+    version: 0.82.0  # renovate: datasource=helm registryUrl=oci://ghcr.io/victoriametrics/helm-charts depName=victoria-metrics-k8s-stack
     releaseName: victoria-metrics-k8s-stack
     namespace: monitoring
     includeCRDs: false
