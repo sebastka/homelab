@@ -25,7 +25,7 @@ resources:
 helmCharts:
   - name: alloy
     repo: https://grafana.github.io/helm-charts
-    version: 1.8.2  # renovate: datasource=helm registryUrl=https://grafana.github.io/helm-charts depName=alloy
+    version: 1.9.0  # renovate: datasource=helm registryUrl=https://grafana.github.io/helm-charts depName=alloy
     releaseName: alloy
     namespace: alloy
     valuesFile: values.yaml
