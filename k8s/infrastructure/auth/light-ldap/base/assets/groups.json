@@ -2,3 +2,4 @@
 {"name": "k8s_users",      "displayName": "Kubernetes Users",            "gidNumber": 2001}
 {"name": "forgejo_admins", "displayName": "Forgejo Administrators",      "gidNumber": 2002}
 {"name": "forgejo_users",  "displayName": "Forgejo Users",               "gidNumber": 2003}
+{"name": "family",         "displayName": "Family",                      "gidNumber": 2004}
