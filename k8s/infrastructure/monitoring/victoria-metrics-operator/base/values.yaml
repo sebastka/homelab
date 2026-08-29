@@ -6,7 +6,7 @@
 configReloader:
   image:
     repository: docker.io/victoriametrics/operator
-    tag: config-reloader-v0.70.1  # renovate: datasource=docker depName=docker.io/victoriametrics/operator versioning=regex:^config-reloader-v(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)$
+    tag: config-reloader-v0.74.1  # renovate: datasource=docker depName=docker.io/victoriametrics/operator versioning=regex:^config-reloader-v(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)$
 
 crds:
   plain: false  # Rendered from templates; plain: true makes CRDs immutable (no auto-upgrade)
