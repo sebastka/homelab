@@ -37,7 +37,7 @@ spec:
       initContainers:
         - name: deluge-web-init
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
-          image: ghcr.io/home-operations/deluge:2.2.0@sha256:94a1ca18cff9816115ca873f1a0f7771a8414fd072150044e4e81c36e1a68ee0
+          image: ghcr.io/home-operations/deluge:2.2.0@sha256:b3119066a3415c99e93efa01973b418b9607929c953e26a2f1eaa05161a55e45
           command: ['/bin/sh', '-c']
           args:
             - |
@@ -111,7 +111,7 @@ spec:
       containers:
         - name: deluge-web
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
-          image: ghcr.io/home-operations/deluge:2.2.0@sha256:94a1ca18cff9816115ca873f1a0f7771a8414fd072150044e4e81c36e1a68ee0
+          image: ghcr.io/home-operations/deluge:2.2.0@sha256:b3119066a3415c99e93efa01973b418b9607929c953e26a2f1eaa05161a55e45
           command:
             - /usr/bin/deluge-web
             - --config=/config
