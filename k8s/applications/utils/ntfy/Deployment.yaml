@@ -71,7 +71,7 @@ spec:
       containers:
         - name: ntfy
           # Dockerfile: https://github.com/binwiederhier/ntfy/blob/main/Dockerfile
-          image: docker.io/binwiederhier/ntfy:v2.24@sha256:f8a9b104313b87cc24ae4f775f39e6328205b57dff6ede3eaf098a91e5d79f59
+          image: docker.io/binwiederhier/ntfy:v2.28@sha256:6ef4b819f722fccdc036af611c4774cfdc2de821ab74fdd48bbf4c9d6f8973da
           args: [serve]
           securityContext:
             allowPrivilegeEscalation: false
