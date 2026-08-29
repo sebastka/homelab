@@ -68,6 +68,11 @@
       "automerge": true
     },
     {
+      "description": "Digest refreshes are rebuilds of an already-vetted tag",
+      "matchUpdateTypes": ["digest", "pinDigest"],
+      "minimumReleaseAge": "0 days"
+    },
+    {
       "description": "Skip the stability delay for base images and self-built images",
       "matchDatasources": ["docker"],
       "matchPackageNames": [
