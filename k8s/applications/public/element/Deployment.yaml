@@ -37,7 +37,7 @@ spec:
       containers:
         - name: element
           # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/element/Dockerfile
-          image: docker.io/vectorim/element-web:v1.12.21@sha256:26546ef29e02a6e0978c137b7cc93581e6bbb94a5fe95104b89a216c43004d12
+          image: docker.io/vectorim/element-web:v1.12.26@sha256:a9be04cef41ed94cba0dcaeca5a81f89826d4f8be3d57ba5a6fa988f34eda703
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
