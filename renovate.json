@@ -7,7 +7,10 @@
     "k8s/**/charts/**"
   ],
   "prHourlyLimit": 10,
+  "prConcurrentLimit": 25,
   "minimumReleaseAge": "1 day",
+  "internalChecksAsSuccess": true,
+  "platformAutomerge": false,
   "labels": ["renovate"],
   "semanticCommits": "enabled",
   "kubernetes": {
@@ -53,12 +56,19 @@
   ],
   "packageRules": [
     {
+      "description": "Forgejo chart is tracked via the gitea-releases custom manager instead",
       "matchManagers": ["kustomize"],
       "matchDatasources": ["docker"],
       "matchPackageNames": ["code.forgejo.org/forgejo-helm/forgejo"],
       "enabled": false
     },
     {
+      "description": "Automerge every non-major update, all ecosystems",
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest", "bump"],
+      "automerge": true
+    },
+    {
+      "description": "Skip the stability delay for base images and self-built images",
       "matchDatasources": ["docker"],
       "matchPackageNames": [
         "docker.io/library/alpine",
@@ -77,7 +87,6 @@
         "docker.io/gotenberg/gotenberg",
         "ghcr.io/sebastka/**"
       ],
-      "automerge": true,
       "minimumReleaseAge": "0 days",
       "schedule": ["after 4am and before 6am"],
       "timezone": "Europe/Oslo"
@@ -86,6 +95,11 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["docker.io/searxng/searxng"],
       "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-(?<build>[a-f0-9]+)$"
+    },
+    {
+      "description": "Majors always need a human; keep them off automerge",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
     }
   ],
   "customDatasources": {
