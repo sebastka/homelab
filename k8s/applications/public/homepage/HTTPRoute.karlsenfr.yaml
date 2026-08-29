@@ -11,6 +11,7 @@ spec:
   hostnames:
     - karlsen.fr
     - www.karlsen.fr
+    - autoconfig.karlsen.fr
     - openpgpkey.karlsen.fr
     - mta-sts.karlsen.fr
   rules:

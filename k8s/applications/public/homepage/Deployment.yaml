@@ -62,6 +62,7 @@ spec:
             - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/uwsgi_temp,   subPath: uwsgi_temp,               readOnly: true}
             - {name: nginx-config-volume,    mountPath: /etc/nginx/nginx.custom.conf,  subPath: nginx.custom.conf,        readOnly: true}
             - {name: nginx-config-volume,    mountPath: /etc/nginx/conf.d/sites.conf,  subPath: 'sites.conf',             readOnly: true}
+            - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/autoconfig,     subPath: mnt/karlsenfr/autoconfig, readOnly: true}
             - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/mta-sts,        subPath: mnt/karlsenfr/mta-sts,    readOnly: true}
             - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/openpgpkey,     subPath: mnt/karlsenfr/openpgpkey, readOnly: true}
             - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/other,          subPath: mnt/karlsenfr/other,      readOnly: true}

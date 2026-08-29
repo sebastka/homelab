@@ -5,6 +5,7 @@ kind: StaticHostConfig
 name: 192.168.2.2
 hostnames:
   - auth.karlsen.fr
+  - autoconfig.karlsen.fr
   - git.karlsen.fr
   - ldap.karlsen.fr
   - mas.karlsen.fr
