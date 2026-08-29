@@ -21,7 +21,7 @@ resources:
 helmCharts:
   - name: forgejo
     repo: oci://code.forgejo.org/forgejo-helm
-    version: 17.1.0  # renovate: datasource=gitea-releases registryUrl=https://code.forgejo.org depName=forgejo-helm/forgejo-helm
+    version: 17.1.5  # renovate: datasource=gitea-releases registryUrl=https://code.forgejo.org depName=forgejo-helm/forgejo-helm
     releaseName: forgejo
     namespace: forgejo
     includeCRDs: true
