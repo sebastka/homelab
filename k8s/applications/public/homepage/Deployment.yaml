@@ -68,5 +68,5 @@ spec:
             - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/www,            subPath: mnt/karlsenfr/www,        readOnly: true}
       volumes:
         - {name: nginx-config-volume,    configMap: {name: nginx-config}}
-        - {name: karlsenfr-volume,       image: {reference: ghcr.io/sebastka/karlsen-fr:6698cfc@sha256:d4c1000322fcccf4ba1572c635f86029c75d586728ab8f27d64135488f504f73}}
+        - {name: karlsenfr-volume,       image: {reference: ghcr.io/sebastka/karlsen-fr:53eda9f@sha256:be41294a921d0525527758f6777078a09c0aecbd9f15f6fa10b82a585b53abe2}}
         - {name: var-cache-nginx-volume, emptyDir: {}}
