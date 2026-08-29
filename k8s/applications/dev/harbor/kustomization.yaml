@@ -19,7 +19,7 @@ resources:
 helmCharts:
   - name: harbor
     repo: https://helm.goharbor.io
-    version: 1.19.1  # renovate: datasource=helm registryUrl=https://helm.goharbor.io depName=harbor
+    version: 1.19.2  # renovate: datasource=helm registryUrl=https://helm.goharbor.io depName=harbor
     releaseName: harbor
     namespace: harbor
     includeCRDs: true
