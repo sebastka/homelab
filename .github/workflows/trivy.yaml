@@ -152,9 +152,53 @@ jobs:
   # Single stable check name for the ruleset on master to require. The per-image
   # jobs are named after the image they scan, so their names change every PR and
   # cannot be named in a ruleset.
+  # kustomize configMapGenerator `envs:` takes everything after the first `=`
+  # literally - no quote stripping, no comment stripping. Shell habits silently
+  # corrupt values; three separate instances surfaced during the paperless v3
+  # upgrade, each only when a stricter parser rejected them.
+  env-files:
+    name: Env file lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Reject shell quoting and trailing comments
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          import re
+          import sys
+
+          bad = []
+          for path in sorted(pathlib.Path("k8s").rglob("*.env")):
+              if "/charts/" in str(path):
+                  continue
+              for num, line in enumerate(path.read_text().splitlines(), 1):
+                  stripped = line.strip()
+                  if not stripped or stripped.startswith("#") or "=" not in stripped:
+                      continue
+                  key, _, value = stripped.partition("=")
+                  if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key):
+                      continue
+                  if len(value) > 1 and value[0] == value[-1] and value[0] in "\"'":
+                      bad.append((path, num, "quoted value", line))
+                  elif " #" in value:
+                      bad.append((path, num, "trailing comment", line))
+
+          for path, num, why, line in bad:
+              print(f"::error file={path},line={num}::{why} - kustomize keeps this verbatim: {line}")
+
+          if bad:
+              print(f"\n{len(bad)} problem(s). Move comments to their own line and drop shell quotes.")
+              sys.exit(1)
+
+          print("All env files clean.")
+          PY
+
   gate:
     name: Trivy gate
-    needs: [collect, images, config]
+    needs: [collect, images, config, env-files]
     if: always()
     runs-on: ubuntu-latest
     steps:
