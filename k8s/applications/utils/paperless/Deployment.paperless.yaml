@@ -266,6 +266,7 @@ spec:
             - {name: cache-volume, mountPath: /var/cache}
             - {name: scripts-volume, mountPath: /mnt/scripts/post-consumption.sh, subPath: post-consumption.sh, readOnly: true}
             - {name: scripts-volume, mountPath: /usr/local/bin/worker-health, subPath: worker-health.sh, readOnly: true}
+            - {name: scripts-volume, mountPath: /usr/local/bin/paperless-ai-review, subPath: paperless-ai-review.py, readOnly: true}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}

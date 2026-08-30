@@ -9,7 +9,7 @@ generatorOptions:
 configMapGenerator:
   - {name: paperless-env, envs: [assets/paperless.env]}
   - {name: paperless-settings, files: [webserver.py=assets/settings/webserver.py]}
-  - {name: paperless-scripts, files: [post-consumption.sh=assets/scripts/post-consumption.sh, worker-health.sh=assets/scripts/worker-health.sh]}
+  - {name: paperless-scripts, files: [post-consumption.sh=assets/scripts/post-consumption.sh, worker-health.sh=assets/scripts/worker-health.sh, paperless-ai-review.py=assets/scripts/paperless-ai-review.py]}
 
 components:
   - ../../../common/valkey
