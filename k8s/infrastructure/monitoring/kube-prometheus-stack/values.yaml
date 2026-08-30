@@ -20,7 +20,7 @@ prometheus:
         - {toEntities: [cluster]}  # pod scraping across all namespaces
   prometheusSpec:
     thanos:
-      image: quay.io/thanos/thanos:v0.41.0@sha256:cf3e9b292e4302ad4a4955b56379703aea39516607d382a57604a3d003c35d10  # renovate: datasource=docker depName=quay.io/thanos/thanos
+      image: quay.io/thanos/thanos:v0.42.4@sha256:b567818fe608067eb0f1d7c2c4fe361e7ad83c8a256234c97685f1d0bf670cc8  # renovate: datasource=docker depName=quay.io/thanos/thanos
     # externalLabels: {cluster: XXX}  # Patch for each cluster
     podMonitorNamespaceSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
