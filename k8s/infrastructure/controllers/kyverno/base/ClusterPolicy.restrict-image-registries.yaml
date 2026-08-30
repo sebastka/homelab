@@ -59,7 +59,7 @@ spec:
                       - quay.io/jetstack/cert-manager-webhook
                       - quay.io/jetstack/cert-manager-startupapicheck
                       - quay.io/jetstack/trust-manager
-                      - quay.io/jetstack/trust-pkg-debian-bookworm
+                      - quay.io/jetstack/trust-pkg-debian-trixie
 
                       # infrastructure/controllers/crowdsec
                       - docker.io/crowdsecurity/crowdsec
