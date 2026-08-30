@@ -1,6 +1,9 @@
 import paperless.settings as _base
 import datetime as _dt
 import logging as _log
+import os
+from typing import Final
+from paperless.settings.parsers import get_bool_from_env
 
 # Import all settings from paperless.settings, including private _names excluded by `import *`
 globals().update({k: v for k, v in vars(_base).items() if not (k.startswith("__") and k.endswith("__"))})
@@ -55,21 +58,21 @@ MIDDLEWARE = ["webserver.AccessLogMiddleware"] + list(MIDDLEWARE)
 
 CSRF_COOKIE_NAME: Final[str] = os.getenv("DJANGO_CSRF_COOKIE_NAME", "csrftoken")
 CSRF_COOKIE_DOMAIN: Final[str] = os.getenv("DJANGO_CSRF_COOKIE_DOMAIN", None)
-CSRF_COOKIE_HTTPONLY: Final[bool] = __get_boolean("DJANGO_CSRF_COOKIE_HTTPONLY", "no")
+CSRF_COOKIE_HTTPONLY: Final[bool] = get_bool_from_env("DJANGO_CSRF_COOKIE_HTTPONLY", "no")
 CSRF_COOKIE_PATH: Final[str] = os.getenv("DJANGO_CSRF_COOKIE_PATH", "/")
 CSRF_COOKIE_SAMESITE: Final[str] = os.getenv("DJANGO_CSRF_COOKIE_SAMESITE", "Strict")
-CSRF_COOKIE_SECURE: Final[bool] = __get_boolean("DJANGO_CSRF_COOKIE_SECURE", "yes")
+CSRF_COOKIE_SECURE: Final[bool] = get_bool_from_env("DJANGO_CSRF_COOKIE_SECURE", "yes")
 
 SESSION_COOKIE_NAME: Final[str] = os.getenv("DJANGO_SESSION_COOKIE_NAME", "__Host-sessionid")
 SESSION_COOKIE_DOMAIN: Final[str] = os.getenv("DJANGO_SESSION_COOKIE_DOMAIN", None)
-SESSION_COOKIE_HTTPONLY: Final[bool] = __get_boolean("DJANGO_SESSION_COOKIE_HTTPONLY", "yes")
+SESSION_COOKIE_HTTPONLY: Final[bool] = get_bool_from_env("DJANGO_SESSION_COOKIE_HTTPONLY", "yes")
 SESSION_COOKIE_PATH: Final[str] = os.getenv("DJANGO_SESSION_COOKIE_PATH", "/")
 SESSION_COOKIE_SAMESITE: Final[str] = os.getenv("DJANGO_SESSION_COOKIE_SAMESITE", "Strict")
-SESSION_COOKIE_SECURE: Final[bool] =  __get_boolean("DJANGO_SESSION_COOKIE_SECURE", "yes")
+SESSION_COOKIE_SECURE: Final[bool] =  get_bool_from_env("DJANGO_SESSION_COOKIE_SECURE", "yes")
 
 LANGUAGE_COOKIE_NAME: Final[str] = os.getenv("DJANGO_LANGUAGE_COOKIE_NAME", "__Host-django_language")
 LANGUAGE_COOKIE_DOMAIN: Final[str] = os.getenv("DJANGO_LANGUAGE_COOKIE_DOMAIN", None)
-LANGUAGE_COOKIE_HTTPONLY: Final[bool] = __get_boolean("DJANGO_LANGUAGE_COOKIE_HTTPONLY", "yes")
+LANGUAGE_COOKIE_HTTPONLY: Final[bool] = get_bool_from_env("DJANGO_LANGUAGE_COOKIE_HTTPONLY", "yes")
 LANGUAGE_COOKIE_PATH: Final[str] = os.getenv("DJANGO_LANGUAGE_COOKIE_PATH", "/")
 LANGUAGE_COOKIE_SAMESITE: Final[str] = os.getenv("DJANGO_LANGUAGE_COOKIE_SAMESITE", "Strict")
-LANGUAGE_COOKIE_SECURE: Final[bool] = __get_boolean("DJANGO_LANGUAGE_COOKIE_SECURE", "yes")
+LANGUAGE_COOKIE_SECURE: Final[bool] = get_bool_from_env("DJANGO_LANGUAGE_COOKIE_SECURE", "yes")
