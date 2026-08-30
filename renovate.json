@@ -10,7 +10,7 @@
   "prConcurrentLimit": 25,
   "minimumReleaseAge": "1 day",
   "internalChecksAsSuccess": true,
-  "platformAutomerge": false,
+  "platformAutomerge": true,
   "labels": ["renovate"],
   "semanticCommits": "enabled",
   "kubernetes": {
