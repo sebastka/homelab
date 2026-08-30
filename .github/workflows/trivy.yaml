@@ -2,11 +2,10 @@
 name: Trivy
 
 on:
+  # Deliberately no `paths` filter. `Trivy gate` below is a required status check,
+  # and a run that never starts leaves that check permanently pending, which would
+  # block the PR from merging rather than letting it through.
   pull_request:
-    paths:
-      - 'k8s/**'
-      - 'tofu/**'
-      - '.github/workflows/trivy.yaml'
   workflow_dispatch:
 
 defaults:
@@ -146,3 +145,28 @@ jobs:
         uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938  # v4.37.9
         with:
           sarif_file: trivy-config.sarif
+
+  # Single stable check name for the ruleset on master to require. The per-image
+  # jobs are named after the image they scan, so their names change every PR and
+  # cannot be named in a ruleset.
+  gate:
+    name: Trivy gate
+    needs: [collect, images, config]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify every Trivy job passed
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          echo "$RESULTS"
+
+          # Job results are success | failure | cancelled | skipped. `images` is
+          # legitimately skipped when a PR touches no image references, so only
+          # failure and cancelled count as a stop.
+          if jq -e 'to_entries | any(.value.result == "failure" or .value.result == "cancelled")' <<< "$RESULTS" > /dev/null; then
+            echo '::error::One or more Trivy jobs did not pass'
+            exit 1
+          fi
+
+          echo 'All Trivy jobs passed or were skipped.'
