@@ -122,15 +122,11 @@ kubeControllerManager:
       - action: labeldrop
         regex: pod
 
-kubeEtcd:
-  enabled: true
-  # endpoints: injected per-cluster via overlays/<cluster>/kustomization.yaml valuesInline
-  service: {port: 2381, targetPort: 2381}
-  vmScrape:
-    spec:
-      endpoints: [{port: http-metrics, scheme: http}]
-      jobLabel: app.kubernetes.io/component
-      namespaceSelector: {matchNames: []}
+# etcd runs on the hosts, so the chart scrapes it via a headless Service plus a
+# hand-written Endpoints. ArgoCD excludes Endpoints/EndpointSlice by default, so
+# that object is never created and the Service has no backends. Scraped with a
+# per-cluster VMStaticScrape in overlays/<cluster>/ instead.
+kubeEtcd: {enabled: false}
 
 kubeScheduler:
   enabled: true

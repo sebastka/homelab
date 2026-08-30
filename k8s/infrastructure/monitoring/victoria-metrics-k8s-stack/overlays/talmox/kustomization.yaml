@@ -5,6 +5,7 @@ namespace: monitoring
 
 resources:
   - ../../base
+  - VMStaticScrape.etcd.yaml
 
 helmCharts:
   - name: victoria-metrics-k8s-stack
@@ -14,5 +15,3 @@ helmCharts:
     namespace: monitoring
     includeCRDs: false
     valuesFile: ../../base/values.yaml
-    valuesInline:
-      kubeEtcd: {endpoints: [192.168.1.201, 192.168.1.202, 192.168.1.203]}
