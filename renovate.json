@@ -103,8 +103,8 @@
       "minimumReleaseAge": "0 days"
     },
     {
-      "description": "Custom datasources return versions only, with no timestamp, so the same stall applies",
-      "matchDatasources": ["grafana-plugins"],
+      "description": "The Grafana datasources return versions only, with no timestamp, so the same stall applies. Custom datasources are namespaced with a custom. prefix, matching the datasource= annotations in the manifests",
+      "matchDatasources": ["custom.grafana-plugins", "grafana-dashboards"],
       "minimumReleaseAge": "0 days"
     },
     {
