@@ -28,7 +28,7 @@ helmCharts:
 
   - name: trust-manager
     repo: oci://quay.io/jetstack/charts
-    version: v0.22.1  # renovate: datasource=helm registryUrl=oci://quay.io/jetstack/charts depName=trust-manager
+    version: v0.24.0  # renovate: datasource=helm registryUrl=oci://quay.io/jetstack/charts depName=trust-manager
     releaseName: trust-manager
     namespace: cert-manager
     includeCRDs: true
