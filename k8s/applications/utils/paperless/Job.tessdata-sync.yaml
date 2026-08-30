@@ -12,6 +12,7 @@ metadata:
     # app.kubernetes.io/managed-by: kustomize
   annotations:
     argocd.argoproj.io/sync-wave: '1'
+    argocd.argoproj.io/sync-options: Force=true,Replace=true  # A Job's spec.template is immutable, so ArgoCD must recreate rather than patch it
 spec:
   ttlSecondsAfterFinished: 604800
   template:
