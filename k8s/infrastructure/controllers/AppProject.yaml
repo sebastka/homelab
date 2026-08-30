@@ -8,10 +8,8 @@ spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
     - {namespace: default,              name: talmox}
-    - {namespace: default,              name: hyades}
     - {namespace: argocd,               name: talmox}
     - {namespace: kube-system,          name: talmox}
-    - {namespace: kube-system,          name: hyades}
     - {namespace: cert-manager,         name: talmox}
     - {namespace: crowdsec,             name: talmox}
     - {namespace: falco,                name: talmox}
@@ -20,7 +18,6 @@ spec:
     - {namespace: nfd,                  name: talmox}
     - {namespace: reloader,             name: talmox}
     - {namespace: sealed-secrets,       name: talmox}
-    - {namespace: sealed-secrets,       name: hyades}
     - {namespace: trivy,                name: talmox}
   clusterResourceWhitelist:
     - {group: '*', kind: '*'}

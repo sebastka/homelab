@@ -14,7 +14,6 @@ resources:
   - GRPCRoute.yaml
   - GrafanaDashboard.yaml
   - SealedSecret.cluster-talmox.yaml
-  - SealedSecret.cluster-hyades.yaml
   - SealedSecret.oidc.yaml
   - SealedSecret.argocd-notifications-secret.yaml
   - CiliumNetworkPolicy.yaml
