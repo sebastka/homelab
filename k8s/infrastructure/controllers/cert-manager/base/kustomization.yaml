@@ -20,7 +20,7 @@ configMapGenerator:
 helmCharts:
   - name: cert-manager
     repo: oci://quay.io/jetstack/charts
-    version: v1.20.2  # renovate: datasource=helm registryUrl=oci://quay.io/jetstack/charts depName=cert-manager
+    version: v1.21.1  # renovate: datasource=helm registryUrl=oci://quay.io/jetstack/charts depName=cert-manager
     releaseName: cert-manager
     namespace: cert-manager
     includeCRDs: true
