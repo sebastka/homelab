@@ -53,7 +53,7 @@ httproute:
 
 referenceGrant:
   create: true
-  fromNamespaces: [paperless, element, jellyfin]
+  fromNamespaces: [paperless, element, jellyfin, homepage]
 
 grafana:
   dashboard:
