@@ -18,6 +18,7 @@ spec:
     - {toFQDNs: [matchName: imap.domeneshop.no], toPorts: [ports: [{port: '993', protocol: TCP}]]}
     - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}
     - {toFQDNs: [{matchName: api.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+    - {toFQDNs: [{matchName: github.com}, {matchName: objects.githubusercontent.com}, {matchName: codeload.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # tessdata-sync init container
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
@@ -53,14 +54,3 @@ spec:
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: paperless}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-syncjob
-  namespace: paperless
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: tessdata-sync}}
-  # ingress: []
-  egress:
-    - {toFQDNs: [{matchName: github.com}, {matchName: objects.githubusercontent.com}, {matchName: codeload.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
