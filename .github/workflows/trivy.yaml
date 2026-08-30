@@ -1,0 +1,123 @@
+---
+name: Trivy
+
+on:
+  pull_request:
+    paths:
+      - 'k8s/**'
+      - 'tofu/**'
+      - '.github/workflows/trivy.yaml'
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash -euo pipefail {0}
+
+concurrency:
+  group: trivy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    name: Collect changed images
+    runs-on: ubuntu-latest
+    outputs:
+      images: ${{ steps.collect.outputs.images }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0  # the diff below needs history back to the PR base
+
+      - name: Extract images added by this PR
+        id: collect
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          # workflow_dispatch has no PR context; nothing to diff against.
+          if [[ -z "${BASE_SHA:-}" ]]; then
+            echo 'images=[]' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # A Renovate PR bumps one pinned `image:` line, so scanning only what the diff
+          # introduces keeps this fast and fails solely on the change under review.
+          # Helm-templated refs and bare chart version bumps are skipped: those images
+          # are not resolvable without rendering the chart.
+          git diff --unified=0 "$BASE_SHA" HEAD -- k8s \
+            | grep -E '^\+[[:space:]]*image:[[:space:]]*\S' \
+            | sed -E 's/^\+[[:space:]]*image:[[:space:]]*//; s/[[:space:]].*$//' \
+            | tr -d '\042\047' \
+            | grep -Ev '[{}$]|^$' \
+            | sort -u > images.txt
+
+          echo 'Images to scan:'
+          cat images.txt
+          jq -Rsc 'split("\n") | map(select(length > 0))' < images.txt \
+            | sed 's/^/images=/' >> "$GITHUB_OUTPUT"
+
+  images:
+    name: ${{ matrix.image }}
+    needs: collect
+    if: needs.collect.outputs.images != '' && needs.collect.outputs.images != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false  # report every offending image, not just the first
+      matrix:
+        image: ${{ fromJSON(needs.collect.outputs.images) }}
+    env:
+      # Job-level so the step `if` below can read it; step-level env is not
+      # reliably visible to that step's own condition.
+      DOCKERHUB_USERNAME: sebastka
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      # Trivy reads ~/.docker/config.json, so an optional Docker Hub login lifts the
+      # anonymous pull-rate limit that shared Actions runners regularly hit. No-op
+      # until a DOCKERHUB_TOKEN secret exists on the repo.
+      - name: Log in to Docker Hub
+        if: env.DOCKERHUB_TOKEN != ''
+        run: echo "$DOCKERHUB_TOKEN" | docker login docker.io -u "$DOCKERHUB_USERNAME" --password-stdin
+
+      - name: Scan image
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
+        with:
+          scan-type: image
+          image-ref: ${{ matrix.image }}
+          severity: HIGH,CRITICAL
+          # Unfixed upstream CVEs are not actionable here and would block every
+          # automerge; revisit once the real noise level is known.
+          ignore-unfixed: true
+          exit-code: '1'
+          hide-progress: true
+
+  config:
+    name: Misconfiguration scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write  # upload SARIF to the Security tab
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Scan manifests and OpenTofu
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
+        with:
+          scan-type: config
+          scan-ref: .
+          format: sarif
+          output: trivy-config.sarif
+          # Reporting only for now: the existing manifests have never been triaged
+          # against these checks, so failing here would block every PR. Flip to '1'
+          # once the Security tab backlog is clear.
+          exit-code: '0'
+          skip-dirs: 'k8s/**/charts/**'  # vendored upstream charts, per renovate.json ignorePaths
+          hide-progress: true
+
+      - name: Upload results
+        uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938  # v4.37.9
+        with:
+          sarif_file: trivy-config.sarif
