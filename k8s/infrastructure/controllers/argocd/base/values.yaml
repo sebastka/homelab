@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=
-# https://artifacthub.io/packages/helm/argo/argo-cd?modal=values
+# https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/values.yaml
 ---
 
 global:
@@ -8,6 +8,7 @@ global:
     runAsUser: 999
     runAsGroup: 999
     fsGroup: 999
+  networkPolicy: {create: false}
 
 configs:
   cm:
