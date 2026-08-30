@@ -76,3 +76,15 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: prometheus-node-exporter}}
   ingress:
     - {fromEntities: [host, remote-node], toPorts: [ports: [{port: '9100', protocol: TCP}]]}  # Host probes + vmagent scraping
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-sync-job
+  namespace: monitoring
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: victoria-metrics-k8s-stack, app.kubernetes.io/component: syncJob}}
+  egress:
+    - {toEntities: [kube-apiserver]}  # ServiceAccount lookup + applying synced VMRules/dashboards
+    - {toFQDNs: [matchName: raw.githubusercontent.com], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Upstream kube-prometheus rules + dashboards
+    - {toFQDNs: [matchName: runbooks.prometheus-operator.dev], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Runbook links in those rules
