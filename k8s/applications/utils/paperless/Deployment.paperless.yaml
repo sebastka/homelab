@@ -28,7 +28,6 @@ spec:
         # app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccountName: paperless
-      terminationGracePeriodSeconds: 150
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
