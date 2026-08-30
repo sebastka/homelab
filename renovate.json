@@ -97,6 +97,17 @@
       "timezone": "Europe/Oslo"
     },
     {
+      "description": "OCI registries publish no release timestamp, so minimumReleaseAge can never be satisfied and internalChecksFilter=strict withholds the PR forever. Classic https:// helm repos (index.yaml created) and docker.io (Hub API) are unaffected and keep the 1 day delay. See REVIEW.md item 22",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/**", "quay.io/**", "registry.k8s.io/**"],
+      "minimumReleaseAge": "0 days"
+    },
+    {
+      "description": "Custom datasources return versions only, with no timestamp, so the same stall applies",
+      "matchDatasources": ["grafana-plugins"],
+      "minimumReleaseAge": "0 days"
+    },
+    {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["docker.io/searxng/searxng"],
       "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-(?<build>[a-f0-9]+)$"
