@@ -1,6 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/cilium/cilium/v1.19.1/install/kubernetes/cilium/values.schema.json
-# https://artifacthub.io/packages/helm/cilium/cilium?modal=values
-# https://github.com/cilium/cilium/tree/main/install/kubernetes/cilium
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cilium/cilium/v1.20.1/install/kubernetes/cilium/values.schema.json
+# https://raw.githubusercontent.com/cilium/cilium/v1.20.1/install/kubernetes/cilium/values.yaml
 ---
 
 # cluster: {id: 1, name: XXX}  # Set in overlay
@@ -187,25 +186,9 @@ clustermesh:
         requests: {memory: 256Mi}
         limits: {memory: 256Mi}
 
-# mTLS
 authentication:
-  enabled: true
-  mutual:
-    spire:
-      enabled: true
-      install:
-        enabled: true
-        existingNamespace: true
-        server:
-          dataStorage:
-            enabled: false
-          resources:
-            requests: {memory: 128Mi}
-            limits: {memory: 128Mi}
-        agent:
-          resources:
-            requests: {memory: 128Mi}
-            limits: {memory: 128Mi}
+  enabled: false
+  mutual: {spire: {enabled: false, install: {enabled: false}}}
 
 prometheus:
   enabled: true
