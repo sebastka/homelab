@@ -9,6 +9,7 @@ spec:
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '9428', protocol: TCP}]]}  # Health probes
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: alloy}}], toPorts: [ports: [{port: '9428', protocol: TCP}]]}  # Alloy log push
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: falco, app.kubernetes.io/name: falcosidekick, app.kubernetes.io/component: core}}], toPorts: [ports: [{port: '9428', protocol: TCP}]]}  # Falco security events
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}}], toPorts: [ports: [{port: '9428', protocol: TCP}]]}  # Grafana datasource
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '9428', protocol: TCP}]]}  # Web UI
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: vmagent}}], toPorts: [ports: [{port: '9428', protocol: TCP}]]}  # vmagent metrics scrape
