@@ -165,26 +165,26 @@ k8sClientRateLimit:
   burst: 100
 
 clustermesh:
-  useAPIServer: true
-  apiserver:
-    service:
-      type: LoadBalancer
-    metrics:
-      enabled: true
-      port: 9962
-      serviceMonitor: {enabled: true}
-    resources:
-      requests: {memory: 256Mi}
-      limits: {memory: 256Mi}
-    etcd:
-      resources:
-        requests: {memory: 256Mi}
-        limits: {memory: 256Mi}
-    kvstoremesh:
-      enabled: true
-      resources:
-        requests: {memory: 256Mi}
-        limits: {memory: 256Mi}
+  useAPIServer: false
+  # apiserver:
+  #   service:
+  #     type: LoadBalancer
+  #   metrics:
+  #     enabled: true
+  #     port: 9962
+  #     serviceMonitor: {enabled: true}
+  #   resources:
+  #     requests: {memory: 256Mi}
+  #     limits: {memory: 256Mi}
+  #   etcd:
+  #     resources:
+  #       requests: {memory: 256Mi}
+  #       limits: {memory: 256Mi}
+  #   kvstoremesh:
+  #     enabled: true
+  #     resources:
+  #       requests: {memory: 256Mi}
+  #       limits: {memory: 256Mi}
 
 authentication:
   enabled: false
