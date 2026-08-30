@@ -19,6 +19,7 @@ spec:
     - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}
     - {toFQDNs: [{matchName: api.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
     - {toFQDNs: [{matchName: github.com}, {matchName: objects.githubusercontent.com}, {matchName: codeload.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # tessdata-sync init container
+    - {toFQDNs: [matchName: generativelanguage.googleapis.com], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Gemini: AI suggestions + embeddings
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
