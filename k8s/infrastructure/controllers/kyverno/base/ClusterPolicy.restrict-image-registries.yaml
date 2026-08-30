@@ -119,21 +119,6 @@ spec:
                       - ghcr.io/headlamp-k8s/headlamp
                       - ghcr.io/kubebeam/trivy-headlamp-plugin
 
-                      # # infrastructure/monitoring/kube-prometheus-stack
-                      # - quay.io/prometheus/alertmanager
-                      # - quay.io/prometheus/prometheus
-                      # - quay.io/prometheus-operator/admission-webhook
-                      # - quay.io/prometheus-operator/prometheus-operator
-                      # - ghcr.io/jkroepke/kube-webhook-certgen
-                      # - registry.k8s.io/kube-state-metrics/kube-state-metrics
-
-                      # # infrastructure/monitoring/loki
-                      # - docker.io/grafana/loki
-                      # - memcached
-                      # - prom/memcached-exporter
-                      # - docker.io/kiwigrid/k8s-sidecar
-                      # - ghcr.io/jkroepke/access-log-exporter
-
                       # infrastructure/monitoring/metrics-server
                       - registry.k8s.io/metrics-server/metrics-server
 
@@ -141,9 +126,6 @@ spec:
 
                       # infrastructure/monitoring/stork
                       - ghcr.io/sebastka/stork
-
-                      # infrastructure/monitoring/thanos
-                      # - quay.io/thanos/thanos
 
                       # infrastructure/monitoring/victoria-logs
                       - docker.io/victoriametrics/victoria-logs

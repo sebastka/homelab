@@ -34,7 +34,7 @@ spec:
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '2801', protocol: TCP}]]}  # Host probes
   egress:
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: loki, app.kubernetes.io/name: loki, app.kubernetes.io/component: single-binary}}], toPorts: [ports: [{port: '3100', protocol: TCP}]]}  # Loki output
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: victoria-logs, app.kubernetes.io/name: victoria-logs-single}}], toPorts: [ports: [{port: '9428', protocol: TCP}]]}  # Loki-compatible log push
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: ntfy, app.kubernetes.io/name: ntfy}}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Webhook output
 ---
 apiVersion: cilium.io/v2

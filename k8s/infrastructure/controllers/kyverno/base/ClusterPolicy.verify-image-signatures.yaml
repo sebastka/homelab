@@ -21,7 +21,7 @@
 #   code.forgejo.org/forgejo/forgejo (GPG only, no container image signing)
 #   docker.io/lldap/lldap
 #   docker.io/velero/{velero,velero-plugin-for-aws} (donated to CNCF velero-io in 2026, not signed yet)
-#   docker.io/grafana/{alloy,grafana,loki}; docker.io/longhornio/*
+#   docker.io/grafana/{alloy,grafana}; docker.io/longhornio/*
 #   quay.io/cilium/{hubble-ui,hubble-ui-backend}
 #
 # OCI referrer cosign/sign/v1 format: incompatible with Kyverno 3.8.x type: Cosign (.sig tag only)
@@ -156,21 +156,6 @@ spec:
               entries:
                 - keyless:
                     subject: 'https://github.com/minio/*'
-                    issuer: https://token.actions.githubusercontent.com
-                    rekor: {url: https://rekor.sigstore.dev}
-    - name: verify-thanos
-      match: {any: [resources: {kinds: [Pod]}]}
-      verifyImages:
-        - imageReferences: [quay.io/thanos/thanos]
-          type: Cosign
-          failureAction: Audit
-          mutateDigest: false
-          verifyDigest: false
-          attestors:
-            - count: 1
-              entries:
-                - keyless:
-                    subject: 'https://github.com/thanos-io/thanos/.github/workflows/*'
                     issuer: https://token.actions.githubusercontent.com
                     rekor: {url: https://rekor.sigstore.dev}
     - name: verify-kubernetes
