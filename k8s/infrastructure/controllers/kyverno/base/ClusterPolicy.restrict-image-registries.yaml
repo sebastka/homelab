@@ -153,6 +153,7 @@ spec:
                       - docker.io/victoriametrics/victoria-metrics
                       - docker.io/victoriametrics/vmagent
                       - docker.io/victoriametrics/vmalert
+                      - ghcr.io/victoriametrics/sync-job
                       - docker.io/prom/alertmanager
                       # - docker.io/prometheus/node-exporter
                       - quay.io/prometheus/node-exporter
