@@ -46,11 +46,14 @@ jobs:
           # introduces keeps this fast and fails solely on the change under review.
           # Helm-templated refs and bare chart version bumps are skipped: those images
           # are not resolvable without rendering the chart.
+          # Both greps exit 1 when nothing matches, which here means "this PR changes
+          # no images" — a normal result, not an error. Without the guards, `set -e`
+          # plus `pipefail` fails the job on every PR that touches no k8s image.
           git diff --unified=0 "$BASE_SHA" HEAD -- k8s \
-            | grep -E '^\+[[:space:]]*image:[[:space:]]*\S' \
+            | { grep -E '^\+[[:space:]]*image:[[:space:]]*\S' || true; } \
             | sed -E 's/^\+[[:space:]]*image:[[:space:]]*//; s/[[:space:]].*$//' \
             | tr -d '\042\047' \
-            | grep -Ev '[{}$]|^$' \
+            | { grep -Ev '[{}$]|^$' || true; } \
             | sort -u > images.txt
 
           echo 'Images to scan:'
