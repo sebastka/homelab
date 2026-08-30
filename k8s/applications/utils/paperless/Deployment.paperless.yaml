@@ -45,8 +45,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 512Mi}
-            limits: {memory: 768Mi}
+            requests: {memory: 256Mi}
+            limits: {memory: 512Mi}
           volumeMounts:
             - {name: tessdata-volume, mountPath: /mnt/tessdata}
             - {name: tmp-volume, mountPath: /tmp}
@@ -112,7 +112,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 256Mi}
-            limits: {memory: 1024Mi}
+            limits: {memory: 384Mi}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
@@ -131,8 +131,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 256Mi}
-            limits: {memory: 1024Mi}
+            requests: {memory: 128Mi}
+            limits: {memory: 256Mi}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
@@ -150,7 +150,7 @@ spec:
             capabilities: {drop: [ALL]}
           resources:
             requests: {memory: 256Mi}
-            limits: {memory: 1024Mi}
+            limits: {memory: 512Mi}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
@@ -167,8 +167,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 256Mi}
-            limits: {memory: 256Mi}
+            requests: {memory: 12Mi}
+            limits: {memory: 24Mi}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
@@ -274,8 +274,8 @@ spec:
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 256Mi}
-            limits: {memory: 512Mi}
+            requests: {memory: 384Mi}
+            limits: {memory: 768Mi}
           env:
             - {name: DJANGO_SETTINGS_MODULE, value: webserver}
             - {name: PYTHONPATH, value: /mnt/settings}
