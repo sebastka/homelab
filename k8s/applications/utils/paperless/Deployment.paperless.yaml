@@ -196,7 +196,14 @@ spec:
         - name: consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
           image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
-          command: [python3, "manage.py", "document_consumer"]
+          command:  # Handle SIGTERM and SIGINT to allow graceful shutdown of the consumer process
+            - sh
+            - -c
+            - |
+              python3 manage.py document_consumer &
+              pid=$!
+              trap 'kill -TERM "$pid" 2>/dev/null' TERM INT
+              wait "$pid"
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -251,7 +258,7 @@ spec:
           envFrom:
             - configMapRef: {name: paperless-env}
             - secretRef: {name: paperless-secrets}
-          lifecycle: {preStop: {exec: {command: [sh, -c, "celery --app paperless control shutdown --destination celery@$HOSTNAME"]}}}
+          lifecycle: {preStop: {exec: {command: [sh, -c, "celery --app paperless control shutdown --destination celery@$HOSTNAME || true"]}}}
           startupProbe: {exec: {command: [/usr/local/bin/worker-health]}, initialDelaySeconds: 10, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
           livenessProbe: {exec: {command: [/usr/local/bin/worker-health]}, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
           readinessProbe: {exec: {command: [/usr/local/bin/worker-health]}, periodSeconds: 60, timeoutSeconds: 10, failureThreshold: 3}
