@@ -36,7 +36,7 @@ resources:
 helmCharts:
   - name: kyverno
     repo: oci://ghcr.io/kyverno/charts
-    version: 3.8.1  # renovate: datasource=helm registryUrl=oci://ghcr.io/kyverno/charts depName=kyverno
+    version: 3.9.0  # renovate: datasource=helm registryUrl=oci://ghcr.io/kyverno/charts depName=kyverno
     releaseName: kyverno
     namespace: kyverno
     includeCRDs: true
