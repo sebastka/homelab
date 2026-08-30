@@ -1,0 +1,22 @@
+---
+# Ignore rules for the Trivy scans in .github/workflows/trivy.yaml.
+#
+# Passed explicitly through the action's `trivyignores` input: Trivy auto-loads
+# the plain .trivyignore format, but the YAML form still requires --ignorefile.
+#
+# Deliberately empty. The image scan only *fails* on CRITICAL findings, and HIGH
+# findings are reported without blocking, so blanket exceptions are not needed to
+# keep automerge moving. Add an entry here only for a specific CRITICAL that has
+# been assessed and accepted.
+#
+# Every entry must carry an `expired_at`, so an exception lapses on its own and
+# comes back for review instead of quietly becoming permanent. Use `statement` to
+# record why it was accepted.
+#
+# Example:
+#   vulnerabilities:
+#     - id: CVE-0000-00000
+#       statement: Not reachable because <reason>. Upstream fix expected in <x>.
+#       expired_at: 2026-12-31
+
+vulnerabilities: []

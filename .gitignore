@@ -1,31 +1,28 @@
-.vscode
-.env
-.*.env
+.*
+!.gitattributes
+!.github
+!.gitignore
+!.sops.yaml
+!.trivyignore.yaml
+!.yamllint.yaml
 
-# Terraform
-.terraform/
-# .terraform.lock.hcl
-.terraform.tfstate.lock.info
-terraform/.bak
-*.tfstate
-*.tfstate.backup
-*.tfstate.*.backup
-tfplan
+# Ansible
+!.ansible-lint.yaml
 
 # k8s
 charts/
 Secret.*.yaml
-!Secret.*.enc.yaml
-**/thelounge/data
 values.default.yaml
 values.*.default.yaml
-
-# Talos
-talos/temp.json
-*.sops.yaml
-
 # WIP
 joplin
 nextcloud
 qbittorrent
 radarr
+
+# Terraform
+secrets.auto.tfvars
+tfplan
+
+# Talos
+talos/temp.json

@@ -74,6 +74,13 @@ jobs:
       DOCKERHUB_USERNAME: sebastka
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     steps:
+      # Only needed for .trivyignore.yaml; the image itself is pulled from its registry.
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          sparse-checkout: .trivyignore.yaml
+          sparse-checkout-cone-mode: false
+
       # Trivy reads ~/.docker/config.json, so an optional Docker Hub login lifts the
       # anonymous pull-rate limit that shared Actions runners regularly hit. No-op
       # until a DOCKERHUB_TOKEN secret exists on the repo.
@@ -81,16 +88,34 @@ jobs:
         if: env.DOCKERHUB_TOKEN != ''
         run: echo "$DOCKERHUB_TOKEN" | docker login docker.io -u "$DOCKERHUB_USERNAME" --password-stdin
 
-      - name: Scan image
+      # Two passes on purpose. Trivy's --severity filters what is *displayed* as
+      # well as what trips --exit-code, so a single run cannot both show HIGH and
+      # fail only on CRITICAL. The first pass is the report, the second is the gate.
+      - name: Report HIGH and CRITICAL findings
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
         with:
           scan-type: image
           image-ref: ${{ matrix.image }}
           severity: HIGH,CRITICAL
-          # Unfixed upstream CVEs are not actionable here and would block every
-          # automerge; revisit once the real noise level is known.
+          ignore-unfixed: true
+          exit-code: '0'  # visibility only
+          trivyignores: .trivyignore.yaml
+          hide-progress: true
+
+      # These images are pulled from upstream, not built here, so a HIGH finding is
+      # usually an unfixable-by-us base image or toolchain currency issue. Blocking
+      # on it just freezes the cluster on an older image carrying the same flaw, so
+      # only CRITICAL stops the merge. See REVIEW.md item 20.
+      - name: Fail on CRITICAL findings
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
+        with:
+          scan-type: image
+          image-ref: ${{ matrix.image }}
+          severity: CRITICAL
           ignore-unfixed: true
           exit-code: '1'
+          trivyignores: .trivyignore.yaml
+          skip-setup-trivy: true  # already installed by the reporting pass
           hide-progress: true
 
   config:
