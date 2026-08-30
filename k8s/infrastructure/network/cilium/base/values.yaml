@@ -121,6 +121,9 @@ envoy:
 
 hubble:
   enabled: true
+  # cert-manager issues and rotates the Hubble certs; no pinned cilium-ca needed.
+  tls:
+    auto: {method: certmanager, certManagerIssuerRef: {group: cert-manager.io, kind: ClusterIssuer, name: cluster-root-ca}}
   metrics:
     enabled:
       - dns
