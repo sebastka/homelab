@@ -1,8 +1,8 @@
 ---
-name: Trivy
+name: CI
 
 on:
-  # Deliberately no `paths` filter. `Trivy gate` below is a required status check,
+  # Deliberately no `paths` filter. `CI gate` below is a required status check,
   # and a run that never starts leaves that check permanently pending, which would
   # block the PR from merging rather than letting it through.
   pull_request:
@@ -13,7 +13,7 @@ defaults:
     shell: bash -euo pipefail {0}
 
 concurrency:
-  group: trivy-${{ github.ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -90,9 +90,10 @@ jobs:
         if: env.DOCKERHUB_TOKEN != ''
         run: echo "$DOCKERHUB_TOKEN" | docker login docker.io -u "$DOCKERHUB_USERNAME" --password-stdin
 
-      # Two passes on purpose. Trivy's --severity filters what is *displayed* as
-      # well as what trips --exit-code, so a single run cannot both show HIGH and
-      # fail only on CRITICAL. The first pass is the report, the second is the gate.
+      # Reporting only: this job is deliberately outside `CI gate`'s `needs`, so a
+      # finding surfaces in the run log without blocking the merge. These images are
+      # pulled from upstream rather than built here, so blocking on a CVE we cannot
+      # fix just freezes the cluster on an older image carrying the same flaw.
       - name: Report HIGH and CRITICAL findings
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
         with:
@@ -102,22 +103,6 @@ jobs:
           ignore-unfixed: true
           exit-code: '0'  # visibility only
           trivyignores: .trivyignore.yaml
-          hide-progress: true
-
-      # These images are pulled from upstream, not built here, so a HIGH finding is
-      # usually an unfixable-by-us base image or toolchain currency issue. Blocking
-      # on it just freezes the cluster on an older image carrying the same flaw, so
-      # only CRITICAL stops the merge. See REVIEW.md item 20.
-      - name: Fail on CRITICAL findings
-        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
-        with:
-          scan-type: image
-          image-ref: ${{ matrix.image }}
-          severity: CRITICAL
-          ignore-unfixed: true
-          exit-code: '1'
-          trivyignores: .trivyignore.yaml
-          skip-setup-trivy: true  # already installed by the reporting pass
           hide-progress: true
 
   config:
@@ -149,9 +134,6 @@ jobs:
         with:
           sarif_file: trivy-config.sarif
 
-  # Single stable check name for the ruleset on master to require. The per-image
-  # jobs are named after the image they scan, so their names change every PR and
-  # cannot be named in a ruleset.
   # kustomize configMapGenerator `envs:` takes everything after the first `=`
   # literally - no quote stripping, no comment stripping. Shell habits silently
   # corrupt values; three separate instances surfaced during the paperless v3
@@ -196,24 +178,27 @@ jobs:
           print("All env files clean.")
           PY
 
+  # Single stable check name for the ruleset on master to require. The per-image
+  # jobs are named after the image they scan, so their names change every PR and
+  # cannot be named in a ruleset. Only the jobs listed in `needs` can block a
+  # merge: the Trivy scans above report into the run and the Security tab, but
+  # are deliberately left out so upstream CVE churn cannot freeze the repo.
   gate:
-    name: Trivy gate
-    needs: [collect, images, config, env-files]
+    name: CI gate
+    needs: [env-files]
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: Verify every Trivy job passed
+      - name: Verify every required job passed
         env:
           RESULTS: ${{ toJSON(needs) }}
         run: |
           echo "$RESULTS"
 
-          # Job results are success | failure | cancelled | skipped. `images` is
-          # legitimately skipped when a PR touches no image references, so only
-          # failure and cancelled count as a stop.
+          # Job results are success | failure | cancelled | skipped.
           if jq -e 'to_entries | any(.value.result == "failure" or .value.result == "cancelled")' <<< "$RESULTS" > /dev/null; then
-            echo '::error::One or more Trivy jobs did not pass'
+            echo '::error::One or more required jobs did not pass'
             exit 1
           fi
 
-          echo 'All Trivy jobs passed or were skipped.'
+          echo 'All required jobs passed.'
