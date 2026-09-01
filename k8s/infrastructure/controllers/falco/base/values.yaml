@@ -23,7 +23,7 @@ falcosidekick:
   enabled: true
   webui: {enabled: true, redis: {enabled: true}}
   config:
-    loki: {hostport: http://victoria-logs-single-server.victoria-logs.svc.cluster.local:9428, endpoint: /insert/loki/api/v1/push, format: json, minimumpriority: debug}
+    loki: {hostport: http://victoria-logs-single-server.victoria-logs.svc.cluster.local:9428, endpoint: '/insert/loki/api/v1/push?_msg_field=output&extra_fields=job=falco', format: json, minimumpriority: debug, grafanaDashboard: {enabled: false}}
     webhook: {address: http://web.ntfy.svc.cluster.local, minimumpriority: warning, checkcert: false}
     extraEnv:
       - {name: FALCO_NTFY_TOKEN,       valueFrom: {secretKeyRef: {name: falco-ntfy, key: NTFY_AUTH_TOKEN_FALCO}}}
