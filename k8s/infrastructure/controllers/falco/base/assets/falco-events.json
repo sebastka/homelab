@@ -1,0 +1,239 @@
+{
+  "title": "Falco Events",
+  "uid": "falco-events",
+  "schemaVersion": 39,
+  "refresh": "30s",
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "tags": [
+    "falco",
+    "security"
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "victoriametrics-logs-datasource",
+        "hide": 0,
+        "label": "Datasource",
+        "multi": false,
+        "includeAll": false,
+        "current": {}
+      },
+      {
+        "name": "priority",
+        "type": "textbox",
+        "hide": 0,
+        "label": "Priority",
+        "query": ".*",
+        "current": {
+          "selected": true,
+          "text": ".*",
+          "value": ".*"
+        },
+        "options": [
+          {
+            "selected": true,
+            "text": ".*",
+            "value": ".*"
+          }
+        ]
+      },
+      {
+        "name": "namespace",
+        "type": "textbox",
+        "hide": 0,
+        "label": "Namespace",
+        "query": ".*",
+        "current": {
+          "selected": true,
+          "text": ".*",
+          "value": ".*"
+        },
+        "options": [
+          {
+            "selected": true,
+            "text": ".*",
+            "value": ".*"
+          }
+        ]
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Events",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${datasource}"
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "queryType": "instant",
+          "expr": "job:falco AND priority:~\"$priority\" AND \"output_fields.k8s.ns.name\":~\"$namespace\" | stats count() as events"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Events over time by priority",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 20,
+        "x": 4,
+        "y": 0
+      },
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 60,
+            "stacking": {
+              "mode": "normal"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "queryType": "range",
+          "expr": "job:falco AND priority:~\"$priority\" AND \"output_fields.k8s.ns.name\":~\"$namespace\" | stats by (_time:$__interval, priority) count() as events"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Top rules",
+      "type": "table",
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "queryType": "instant",
+          "expr": "job:falco AND priority:~\"$priority\" AND \"output_fields.k8s.ns.name\":~\"$namespace\" | stats by (rule, priority) count() as events | sort by (events desc) | limit 25"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Top namespaces",
+      "type": "table",
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${datasource}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "queryType": "instant",
+          "expr": "job:falco AND priority:~\"$priority\" AND \"output_fields.k8s.ns.name\":~\"$namespace\" | stats by (\"output_fields.k8s.ns.name\") count() as events | sort by (events desc) | limit 25"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Event stream",
+      "type": "logs",
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${datasource}"
+      },
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "queryType": "range",
+          "expr": "job:falco AND priority:~\"$priority\" AND \"output_fields.k8s.ns.name\":~\"$namespace\""
+        }
+      ]
+    }
+  ],
+  "annotations": {
+    "list": []
+  },
+  "links": []
+}

@@ -6,6 +6,9 @@ namespace: falco
 images:
   - {name: appropriate/curl, newName: docker.io/alpine/curl, newTag: 8.19.0, digest: sha256:23b60dc412cd453aba2841da0ee8bc6ad8da32263c557fcc9eccd52840f4ca43}
 
+configMapGenerator:
+  - {name: falco-events-dashboard, options: {disableNameSuffixHash: true}, files: [falco-events.json=assets/falco-events.json]}
+
 resources:
   - Namespace.yaml
   - SealedSecret.falco-ntfy.yaml
