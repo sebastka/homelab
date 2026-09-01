@@ -53,7 +53,7 @@ spec:
         # Deliberately skipped: init-tesseract-langs, tessdata-sync and init-modify-user / init-env-file / init-custom-init
         # https://github.com/paperless-ngx/paperless-ngx/tree/dev/docker/rootfs/etc/s6-overlay/s6-rc.d
         - name: wait-for-db
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command: [sh, -c, "until pg_isready -h \"$PAPERLESS_DBHOST\" -U \"$PAPERLESS_DBUSER\"; do sleep 2; done"]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -66,7 +66,7 @@ spec:
             requests: {memory: 64Mi}
             limits: {memory: 64Mi}
         - name: wait-for-redis
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command: [python3, /usr/local/bin/wait-for-redis.py]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -81,7 +81,7 @@ spec:
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
         - name: folders
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command: [sh, -c, 'mkdir -p "$PAPERLESS_DATA_DIR/index" "$PAPERLESS_MEDIA_ROOT/documents/originals" "$PAPERLESS_MEDIA_ROOT/documents/thumbnails" "$PAPERLESS_CONSUMPTION_DIR" "$PAPERLESS_EMPTY_TRASH_DIR" /usr/src/paperless/export']
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -100,7 +100,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
         - name: migrate
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command: [python3, manage.py, migrate, --noinput]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -120,7 +120,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: llmindex-migrate
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command: [python3, manage.py, document_llmindex, migrate]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -138,7 +138,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: reindex
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command: [python3, manage.py, document_index, reindex, --if-needed, --no-progress-bar]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -156,7 +156,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: superuser
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command: [python3, manage.py, manage_superuser]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -174,7 +174,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: system-checks
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command: [python3, manage.py, check]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -194,7 +194,7 @@ spec:
       containers:
         - name: consumer
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command:  # Handle SIGTERM and SIGINT to allow graceful shutdown of the consumer process
             - sh
             - -c
@@ -224,7 +224,7 @@ spec:
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: scheduler
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -245,7 +245,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
         - name: worker
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command: [celery, "--app", "paperless", "worker", "--loglevel", "INFO"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -274,7 +274,7 @@ spec:
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: webserver
           # Dockerfile: https://github.com/paperless-ngx/paperless-ngx/blob/dev/Dockerfile
-          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2@sha256:5ab4f4f9bb099a36bec3e092906ea3e611323c5f18dc5cc38c76a1d540bdca9c
           command: [granian, "--interface", "asginl", "--no-access-log", "--ws", "paperless.asgi:application"]
           securityContext:
             allowPrivilegeEscalation: false
