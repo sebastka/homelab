@@ -4,3 +4,8 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - SealedSecret.oidc.yaml
+  - SealedSecret.repo-creds.yaml
+  - SealedSecret.argocd-notifications-secret.yaml
+  - NotSecret.cluster-talmox.yaml
+  - BackendTrafficPolicy.yaml

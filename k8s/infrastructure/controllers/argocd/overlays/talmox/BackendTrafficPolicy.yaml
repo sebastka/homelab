@@ -1,0 +1,23 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: argocd-server-timeouts
+  namespace: argocd
+spec:
+  # Envoy Gateway's default route timeout is 15s, which truncates the UI's
+  # /api/v1/stream/applications watch at exactly 15s with a 504 and leaves the Applications
+  # view reconnecting in a loop. A watch stream never "completes", so requestTimeout has to
+  # be disabled rather than merely raised - any finite value just moves the disconnect.
+  # streamIdleTimeout is what still reclaims a stream that has genuinely gone quiet.
+  #
+  # If the Gateway-scoped BackendTrafficPolicy in the gateway overlay is ever enabled, this
+  # policy wins for these two routes and does not merge with it, so the rate limit there
+  # would not apply to argocd unless it is restated here.
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: argocd-server}
+    - {group: gateway.networking.k8s.io, kind: GRPCRoute, name: argocd-server-grpc}
+  timeout:
+    http:
+      requestTimeout: 0s
+      streamIdleTimeout: 1h

@@ -10,15 +10,9 @@ components:
 
 resources:
   - Namespace.yaml
-  - Service.yaml
-  - GRPCRoute.yaml
   - GrafanaDashboard.yaml
-  - SealedSecret.cluster-talmox.yaml
-  - SealedSecret.oidc.yaml
-  - SealedSecret.argocd-notifications-secret.yaml
   - CiliumNetworkPolicy.yaml
 
-# OIDC broken from 9.4.3?
 helmCharts:
   - name: argo-cd
     repo: oci://ghcr.io/argoproj/argo-helm
@@ -26,4 +20,5 @@ helmCharts:
     releaseName: argocd
     namespace: argocd
     includeCRDs: true
+    apiVersions: [monitoring.coreos.com/v1]  # Chart guards every ServiceMonitor behind .Capabilities.APIVersions.Has
     valuesFile: values.yaml

@@ -8,7 +8,8 @@ global:
     runAsUser: 999
     runAsGroup: 999
     fsGroup: 999
-  networkPolicy: {create: false}
+  networkPolicy:
+    create: false  # We are using custom CNPs
 
 configs:
   cm:
@@ -42,6 +43,9 @@ configs:
       g, k8s_admins, role:admin
       g, k8s_users, role:readonly
     policy.default: ''
+  repositories:
+    gh-sebastka-homelab:
+      url: git@github.com:sebastka/homelab.git
 
 crds:
   install: true
@@ -50,8 +54,7 @@ crds:
 controller:
   metrics:
     enabled: true
-    serviceMonitor:
-      enabled: true
+    serviceMonitor: {enabled: true}
   resources:
     requests: {memory: 1024Mi}
     limits: {memory: 1536Mi}
@@ -60,8 +63,7 @@ dex:
   enabled: false
   metrics:
     enabled: true
-    serviceMonitor:
-      enabled: true
+    serviceMonitor: {enabled: true}
   resources:
     requests: {memory: 64Mi}
     limits: {memory: 64Mi}
@@ -70,8 +72,7 @@ dex:
 repoServer:
   metrics:
     enabled: true
-    serviceMonitor:
-      enabled: true
+    serviceMonitor: {enabled: true}
   resources:
     requests: {memory: 256Mi}
     limits: {memory: 512Mi}
@@ -101,14 +102,10 @@ repoServer:
       securityContext:
         allowPrivilegeEscalation: false
         runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
-        capabilities:
-          drop:
-            - ALL
+        seccompProfile: {type: RuntimeDefault}
+        capabilities: {drop: [ALL]}
       volumeMounts:
-        - mountPath: /custom-tools
-          name: custom-tools
+        - {name: custom-tools, mountPath: /custom-tools}
 
 redis:
   enabled: false
@@ -134,15 +131,21 @@ server:
     rules:
       - matches: [path: {type: PathPrefix, value: /}]
 
-  # To be fixed
+  service:
+    servicePortHttp2: 8080
+    servicePortHttp2AppProtocol: kubernetes.io/h2c
   grpcroute:
-    enabled: false
+    enabled: true
+    parentRefs:
+      - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
+    hostnames: [argocd.talmox.hera.home.karlsen.fr]
+    rules:
+      - matches: [{headers: [{name: Content-Type, value: application/grpc}]}]
 
 applicationSet:
   metrics:
     enabled: true
-    serviceMonitor:
-      enabled: true
+    serviceMonitor: {enabled: true}
   resources:
     requests: {memory: 128Mi}
     limits: {memory: 256Mi}
@@ -151,8 +154,7 @@ notifications:
   enabled: true
   metrics:
     enabled: true
-    serviceMonitor:
-      enabled: false
+    serviceMonitor: {enabled: true}
   resources:
     requests: {memory: 64Mi}
     limits: {memory: 64Mi}
