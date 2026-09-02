@@ -63,7 +63,7 @@ resources:
 helmCharts:
   - name: crowdsec
     repo: https://crowdsecurity.github.io/helm-charts
-    version: 0.24.0  # renovate: datasource=helm depName=crowdsec registryUrl=https://crowdsecurity.github.io/helm-charts
+    version: 0.24.0
     releaseName: crowdsec
     namespace: crowdsec
     includeCRDs: true

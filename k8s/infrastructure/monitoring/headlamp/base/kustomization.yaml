@@ -11,7 +11,7 @@ resources:
 helmCharts:
   - name: headlamp
     repo: https://kubernetes-sigs.github.io/headlamp/
-    version: 0.45.0  # renovate: datasource=helm registryUrl=https://kubernetes-sigs.github.io/headlamp/ depName=headlamp
+    version: 0.45.0
     releaseName: headlamp
     namespace: headlamp
     includeCRDs: true

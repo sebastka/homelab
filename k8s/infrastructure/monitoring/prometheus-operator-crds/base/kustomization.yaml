@@ -6,7 +6,7 @@ namespace: monitoring
 helmCharts:
   - name: prometheus-operator-crds
     repo: oci://ghcr.io/prometheus-community/charts
-    version: 31.0.1  # renovate: datasource=helm registryUrl=oci://ghcr.io/prometheus-community/charts depName=prometheus-operator-crds
+    version: 31.0.1
     releaseName: prometheus-operator-crds
     namespace: monitoring
     includeCRDs: true

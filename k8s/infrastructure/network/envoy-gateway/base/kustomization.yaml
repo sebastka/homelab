@@ -27,7 +27,7 @@ resources:
 helmCharts:
   - name: gateway-helm
     repo: oci://docker.io/envoyproxy
-    version: 1.9.1  # renovate: datasource=helm registryUrl=oci://docker.io/envoyproxy depName=gateway-helm
+    version: 1.9.1
     releaseName: envoy-gateway
     namespace: envoy-gateway-system
     includeCRDs: true
@@ -35,7 +35,7 @@ helmCharts:
 
   - name: envoy-proxy-bouncer
     repo: oci://ghcr.io/kdwils/charts
-    version: 0.8.0  # renovate: datasource=helm registryUrl=oci://ghcr.io/kdwils/charts depName=envoy-proxy-bouncer
+    version: 0.8.0
     releaseName: envoy-proxy-bouncer-karlsenfr
     namespace: envoy-gateway-system
     includeCRDs: true
@@ -43,7 +43,7 @@ helmCharts:
 
   - name: envoy-proxy-bouncer
     repo: oci://ghcr.io/kdwils/charts
-    version: 0.8.0  # renovate: datasource=helm registryUrl=oci://ghcr.io/kdwils/charts depName=envoy-proxy-bouncer
+    version: 0.8.0
     releaseName: envoy-proxy-bouncer-karlsenapp
     namespace: envoy-gateway-system
     includeCRDs: true

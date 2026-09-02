@@ -36,7 +36,7 @@ spec:
       initContainers:
         - name: init-schemas
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/jq/Dockerfile
-          image: ghcr.io/sebastka/jq:2026.9.1@sha256:a9bad497f4502815b31139c87dd17dfd56d2d099347308b7efd4fd5a3e5404f1  # renovate: datasource=docker depName=ghcr.io/sebastka/jq
+          image: ghcr.io/sebastka/jq:2026.9.1@sha256:a9bad497f4502815b31139c87dd17dfd56d2d099347308b7efd4fd5a3e5404f1
           command: [/bin/sh, -c]
           args:
             - |

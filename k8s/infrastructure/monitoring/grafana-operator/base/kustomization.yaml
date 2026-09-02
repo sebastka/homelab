@@ -10,7 +10,7 @@ resources:
 helmCharts:
   - name: grafana-operator
     repo: oci://ghcr.io/grafana/helm-charts
-    version: 5.25.0  # renovate: datasource=helm registryUrl=oci://ghcr.io/grafana/helm-charts depName=grafana-operator
+    version: 5.25.0
     releaseName: grafana-operator
     namespace: grafana
     includeCRDs: true

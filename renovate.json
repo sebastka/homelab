@@ -48,7 +48,7 @@
     },
     {
       "customType": "regex",
-      "managerFilePatterns": ["/(^|/)Grafana\\.yaml$/"],
+      "managerFilePatterns": ["/(^|/)Grafana[^/]*\\.yaml$/"],
       "matchStrings": ["'[^\\s']+\\s+(?<currentValue>[^\\s']+)'[^#]*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)"],
       "datasourceTemplate": "{{datasource}}",
       "depNameTemplate": "{{depName}}"

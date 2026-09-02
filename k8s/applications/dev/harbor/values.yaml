@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=
-# https://artifacthub.io/packages/helm/harbor/harbor/1.18.2?modal=values
+# https://github.com/goharbor/harbor-helm/blob/main/values.yaml
 ---
 
 expose:

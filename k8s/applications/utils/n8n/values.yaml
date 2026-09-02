@@ -1,6 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/n8n-io/n8n-hosting/refs/heads/main/charts/n8n/values.schema.json
 # https://github.com/n8n-io/n8n-hosting/blob/main/charts/n8n/values.yaml
-# https://github.com/n8n-io/n8n-hosting/tree/main/charts/n8n
 ---
 
 queueMode:
