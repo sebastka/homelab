@@ -43,7 +43,7 @@ spec:
       initContainers:
         - name: init-vapid
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/jq/Dockerfile
-          image: ghcr.io/sebastka/jq:2026.9.1@sha256:a9bad497f4502815b31139c87dd17dfd56d2d099347308b7efd4fd5a3e5404f1
+          image: ghcr.io/sebastka/jq:2026.9.2@sha256:2e4a054b5e0309729735dea53cb52bec204a5bfbebb885b334c8a23af71d5e67
           command: [/bin/sh, -c]
           args:
             - |
