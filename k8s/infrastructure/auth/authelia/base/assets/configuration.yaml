@@ -203,6 +203,7 @@ identity_providers:
           - https://metube.karlsen.app/authelia/openid_connect/callback
           - https://vert.karlsen.app/authelia/openid_connect/callback
           - https://n8n.karlsen.app/authelia/openid_connect/callback
+          - https://carat.karlsen.app/authelia/openid_connect/callback
         scopes: [openid, email, profile, groups]
         response_types: [code]
         grant_types: [authorization_code]
