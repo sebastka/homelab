@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: carat-data-pvc
+  namespace: carat
+  labels:
+    app.kubernetes.io/name: carat
+    recurring-job.longhorn.io/source: enabled
+    recurring-job-group.longhorn.io/group1: enabled
+    backup.velero.io/nightly-hetzner: enabled
+spec:
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 1Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: carat-data-pv

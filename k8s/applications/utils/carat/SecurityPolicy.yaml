@@ -1,0 +1,47 @@
+# Cross namespace attachment?
+# - https://github.com/envoyproxy/gateway/issues/5143
+# OIDC:
+# - https://gateway.envoyproxy.io/docs/tasks/security/oidc/
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-sso
+  namespace: carat
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  oidc:
+    clientID: envoy
+    clientSecret: {namespace: carat, kind: Secret, name: oidc}
+    cookieConfig: {sameSite: Lax}
+    cookieDomain: carat.karlsen.app
+    cookieNames: {accessToken: oidc-access-token, idToken: oidc-id-token}
+    logoutPath: /authelia/logout
+    provider:
+      issuer: https://auth.karlsen.fr
+      authorizationEndpoint: https://auth.karlsen.fr/api/oidc/authorization
+      tokenEndpoint: https://auth.karlsen.fr/api/oidc/token
+    redirectURL: https://carat.karlsen.app/authelia/openid_connect/callback
+    forwardAccessToken: false
+    refreshToken: false
+    passThroughAuthHeader: false
+    # resources: []
+    scopes: [openid, email, profile, groups]
+  jwt:
+    providers:
+      - name: authelia
+        issuer: https://auth.karlsen.fr
+        audiences: [envoy]
+        remoteJWKS: {uri: https://auth.karlsen.fr/jwks.json}
+        extractFrom: {cookies: [oidc-id-token]}
+  authorization:
+    defaultAction: Deny
+    rules:
+      - name: allow-homelab-users
+        action: Allow
+        principal:
+          jwt:
+            provider: authelia
+            claims:
+              - {name: groups, valueType: StringArray, values: ['k8s_admins']}

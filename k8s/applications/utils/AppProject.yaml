@@ -9,6 +9,7 @@ spec:
   destinations:
     - {namespace: default,                        name: talmox}
     - {namespace: argocd,                         name: talmox}
+    - {namespace: carat,                          name: talmox}
     - {namespace: deluge,                         name: talmox}
     - {namespace: element-admin,                  name: talmox}
     - {namespace: glance,                         name: talmox}

@@ -1,0 +1,28 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web
+  namespace: carat
+spec:
+  parentRefs:
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
+  hostnames: [carat.karlsen.app]
+  rules:
+    - matches: [path: {type: PathPrefix, value: /}]
+      backendRefs: [{name: web, kind: Service, port: 80}]
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              - {name: Content-Security-Policy, value: "default-src 'none'; frame-ancestors 'none'; form-action 'none'; base-uri 'none'; script-src-elem 'self' 'unsafe-inline'; style-src-elem 'self'; img-src 'self' data:; connect-src 'self';"}
+              - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
+              - {name: X-Content-Type-Options, value: nosniff}
+              - {name: X-Frame-Options, value: DENY}
+              - {name: Cross-Origin-Resource-Policy, value: same-origin}
+              - {name: Cross-Origin-Embedder-Policy, value: require-corp}
+              - {name: Cross-Origin-Opener-Policy, value: same-origin}
+              - {name: Referrer-Policy, value: no-referrer}
+              - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
+              # - {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
+              # - {name: Reporting-Endpoints, value: ''}

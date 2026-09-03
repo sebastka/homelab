@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carat
+  namespace: carat
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: carat
+      # app.kubernetes.io/version:
+      app.kubernetes.io/component: web
+      app.kubernetes.io/part-of: carat
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: carat
+      labels:
+        app.kubernetes.io/name: carat
+        # app.kubernetes.io/version:
+        app.kubernetes.io/component: web
+        app.kubernetes.io/part-of: carat
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: carat
+      imagePullSecrets: [{name: regcred}]
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: carat
+          image: docker.io/library/node:26-alpine@sha256:2d984a15c9b54fd0aeb608b8e0d0d83529eb34d2966db27a1fb4f1edc3d298a3
+          command: [node, /mnt/carat/server.mjs]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 48Mi}
+            limits: {memory: 64Mi}
+          env:
+            - {name: PORT, value: '8080'}
+            - {name: PERSIST_DIR, value: /mnt/data/carat}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8080}
+          startupProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            - {name: carat-image-volume, mountPath: /mnt/carat, subPath: app,  readOnly: true}
+            - {name: carat-data-volume,  mountPath: /mnt/data/carat,  subPath: data, readOnly: false}
+      volumes:
+        - {name: carat-image-volume, image: {reference: 'ghcr.io/sebastka/carat:2026.09.03-bb0da28', pullPolicy: IfNotPresent}}  # renovate: datasource=docker depName=ghcr.io/sebastka/carat
+        - {name: carat-data-volume,  persistentVolumeClaim: {claimName: carat-data-pvc}}
