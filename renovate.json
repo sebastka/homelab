@@ -61,6 +61,15 @@
       "depNameTemplate": "{{depName}}",
       "versioningTemplate": "regex:^(?<major>\\d+)$"
     }
+  ,
+    {
+      "description": "Kubernetes image volumes (spec.volumes[].image.reference) - the kubernetes manager only reads image: as a scalar, so it never sees these",
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)Deployment[^/]*\\.yaml$/"],
+      "matchStrings": ["reference:\\s*'[^']*:(?<currentValue>[^':\\s]+)'[^#\\n]*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)"],
+      "datasourceTemplate": "{{datasource}}",
+      "depNameTemplate": "{{depName}}"
+    }
   ],
   "packageRules": [
     {
@@ -121,6 +130,11 @@
       "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-(?<build>[a-f0-9]+)$"
     },
     {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/sebastka/carat"],
+      "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-(?<build>[a-f0-9]+)$"
+    },
+    {
       "description": "Majors always need a human; keep them off automerge",
       "matchUpdateTypes": ["major"],
       "automerge": false
@@ -140,6 +154,12 @@
       "matchHost": "docker.io",
       "username": "sebastka",
       "password": "{{ secrets.DOCKERHUB_TOKEN }}"
+    },
+    {
+      "description": "ghcr.io/sebastka/carat is a private package, so anonymous lookups return no-result",
+      "matchHost": "ghcr.io",
+      "username": "sebastka",
+      "password": "{{ secrets.GHCR_TOKEN }}"
     }
   ]
 }
