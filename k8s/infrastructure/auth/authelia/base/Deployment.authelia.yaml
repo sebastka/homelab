@@ -39,7 +39,7 @@ spec:
       containers:
         - name: authelia
           # Dockerfile: https://github.com/authelia/authelia/blob/master/Dockerfile
-          image: docker.io/authelia/authelia:4.39.21@sha256:b2a221b30da111d6717bdf81bdf0b180915921447dde4c533a796c9a33a75d72
+          image: docker.io/authelia/authelia:4.39.22@sha256:936134132eaf01bfa2faf85055afbc1e0cc1cc5ca4547e9c06408fd0dd784646
           command: [/app/authelia]
           securityContext:
             allowPrivilegeEscalation: false
