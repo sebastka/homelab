@@ -56,5 +56,5 @@ spec:
             - {name: carat-image-volume, mountPath: /mnt/carat, subPath: app,  readOnly: true}
             - {name: carat-data-volume,  mountPath: /mnt/data/carat,  subPath: data, readOnly: false}
       volumes:
-        - {name: carat-image-volume, image: {reference: 'ghcr.io/sebastka/carat:2026.09.03-bb0da28', pullPolicy: IfNotPresent}}  # renovate: datasource=docker depName=ghcr.io/sebastka/carat
+        - {name: carat-image-volume, image: {reference: 'ghcr.io/sebastka/carat:2026.09.09-cd16481', pullPolicy: IfNotPresent}}  # renovate: datasource=docker depName=ghcr.io/sebastka/carat
         - {name: carat-data-volume,  persistentVolumeClaim: {claimName: carat-data-pvc}}
