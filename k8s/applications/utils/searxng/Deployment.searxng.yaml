@@ -37,7 +37,7 @@ spec:
       containers:
         - name: searxng
           # Dockerfile: https://github.com/searxng/searxng/blob/master/container/dist.dockerfile
-          image: docker.io/searxng/searxng:2026.9.10-931fd9787@sha256:2fb0fa85096fe6df5c3ab98ecb4d6e0ee2ef66b8fb96ce6fce0f75b51c4bd90a
+          image: docker.io/searxng/searxng:2026.9.11-ffe96f8a6@sha256:bf271ec8e347ceb21e0d388c928c5ecb17b44adec5bfaaa42a6518214ba3644b
           command: ["/usr/local/searxng/.venv/bin/granian", "searx.webapp:app"]
           securityContext:
             allowPrivilegeEscalation: false
