@@ -11,7 +11,7 @@ resources:
 helmCharts:
   - name: tempo
     repo: oci://ghcr.io/grafana-community/helm-charts
-    version: 2.4.0
+    version: 3.0.0
     releaseName: tempo
     namespace: tempo
     valuesFile: values.yaml
