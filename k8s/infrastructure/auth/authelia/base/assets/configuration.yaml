@@ -60,8 +60,8 @@ webauthn:
     validate_entry: true
     validate_entry_permit_zero_aaguid: false
     validate_status: true
-    # validate_status_permitted: [REVOKED, USER_KEY_PHYSICAL_COMPROMISE, USER_KEY_REMOTE_COMPROMISE, USER_VERIFICATION_BYPASS, ATTESTATION_KEY_COMPROMISE]
-    # validate_status_prohibited
+    # validate_status_permitted: []
+    # validate_status_prohibited: [REVOKED, USER_KEY_PHYSICAL_COMPROMISE, USER_KEY_REMOTE_COMPROMISE, USER_VERIFICATION_BYPASS, ATTESTATION_KEY_COMPROMISE]
 
 # https://www.authelia.com/configuration/miscellaneous/ntp/
 # ntp: {}
