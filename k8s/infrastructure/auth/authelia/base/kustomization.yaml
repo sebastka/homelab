@@ -8,6 +8,8 @@ generatorOptions:
 
 configMapGenerator:
   - {namespace: authelia, name: authelia-configuration, files: [configuration.yaml=assets/configuration.yaml]}
+  - {namespace: authelia, name: privacy-html, files: [response.body=assets/privacy.html]}
+  - {namespace: authelia, name: privacy-css,  files: [response.body=assets/privacy.css]}
 
 components:
   - ../../../../common/valkey

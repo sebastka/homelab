@@ -1,0 +1,22 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: privacy-html
+  namespace: authelia
+spec:
+  directResponse:
+    contentType: text/html; charset=utf-8
+    statusCode: 200
+    body: {type: ValueRef, valueRef: {group: '', kind: ConfigMap, name: privacy-html}}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: privacy-css
+  namespace: authelia
+spec:
+  directResponse:
+    contentType: text/css; charset=utf-8
+    statusCode: 200
+    body: {type: ValueRef, valueRef: {group: '', kind: ConfigMap, name: privacy-css}}

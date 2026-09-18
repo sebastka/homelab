@@ -381,4 +381,7 @@ identity_providers:
   # yamllint enable rule:braces
 
 # https://www.authelia.com/configuration/miscellaneous/privacy-policy/
-# privacy_policy: {}
+privacy_policy:
+  enabled: true
+  require_user_acceptance: true
+  policy_url: https://auth.karlsen.fr/privacy

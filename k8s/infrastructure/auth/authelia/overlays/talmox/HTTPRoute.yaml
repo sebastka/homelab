@@ -14,7 +14,7 @@ spec:
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
-            add:
+            add: &HEADERS
               # - {name: Access-Control-Allow-Origin, value: '*'}
               - {name: Content-Security-Policy, value: "default-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; style-src-elem 'self' 'unsafe-inline';"}
               - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
@@ -27,3 +27,12 @@ spec:
               - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
               # - {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
               # - &RE {name: Reporting-Endpoints, value: ''}
+    # Privacy policy, answered by Envoy from ConfigMaps. Bodies are parsed for Envoy %command% operators: write a literal % as %%
+    - matches: [path: {type: Exact, value: /privacy}]
+      filters:
+        - {type: ExtensionRef, extensionRef: {group: gateway.envoyproxy.io, kind: HTTPRouteFilter, name: privacy-html}}
+        - {type: ResponseHeaderModifier, responseHeaderModifier: {add: *HEADERS}}
+    - matches: [path: {type: Exact, value: /privacy.css}]
+      filters:
+        - {type: ExtensionRef, extensionRef: {group: gateway.envoyproxy.io, kind: HTTPRouteFilter, name: privacy-css}}
+        - {type: ResponseHeaderModifier, responseHeaderModifier: {add: *HEADERS}}

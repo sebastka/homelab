@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+     <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>Privacy Policy &bull; karlsen.fr</title>
+          <!-- Recompute with: openssl dgst -sha384 -binary privacy.css | openssl base64 -A -->
+          <link rel="stylesheet" href="./privacy.css" integrity="sha384-wUyQ01JjsvYvmk0K8D5DGrl8hRRpr3ogrww5xAwCYG1M3541FCGPncCTcs/e4SSo">
+     </head>
+
+     <body>
+          <h1>Privacy Policy</h1>
+          <p>
+               This policy covers the self-hosted services at <b>karlsen.fr</b>, <b>karlsen.org</b> and <b>karlsen.app</b>, including the sign-in portal at auth.karlsen.fr. They are a private homelab run by Sebastian Karlsen for family and friends. They are not a commercial service.
+          </p>
+
+          <h2>Data controller</h2>
+          <p>
+               The data controller is Sebastian Karlsen, a private individual in Norway. For any question about your data, write to <a href="mailto:sebastian@karlsen.fr">sebastian@karlsen.fr</a>.
+          </p>
+
+          <h2>What is collected</h2>
+          <ul>
+               <li><b>Your account:</b> username, display name, email address, group memberships and a hashed password.</li>
+               <li><b>Two-factor authentication:</b> your authenticator (TOTP) secret, stored encrypted, and the public key of any security key you register.</li>
+               <li><b>Sign-in history:</b> the time, username, IP address and browser of each sign-in attempt, whether it succeeded or not.</li>
+               <li><b>Sessions:</b> one strictly necessary cookie that keeps you signed in. There are no analytics, advertising or tracking cookies.</li>
+               <li><b>Security and technical logs:</b> IP addresses, request details and error messages recorded by the servers.</li>
+               <li><b>What you store in the services:</b> files, documents, messages and similar content you upload yourself.</li>
+          </ul>
+
+          <h2>Why</h2>
+          <p>
+               This data is used only to run the services: to sign you in, to keep your account secure, to block brute-force and other attacks, and to fix problems. It is never sold, never used for advertising and never used for profiling.
+          </p>
+          <p>
+               The legal basis is providing the service you asked for (GDPR Article 6(1)(b)). Security logs and attack detection rely on a legitimate interest in keeping the services and their users safe (GDPR Article 6(1)(f)).
+          </p>
+
+          <h2>How long it is kept</h2>
+          <table>
+               <tr>
+                    <th>Data</th>
+                    <th>Kept for</th>
+               </tr>
+               <tr>
+                    <td>Account and two-factor data</td><td>As long as your account exists</td>
+               </tr>
+               <tr>
+                    <td>Sign-in history</td>
+                    <td>Not deleted automatically. Ask and yours will be deleted.</td>
+               </tr>
+               <tr>
+                    <td>Session cookie</td>
+                    <td>1 hour, or 30 days with “Remember me”</td>
+               </tr>
+               <tr>
+                    <td>Temporary bans after failed sign-ins</td>
+                    <td>1 hour</td>
+               </tr>
+               <tr>
+                    <td>Server logs</td>
+                    <td>7 days</td>
+               </tr>
+               <tr>
+                    <td>Backups</td>
+                    <td>30 days</td>
+               </tr>
+          </table>
+
+          <h2>Where it is stored and who else sees it</h2>
+          <p>
+               Everything runs on hardware at home in Norway. A few outside providers are involved:
+          </p>
+          <ul>
+               <li><b>Hetzner</b> (Helsinki, Finland) stores the backups.</li>
+               <li><b>Domeneshop</b> (Norway) delivers emails such as password resets and sign-in notifications.</li>
+               <li><b>CrowdSec</b> (France) receives the IP address of clients that are detected attacking the services, to improve its shared blocklist.</li>
+          </ul>
+          <p>
+               Nobody else gets access to your data unless the law requires it.
+          </p>
+
+          <h2>How your data is protected</h2>
+          <ul>
+               <li>All connections are encrypted with HTTPS.</li>
+               <li>Signing in through auth.karlsen.fr always requires a second factor, such as an authenticator app or a security key.</li>
+               <li>Repeated failed sign-ins temporarily block both the account and the IP address they come from.</li>
+               <li>Passwords are only stored hashed, and two-factor secrets are stored encrypted.</li>
+               <!-- Enable once the ZFS datasets of db01, db02 and file01 on hera are encrypted: -->
+               <!-- <li>All data is stored on encrypted disks.</li> -->
+               <li>Each service is isolated by network rules that only allow the connections it needs.</li>
+               <li>Attacks are detected and blocked automatically, and the servers are monitored for suspicious activity.</li>
+               <li>Software is kept up to date with automated updates.</li>
+               <!-- Enable once the LAN is segmented and every service sits behind the sign-in portal (REVIEW.md items 29 and 62): -->
+               <!-- <li>Access is restricted using zero-trust principles: every request is authenticated at a reverse proxy, with multi-factor authentication.</li> -->
+          </ul>
+          <p>
+               No system is perfectly secure. If a security incident affects your data, you will be told without undue delay.
+          </p>
+
+          <h2>Your rights</h2>
+          <p>
+               You can ask to see, correct, export or delete your data, or to close your account, by writing to the address above. Under the GDPR you may also complain to the Norwegian Data Protection Authority, <a href="https://www.datatilsynet.no/en/">Datatilsynet</a>.
+          </p>
+
+          <footer>
+               Last updated 19 September 2026
+          </footer>
+     </body>
+</html>

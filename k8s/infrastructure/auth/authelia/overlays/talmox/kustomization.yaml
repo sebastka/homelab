@@ -7,3 +7,4 @@ resources:
   - SealedSecret.authelia-secrets.yaml
   - SealedSecret.client-secrets.yaml
   - HTTPRoute.yaml
+  - HTTPRouteFilter.yaml
