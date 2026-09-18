@@ -36,7 +36,7 @@ spec:
       initContainers:
         - name: init-schemas
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/jq/Dockerfile
-          image: ghcr.io/sebastka/jq:2026.9.2@sha256:2e4a054b5e0309729735dea53cb52bec204a5bfbebb885b334c8a23af71d5e67
+          image: ghcr.io/sebastka/jq:2026.9.18@sha256:3bf4ce3373d6b725a908d4c0c1864e4d47d85556774088c728bb3103ff30207f
           command: [/bin/sh, -c]
           args:
             - |
