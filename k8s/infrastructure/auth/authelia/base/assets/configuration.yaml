@@ -122,7 +122,12 @@ session:
   redis: {host: valkey}
 
 # https://www.authelia.com/configuration/security/regulation/
-# regulation: {}
+# ip mode relies on gateway ClientTrafficPolicy/client-traffic stripping client-supplied X-Forwarded-For
+regulation:
+  modes: [user, ip]
+  max_retries: 5
+  find_time: 15m
+  ban_time: 1h
 
 storage:
   # encryption_key: AUTHELIA_STORAGE_ENCRYPTION_KEY
