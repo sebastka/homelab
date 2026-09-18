@@ -16,7 +16,7 @@ spec:
     - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}
     - {toFQDNs: [matchName: time.cloudflare.com], toPorts: [ports: [{port: '123', protocol: UDP}]]}
     - {toFQDNs: [matchName: mds.fidoalliance.org], toPorts: [ports: [{port: '443', protocol: TCP}]]}
-    - {toFQDNs: [matchName: crl.globalsign.com], toPorts: [ports: [{port: '80', protocol: TCP}]]}
+    - {toFQDNs: [{matchName: crl.globalsign.com}, {matchName: secure.globalsign.com}], toPorts: [ports: [{port: '80', protocol: TCP}]]}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
