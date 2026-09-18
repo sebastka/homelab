@@ -2,13 +2,10 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: enable-proxy-protocol-policy
+  name: client-traffic
   namespace: gateway
 spec:
   targetRefs:
     - {group: gateway.networking.k8s.io, kind: Gateway, name: internal}
     - {group: gateway.networking.k8s.io, kind: Gateway, name: default}
-  # enableProxyProtocol: true
-  # clientIPDetection:
-  #   xForwardedFor:
-  #     numTrustedHops: 1
+  headers: {earlyRequestHeaders: {remove: [X-Forwarded-For, X-Real-IP]}}  #  Nothing sits in front of Envoy (DSR, no CDN), so any inbound X-Forwarded-For is forged. Removing it early leaves Envoy's own append as the only entry, so backends that trust the leftmost value see the real client
