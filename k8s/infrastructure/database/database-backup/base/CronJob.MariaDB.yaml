@@ -39,7 +39,7 @@ spec:
           containers:
             - name: mariadb-backup
               # Dockerfile: https://github.com/MariaDB/mariadb-docker/blob/master/12.3/Dockerfile
-              image: docker.io/library/mariadb:12.3.3-noble@sha256:adbf5727f3d6ffa0ea11109f948247d88d110edd3f43f8d4c134c0a09060c5f3
+              image: docker.io/library/mariadb:12.3.3-noble@sha256:805c8e104bd563d5bfa24fadd3f31cd419ea859cb5277f32b5dbf2db714f9ed1
               command: ['/bin/sh', '-c']
               args:
                 - |
