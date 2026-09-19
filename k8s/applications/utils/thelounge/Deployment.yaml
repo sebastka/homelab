@@ -78,8 +78,8 @@ spec:
           ports:
             - {name: http, containerPort: 9000, protocol: TCP}
             - {name: identd-tcp, containerPort: 9001, protocol: TCP}
-          startupProbe: {httpGet: {port: 9000, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
-          livenessProbe: {httpGet: {port: 9000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          startupProbe: {httpGet: {port: 9000, path: /},   initialDelaySeconds: 2,  periodSeconds: 10, timeoutSeconds: 5, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 9000, path: /},  initialDelaySeconds: 10, periodSeconds: 120}
           readinessProbe: {httpGet: {port: 9000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
           volumeMounts:
             # - {name: tmp-volume, mountPath: /tmp}
