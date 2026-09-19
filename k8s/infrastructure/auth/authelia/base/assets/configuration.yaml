@@ -81,6 +81,8 @@ authentication_backend:
     user: UID=lldap-admin,OU=people,dc=karlsen,dc=fr
     # password: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
     attributes:
+      given_name: givenName
+      family_name: sn
       extra:
         pictureUrl: {multi_valued: false, value_type: string}
         timezone: {multi_valued: false, value_type: string}
@@ -172,6 +174,7 @@ identity_providers:
       sshPublicKey: {custom_claims: {picture: {attribute: pictureUrl}, sshPublicKey: {attribute: sshPublicKey}, pgpKey: {attribute: pgpKey}, timezone: {attribute: timezone}}, id_token: [email, preferred_username, groups, picture]}
       legacy: {id_token: [email, email_verified, alt_emails, name, preferred_username, groups]}  # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
       username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
+      full_name: {id_token: [email, email_verified, name, given_name, family_name]}
     scopes:
       timezone: {claims: [timezone]}
       sshPublicKey: {claims: [sshPublicKey]}
@@ -183,7 +186,7 @@ identity_providers:
         public: false
         authorization_policy: two_factor
         pre_configured_consent_duration: 3 months
-        claims_policy: embed_id_token_claims
+        claims_policy: full_name
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris: [https://auth.workos.com/sso/oidc/XrFLb5kXixcQ7jv6eUhqKPPl9/callback]
