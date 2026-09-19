@@ -177,6 +177,24 @@ identity_providers:
       sshPublicKey: {claims: [sshPublicKey]}
       pgpKey: {claims: [pgpKey]}
     clients:
+      - client_id: anthropic
+        client_name: Anthropic
+        client_secret: {{ secret "/secrets/client-secrets/anthropic" }}
+        public: false
+        authorization_policy: two_factor
+        pre_configured_consent_duration: 3 months
+        claims_policy: embed_id_token_claims
+        require_pkce: true
+        pkce_challenge_method: S256
+        redirect_uris: [https://auth.workos.com/sso/oidc/XrFLb5kXixcQ7jv6eUhqKPPl9/callback]
+        scopes: [openid, email, profile]
+        response_types: [code]
+        grant_types: [authorization_code]
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        id_token_signed_response_alg: ES256
+        token_endpoint_auth_method: client_secret_basic
+
       - client_id: argocd
         client_name: Argo CD
         client_secret: {{ secret "/secrets/client-secrets/argocd" }}
