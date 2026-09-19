@@ -36,7 +36,7 @@ spec:
                       - docker.io/nginxinc/nginx-unprivileged
                       - registry.k8s.io/kubectl
                       - registry.k8s.io/git-sync/git-sync
-                      - ghcr.io/sebastka/jq
+                      - registry.gitlab.com/gitlab-ci-utils/curl-jq
 
                       # infrastructure/auth/authelia
                       - docker.io/authelia/authelia
@@ -230,6 +230,12 @@ spec:
 
                       # applications/public/synapse
                       - ghcr.io/element-hq/synapse
+
+                      # applications/utils/carat
+                      # carat ships FROM scratch and is mounted as an image volume
+                      # (spec.volumes[].image), which this policy does not walk - only the
+                      # node runtime it is mounted into is actually checked here.
+                      # - ghcr.io/sebastka/carat
 
                       # applications/utils/deluge
                       - ghcr.io/home-operations/deluge

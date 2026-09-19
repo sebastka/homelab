@@ -42,8 +42,8 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       initContainers:
         - name: init-vapid
-          # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/jq/Dockerfile
-          image: ghcr.io/sebastka/jq:2026.9.18@sha256:03b896a67e39953eb96f12013c4b36f4c9df57fa63168d70e8583ac2c27bc769
+          # Dockerfile: https://gitlab.com/gitlab-ci-utils/curl-jq/-/blob/main/Dockerfile
+          image: registry.gitlab.com/gitlab-ci-utils/curl-jq:5.0.2@sha256:b564745b6cb0a95f8fdbe82cfadb7b1dcaee43b45552c264138dbfe0999dde24
           command: [/bin/sh, -c]
           args:
             - |

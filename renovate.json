@@ -116,7 +116,7 @@
     {
       "description": "OCI registries publish no release timestamp, so minimumReleaseAge can never be satisfied and internalChecksFilter=strict withholds the PR forever. Classic https:// helm repos (index.yaml created) and docker.io (Hub API) are unaffected and keep the 1 day delay. See REVIEW.md item 22",
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["ghcr.io/**", "quay.io/**", "registry.k8s.io/**"],
+      "matchPackageNames": ["ghcr.io/**", "quay.io/**", "registry.k8s.io/**", "registry.gitlab.com/**"],
       "minimumReleaseAge": "0 days"
     },
     {
