@@ -174,7 +174,7 @@ identity_providers:
       sshPublicKey: {custom_claims: {picture: {attribute: pictureUrl}, sshPublicKey: {attribute: sshPublicKey}, pgpKey: {attribute: pgpKey}, timezone: {attribute: timezone}}, id_token: [email, preferred_username, groups, picture]}
       legacy: {id_token: [email, email_verified, alt_emails, name, preferred_username, groups]}  # https://www.authelia.com/integration/openid-connect/openid-connect-1.0-claims/#restore-functionality-prior-to-claims-parameter
       username_email: {id_token: [email, email_verified, alt_emails, name, preferred_username]}
-      full_name: {id_token: [email, email_verified, name, given_name, family_name]}
+      full_name: {id_token: [email, email_verified, name, given_name, family_name, groups]}
     scopes:
       timezone: {claims: [timezone]}
       sshPublicKey: {claims: [sshPublicKey]}
@@ -190,7 +190,7 @@ identity_providers:
         require_pkce: true
         pkce_challenge_method: S256
         redirect_uris: [https://auth.workos.com/sso/oidc/XrFLb5kXixcQ7jv6eUhqKPPl9/callback]
-        scopes: [openid, email, profile]
+        scopes: [openid, email, profile, groups]
         response_types: [code]
         grant_types: [authorization_code]
         access_token_signed_response_alg: none
