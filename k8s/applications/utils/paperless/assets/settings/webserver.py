@@ -51,6 +51,22 @@ class AccessLogMiddleware:
 
 MIDDLEWARE = ["webserver.AccessLogMiddleware"] + list(MIDDLEWARE)
 
+# PAPERLESS_DISABLE_REGULAR_LOGIN only covers the allauth session path (paperless/adapter.py
+# pre_authenticate, plus hiding the form in the login template). DRF has its own auth stack and
+# never calls that adapter, so PaperlessBasicAuthentication keeps accepting the native
+# username/password on every API endpoint - unthrottled. Drop it: TokenAuthentication still
+# accepts explicitly-issued API tokens (Profile -> API token, used by the mobile app) and
+# SessionAuthentication still accepts OIDC-established sessions.
+# The matching POST /api/token/ endpoint, which mints a token from username/password and also
+# ignores DISABLE_REGULAR_LOGIN, is blocked at the Gateway in HTTPRoute.yaml.
+REST_FRAMEWORK = {
+    **REST_FRAMEWORK,
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+}
+
 ##########################
 # Extra Django settings
 # https://docs.djangoproject.com/en/6.0/ref/settings/

@@ -9,6 +9,14 @@ spec:
     - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
   hostnames: [paperless.karlsen.app]
   rules:
+    # POST /api/token/ mints a long-lived API token from a native username/password and ignores
+    # PAPERLESS_DISABLE_REGULAR_LOGIN (PaperlessAuthTokenSerializer calls django authenticate()
+    # directly). Answered by Envoy so the native credential path is closed at the edge. Issue
+    # tokens from the UI instead. PathPrefix covers /api/token and /api/token/ in one match, and
+    # a longer prefix wins over the / rule below regardless of ordering.
+    - matches: [path: {type: PathPrefix, value: /api/token}]
+      filters:
+        - {type: ExtensionRef, extensionRef: {group: gateway.envoyproxy.io, kind: HTTPRouteFilter, name: deny-api-token}}
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: web, kind: Service, port: 80}]
       filters:
@@ -27,3 +35,17 @@ spec:
               - {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
               - {name: Integrity-Policy, value: 'blocked-destinations=(style),sources=(inline)'}
               # - {name: Reporting-Endpoints, value: ''}
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: deny-api-token
+  namespace: paperless
+spec:
+  directResponse:
+    contentType: application/json
+    statusCode: 403
+    body:
+      type: Inline
+      # Bodies are parsed for Envoy %command% operators: write a literal % as %%
+      inline: '{"detail":"Password authentication is disabled. Sign in with SSO, or use an API token issued from the Paperless UI."}'
