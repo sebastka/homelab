@@ -30,7 +30,7 @@ resources:
   - ClusterPolicy.require-labels.yaml
   - ClusterPolicy.require-probes.yaml
   - ClusterPolicy.restrict-image-registries.yaml
-  - ClusterPolicy.verify-image-signatures.yaml
+  # - ClusterPolicy.verify-image-signatures.yaml
   - CiliumNetworkPolicy.yaml
 
 helmCharts:

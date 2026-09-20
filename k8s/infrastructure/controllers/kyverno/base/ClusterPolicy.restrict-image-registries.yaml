@@ -65,11 +65,11 @@ spec:
                       - docker.io/crowdsecurity/crowdsec
 
                       # infrastructure/controllers/falco
-                      - docker.io/falcosecurity/falco
-                      - docker.io/falcosecurity/falcoctl
-                      - docker.io/falcosecurity/falcosidekick
-                      - docker.io/falcosecurity/falcosidekick-ui
-                      - docker.io/redis/redis-stack
+                      # - docker.io/falcosecurity/falco
+                      # - docker.io/falcosecurity/falcoctl
+                      # - docker.io/falcosecurity/falcosidekick
+                      # - docker.io/falcosecurity/falcosidekick-ui
+                      # - docker.io/redis/redis-stack
 
                       # infrastructure/controllers/intel-device-plugins
                       - intel/intel-deviceplugin-operator
@@ -160,8 +160,6 @@ spec:
                       - quay.io/cilium/clustermesh-apiserver
                       - ghcr.io/spiffe/spire-agent
                       - ghcr.io/spiffe/spire-server
-
-                      # infrastructure/network/coredns
 
                       # infrastructure/network/envoy-gateway
                       - docker.io/envoyproxy/envoy

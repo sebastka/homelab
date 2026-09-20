@@ -12,7 +12,7 @@ spec:
     - {namespace: kube-system,          name: talmox}
     - {namespace: cert-manager,         name: talmox}
     - {namespace: crowdsec,             name: talmox}
-    - {namespace: falco,                name: talmox}
+    # - {namespace: falco,              name: talmox}
     - {namespace: intel-device-plugins, name: talmox}
     - {namespace: kyverno,              name: talmox}
     - {namespace: nfd,                  name: talmox}
