@@ -5,6 +5,7 @@ metadata:
   name: websocket-timeout
   namespace: paperless
 spec:
+  mergeType: StrategicMerge  # Merge with the Gateway-scoped policy so the rate limit there still applies here.
   targetRefs:
     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
   timeout: {http: {maxStreamDuration: 0s}}
