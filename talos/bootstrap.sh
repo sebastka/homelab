@@ -12,10 +12,11 @@ set -eu
 #                     and a break-glass admin kubeconfig. All three are derived from the
 #                     secrets files in this repo and need no running cluster, so this is how
 #                     you recover from a lost config directory or an expired certificate.
-#   kubeconfig-oidc   Write the day-to-day kubeconfig, which authenticates against Authelia
-#                     through the kubectl oidc-login plugin. Add `setup` to run the
-#                     interactive `kubectl oidc-login setup` flow first, which checks the
-#                     issuer and client against the provider.
+#   kubeconfig-oidc   Add an oidc@<cluster> user and context to the kubeconfig written by the
+#                     modes above, authenticating against Authelia through the kubectl
+#                     oidc-login plugin. Add `setup` to run the interactive
+#                     `kubectl oidc-login setup` flow first, which checks the issuer and
+#                     client against the provider.
 main()
 {
     export CLUSTER_NAME="$1"
@@ -72,14 +73,45 @@ talos_apply()
 }
 
 # Break-glass admin credentials: a 12h system:masters certificate, minted from the secrets
-# bundle without contacting the cluster. Day-to-day access is the OIDC kubeconfig below.
+# bundle without contacting the cluster. Day-to-day access is the OIDC user added below.
+#
+# Merged rather than overwritten: on a duplicate key the first file in KUBECONFIG wins, so the
+# fresh certificate replaces the old one while anything else in the file - notably the oidc@
+# user and context - is carried over.
 talos_write_admin_kubeconfig()
 {
     printf 'Writing admin kubeconfig...\n'
-    [ ! -d "$XDG_CONFIG_HOME/kube/${CLUSTER_NAME}" ] || rm -rf "$XDG_CONFIG_HOME/kube/${CLUSTER_NAME}"
     mkdir -p "$XDG_CONFIG_HOME/kube/${CLUSTER_NAME}"
+    kubeconfig="$(kubeconfig_path)"
+    tmp="$(mktemp)"
 
-    topf kubeconfig >"$XDG_CONFIG_HOME/kube/${CLUSTER_NAME}/config.yaml"
+    topf kubeconfig >"$tmp"
+    if [ -f "$kubeconfig" ]; then
+        current="$(kubectl config current-context --kubeconfig "$kubeconfig" 2>/dev/null || true)"
+        KUBECONFIG="${tmp}:${kubeconfig}" kubectl config view --flatten >"${kubeconfig}.new"
+        mv "${kubeconfig}.new" "$kubeconfig"
+        rm -f "$tmp"
+        [ -z "$current" ] || kubectl config use-context "$current" --kubeconfig "$kubeconfig" >/dev/null
+    else
+        mv "$tmp" "$kubeconfig"
+    fi
+
+    kubeconfig_compact
+}
+
+kubeconfig_path()
+{
+    printf -- '%s/kube/%s/config.yaml' "$XDG_CONFIG_HOME" "$CLUSTER_NAME"
+}
+
+# kubectl writes kubeconfigs fully expanded; collapse each cluster, context and user onto one
+# line. Note that any later `kubectl config` write - `use-context` included - re-expands the
+# file, since kubectl serialises the whole structure in its own style.
+kubeconfig_compact()
+{
+    kubeconfig="$(kubeconfig_path)"
+    yq -i '(.clusters[], .contexts[], .users[]) style = "flow"' "$kubeconfig"
+    chmod 600 "$kubeconfig"
 }
 
 # Such that secrets can be sealed/unsealed locally.
@@ -98,37 +130,28 @@ sealed_secret_write_keys()
     done
 }
 
-# The cluster stanza (server + CA) comes from `topf kubeconfig`; its short-lived system:masters
-# user is dropped and replaced by the kubectl oidc-login exec plugin, so day-to-day access
-# authenticates against Authelia and lands on the RBAC bound to the `authelia:` prefixes.
+# Adds an OIDC user and context to the admin kubeconfig rather than writing a second file:
+# authentication goes through Authelia via the kubectl oidc-login plugin and lands on the RBAC
+# bound to the `authelia:` prefixes. The cluster stanza is already in the file.
+#
+# The exec calls the plugin binary directly rather than going through `kubectl oidc-login`, so
+# a kuberc `credentialPluginAllowlist` can name kubectl-oidc_login instead of having to
+# allow kubectl itself - which, being able to run any plugin, would barely be a restriction.
 oidc_write_kubeconfig()
 {
-    printf 'Writing OIDC kubeconfig...\n'
-    KUBECONFIG_FILE="$XDG_CONFIG_HOME/kube/config.${CLUSTER_NAME}-oidc"
-    mkdir -p "$XDG_CONFIG_HOME/kube"
+    kubeconfig="$(kubeconfig_path)"
+    if [ ! -f "$kubeconfig" ]; then
+        printf -- 'no %s yet - run `%s %s credentials` first\n' "$kubeconfig" "$0" "$CLUSTER_NAME" >&2
+        return 1
+    fi
 
-    topf kubeconfig \
-        | yq '
-            del(.users) |
-            .contexts = [{
-                "name": "oidc@" + env(CLUSTER_NAME),
-                "context": {
-                    "cluster": env(CLUSTER_NAME),
-                    "user": "oidc@" + env(CLUSTER_NAME),
-                    "namespace": "default"
-                }
-            }] |
-            .current-context = "oidc@" + env(CLUSTER_NAME)
-            ' \
-        > "$KUBECONFIG_FILE"
+    printf -- 'Adding the oidc@%s user and context to %s...\n' "$CLUSTER_NAME" "$kubeconfig"
 
-    # The user name has to match .contexts[0].context.user above
     kubectl config set-credentials "oidc@${CLUSTER_NAME}" \
-        --kubeconfig "$KUBECONFIG_FILE" \
+        --kubeconfig "$kubeconfig" \
         --exec-api-version=client.authentication.k8s.io/v1 \
         --exec-interactive-mode=Never \
-        --exec-command=kubectl \
-        --exec-arg=oidc-login \
+        --exec-command=kubectl-oidc_login \
         --exec-arg=get-token \
         --exec-arg="--oidc-issuer-url=$(oidc_value oidcIssuerUrl)" \
         --exec-arg="--oidc-client-id=$(oidc_value oidcClientId)" \
@@ -137,7 +160,17 @@ oidc_write_kubeconfig()
         --exec-arg="--oidc-extra-scope=groups" \
         --exec-arg="--oidc-extra-scope=profile"
 
-    ln -sf "config.${CLUSTER_NAME}-oidc" "$XDG_CONFIG_HOME/kube/config"
+    kubectl config set-context "oidc@${CLUSTER_NAME}" \
+        --kubeconfig "$kubeconfig" \
+        --cluster "$CLUSTER_NAME" \
+        --user "oidc@${CLUSTER_NAME}" \
+        --namespace default
+
+    # Day-to-day access, so make it the default; `credentials` preserves whatever is current
+    kubectl config use-context "oidc@${CLUSTER_NAME}" --kubeconfig "$kubeconfig"
+    kubeconfig_compact
+
+    printf -- 'Break-glass admin access: kubectl config use-context topf@%s\n' "$CLUSTER_NAME"
 }
 
 oidc_login_setup()

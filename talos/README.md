@@ -10,7 +10,7 @@ Docs: <https://postfinance.github.io/topf/main/>
 ## Layout
 
 ```text
-topf/
+talos/
 ├── bootstrap.sh                # `full`: apply + etcd bootstrap + kubeconfig; `credentials`: local files only
 ├── upgrade.sh                  # Longhorn-aware node roller: `topf upgrade`, or plain reboots
 └── clusters/talmox/
@@ -62,7 +62,7 @@ export TOPFCONFIG=./clusters/talmox/topf.yaml
 | Node states | `topf nodes` |
 | Check the schematic IDs still resolve | `topf schematic-ids` |
 | talosconfig / break-glass kubeconfig | `topf talosconfig`, `topf kubeconfig` (both print to stdout) |
-| Day-to-day OIDC kubeconfig | `./bootstrap.sh talmox kubeconfig-oidc` (add `setup` to run `kubectl oidc-login setup` first) |
+| Add the OIDC user/context | `./bootstrap.sh talmox kubeconfig-oidc` (add `setup` to run `kubectl oidc-login setup` first) |
 
 `--nodes-filter` takes a Go regex over `host` and works on every command, e.g.
 `topf upgrade --nodes-filter '^t03\.'`.
@@ -119,13 +119,15 @@ Kubernetes is upgraded separately, and minor versions go through `talosctl upgra
   fresh one offline, so `./bootstrap.sh talmox credentials` fixes it without touching the
   cluster. Nothing under that directory is a source of truth — it is all derived from this
   repo, and safe to delete and regenerate.
-- **Two kinds of cluster access.** `topf kubeconfig` issues a 12-hour x509 client certificate
-  in `system:masters` — break-glass only, and it has no notion of OIDC. `bootstrap.sh` writes
-  it to `$XDG_CONFIG_HOME/kube/<cluster>/config.yaml` in both `full` and `credentials` mode.
-  The `kubeconfig-oidc` mode takes the cluster stanza from that same command, drops the admin
-  user and wires the `kubectl oidc-login` exec plugin in its place, so normal access goes
-  through Authelia and the `authelia:`-prefixed RBAC. That one lands at
-  `$XDG_CONFIG_HOME/kube/config.<cluster>-oidc`, with the `config` symlink pointed at it.
+- **Two kinds of cluster access, one kubeconfig.** Everything lands in
+  `$XDG_CONFIG_HOME/kube/<cluster>/config.yaml`. `full` and `credentials` write the
+  `topf@<cluster>` user — a 12-hour `system:masters` certificate from `topf kubeconfig`,
+  break-glass only and with no notion of OIDC. `kubeconfig-oidc` adds an `oidc@<cluster>` user
+  and context beside it, wiring the `kubectl oidc-login` exec plugin so normal access goes
+  through Authelia and the `authelia:`-prefixed RBAC. Switch between them with
+  `kubectl config use-context`. Re-running `credentials` merges rather than overwrites, so it
+  refreshes the expired certificate without dropping the OIDC entries or changing the current
+  context.
 - **Filesystem trim.** Talos ships a `FilesystemTrimConfig` document by default, weekly, at a
   stable per-volume offset, but it cannot reach an encrypted volume unless `allowDiscards` is
   set — and every volume here is LUKS2. It is enabled on EPHEMERAL
