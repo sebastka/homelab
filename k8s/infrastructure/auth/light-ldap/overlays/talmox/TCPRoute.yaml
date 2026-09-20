@@ -1,5 +1,5 @@
 # ---
-# apiVersion: gateway.networking.k8s.io/v1alpha2
+# apiVersion: gateway.networking.k8s.io/v1
 # kind: TCPRoute
 # metadata:
 #   name: ldap
@@ -10,7 +10,7 @@
 #   rules:
 #     - backendRefs: [{name: light-ldap, kind: Service, port: 389}]
 ---
-apiVersion: gateway.networking.k8s.io/v1alpha2
+apiVersion: gateway.networking.k8s.io/v1
 kind: TCPRoute
 metadata:
   name: ldaps
