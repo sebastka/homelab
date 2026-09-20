@@ -135,11 +135,11 @@ listen-http: ":8080"
 # auth-startup-queries:
 auth-users:
   - 'alertmanager:$2a$10$0dC9qXPjXhsB0jyTn2nf8e6RZTrCJ1chbdx8zS/xXgQDb.79NcemO:user'
-  - 'falco:$2a$10$0dC9qXPjXhsB0jyTn2nf8e6RZTrCJ1chbdx8zS/xXgQDb.79NcemO:user'
+  # - 'falco:$2a$10$0dC9qXPjXhsB0jyTn2nf8e6RZTrCJ1chbdx8zS/xXgQDb.79NcemO:user'
   - 'crowdsec:$2a$10$0dC9qXPjXhsB0jyTn2nf8e6RZTrCJ1chbdx8zS/xXgQDb.79NcemO:user'
 auth-access:
   - 'alertmanager:homelab:rw'
-  - 'falco:homelab:rw'
+  # - 'falco:homelab:rw'
   - 'crowdsec:homelab:rw'
 # auth-tokens: (injected by init container)
 
