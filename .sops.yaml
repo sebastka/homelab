@@ -1,0 +1,9 @@
+# https://github.com/getsops/sops
+
+# Encrypt: sops -e .X.sops.yaml >X.sops.yaml
+# Decrypt: sops -d X.sops.yaml >.X.sops.yaml
+---
+
+creation_rules:
+  - path_regex: .*\.sops\.ya?ml$
+    pgp: 0B25B26C537B40B5B208F3A6C74C02E66D0CBECF
