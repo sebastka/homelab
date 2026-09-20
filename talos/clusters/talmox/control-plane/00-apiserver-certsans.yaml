@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# Extra API server SANs: the VIP plus every node by address and by name.
+# Keep in sync with nodes[] in topf.yaml.
+---
+apiVersion: v1alpha1
+kind: KubeAPIServerConfig
+certExtraSANs:
+  - 192.168.1.200
+  - 192.168.1.201
+  - 192.168.1.202
+  - 192.168.1.203
+  - t01.talmox.hera.home.karlsen.fr
+  - t02.talmox.hera.home.karlsen.fr
+  - t03.talmox.hera.home.karlsen.fr

@@ -1,0 +1,8 @@
+# Talos labels control-plane nodes as excluded from external load balancers. All three
+# nodes here run workloads and are valid load-balancer targets, so drop the label.
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  node.kubernetes.io/exclude-from-external-load-balancers:
+    $patch: delete

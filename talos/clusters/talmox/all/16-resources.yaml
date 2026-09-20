@@ -1,0 +1,19 @@
+# Resources limits for control plane components
+---
+apiVersion: v1alpha1
+kind: KubeAPIServerConfig
+resources:
+  requests: {memory: 2560Mi}
+  limits: {memory: 3072Mi}
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+resources:
+  requests: {memory: 128Mi}
+  limits: {memory: 512Mi}
+---
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+resources:
+  requests: {memory: 64Mi}
+  limits: {memory: 128Mi}

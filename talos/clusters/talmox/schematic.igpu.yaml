@@ -1,0 +1,18 @@
+# Talos image factory schematic for t03, which has the iGPU - https://factory.talos.dev/
+# Expected schematic ID:
+# a2cece99d5d57ff53fff8237b2673c5aa6ed0072505a2f068f8dd16a0be17181
+---
+customization:
+  extraKernelArgs:
+    - -lockdown
+    - lockdown=integrity  # Needed for Falco/Tetragon when using Secure Boot
+    - xe.force_probe=7d51
+    - i915.force_probe=!7d51
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/iscsi-tools
+      - siderolabs/qemu-guest-agent
+      - siderolabs/util-linux-tools
+      - siderolabs/xe
+      - siderolabs/i915
+  bootloader: sd-boot

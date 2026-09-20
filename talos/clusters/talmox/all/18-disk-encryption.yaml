@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# https://docs.siderolabs.com/talos/v1.14/platform-specific-installations/bare-metal-platforms/secureboot#booting-talos-linux-in-secureboot-mode
+#
+# allowDiscards lets TRIM reach the zvol underneath, which is what makes the default weekly
+# FilesystemTrimConfig do anything on an encrypted volume: without it the LUKS layer swallows
+# every discard and freed blocks are never returned to the ZFS pool. The trade-off is that an
+# attacker holding the raw disk can see which sectors are in use. EPHEMERAL churns (images,
+# logs) and is worth it; STATE is ~88 MB and near-static, so it is left alone.
+#
+# It takes effect when LUKS next opens the volume, so it applies from the next reboot of each
+# node onwards. See also all/13-longhorn.yaml.tpl.
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: STATE
+encryption:
+  provider: luks2
+  keys: [{nodeID: {}, slot: 0}]
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+encryption:
+  provider: luks2
+  allowDiscards: true
+  keys: [{nodeID: {}, slot: 0}]

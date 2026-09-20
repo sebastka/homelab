@@ -1,0 +1,8 @@
+# All three nodes carry workloads, so control-plane scheduling stays on.
+# Done by removing the control-plane taint that KubeNodeConfig sets.
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+taints:
+  node-role.kubernetes.io/control-plane:
+    $patch: delete

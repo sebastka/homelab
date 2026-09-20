@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# Pod/service CIDRs.
+# These are also the Talos defaults; kept explicit so a default change cannot move them.
+---
+apiVersion: v1alpha1
+kind: KubeNetworkConfig
+podSubnets: [10.244.0.0/16]
+serviceSubnets: [10.96.0.0/12]

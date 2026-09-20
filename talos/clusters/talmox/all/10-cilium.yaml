@@ -1,0 +1,15 @@
+# Disable Flannel and kube-proxy: use Cilium instead
+# - https://docs.siderolabs.com/kubernetes-guides/cni/deploying-cilium
+---
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
+---
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+hostDNS:
+  forwardKubeDNSToHost: false  # https://docs.siderolabs.com/kubernetes-guides/cni/deploying-cilium#known-issues

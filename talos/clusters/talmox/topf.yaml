@@ -1,0 +1,49 @@
+# https://postfinance.github.io/topf/main/configuration/
+# https://postfinance.github.io/topf/main/configuration-model/
+# https://docs.siderolabs.com/talos/v1.14/reference/configuration/v1alpha1/config
+#
+# Patches live next to this file and are merged in this order:
+#   all/ -> control-plane/ -> node/<host>/ , lexicographically within each folder.
+---
+clusterName: talmox
+clusterEndpoint: https://192.168.1.200:6443
+# Minor upgrades go through `talosctl upgrade-k8s`, which validates skew and rolls the
+# components in order; this field is updated afterwards so `topf apply` does not revert it.
+kubernetesVersion: 1.37.0
+talosVersion: 1.14.1
+
+# topf derives the installer image from the fields below:
+#   <factory>/<platform>-installer[-secureboot]/<schematicId>:v<talosVersion>
+# It injects it as a cluster-level patch, so no `machine.install.image` patch is needed.
+platform: nocloud  # Proxmox VMs boot the nocloud disk image
+secureboot: true  # SecureBoot + UKI, so the -secureboot installer variant
+schematicId: '@schematic.yaml'
+
+secretsPath: secrets.sops.yaml  # decrypted transparently by topf via sops
+
+# Available in *.tpl patches as {{ .Data.<key> }}, and read by mk_kubeconfig.sh.
+# Values used by only one patch are written in that patch instead of here.
+data:
+  vip: 192.168.1.200  # keep in step with clusterEndpoint above
+  link: eth0
+  oidcIssuerUrl: https://auth.karlsen.fr
+  oidcClientId: kube_login
+
+# Per-node values are available as {{ .Node.Data.<key> }}.
+# `mac` is not consumed by topf; it documents the Proxmox VM NIC.
+nodes:
+  - host: t01.talmox.hera.home.karlsen.fr
+    ip: 192.168.1.201
+    role: control-plane
+    data: {zone: t01, mac: 'BC:24:11:10:FE:09'}
+
+  - host: t02.talmox.hera.home.karlsen.fr
+    ip: 192.168.1.202
+    role: control-plane
+    data: {zone: t02, mac: 'BC:24:11:10:FE:0A'}
+
+  - host: t03.talmox.hera.home.karlsen.fr
+    ip: 192.168.1.203
+    role: control-plane
+    data: {zone: t03, mac: 'BC:24:11:10:FE:0B'}
+    schematicId: '@schematic.igpu.yaml'  # iGPU passthrough, see the file

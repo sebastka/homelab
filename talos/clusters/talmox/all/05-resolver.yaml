@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# Search domains handed to the nodes and, through kubelet, to every pod.
+#
+# `karlsen.fr` is deliberately left out. The zone is hosted on Cloudflare, which answers
+# NOERROR with no records for a name that does not exist, rather than NXDOMAIN. Under the
+# default ndots:5 a name such as db02.hera.home.karlsen.fr is tried against each search domain
+# before the name itself, and that NOERROR ends the search early - musl-based images (Alpine)
+# then fail with "Name does not resolve". home.karlsen.fr and hera.home.karlsen.fr are served
+# by the local resolver and return NXDOMAIN correctly, so they are safe to keep.
+#
+# hostDNS is configured in all/10-cilium.yaml; both documents merge into one ResolverConfig.
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+searchDomains:
+  disableDefault: true
+  domains:
+    - hera.home.karlsen.fr
+    - home.karlsen.fr

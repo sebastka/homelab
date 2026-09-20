@@ -1,0 +1,15 @@
+# Talos image factory schematic for t01/t02 - https://factory.talos.dev/
+# topf hashes this file into the schematic ID, which must stay
+# 8dfe2c9a167a9e198aec688d0ed5507a2441b16d65a3fd3f3814b5d684b73b8e
+# (verify with `topf schematic-ids`; a changed ID means a reinstall on next upgrade).
+---
+customization:
+  extraKernelArgs:
+    - -lockdown
+    - lockdown=integrity  # Needed for Falco/Tetragon when using Secure Boot
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/iscsi-tools
+      - siderolabs/qemu-guest-agent
+      - siderolabs/util-linux-tools
+  bootloader: sd-boot

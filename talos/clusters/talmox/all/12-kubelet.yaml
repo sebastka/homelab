@@ -1,0 +1,10 @@
+# Lower kubelet image GC thresholds so unused layers are pruned before disk
+---
+apiVersion: v1alpha1
+kind: KubeletConfig
+config:
+  imageGCHighThresholdPercent: 65   # default: 85
+  imageGCLowThresholdPercent: 50    # default: 80
+  imageMaximumGCAge: 48h            # default: 0s (disabled)
+  nodeStatusUpdateFrequency: 20s    # default: 10s
+  syncFrequency: 3m                 # default: 1m

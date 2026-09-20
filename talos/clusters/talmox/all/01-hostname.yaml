@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# Keep the DHCP/stable hostname instead of pinning it to nodes[].host.
+# This is what keeps the Kubernetes node names at t01/t02/t03 rather than the FQDNs
+# used in topf.yaml.
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+auto: stable

@@ -1,4 +1,0 @@
-cluster,pve_node,node_name,hw_add,net_addr
-talmox,hera,t01,BC:24:11:10:FE:09,192.168.1.201
-talmox,hera,t02,BC:24:11:10:FE:0A,192.168.1.202
-talmox,hera,t03,BC:24:11:10:FE:0B,192.168.1.203

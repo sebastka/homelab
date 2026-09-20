@@ -1,0 +1,18 @@
+# Expose etcd metrics on all interfaces, so that they can be scraped by the prometheus operator
+# - https://docs.siderolabs.com/kubernetes-guides/monitoring-and-observability/etcd-metrics
+# etcd is still configured under v1alpha1; the control plane components have their own documents.
+---
+cluster:
+  etcd:
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+---
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+extraArgs:
+  bind-address: 0.0.0.0
