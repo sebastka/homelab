@@ -24,7 +24,7 @@ spec:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: prometheus}], toPorts: [ports: [{port: '8000', protocol: TCP}]]}
   egress:
     - {toEntities: [kube-apiserver]}
-    - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+    # - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Sigstore/registry, only needed by verifyImages
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
@@ -36,7 +36,7 @@ spec:
   # ingress: []
   egress:
     - {toEntities: [kube-apiserver]}
-    - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+    # - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Sigstore/registry, only needed by verifyImages
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
@@ -71,7 +71,7 @@ spec:
   # ingress: []
   egress:
     - {toEntities: [kube-apiserver]}
-    - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}
+    # - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Sigstore/registry, only needed by verifyImages
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
