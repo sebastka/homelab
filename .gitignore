@@ -20,9 +20,14 @@ nextcloud
 qbittorrent
 radarr
 
-# Terraform
+# OpenTofu
+!.terraform.lock.hcl
 secrets.auto.tfvars
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfstate.*.backup
 tfplan
+tofu/dns/zonefiles/
 
 # topf
 talos/clusters/*/output/

@@ -1,0 +1,81 @@
+#!/bin/sh
+# Shared helpers. Source, do not execute.
+#
+# Zone names live in ../../secrets.sops.yaml for the ones we do not publish, so
+# every script here reads them through sops rather than hardcoding a list.
+
+set -eu
+
+readonly TOFU_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+
+# all_zones -- every zone we manage, one per line, public ones first.
+all_zones()
+{
+    printf -- 'karlsen.app\nkarlsen.fr\nkarlsen.org\n'
+    secret_zones
+}
+
+# secret_zones -- the zones whose names are not in the repo.
+secret_zones()
+{
+    sops -d --output-type json "$TOFU_DIR/secrets.sops.yaml" \
+        | python3 -c 'import json,sys; [print(v) for v in json.load(sys.stdin)["secret_zones"].values()]'
+}
+
+# zone_hosts -- "<domain_id> <fqdn> <where>" per line for every domain in the
+# account, where <where> is cloudflare, domeneshop or elsewhere.
+#
+# Classified from the registrar's own nameserver data rather than by asking
+# DNS: the LAN resolver is split-horizon for some of these zones and answers
+# NS queries for them with NOERROR and no records, which would silently
+# misfile them. Registrar data does not depend on where you run this.
+zone_hosts()
+{
+    domeneshop domains:list --json | python3 -c '
+import json, sys
+for d in json.load(sys.stdin):
+    ns = " ".join(d.get("nameservers") or [])
+    if d.get("services", {}).get("dns"):
+        where = "domeneshop"
+    elif "cloudflare.com" in ns:
+        where = "cloudflare"
+    else:
+        where = "elsewhere"
+    print(d["id"], d["domain"], where)'
+}
+
+# cf_zones -- the Cloudflare-hosted zones only (a, b, c and the public three).
+cf_zones()
+{
+    zone_hosts | while read -r _ fqdn where; do
+        [ "$where" != cloudflare ] || echo "$fqdn"
+    done
+}
+
+# cf_token -- the Cloudflare API token from the (gitignored) tfvars.
+cf_token()
+{
+    python3 - "$TOFU_DIR/secrets.auto.tfvars" <<'PY'
+import re, sys
+s = open(sys.argv[1]).read()
+b = re.search(r'cloudflare\s*=\s*\{(.*?)\n\}', s, re.S).group(1)
+print(re.search(r'api_token\s*=\s*"([^"]+)"', b).group(1))
+PY
+}
+
+# cf_zone_id <fqdn> -- the Cloudflare zone id for a domain, empty if not a zone.
+cf_zone_id()
+{
+    cf_api "zones?name=$1" | python3 -c '
+import json, sys
+r = json.load(sys.stdin).get("result") or []
+print(r[0]["id"] if r else "")'
+}
+
+# cf_api <path> -- GET the Cloudflare API.
+cf_api()
+{
+    curl --silent --fail \
+        -H "Authorization: Bearer $(cf_token)" \
+        "https://api.cloudflare.com/client/v4/$1"
+}
