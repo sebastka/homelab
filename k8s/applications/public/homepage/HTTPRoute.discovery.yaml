@@ -1,16 +1,30 @@
+# Machine-read discovery endpoints, deliberately outside the CrowdSec bouncer.
+#
+# MTA-STS policies, WKD keys and mail autoconfig are static public documents
+# fetched by sending MTAs, mail clients and OpenPGP tooling -- never by a
+# person with a browser. Behind the bouncer on the karlsen-fr route they are
+# unreadable from any address CrowdSec holds a decision on, and a captcha
+# would answer with a redirect, which RFC 8461 s3.3 forbids a policy fetch
+# from following. The sender then falls back to "no policy", so MTA-STS
+# silently stops protecting exactly the senders CrowdSec distrusts.
+#
+# These hostnames must therefore stay allow-all. Nothing sensitive is served
+# here: the same three documents are public by design.
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: karlsen-fr
+  name: discovery
   namespace: homepage
 spec:
   parentRefs:
-    - {namespace: gateway, name: default, sectionName: https-karlsen-fr}
     - {namespace: gateway, name: default, sectionName: https-wc-karlsen-fr}
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-org}
   hostnames:
-    - karlsen.fr
-    - www.karlsen.fr
+    - autoconfig.karlsen.fr  # Thunderbird, /mail/config-v1.1.xml
+    - openpgpkey.karlsen.fr  # WKD, /.well-known/openpgpkey/...
+    - mta-sts.karlsen.fr     # MTA-STS, /.well-known/mta-sts.txt
+    - mta-sts.karlsen.org
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: web, kind: Service, port: 80}]
@@ -18,19 +32,16 @@ spec:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
             add:
-              # - {name: Access-Control-Allow-Origin, value: '*'}
-              - {name: Content-Security-Policy, value: "default-src 'none'; style-src-elem 'self'; script-src-elem 'self'; img-src 'self'; connect-src 'self'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
+              - {name: Content-Security-Policy, value: default-src 'none';}
               - &HSTS {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
               - &XCTO {name: X-Content-Type-Options, value: nosniff}
               - &XFO {name: X-Frame-Options, value: DENY}
               - &CORP {name: Cross-Origin-Resource-Policy, value: same-origin}
-              - &COEP {name: Cross-Origin-Embedder-Policy, value: require-corp}
-              - &COOP {name: Cross-Origin-Opener-Policy, value: same-origin}
               - &RP {name: Referrer-Policy, value: no-referrer}
               - &PP {name: Permissions-Policy, value: 'accelerometer=(), autoplay=(), camera=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}
-              - &IP {name: Integrity-Policy, value: 'blocked-destinations=(script style),sources=(inline)'}
-              # - &RE {name: Reporting-Endpoints, value: ''}
 
+    # WKD is read cross-origin by webmail clients, so this path keeps the
+    # permissive CORS header the karlsen-fr route already gave it.
     - matches: [path: {type: PathPrefix, value: /.well-known}]
       backendRefs: [{name: web, kind: Service, port: 80}]
       filters:
@@ -42,9 +53,6 @@ spec:
               - *HSTS
               - *XCTO
               - *XFO
-              - *CORP
-              - *COEP
-              - *COOP
+              - {name: Cross-Origin-Resource-Policy, value: cross-origin}
               - *RP
               - *PP
-              - *IP

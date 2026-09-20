@@ -11,7 +11,6 @@ spec:
   hostnames:
     - karlsen.org
     - www.karlsen.org
-    - mta-sts.karlsen.org
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: web, kind: Service, port: 80}]

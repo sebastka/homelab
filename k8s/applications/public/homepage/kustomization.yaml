@@ -17,5 +17,6 @@ resources:
   - HTTPRoute.karlsenapp.yaml
   - HTTPRoute.karlsenfr.yaml
   - HTTPRoute.karlsenorg.yaml
+  - HTTPRoute.discovery.yaml
   - SecurityPolicy.yaml
   - CiliumNetworkPolicy.yaml
