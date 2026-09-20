@@ -17,6 +17,13 @@ spec:
     - matches: [path: {type: PathPrefix, value: /api/token}]
       filters:
         - {type: ExtensionRef, extensionRef: {group: gateway.envoyproxy.io, kind: HTTPRouteFilter, name: deny-api-token}}
+    # Django's admin login calls django.contrib.auth.authenticate() directly and never reaches
+    # allauth's adapter, so PAPERLESS_DISABLE_REGULAR_LOGIN does not cover it - it served a full
+    # username/password form to the Internet. Only /admin/login is blocked: /admin itself stays
+    # usable for a session already established through OIDC.
+    - matches: [path: {type: PathPrefix, value: /admin/login}]
+      filters:
+        - {type: ExtensionRef, extensionRef: {group: gateway.envoyproxy.io, kind: HTTPRouteFilter, name: deny-admin-login}}
     - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: web, kind: Service, port: 80}]
       filters:
@@ -49,3 +56,17 @@ spec:
       type: Inline
       # Bodies are parsed for Envoy %command% operators: write a literal % as %%
       inline: '{"detail":"Password authentication is disabled. Sign in with SSO, or use an API token issued from the Paperless UI."}'
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: deny-admin-login
+  namespace: paperless
+spec:
+  directResponse:
+    contentType: text/html; charset=utf-8
+    statusCode: 403
+    body:
+      type: Inline
+      # Bodies are parsed for Envoy %command% operators: write a literal % as %%
+      inline: '<!doctype html><meta charset="utf-8"><title>Blocked</title><p>The Django admin login form is disabled. <a href="/accounts/login/">Sign in with SSO</a> first, then open <a href="/admin/">/admin/</a>.'
