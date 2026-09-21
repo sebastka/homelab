@@ -19,7 +19,7 @@ spec:
           responseHeaderModifier:
             add:
               # - {name: Access-Control-Allow-Origin, value: '*'}
-              - {name: Content-Security-Policy, value: "default-src 'none'; style-src-elem 'self'; script-src-elem 'self'; img-src 'self'; connect-src 'self'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
+              - {name: Content-Security-Policy, value: "default-src 'none'; style-src-elem 'self'; script-src-elem 'strict-dynamic' 'sha384-KPeA/26PIq5WbcyWlRDbvq0HWa4gFrKKRv81ybeQs9rqQnJAbndGAZ48jMny7xgp' 'self'; img-src 'self'; connect-src 'self'; frame-ancestors 'none'; form-action 'none'; base-uri 'none';"}
               - &HSTS {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
               - &XCTO {name: X-Content-Type-Options, value: nosniff}
               - &XFO {name: X-Frame-Options, value: DENY}
