@@ -12,5 +12,6 @@ spec:
     - {namespace: whoami,   name: talmox}
     - {namespace: harbor,   name: talmox}
     - {namespace: forgejo,  name: talmox}
+    - {namespace: tlsrpt,   name: talmox}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}

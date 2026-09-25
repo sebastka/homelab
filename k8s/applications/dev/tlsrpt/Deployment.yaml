@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tlsrpt
+  namespace: tlsrpt
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tlsrpt
+      # app.kubernetes.io/version:
+      app.kubernetes.io/component: web
+      app.kubernetes.io/part-of: tlsrpt
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: tlsrpt
+      labels:
+        app.kubernetes.io/name: tlsrpt
+        # app.kubernetes.io/version:
+        app.kubernetes.io/component: web
+        app.kubernetes.io/part-of: tlsrpt
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: tlsrpt
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: tlsrpt
+          image: docker.io/library/node:26-alpine@sha256:dbaa92e5758cbbcf85d65d5403fdb530fe3442cbe8c6dbfb7ef23365450d5070
+          command: [node, /mnt/tlsrpt/src/server/index.ts]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 128Mi}
+            limits: {memory: 256Mi}
+          envFrom:
+            - configMapRef: {name: tlsrpt-env}
+            - secretRef: {name: tlsrpt}  # IMAP_PASSWORD, DB_PASSWORD, OIDC_CLIENT_SECRET
+          ports:
+            - {name: http, protocol: TCP, containerPort: 3000}
+          startupProbe:   {httpGet: {port: 3000, path: /api/health}, initialDelaySeconds: 2, periodSeconds: 5, failureThreshold: 12}
+          livenessProbe:  {httpGet: {port: 3000, path: /api/health},                         periodSeconds: 60}
+          readinessProbe: {httpGet: {port: 3000, path: /api/health},                         periodSeconds: 30}
+          volumeMounts:
+            - {name: tlsrpt-image-volume, mountPath: /mnt/tlsrpt, subPath: app, readOnly: true}
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - {name: tlsrpt-image-volume, image: {reference: 'ghcr.io/sebastka/tlsrpt:2026.09.25-381e831@sha256:b1a8bc0d64fa8124376bb9e78535b89a9e960f2bec7b22574a53a91ecd8b3ab2', pullPolicy: Always}}  # renovate: datasource=docker depName=ghcr.io/sebastka/tlsrpt
+        - {name: tmp, emptyDir: {sizeLimit: 64Mi}}

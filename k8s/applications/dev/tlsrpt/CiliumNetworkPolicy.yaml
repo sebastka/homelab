@@ -1,0 +1,15 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-tlsrpt
+  namespace: tlsrpt
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: tlsrpt}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Envoy Gateway
+  egress:
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # OIDC discovery, token & userinfo (auth.karlsen.fr via the Gateway)
+    - {toFQDNs: [matchName: db01.hera.home.karlsen.fr], toPorts: [ports: [{port: '3306', protocol: TCP}]]}  # MariaDB
+    - {toFQDNs: [matchName: imap.domeneshop.no], toPorts: [ports: [{port: '993', protocol: TCP}]]}  # IMAP mailbox receiving the reports

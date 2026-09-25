@@ -1,0 +1,18 @@
+# Cross namespace attachment?
+# - https://github.com/envoyproxy/gateway/issues/5143
+# Replaces the Gateway-level default deny: reachable from the Internet (behind CrowdSec).
+# Login is enforced by the app itself (OIDC client `tlsrpt` in Authelia, group k8s_admins); only
+# /api/health and /auth/{login,callback,logout} answer without a session.
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-all-http
+  namespace: tlsrpt
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  # authorization: {defaultAction: Allow}
+  extAuth:
+    failOpen: false
+    grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenfr, port: 8080}]}
