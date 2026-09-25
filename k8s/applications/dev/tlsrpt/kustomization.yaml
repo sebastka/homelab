@@ -10,7 +10,6 @@ configMapGenerator:
 resources:
   - Namespace.yaml
   - ServiceAccount.yaml
-  - SealedSecret.regcred.yaml
   - SealedSecret.tlsrpt.yaml
   - Deployment.yaml
   - Service.yaml
