@@ -34,8 +34,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       containers:
         - name: tlsrpt
-          image: docker.io/library/node:26-alpine@sha256:dbaa92e5758cbbcf85d65d5403fdb530fe3442cbe8c6dbfb7ef23365450d5070
-          command: [node, /mnt/tlsrpt/src/server/index.ts]
+          image: ghcr.io/sebastka/tlsrpt:2026.09.25-cdc3080@sha256:0c83d4ce6e969d034a42437177ae270b99e5a502b4718b7d0ef88754811c9809
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -52,8 +51,6 @@ spec:
           livenessProbe:  {httpGet: {port: 3000, path: /api/health},                         periodSeconds: 60}
           readinessProbe: {httpGet: {port: 3000, path: /api/health},                         periodSeconds: 30}
           volumeMounts:
-            - {name: tlsrpt-image-volume, mountPath: /mnt/tlsrpt, subPath: app, readOnly: true}
             - {name: tmp, mountPath: /tmp}
       volumes:
-        - {name: tlsrpt-image-volume, image: {reference: 'ghcr.io/sebastka/tlsrpt:2026.09.25-f7d3005@sha256:45d73efc9076c7205e2989cdf7357372ade3567e40bc4c8d5044e7f299025b89', pullPolicy: Always}}  # renovate: datasource=docker depName=ghcr.io/sebastka/tlsrpt
         - {name: tmp, emptyDir: {sizeLimit: 64Mi}}

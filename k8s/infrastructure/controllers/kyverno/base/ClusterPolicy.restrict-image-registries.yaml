@@ -201,6 +201,9 @@ spec:
                       # applications/dev/harbor
                       # - 'goharbor/*'
 
+                      # applications/dev/tlsrpt
+                      - ghcr.io/sebastka/tlsrpt
+
                       # applications/dev/whoami
                       - ghcr.io/traefik/whoami
 
