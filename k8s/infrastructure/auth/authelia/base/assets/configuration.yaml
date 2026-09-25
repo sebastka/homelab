@@ -399,6 +399,24 @@ identity_providers:
         userinfo_signed_response_alg: none
         id_token_signed_response_alg: ES256
         token_endpoint_auth_method: client_secret_basic
+
+        # https://github.com/sebastka/tlsrpt - groups are read from the ID token and userinfo
+      - client_id: tlsrpt
+        client_name: TLS Reports
+        client_secret: {{ secret "/secrets/client-secrets/tlsrpt" }}
+        public: false
+        authorization_policy: two_factor
+        pre_configured_consent_duration: 3 months
+        require_pkce: true
+        pkce_challenge_method: S256
+        redirect_uris: [https://tlsrpt.karlsen.app/auth/callback]
+        scopes: [openid, email, profile, groups]
+        response_types: [code]
+        grant_types: [authorization_code]
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        id_token_signed_response_alg: ES256
+        token_endpoint_auth_method: client_secret_basic
   # yamllint enable rule:braces
 
 # https://www.authelia.com/configuration/miscellaneous/privacy-policy/
