@@ -62,7 +62,7 @@ spec:
       containers:
         - name: matrix-authentication-service
           # Dockerfile: https://github.com/element-hq/matrix-authentication-service/blob/main/Dockerfile
-          image: ghcr.io/element-hq/matrix-authentication-service:1.24.0@sha256:52c18ffcc940220a3b6aa5985b7e09d24ac27f5ed10a4d660c312e48f73ff105
+          image: ghcr.io/element-hq/matrix-authentication-service:1.25.1@sha256:54f03be8ef26b9a6f2ab594d2a4c6e8074c3c09fbe05890a00ea50939d3e152a
           args: [--config, /config/config.yaml]
           securityContext:
             allowPrivilegeEscalation: false

@@ -43,7 +43,7 @@ spec:
       initContainers:
         - name: init-vapid
           # Dockerfile: https://gitlab.com/gitlab-ci-utils/curl-jq/-/blob/main/Dockerfile
-          image: registry.gitlab.com/gitlab-ci-utils/curl-jq:5.0.2@sha256:b564745b6cb0a95f8fdbe82cfadb7b1dcaee43b45552c264138dbfe0999dde24
+          image: registry.gitlab.com/gitlab-ci-utils/curl-jq:5.0.3@sha256:eaf99ecea8b7e4fbbe161db8ba6fa2099a1d53b4e108926492d3c6577135b1f0
           command: [/bin/sh, -c]
           args:
             - |
@@ -67,7 +67,7 @@ spec:
       containers:
         - name: thelounge
           # Dockerfile: https://github.com/thelounge/thelounge-docker/blob/master/Dockerfile
-          image: ghcr.io/thelounge/thelounge:4.5.2@sha256:79b02c2a8373063f300129729161ec75a26ea1881352845f01f12988075d378e
+          image: ghcr.io/thelounge/thelounge:4.5.2@sha256:bae46016776b0a18639dcaff69a103b3bbee9cbb40e86cd24fb278eccc6bac7b
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
