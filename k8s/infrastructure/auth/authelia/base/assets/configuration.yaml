@@ -346,6 +346,24 @@ identity_providers:
         id_token_signed_response_alg: ES256
         token_endpoint_auth_method: client_secret_basic
 
+        # https://github.com/sebastka/mailwatch - groups are read from the ID token and userinfo
+      - client_id: mailwatch
+        client_name: MailWatch
+        client_secret: {{ secret "/secrets/client-secrets/mailwatch" }}
+        public: false
+        authorization_policy: two_factor
+        pre_configured_consent_duration: 3 months
+        require_pkce: true
+        pkce_challenge_method: S256
+        redirect_uris: [https://mailwatch.karlsen.app/auth/callback]
+        scopes: [openid, email, profile, groups]
+        response_types: [code]
+        grant_types: [authorization_code]
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        id_token_signed_response_alg: ES256
+        token_endpoint_auth_method: client_secret_basic
+
         # https://element-hq.github.io/matrix-authentication-service/setup/sso.html#general-configuration
       - client_id: mas
         client_name: Matrix Authentication Service

@@ -252,6 +252,9 @@ spec:
                       # - docker.io/joplin/transcribe
                       # - docker.io/joplin/htr-cli
 
+                      # applications/utils/mailwatch
+                      - ghcr.io/sebastka/mailwatch
+
                       # applications/utils/matrix-authentication-service
                       - ghcr.io/element-hq/matrix-authentication-service
                       - ghcr.io/maxmind/geoipupdate
