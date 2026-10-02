@@ -7,15 +7,15 @@ namespace: mailwatch
 configMapGenerator:
   - name: mailwatch-env
     envs:
-      - assets/mailwatch.alerts.env
-      - assets/mailwatch.checks.env
-      - assets/mailwatch.db.env
-      - assets/mailwatch.domains.env
-      - assets/mailwatch.http.env
-      - assets/mailwatch.mailboxes.env
-      - assets/mailwatch.oidc.env
-      - assets/mailwatch.recipients.env
-      - assets/mailwatch.schedules.env
+      - assets/alerts.env
+      - assets/checks.env
+      - assets/db.env
+      - assets/domains.env
+      - assets/http.env
+      - assets/mailboxes.env
+      - assets/oidc.env
+      - assets/recipients.env
+      - assets/schedules.env
 
 resources:
   - Namespace.yaml
