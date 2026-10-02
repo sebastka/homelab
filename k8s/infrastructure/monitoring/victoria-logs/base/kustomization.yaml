@@ -16,7 +16,7 @@ resources:
 helmCharts:
   - name: victoria-logs-single
     repo: oci://ghcr.io/victoriametrics/helm-charts
-    version: 0.13.9
+    version: 0.13.10
     releaseName: victoria-logs-single
     namespace: victoria-logs
     includeCRDs: true
