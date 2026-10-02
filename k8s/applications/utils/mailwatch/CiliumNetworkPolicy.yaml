@@ -16,9 +16,9 @@ spec:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # OIDC (auth.karlsen.fr) and our own MTA-STS/BIMI hosts, via the Gateway
     - {toFQDNs: [matchName: db01.hera.home.karlsen.fr], toPorts: [ports: [{port: '3306', protocol: TCP}]]}  # MariaDB
     - {toFQDNs: [matchName: imap.domeneshop.no], toPorts: [ports: [{port: '993', protocol: TCP}]]}  # Report mailbox
+    - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}  # Report mailbox
     - {toCIDR: [1.1.1.1/32, 8.8.8.8/32], toPorts: [ports: [{port: '53', protocol: UDP}, {port: '53', protocol: TCP}]]}  # DNS_RESOLVERS (DNSSEC-validating)
     - {toCIDR: [192.168.0.1/32], toPorts: [ports: [{port: '53', protocol: UDP}, {port: '53', protocol: TCP}]]}  # DNSBL_RESOLVERS (unbound on helios: Spamhaus refuses public resolvers)
     - {toEntities: [world], toPorts: [ports: [{port: '25', protocol: TCP}]]}  # SMTP probes of every MX
     - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # MTA-STS policies, BIMI logos/certificates
-    # - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}  # Delivery tests (DOMAIN_n_SMTP*)
     # - {toFQDNs: [matchName: imap.gmail.com], toPorts: [ports: [{port: '993', protocol: TCP}]]}  # Delivery test recipients (RECIPIENT_n_*)
