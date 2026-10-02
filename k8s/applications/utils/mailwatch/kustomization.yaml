@@ -5,7 +5,17 @@ kind: Kustomization
 namespace: mailwatch
 
 configMapGenerator:
-  - {name: mailwatch-env, envs: [mailwatch.alerts.env, mailwatch.checks.env, mailwatch.db.env, mailwatch.domains.env, mailwatch.http.env, mailwatch.mailboxes.env, mailwatch.oidc.env, mailwatch.recipients.env, mailwatch.schedules.env]}
+  - name: mailwatch-env
+    envs:
+      - assets/mailwatch.alerts.env
+      - assets/mailwatch.checks.env
+      - assets/mailwatch.db.env
+      - assets/mailwatch.domains.env
+      - assets/mailwatch.http.env
+      - assets/mailwatch.mailboxes.env
+      - assets/mailwatch.oidc.env
+      - assets/mailwatch.recipients.env
+      - assets/mailwatch.schedules.env
 
 resources:
   - Namespace.yaml
