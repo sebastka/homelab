@@ -35,7 +35,7 @@ spec:
       containers:
         - name: mailwatch
           # Dockerfile: https://github.com/sebastka/mailwatch/blob/master/Dockerfile
-          image: ghcr.io/sebastka/mailwatch:2026.10.02-06bc373@sha256:f34a509240ba86210b184fe86dd4f4a675c869b3509ec4bb5ec655ded2f5bac3
+          image: ghcr.io/sebastka/mailwatch:2026.10.02-6e15639@sha256:5023a476dfa3240f9a7ed782fe9110db2f1ef74e494120526ae9c01c66137c91
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
