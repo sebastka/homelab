@@ -34,7 +34,8 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       containers:
         - name: mailwatch
-          image: ghcr.io/sebastka/mailwatch:2026.10.02-bc21ce5@sha256:6891285790998580e0f000466826eb244280551059c70251966989077638df64  # Standalone, on dhi.io/node:26-alpine (CMD node /app/src/server/index.ts)
+          # Dockerfile: https://github.com/sebastka/mailwatch/blob/master/Dockerfile
+          image: ghcr.io/sebastka/mailwatch:2026.10.02-06bc373@sha256:f34a509240ba86210b184fe86dd4f4a675c869b3509ec4bb5ec655ded2f5bac3
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
