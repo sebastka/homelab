@@ -54,7 +54,10 @@ webauthn:
     discoverability: discouraged  # if enable_passkey_login=true, then set it to preferred or required
     user_verification: required
   metadata:
-    enabled: true
+    # TODO 2026-10-02: re-enable once mds.fidoalliance.org stops answering 429 to our IP. With the
+    # cached blob past nextUpdate, a failed refresh is fatal at startup ("outdated metadata was
+    # loaded") and every CrashLoopBackOff restart fetches again. permitted_aaguids still applies.
+    enabled: false
     cache_policy: relaxed
     validate_trust_anchor: true
     validate_entry: true
