@@ -34,7 +34,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       containers:
         - name: mailwatch
-          image: ghcr.io/sebastka/mailwatch:2026.10.02-44ef2e7@sha256:5feef81a9de416c3f456f39c7aaa30ae8b02a0e0f5c24d4e4a3d777b199d5575  # Standalone, on dhi.io/node:26-alpine (CMD node /app/src/server/index.ts)
+          image: ghcr.io/sebastka/mailwatch:2026.10.02-bc21ce5@sha256:6891285790998580e0f000466826eb244280551059c70251966989077638df64  # Standalone, on dhi.io/node:26-alpine (CMD node /app/src/server/index.ts)
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
