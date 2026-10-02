@@ -1,0 +1,18 @@
+# https://github.com/sebastka/mailwatch
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: mailwatch
+
+configMapGenerator:
+  - {name: mailwatch-env, envs: [mailwatch.alerts.env, mailwatch.checks.env, mailwatch.db.env, mailwatch.domains.env, mailwatch.http.env, mailwatch.mailboxes.env, mailwatch.oidc.env, mailwatch.recipients.env, mailwatch.schedules.env]}
+
+resources:
+  - Namespace.yaml
+  - ServiceAccount.yaml
+  - SealedSecret.mailwatch.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - HTTPRoute.yaml
+  - SecurityPolicy.yaml
+  - CiliumNetworkPolicy.yaml

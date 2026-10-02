@@ -14,6 +14,7 @@ spec:
     - {namespace: element-admin,                  name: talmox}
     - {namespace: glance,                         name: talmox}
     - {namespace: matrix-authentication-service,  name: talmox}
+    - {namespace: mailwatch,                      name: talmox}
     - {namespace: n8n,                            name: talmox}
     - {namespace: ntfy,                           name: talmox}
     - {namespace: paperless,                      name: talmox}

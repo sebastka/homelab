@@ -1,0 +1,23 @@
+# MailWatch checks arbitrary domains, so the check traffic (port 25 to every MX, HTTPS for
+# MTA-STS policies and BIMI logos) cannot be pinned to FQDNs. DNS goes straight to the
+# public DNSSEC-validating resolvers in DNS_RESOLVERS, which see the outside view of our zones.
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-mailwatch
+  namespace: mailwatch
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: mailwatch}}
+  ingress:
+    - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Host probes
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Envoy Gateway
+  egress:
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # OIDC (auth.karlsen.fr) and our own MTA-STS/BIMI hosts, via the Gateway
+    - {toFQDNs: [matchName: db01.hera.home.karlsen.fr], toPorts: [ports: [{port: '3306', protocol: TCP}]]}  # MariaDB
+    - {toFQDNs: [matchName: imap.domeneshop.no], toPorts: [ports: [{port: '993', protocol: TCP}]]}  # Report mailbox
+    - {toCIDR: [1.1.1.1/32, 8.8.8.8/32], toPorts: [ports: [{port: '53', protocol: UDP}, {port: '53', protocol: TCP}]]}  # DNS_RESOLVERS (DNSSEC-validating)
+    - {toEntities: [world], toPorts: [ports: [{port: '25', protocol: TCP}]]}  # SMTP probes of every MX
+    - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # MTA-STS policies, BIMI logos/certificates
+    # - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}  # Delivery tests (DOMAIN_n_SMTP*)
+    # - {toFQDNs: [matchName: imap.gmail.com], toPorts: [ports: [{port: '993', protocol: TCP}]]}  # Delivery test recipients (RECIPIENT_n_*)

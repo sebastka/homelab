@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailwatch
+  namespace: mailwatch
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mailwatch
+      # app.kubernetes.io/version:
+      app.kubernetes.io/component: web
+      app.kubernetes.io/part-of: mailwatch
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: mailwatch
+      labels:
+        app.kubernetes.io/name: mailwatch
+        # app.kubernetes.io/version:
+        app.kubernetes.io/component: web
+        app.kubernetes.io/part-of: mailwatch
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: mailwatch
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: mailwatch
+          image: ghcr.io/sebastka/mailwatch:2026.10.02-2cdec44@sha256:b056935a1cccfe2c7ddf202d72c3f280a18bef2f7253ed674e5504b134a3c130  # Standalone, on dhi.io/node:26-alpine (CMD node /app/src/server/index.ts)
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 192Mi}
+            limits: {memory: 384Mi}
+          envFrom:
+            - configMapRef: {name: mailwatch-env}
+            - secretRef: {name: mailwatch}  # DB_PASSWORD, OIDC_CLIENT_SECRET, MAILBOX_1_IMAPPASS
+          ports:
+            - {name: http, protocol: TCP, containerPort: 3000}
+          startupProbe:   {httpGet: {port: 3000, path: /api/health}, initialDelaySeconds: 2, periodSeconds: 5, failureThreshold: 12}
+          livenessProbe:  {httpGet: {port: 3000, path: /api/health},                         periodSeconds: 60}
+          readinessProbe: {httpGet: {port: 3000, path: /api/health},                         periodSeconds: 30}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - {name: tmp, emptyDir: {sizeLimit: 64Mi}}
