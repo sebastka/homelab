@@ -120,7 +120,7 @@ resource "cloudflare_dns_record" "karlsenorg_txt_carddavs" {
 }
 
 resource "cloudflare_dns_record" "karlsenorg_txt_dmarc" {
-  content = format(var.domeneshop.dmarc-rua, "mailto:${var.domeneshop.ds-rua},mailto:0ec711df3fa54706adb5dbf1610dc1eb@dmarc-reports.cloudflare.net")
+  content = format(var.domeneshop.dmarc-ruf-rua, "mailto:ruf@karlsen.org", "mailto:${var.domeneshop.ds-rua},mailto:rua@karlsen.org")
   name    = "_dmarc"
   proxied = false
   ttl     = 3600
@@ -136,6 +136,15 @@ resource "cloudflare_dns_record" "karlsenorg_txt_mta-sts" {
   proxied = false
   ttl     = 1
   type    = "TXT"
+  zone_id = cloudflare_zone.karlsenorg.id
+}
+
+resource "cloudflare_dns_record" "karlsenorg_cname_dkim_ds" {
+  content = "ds202610.karlsen.org.dkim.domeneshop.no."
+  name    = "ds202610._domainkey"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
   zone_id = cloudflare_zone.karlsenorg.id
 }
 

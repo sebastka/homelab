@@ -126,12 +126,23 @@ resource "cloudflare_dns_record" "karlsenfr_mx" {
   zone_id  = cloudflare_zone.karlsenfr.id
 }
 
+# Null MX (RFC 7505) for subdomains: only the apex receives mail.
+resource "cloudflare_dns_record" "karlsenfr_mx_wc" {
+  content  = "."
+  name     = "*"
+  priority = 0
+  proxied  = false
+  ttl      = 1
+  type     = "MX"
+  zone_id  = cloudflare_zone.karlsenfr.id
+}
+
 # Mail client autodiscovery, served by Domeneshop.
 resource "cloudflare_dns_record" "karlsenfr_srv_autodiscover" {
   name     = "_autodiscover._tcp"
   priority = 0
   proxied  = false
-  ttl      = 3600
+  ttl      = 1
   type     = "SRV"
   zone_id  = cloudflare_zone.karlsenfr.id
   data = {
@@ -139,6 +150,23 @@ resource "cloudflare_dns_record" "karlsenfr_srv_autodiscover" {
     weight   = 0
     port     = 443
     target   = var.domeneshop.autoconfig
+  }
+}
+
+# Libravatar federation for @karlsen.fr addresses. Clients resolve this, then
+# fetch https://<target>/avatar/<md5-or-sha256 of the lowercased address>.
+resource "cloudflare_dns_record" "karlsenfr_srv_avatars_sec" {
+  name     = "_avatars-sec._tcp"
+  priority = 0
+  proxied  = false
+  ttl      = 1
+  type     = "SRV"
+  zone_id  = cloudflare_zone.karlsenfr.id
+  data = {
+    priority = 0
+    weight   = 0
+    port     = 443
+    target   = "www.karlsen.fr"
   }
 }
 
@@ -161,7 +189,7 @@ resource "cloudflare_dns_record" "karlsenfr_srv_carddavs" {
   name     = "_carddavs._tcp"
   priority = 0
   proxied  = false
-  ttl      = 3600
+  ttl      = 1
   type     = "SRV"
   zone_id  = cloudflare_zone.karlsenfr.id
   data = {
@@ -206,7 +234,7 @@ resource "cloudflare_dns_record" "karlsenfr_txt_caldavs" {
   content = var.domeneshop.dav-path
   name    = "_caldavs._tcp"
   proxied = false
-  ttl     = 3600
+  ttl     = 1
   type    = "TXT"
   zone_id = cloudflare_zone.karlsenfr.id
 }
@@ -215,16 +243,16 @@ resource "cloudflare_dns_record" "karlsenfr_txt_carddavs" {
   content = var.domeneshop.dav-path
   name    = "_carddavs._tcp"
   proxied = false
-  ttl     = 3600
+  ttl     = 1
   type    = "TXT"
   zone_id = cloudflare_zone.karlsenfr.id
 }
 
 resource "cloudflare_dns_record" "karlsenfr_txt_dmarc" {
-  content = format(var.domeneshop.dmarc-rua, "mailto:${var.domeneshop.ds-rua},mailto:4cedcb540e0d4d4f86f0c698addc94c9@dmarc-reports.cloudflare.net")
+  content = format(var.domeneshop.dmarc-ruf-rua, "mailto:ruf@karlsen.fr", "mailto:${var.domeneshop.ds-rua},mailto:rua@karlsen.fr")
   name    = "_dmarc"
   proxied = false
-  ttl     = 3600
+  ttl     = 1
   type    = "TXT"
   zone_id = cloudflare_zone.karlsenfr.id
 }
@@ -258,11 +286,22 @@ resource "cloudflare_dns_record" "karlsenfr_txt_tls_smtp" {
   zone_id = cloudflare_zone.karlsenfr.id
 }
 
-resource "cloudflare_dns_record" "karlsenfr_txt_dkim" {
-  content = "\"v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtqyfNLO5WTCU3/HZJKUvqKnchF0nEFsw2/CtTTHWbdNB+CVMhjSIMvFn/SksgzeGkUMYt0LUs+1BytMXq9lC4w2CXt8WGAMubdEY4ZYcOhTZJqmnVVvIfa7mV0muPZZJJC0yfSu9BAzCbnvR4jyTWdZZkq480h7EnVCIL5JW+4w0GkIuMN4t9RvYL6DuaSn\" \"zK4kSwWTMPC0Tm73U5/xvIVihdM2clZEP0GSXzFEzN7bFUfzFTf9fY6z61C4pitbhYE+AWuSilL9tpMhlwlzXLv1uiDFfmfSIRMmtqYWaen2dlTAz/j22H6McPg6Pj/+5oNCDyIFIjc/RV6kr1D9DCQIDAQAB\""
+resource "cloudflare_dns_record" "karlsenfr_cname_dkim_ds" {
+  content = "ds202503.karlsen.fr.dkim.domeneshop.no."
   name    = "ds202503._domainkey"
   proxied = false
-  ttl     = 3600
+  ttl     = 1
+  type    = "CNAME"
+  zone_id = cloudflare_zone.karlsenfr.id
+}
+
+# BIMI. Empty "a=" declares no VMC, so this is self-asserted: mailbox providers
+# that require a mark certificate (Gmail) will not render the logo.
+resource "cloudflare_dns_record" "karlsenfr_txt_bimi" {
+  content = "v=BIMI1; l=https://www.karlsen.fr/icons/K.svg; a=; avp=personal;" # lvs= (local part selector, if I want a logo for sebastian@karlsen.fr only)
+  name    = "default._bimi"
+  proxied = false
+  ttl     = 1
   type    = "TXT"
   zone_id = cloudflare_zone.karlsenfr.id
 }
@@ -310,7 +349,7 @@ resource "cloudflare_dns_record" "karlsenfr_openpgpkey_sebastian" {
 # at any subdomain gets an SPF result of "none" rather than "fail", and only
 # DMARC stops it. No wildcard CNAME here to conflict with.
 resource "cloudflare_dns_record" "karlsenfr_txt_spf_wc" {
-  content = var.domeneshop.spf-ds
+  content = "\"v=spf1 -all\""
   name    = "*"
   proxied = false
   ttl     = 1
