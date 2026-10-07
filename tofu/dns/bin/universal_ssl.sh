@@ -15,7 +15,7 @@
 # declared in zones.tf. Turning it off lets that record actually be served.
 # Turn it back on before proxying anything through Cloudflare.
 #
-# The DNS token in secrets.auto.tfvars cannot reach this endpoint. Mint one
+# The DNS token in secrets.sops.yaml cannot reach this endpoint. Mint one
 # with Zone > SSL and Certificates > Edit and pass it in:
 #
 #   CLOUDFLARE_SSL_TOKEN=... ./universal_ssl.sh --disable

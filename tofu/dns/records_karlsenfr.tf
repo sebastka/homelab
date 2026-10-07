@@ -287,7 +287,7 @@ resource "cloudflare_dns_record" "karlsenfr_txt_tls_smtp" {
 }
 
 resource "cloudflare_dns_record" "karlsenfr_cname_dkim_ds" {
-  content = "ds202503.karlsen.fr.dkim.domeneshop.no."
+  content = "ds202503.karlsen.fr.dkim.domeneshop.no"
   name    = "ds202503._domainkey"
   proxied = false
   ttl     = 1

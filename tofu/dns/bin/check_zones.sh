@@ -1,6 +1,5 @@
 #!/bin/sh
 # Compare what the zones actually serve against what we expect.
-# Reads the secret zone names from sops, so nothing is hardcoded here.
 #
 #   ./check_zones.sh [ns|mx|spf|dmarc|dkim|caa|mta-sts|dnssec]
 

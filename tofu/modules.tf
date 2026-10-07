@@ -5,9 +5,7 @@ module "dns" {
     cloudflare = cloudflare
   }
 
-  cloudflare   = var.cloudflare
-  domeneshop   = var.domeneshop
-  secret_zones = local.secrets.secret_zones
+  domeneshop = var.domeneshop
 }
 
 module "virtual_machines_hera" {

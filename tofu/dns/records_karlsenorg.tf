@@ -1,8 +1,5 @@
 # karlsen.org -- mail only, on Domeneshop.
 
-# Apex A record is rewritten hourly by cf-record-update on Helios; unmanaged.
-#   A  karlsen.org  ->  <Helios / enp1s0>
-
 resource "cloudflare_dns_record" "karlsenorg_caa" {
   name    = cloudflare_zone.karlsenorg.name
   proxied = false
@@ -140,7 +137,7 @@ resource "cloudflare_dns_record" "karlsenorg_txt_mta-sts" {
 }
 
 resource "cloudflare_dns_record" "karlsenorg_cname_dkim_ds" {
-  content = "ds202610.karlsen.org.dkim.domeneshop.no."
+  content = "ds202610.karlsen.org.dkim.domeneshop.no"
   name    = "ds202610._domainkey"
   proxied = false
   ttl     = 1

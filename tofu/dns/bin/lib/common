@@ -1,25 +1,14 @@
 #!/bin/sh
 # Shared helpers. Source, do not execute.
-#
-# Zone names live in ../../secrets.sops.yaml for the ones we do not publish, so
-# every script here reads them through sops rather than hardcoding a list.
 
 set -eu
 
 readonly TOFU_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
 
-# all_zones -- every zone we manage, one per line, public ones first.
+# all_zones -- every zone we manage, one per line.
 all_zones()
 {
-    printf -- 'karlsen.app\nkarlsen.fr\nkarlsen.org\n'
-    secret_zones
-}
-
-# secret_zones -- the zones whose names are not in the repo.
-secret_zones()
-{
-    sops -d --output-type json "$TOFU_DIR/secrets.sops.yaml" \
-        | python3 -c 'import json,sys; [print(v) for v in json.load(sys.stdin)["secret_zones"].values()]'
+    printf -- 'karlsen.app\nkarlsen.fr\nkarlsen.org\nbwdb.info\nspkag.com\nmegka.no\n'
 }
 
 # zone_hosts -- "<domain_id> <fqdn> <where>" per line for every domain in the
@@ -52,15 +41,14 @@ cf_zones()
     done
 }
 
-# cf_token -- the Cloudflare API token from the (gitignored) tfvars.
+# cf_token -- the Cloudflare API token, exported by ../../.envrc from sops.
 cf_token()
 {
-    python3 - "$TOFU_DIR/secrets.auto.tfvars" <<'PY'
-import re, sys
-s = open(sys.argv[1]).read()
-b = re.search(r'cloudflare\s*=\s*\{(.*?)\n\}', s, re.S).group(1)
-print(re.search(r'api_token\s*=\s*"([^"]+)"', b).group(1))
-PY
+    [ -n "${CLOUDFLARE_API_TOKEN:-}" ] || {
+        echo 'CLOUDFLARE_API_TOKEN is not set -- run from tofu/ with direnv allowed' >&2
+        return 1
+    }
+    printf -- '%s\n' "$CLOUDFLARE_API_TOKEN"
 }
 
 # cf_zone_id <fqdn> -- the Cloudflare zone id for a domain, empty if not a zone.

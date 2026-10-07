@@ -30,8 +30,8 @@ A graphical pinentry avoids the clash altogether — drop `pinentry-program` fro
 | --- | --- |
 | `providers.tf` | Provider versions, state encryption, Proxmox and Cloudflare endpoints |
 | `secrets.tf` | Reads `secrets.sops.yaml` into `local.secrets` |
-| `secrets.sops.yaml` | Committed, PGP-encrypted: the secret zone names, nothing else |
-| `secrets.auto.tfvars` | **Not committed**: every credential -- Cloudflare, PVE, LXC, state passphrase |
+| `secrets.sops.yaml` | Committed, PGP-encrypted: every credential |
+| `.envrc` | direnv: exports the state passphrase and both provider tokens from sops |
 | `locals.tf` | The guest inventory, per Proxmox node |
 | `modules.tf` | Wires `dns/` and `virtual_machines/` |
 | `dns/` | Cloudflare zones and records, and the `bin/` tooling around them |
@@ -40,14 +40,21 @@ A graphical pinentry avoids the clash altogether — drop `pinentry-program` fro
 
 ## Secrets
 
-Two mechanisms, deliberately:
+Everything is in **`secrets.sops.yaml`**, committed PGP-encrypted. Nothing
+sensitive is on disk in the clear.
 
-- **`secrets.auto.tfvars`** — every credential. Gitignored, never leaves this
-  machine. Losing it costs a few minutes of re-issuing tokens, so it does not
-  need a backup.
-- **`secrets.sops.yaml`** — the secret zone names, and nothing else. Committed
-  encrypted, because losing the alias-to-domain mapping would make `dns/`
-  unreadable and no amount of re-issuing brings it back.
+How each value reaches OpenTofu depends on when it is needed:
+
+- **State passphrase** — `TF_VAR_state_encryption_passphrase`. The encryption
+  block is evaluated before variables are, so it cannot come from the data
+  source.
+- **Provider tokens** — `CLOUDFLARE_API_TOKEN` and `PROXMOX_VE_API_TOKEN`, read
+  natively by the providers. Provider configuration is resolved before data
+  sources too.
+- **Everything else** — `local.secrets`, via the `sops_file` data source in
+  `secrets.tf`.
+
+`.envrc` exports the first two; `run.sh` refuses to run if they are missing.
 
 Keeping credentials out of the sops file also keeps `provider "domeneshop"`
 free of a dependency on `data.sops_file`: a provider whose configuration comes
@@ -59,31 +66,31 @@ sops -d secrets.sops.yaml >.secrets.sops.yaml   # decrypt to the gitignored copy
 sops -e .secrets.sops.yaml >secrets.sops.yaml   # re-encrypt it
 ```
 
-The state is encrypted with the `pbkdf2` key provider
-(`var.state_encryption_passphrase`), so the zone names are not readable there
-either. It is still gitignored — see `.gitignore`.
+Both the state and the plan file are encrypted with the `pbkdf2` key provider
+(`var.state_encryption_passphrase`). Plan encryption matters as much as state:
+without it `tfplan` is a zip of plaintext JSON carrying the whole state and
+every input variable, the passphrase included. Both are still gitignored.
 
 ## DNS
 
-Eight domains, all registered at Domeneshop. Six are delegated to Cloudflare;
-two are still served by Domeneshop's own nameservers.
+Six domains, registered at Domeneshop and delegated to Cloudflare's
+nameservers.
 
-`karlsen.fr`, `karlsen.app` and `karlsen.org` are named openly in
-`dns/records_karlsen*.tf`. The other five appear only as aliases `a`–`e`:
+Each zone has its own file, named after the domain with the dots removed:
 
-| Alias | File |
+| Zone | File |
 | --- | --- |
-| `a` | `dns/records_secret_a.tf` |
-| `c` | `dns/records_secret_c.tf` |
-| `e` | `dns/records_secret_e.tf` |
+| `karlsen.app` | `dns/records_karlsenapp.tf` |
+| `karlsen.fr` | `dns/records_karlsenfr.tf` |
+| `karlsen.org` | `dns/records_karlsenorg.tf` |
+| `bwdb.info` | `dns/records_bwdbinfo.tf` |
+| `spkag.com` | `dns/records_spkagcom.tf` |
+| `megka.no` | `dns/records_megkano.tf` |
 
-`b` and `d` were dropped on 2026-09-20 when those two domains were deleted.
-The remaining letters keep their original meaning rather than being
-renumbered, so nothing in git history shifts underneath them.
-
-Only the **names** are secret. Every record is declared in plain HCL, keyed by
-alias — a record set on its own says nothing about which domain it belongs to.
-The mapping lives in `secrets.sops.yaml`, and `tofu output aliases` prints it.
+Three of these were previously held behind aliases `a`–`e` in
+`secrets.sops.yaml`. That was dropped on 2026-10-07: the names were the only
+secret, they leak from DNS and WHOIS anyway, and the indirection cost more in
+readability than it bought.
 
 The apex `A` record of every Cloudflare zone is rewritten hourly by
 `cf-record-update` on Helios, so it is deliberately left unmanaged. Each
@@ -147,7 +154,7 @@ dns/bin/universal_ssl.sh --disable   # turn it off, so our CAA is served
 ```
 
 Needs a token with **Zone > SSL and Certificates > Edit**; the DNS token in
-`secrets.auto.tfvars` cannot reach that endpoint. Pass it as
+`secrets.sops.yaml` cannot reach that endpoint. Pass it as
 `CLOUDFLARE_SSL_TOKEN`.
 
 The OPENPGPKEY record in `dns/records_karlsenfr.tf` is WKD-over-DNS for

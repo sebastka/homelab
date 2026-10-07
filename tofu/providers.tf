@@ -11,6 +11,10 @@ terraform {
     state {
       method = method.aes_gcm.state
     }
+
+    plan {
+      method = method.aes_gcm.state
+    }
   }
 
   required_providers {
@@ -25,19 +29,16 @@ terraform {
     }
 
 
-    # Decrypts secrets.sops.yaml at plan time; see secrets.tf.
-    sops = {
-      source  = "carlpett/sops"
-      version = "~> 1"
-    }
   }
 }
 
+# The API token comes from PROXMOX_VE_API_TOKEN, exported by .envrc. Note that
+# a provider env var applies to every instance of the provider, so a second
+# node with its own token would have to go back to an explicit api_token here.
 provider "proxmox" {
-  alias     = "hera"
-  endpoint  = "https://${var.pve["hera"].domain}:8006"
-  api_token = var.pve_api_tokens["hera"]
-  insecure  = false
+  alias    = "hera"
+  endpoint = "https://${var.pve["hera"].domain}:8006"
+  insecure = false
 
   ssh {
     agent    = true
@@ -45,7 +46,6 @@ provider "proxmox" {
   }
 }
 
-provider "cloudflare" {
-  api_token = var.cloudflare.api_token
-}
+# Reads CLOUDFLARE_API_TOKEN from the environment; see .envrc.
+provider "cloudflare" {}
 

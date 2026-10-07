@@ -1,49 +1,47 @@
+locals {
+  cloudflare_account_id = "e39cff0632bc814188cfcf1d3a22f2a9"
+}
+
 # Public zones.
 
 resource "cloudflare_zone" "karlsenapp" {
-  account             = { id = var.cloudflare.account_id }
+  account             = { id = local.cloudflare_account_id }
   name                = "karlsen.app"
   type                = "full"
   vanity_name_servers = []
 }
 
 resource "cloudflare_zone" "karlsenfr" {
-  account             = { id = var.cloudflare.account_id }
+  account             = { id = local.cloudflare_account_id }
   name                = "karlsen.fr"
   type                = "full"
   vanity_name_servers = []
 }
 
 resource "cloudflare_zone" "karlsenorg" {
-  account             = { id = var.cloudflare.account_id }
+  account             = { id = local.cloudflare_account_id }
   name                = "karlsen.org"
   type                = "full"
   vanity_name_servers = []
 }
 
-# Zones whose names we do not publish. The name is the only secret; every
-# record below it is declared in the open, in records_secret_<alias>.tf.
-
-resource "cloudflare_zone" "secret_a" {
-  account             = { id = var.cloudflare.account_id }
-  name                = var.secret_zones.a
+resource "cloudflare_zone" "bwdbinfo" {
+  account             = { id = local.cloudflare_account_id }
+  name                = "bwdb.info"
   type                = "full"
   vanity_name_servers = []
 }
 
-resource "cloudflare_zone" "secret_c" {
-  account             = { id = var.cloudflare.account_id }
-  name                = var.secret_zones.c
+resource "cloudflare_zone" "spkagcom" {
+  account             = { id = local.cloudflare_account_id }
+  name                = "spkag.com"
   type                = "full"
   vanity_name_servers = []
 }
 
-# Moved off Domeneshop's nameservers onto Cloudflare on 2026-09-20. Mail and
-# the parking host stay with Domeneshop; only DNS hosting changed.
-
-resource "cloudflare_zone" "secret_e" {
-  account             = { id = var.cloudflare.account_id }
-  name                = var.secret_zones.e
+resource "cloudflare_zone" "megkano" {
+  account             = { id = local.cloudflare_account_id }
+  name                = "megka.no"
   type                = "full"
   vanity_name_servers = []
 }

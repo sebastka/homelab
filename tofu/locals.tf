@@ -15,5 +15,4 @@ locals {
     "db01" = { role = "database", setup_user = false, vm_id = 102, description = "Database server (MariaDB)", tags = ["mariadb"], cores = 4, mem = 4096, hwaddr = "BC:24:11:36:0C:75", ip = "192.168.1.11", rootfs_size = 128 }
     "db02" = { role = "database", setup_user = false, vm_id = 103, description = "Database server (PostgreSQL)", tags = ["postgresql"], cores = 4, mem = 4096, hwaddr = "BC:24:11:F5:DB:10", ip = "192.168.1.12", rootfs_size = 8, mountpoint = { path = "/var/lib/postgresql", size = "128G" } }
   }
-
 }

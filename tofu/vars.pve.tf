@@ -9,12 +9,6 @@ variable "pve" {
   sensitive = false
 }
 
-variable "pve_api_tokens" {
-  description = "API tokens per node, keyed by node name"
-  type        = map(string)
-  sensitive   = true
-}
-
 variable "ssh_authorized_keys" {
   description = "SSH public keys"
   default     = []
