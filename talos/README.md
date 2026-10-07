@@ -12,6 +12,7 @@ Docs: <https://postfinance.github.io/topf/main/>
 ```text
 talos/
 ├── bootstrap.sh                # `full`: apply + etcd bootstrap + kubeconfig; `credentials`: local files only
+├── kubeconfig.sh               # (re)writes the kubeconfig (break-glass admin + OIDC) and sealed-secrets keypair
 ├── upgrade.sh                  # Longhorn-aware node roller: `topf upgrade`, or plain reboots
 └── clusters/talmox/
     ├── topf.yaml               # cluster definition: versions, image factory, nodes, template data
@@ -62,7 +63,7 @@ export TOPFCONFIG=./clusters/talmox/topf.yaml
 | Node states | `topf nodes` |
 | Check the schematic IDs still resolve | `topf schematic-ids` |
 | talosconfig / break-glass kubeconfig | `topf talosconfig`, `topf kubeconfig` (both print to stdout) |
-| Add the OIDC user/context | `./bootstrap.sh talmox kubeconfig-oidc` (add `setup` to run `kubectl oidc-login setup` first) |
+| Rewrite the kubeconfig only | `./kubeconfig.sh talmox` (add `setup` to run `kubectl oidc-login setup` first) |
 
 `--nodes-filter` takes a Go regex over `host` and works on every command, e.g.
 `topf upgrade --nodes-filter '^t03\.'`.
@@ -112,7 +113,7 @@ Kubernetes is upgraded separately, and minor versions go through `talosctl upgra
   `secrets.sops.yaml` into the Talos struct and re-serialises it, which silently drops any key
   Talos does not recognise. Keeping the keypair in `sealedsecrets.sops.yaml` means a stray
   `topf secrets > secrets.sops.yaml` cannot cost you the ability to decrypt the repo's
-  SealedSecrets. `bootstrap.sh` writes both halves to `$XDG_CONFIG_HOME/talos/<cluster>/seal.*`.
+  SealedSecrets. `kubeconfig.sh` writes both halves to `$XDG_CONFIG_HOME/kube/<cluster>/seal.*`.
 - **An expired talosctl client certificate is a non-event.** The credential in
   `$XDG_CONFIG_HOME/talos/<cluster>/config.yaml` is minted from the `os` CA in
   `secrets.sops.yaml` and lasts a year; the CA itself runs to 2036. `topf talosconfig` issues a
@@ -120,14 +121,13 @@ Kubernetes is upgraded separately, and minor versions go through `talosctl upgra
   cluster. Nothing under that directory is a source of truth — it is all derived from this
   repo, and safe to delete and regenerate.
 - **Two kinds of cluster access, one kubeconfig.** Everything lands in
-  `$XDG_CONFIG_HOME/kube/<cluster>/config.yaml`. `full` and `credentials` write the
-  `topf@<cluster>` user — a 12-hour `system:masters` certificate from `topf kubeconfig`,
-  break-glass only and with no notion of OIDC. `kubeconfig-oidc` adds an `oidc@<cluster>` user
-  and context beside it, wiring the `kubectl oidc-login` exec plugin so normal access goes
-  through Authelia and the `authelia:`-prefixed RBAC. Switch between them with
-  `kubectl config use-context`. Re-running `credentials` merges rather than overwrites, so it
-  refreshes the expired certificate without dropping the OIDC entries or changing the current
-  context.
+  `$XDG_CONFIG_HOME/kube/<cluster>/config.yaml`, written by `kubeconfig.sh` (which `full` and
+  `credentials` call). The `topf@<cluster>` user is a 12-hour `system:masters` certificate from
+  `topf kubeconfig`, break-glass only and with no notion of OIDC. The `oidc@<cluster>` user
+  beside it wires the `kubectl oidc-login` exec plugin so normal access goes through Authelia
+  and the `authelia:`-prefixed RBAC. Switch between them with `kubectl config use-context`. The
+  file is regenerated from scratch on each run, which refreshes an expired certificate; only the
+  current context is carried over, and a first run leaves `topf@<cluster>` current.
 - **Filesystem trim.** Talos ships a `FilesystemTrimConfig` document by default, weekly, at a
   stable per-volume offset, but it cannot reach an encrypted volume unless `allowDiscards` is
   set — and every volume here is LUKS2. It is enabled on EPHEMERAL
