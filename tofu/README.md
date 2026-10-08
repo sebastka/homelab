@@ -34,6 +34,7 @@ A graphical pinentry avoids the clash altogether — drop `pinentry-program` fro
 | `.envrc` | direnv: exports the state passphrase and both provider tokens from sops |
 | `locals.tf` | The guest inventory, per Proxmox node |
 | `modules.tf` | Wires `dns/` and `virtual_machines/` |
+| `ansible.tf` | Writes `../ansible/inventories/tofu.yaml` on apply; commit it with the state |
 | `dns/` | Cloudflare zones and records, and the `bin/` tooling around them |
 | `vars.domeneshop.tf` | Domeneshop's mail hosts and the SPF/DMARC strings built from them |
 | `virtual_machines/` | VM and LXC resources for one Proxmox node |
