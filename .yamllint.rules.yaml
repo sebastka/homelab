@@ -1,0 +1,24 @@
+---
+# The yamllint rules shared by every config in this repository. Kept apart from the ignores:
+# yamllint resolves ignore-from-file paths against the directory it runs from, so a config that
+# lists them only works from the repository root.
+
+extends: default
+
+rules:
+  line-length: disable
+  comments-indentation: false
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
+  comments:
+    min-spaces-from-content: 1
+  braces:
+    max-spaces-inside: 1
+  colons:
+    max-spaces-before: 0
+    max-spaces-after: -1   # -1 = unlimited, disables the after-colon check
+  commas:
+    max-spaces-before: 0
+    min-spaces-after: 1
+    max-spaces-after: -1   # -1 = unlimited, disables the after-comma check

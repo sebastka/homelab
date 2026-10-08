@@ -1,7 +1,7 @@
 ---
 name: CI
 
-on:
+'on':
   # Deliberately no `paths` filter. `CI gate` below is a required status check,
   # and a run that never starts leaves that check permanently pending, which would
   # block the PR from merging rather than letting it through.

@@ -6,6 +6,8 @@
 !.sops.yaml
 !.trivyignore.yaml
 !.yamllint.yaml
+!.yamllint.rules.yaml
+!.yamlignore
 
 # Ansible
 !.ansible-lint.yaml
