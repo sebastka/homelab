@@ -7,8 +7,8 @@ kind: KubeAPIServerConfig
 certExtraSANs:
   - 192.168.1.200
   - 192.168.1.201
-  - 192.168.1.202
-  - 192.168.1.203
+  - 192.168.0.50
+  - 192.168.0.60
   - t01.talmox.hera.home.karlsen.fr
-  - t02.talmox.hera.home.karlsen.fr
-  - t03.talmox.hera.home.karlsen.fr
+  - hestia.home.karlsen.fr
+  - dike.home.karlsen.fr

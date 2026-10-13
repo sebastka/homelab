@@ -32,6 +32,9 @@ params: {vm.nr_hugepages: '1024'}
 # V2 Data Engine - when dedicating an NVMe, optionally bind it to vfio-pci to
 # remove it from the OS and hand it exclusively to SPDK. Identify the PCI address
 # with `talosctl get hardwareinfo` then add a PCIDriverRebindConfig document.
+#
+# Encryption key: nodeID or TPM per node, see all/18-disk-encryption.yaml.tpl.
+{{- $key := "" }}{{ if eq .Node.Data.diskKey "tpm" }}{{ $key = "tpm: {checkSecurebootStatusOnEnroll: true}" }}{{ else if eq .Node.Data.diskKey "nodeID" }}{{ $key = "nodeID: {}" }}{{ else }}{{ fail (printf "diskKey must be nodeID or tpm, got %q" .Node.Data.diskKey) }}{{ end }}
 ---
 apiVersion: v1alpha1
 kind: UserVolumeConfig
@@ -43,6 +46,6 @@ filesystem: {type: ext4}
 encryption:
   provider: luks2
   # Lets fstrim return deleted replica blocks to the ZFS pool. Rationale in
-  # all/18-disk-encryption.yaml.
+  # all/18-disk-encryption.yaml.tpl.
   allowDiscards: true
-  keys: [{nodeID: {}, slot: 0}]
+  keys: [{ {{- $key }}, slot: 0}]

@@ -2,9 +2,7 @@ locals {
   talos_image = "local:iso/nocloud-amd64-secureboot.iso"
 
   talos_nodes_hera = {
-    "t01" = { cluster = "talmox", vm_id = 151, tags = ["controlplane", "worker"], cpu = 12, mem = 24576, osdisk_size = 64, datadisk_size = 192, hwaddr = "bc:24:11:10:fe:09", ip = "192.168.1.201", gpu = null, image = local.talos_image }
-    "t02" = { cluster = "talmox", vm_id = 152, tags = ["controlplane", "worker"], cpu = 12, mem = 24576, osdisk_size = 64, datadisk_size = 192, hwaddr = "bc:24:11:10:fe:0a", ip = "192.168.1.202", gpu = null, image = local.talos_image }
-    "t03" = { cluster = "talmox", vm_id = 153, tags = ["controlplane", "worker"], cpu = 12, mem = 24576, osdisk_size = 64, datadisk_size = 192, hwaddr = "bc:24:11:10:fe:0b", ip = "192.168.1.203", gpu = { device = "hostpci0", mapping = "iGPU", pcie = true, rombar = true }, image = local.talos_image }
+    "t01" = { cluster = "talmox", vm_id = 151, tags = ["controlplane", "worker"], cpu = 12, mem = 73728, osdisk_size = 64, datadisk_size = 192, hwaddr = "bc:24:11:10:fe:09", ip = "192.168.1.201", gpu = null, image = local.talos_image }
   }
 
   vms_hera = {

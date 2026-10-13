@@ -10,12 +10,13 @@ resource "proxmox_virtual_environment_vm" "talos_nodes" {
   machine = "q35"
   bios    = "ovmf"
   operating_system { type = "l26" }
-  tablet_device   = true
-  keyboard_layout = "en-us"
-  scsi_hardware   = "virtio-scsi-single"
-  on_boot         = true
-  started         = true
-  boot_order      = ["ide2", "scsi0"]
+  tablet_device       = true
+  keyboard_layout     = "en-us"
+  scsi_hardware       = "virtio-scsi-single"
+  on_boot             = true
+  started             = true
+  boot_order          = ["ide2", "scsi0"]
+  reboot_after_update = false
 
   startup {
     order      = 3

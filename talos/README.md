@@ -18,14 +18,23 @@ talos/
     ├── topf.yaml               # cluster definition: versions, image factory, nodes, template data
     ├── secrets.sops.yaml       # Talos secrets bundle, sops/PGP encrypted
     ├── sealedsecrets.sops.yaml # sealed-secrets keypair, sops/PGP encrypted
-    ├── schematic.yaml          # image factory schematic for t01/t02
-    ├── schematic.igpu.yaml     # image factory schematic for t03 (xe/i915)
+    ├── schematic.yaml          # image factory schematic for t01
+    ├── schematic.metal.yaml    # image factory schematic for the bare-metal NUCs
     ├── all/                    # patches applied to every node
-    └── control-plane/          # patches applied to control-plane nodes
+    ├── control-plane/          # patches applied to control-plane nodes
+    └── node/<host>/            # per-node patches: install disk, bond and volume layout of the NUCs
 ```
 
-All three nodes are control planes and run workloads, so there is no `worker/` directory. Nodes
-differ only in their zone label and, for t03, the schematic.
+Three control planes, all running workloads, so there is no `worker/` directory:
+
+| Node | Hardware | Address | Network |
+| ---- | -------- | ------- | ------- |
+| t01 | Proxmox VM on hera | 192.168.1.201 | `eth0` |
+| hestia | ASUS NUC 16 Pro, bare metal, one NVMe | 192.168.0.50 | `bond0` over harmonia ports 3+4 |
+| dike | ASUS NUC 16 Pro, bare metal, one NVMe | 192.168.0.60 | `bond0` over harmonia ports 5+6 |
+
+What differs per node lives in `nodes[].data` (zone label, main link, MACs) and, for the NUCs,
+in `platform: metal`, their own schematic and `node/<host>/`.
 
 ## Configuration model
 
@@ -58,6 +67,7 @@ export TOPFCONFIG=./clusters/talmox/topf.yaml
 | Bring up a fresh cluster | `./bootstrap.sh talmox full` |
 | Rewrite local credentials (expired cert, new workstation) | `./bootstrap.sh talmox credentials` |
 | Upgrade Talos | bump `talosVersion`, then `./upgrade.sh talmox` (see below) |
+| Roll out a schematic change (extension, kernel argument) | `topf apply`, then `./upgrade.sh talmox`: it compares the installer image, so only the affected nodes roll |
 | Roll the nodes without a version change | `./upgrade.sh talmox reboot` (`EVICT=false` to skip the Longhorn evacuation) |
 | Upgrade Kubernetes | `talosctl upgrade-k8s --to <version>`, then set `kubernetesVersion` to match |
 | Node states | `topf nodes` |
@@ -66,7 +76,7 @@ export TOPFCONFIG=./clusters/talmox/topf.yaml
 | Rewrite the kubeconfig only | `./kubeconfig.sh talmox` (add `setup` to run `kubectl oidc-login setup` first) |
 
 `--nodes-filter` takes a Go regex over `host` and works on every command, e.g.
-`topf upgrade --nodes-filter '^t03\.'`.
+`topf upgrade --nodes-filter '^dike\.'`.
 
 ## Upgrading Talos
 
@@ -82,6 +92,36 @@ topf apply          # writes the new installer image; no version change yet
 
 Kubernetes is upgraded separately, and minor versions go through `talosctl upgrade-k8s`.
 
+## Adding a bare-metal NUC
+
+One node at a time; each one joins etcd as it is applied. hestia is used as the example.
+
+1. **Image.** Submit the schematic once with `topf schematic-ids --submit-to-factory`, then
+   write
+   `https://factory.talos.dev/image/<schematic.metal.yaml ID>/v<talosVersion>/metal-amd64-secureboot.iso`
+   to a USB stick.
+2. **Firmware.** Make sure the TPM (Intel PTT) is on: the NUCs' disks are sealed against it.
+   Enable Secure Boot and put it in *Setup Mode* by clearing the keys.
+   Enrollment is not automatic on bare metal (only in VMs): on the first boot from USB, press
+   Esc in the boot menu and pick **Enroll Secure Boot keys: auto**. The node then reboots with
+   Secure Boot enforcing.
+3. **One cable only.** harmonia's LAG is static, so a node that is not bonded yet must only be
+   on one of its two ports. Boot from USB into maintenance mode, and check that
+   `talosctl get securitystate --insecure -n <address>` shows `SECUREBOOT true`.
+4. **MACs and disk.** `talosctl get links --insecure -n <address from the DHCP pool>`. Fill `mac0`
+   (the port that is plugged in) and `mac1` in `topf.yaml`, and `installDisk` with the install
+   disk's serial from `talosctl get disks --insecure -n <address>`. Until both NUCs have them,
+   every topf command that includes them fails, so limit runs to the VMs with
+   `--nodes-filter '^t0'` (or `TOPF_NODES_FILTER`). Do not run `upgrade.sh` meanwhile: it reads
+   every node from `topf.yaml` itself and would try to roll the NUCs too.
+5. **Address.** Add a Kea reservation for `mac0` (hostname `hestia`, 192.168.0.50) and the
+   DNS records on helios, deploy them, then reboot the node so it comes back on its address.
+6. **Apply.** `topf apply --nodes-filter '^hestia\.'`. Talos installs to the NVMe drive and
+   reboots into the cluster. Check with `talosctl -n 192.168.0.50 etcd members` and
+   `kubectl get nodes`.
+7. **Second cable.** Plug it in, then check that both members are up:
+   `talosctl -n 192.168.0.50 read /proc/net/bonding/bond0`.
+
 ## Things worth knowing
 
 - **Both versions are explicit.** `kubernetesVersion` is required, and topf writes the resulting
@@ -93,8 +133,8 @@ Kubernetes is upgraded separately, and minor versions go through `talosctl upgra
   releases.
 - **Schematic IDs are computed from the schematic files**, not copied around. `topf schematic-ids`
   must keep printing
-  `8dfe2c9a167a9e198aec688d0ed5507a2441b16d65a3fd3f3814b5d684b73b8e` (t01/t02) and
-  `a2cece99d5d57ff53fff8237b2673c5aa6ed0072505a2f068f8dd16a0be17181` (t03). A different ID means a
+  `e1a1dd0d784a29291835696e2d69baa729bf6320f3ddc22b41e5bf3df5768d16` (t01) and
+  `a0e669220b6b31597a405507ddd55d5c9aa532811f70815113caea19e2e5a249` (NUCs). A different ID means a
   different installer image, i.e. a reinstall on the next upgrade. New schematics the factory has
   never seen need one run with `--submit-to-factory`.
 - **OIDC is structured authentication config, not flags.** kube-apiserver refuses every
@@ -104,11 +144,26 @@ Kubernetes is upgraded separately, and minor versions go through `talosctl upgra
 - **Longhorn has no kubelet bind mount.** `machine.kubelet.extraMounts` no longer exists
   ([talos#14365](https://github.com/siderolabs/talos/issues/14365)) and is not needed here:
   Longhorn's `defaultDataPath` is `/var/mnt/longhorn-data`, its replicas live on the user
-  volume declared in `all/13-longhorn.yaml`, and `instance-manager` reaches that path through
+  volume declared in `all/13-longhorn.yaml.tpl`, and `instance-manager` reaches that path through
   its host-root mount. `/var/lib/longhorn` only holds engine binaries and sockets, on EPHEMERAL.
 - **Hostnames.** `nodes[].host` is only used by topf for display, logging and node selection. The
-  Talos hostnames are left on `auto: stable` (`all/01-hostname.yaml`), which is what keeps the
-  Kubernetes node names at `t01`/`t02`/`t03` rather than the FQDNs.
+  Talos hostnames are left on `auto: stable` (`all/01-hostname.yaml`), so the name handed out
+  by the Kea reservation wins, which is what keeps the Kubernetes node names at `t01`…`dike`
+  rather than the FQDNs. `upgrade.sh` relies on `data.zone` being that same name.
+- **etcd has three members, one per machine** (t01 on hera, hestia, dike; t02 and t03 were
+  retired). Any one machine can go down, hera included, and the remaining two keep quorum.
+- **The NUCs share one NVMe drive between Talos and Longhorn.** `node/<host>/02-volumes.yaml`
+  caps EPHEMERAL, since it would otherwise take the whole drive, and lets `longhorn-data` grow
+  into the rest: hestia (1 TB 990 PRO) has 128 GiB + ~800 GiB, dike (250 GB 980) 64 GiB +
+  ~166 GiB. The cap is set at install time. dike's 980 is DRAM-less and rated for ~150 TBW,
+  so it is the first drive to replace.
+- **Disk encryption keys differ per node** (`diskKey` in `topf.yaml`, applied by
+  `all/18-disk-encryption.yaml.tpl` and `all/13-longhorn.yaml.tpl`). The VMs use `nodeID`, a key
+  derived from the machine UUID. The NUCs use `tpm`: STATE, EPHEMERAL and `longhorn-data` only
+  open on that NUC, booted with Secure Boot on and the enrolled keys in place. Anything that
+  changes the Secure Boot state, such as clearing or re-enrolling the keys or a BIOS update that
+  resets them, leaves the volumes locked. The way back is wiping the node and applying it again,
+  which costs its etcd membership and Longhorn replicas until they rebuild from the other nodes.
 - **The sealed-secrets keypair is kept out of the Talos bundle.** `topf secrets` parses
   `secrets.sops.yaml` into the Talos struct and re-serialises it, which silently drops any key
   Talos does not recognise. Keeping the keypair in `sealedsecrets.sops.yaml` means a stray
@@ -131,7 +186,7 @@ Kubernetes is upgraded separately, and minor versions go through `talosctl upgra
 - **Filesystem trim.** Talos ships a `FilesystemTrimConfig` document by default, weekly, at a
   stable per-volume offset, but it cannot reach an encrypted volume unless `allowDiscards` is
   set — and every volume here is LUKS2. It is enabled on EPHEMERAL
-  (`all/18-disk-encryption.yaml`) and on `longhorn-data` (`all/13-longhorn.yaml`); STATE is
+  (`all/18-disk-encryption.yaml.tpl`) and on `longhorn-data` (`all/13-longhorn.yaml.tpl`); STATE is
   left alone, being small and near-static. The flag is read when LUKS opens the volume, so it
   takes effect on each node's next boot. The Proxmox disks are created with `discard = "on"`
   on ZFS, so freed blocks go back to the pool. Check with

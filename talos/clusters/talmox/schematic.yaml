@@ -1,15 +1,25 @@
-# Talos image factory schematic for t01/t02 - https://factory.talos.dev/
-# topf hashes this file into the schematic ID, which must stay
-# 8dfe2c9a167a9e198aec688d0ed5507a2441b16d65a3fd3f3814b5d684b73b8e
-# (verify with `topf schematic-ids`; a changed ID means a reinstall on next upgrade).
+# Talos image factory schematic for t01, a Proxmox VM on hera - https://factory.talos.dev/
+# Expected schematic ID:
+# e1a1dd0d784a29291835696e2d69baa729bf6320f3ddc22b41e5bf3df5768d16
+# (verify with `topf schematic-ids`; a changed ID means a new installer image on next upgrade).
+#
+# Kernel lockdown stays at Talos's default, confidentiality, as on the NUCs (schematic.metal.yaml).
+# Falco/Tetragon would need `-lockdown` and `lockdown=integrity` in extraKernelArgs.
+#
+# hera's iGPU (Arrow Lake H, 8086:7d51) is not passed through: the host keeps it, and with it the
+# Proxmox console. Passing it to t01 means a `gpu` entry for t01 in tofu/locals.tf plus the block
+# below. xe still needs force_probe on Arrow Lake (Linux 6.18), and i915 must be kept off it.
 ---
 customization:
-  extraKernelArgs:
-    - -lockdown
-    - lockdown=integrity  # Needed for Falco/Tetragon when using Secure Boot
+  # extraKernelArgs:
+  #   - xe.force_probe=7d51
+  #   - i915.force_probe=!7d51
   systemExtensions:
     officialExtensions:
       - siderolabs/iscsi-tools
       - siderolabs/qemu-guest-agent
       - siderolabs/util-linux-tools
+      - siderolabs/thunderbolt
+      # - siderolabs/xe
+      # - siderolabs/i915  # GPU firmware (DMC lives under i915/)
   bootloader: sd-boot

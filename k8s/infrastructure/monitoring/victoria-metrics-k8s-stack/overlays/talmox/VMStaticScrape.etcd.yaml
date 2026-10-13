@@ -7,4 +7,4 @@ metadata:
 spec:
   jobName: kube-etcd  # Matches the label the old VMServiceScrape produced
   targetEndpoints:
-    - {targets: ['192.168.1.201:2381', '192.168.1.202:2381', '192.168.1.203:2381'], scheme: http}
+    - {targets: ['192.168.1.201:2381', '192.168.0.50:2381', '192.168.0.60:2381'], scheme: http}

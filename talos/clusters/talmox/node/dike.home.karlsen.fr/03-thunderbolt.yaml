@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# Thunderbolt/USB4 networking, for the Longhorn mesh between the NUCs (not configured yet).
+# The modules come from the siderolabs/thunderbolt extension in schematic.metal.yaml.
+# thunderbolt_net creates a thunderbolt<N> link per peer once a cable is connected.
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: thunderbolt
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: thunderbolt_net

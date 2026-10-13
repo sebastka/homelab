@@ -3,9 +3,11 @@ set -eu
 
 # ./upgrade.sh <cluster-name> [upgrade|reboot]
 #
-#   upgrade  (default)  Upgrade Talos to the `talosVersion` set in clusters/<cluster>/topf.yaml.
-#                       topf compares the installer image per node, skips nodes already there,
-#                       and cordons, drains, reboots and uncordons each one itself.
+#   upgrade  (default)  Bring each node to its installer image: the `talosVersion` and schematic
+#                       set in clusters/<cluster>/topf.yaml, so a schematic change alone (an added
+#                       extension or kernel argument) rolls the node too. topf compares the image
+#                       per node, skips nodes already there, and cordons, drains, reboots and
+#                       uncordons each one itself.
 #   reboot              Roll the nodes without changing versions, for settings that only take
 #                       effect when the machine boots (e.g. `allowDiscards`, which is applied
 #                       when LUKS opens the volume).
@@ -73,8 +75,9 @@ roll_node()
 {
     host="$1"; ip="$2"; node_name="$3"; version="$4"; action="$5"
 
-    if [ "$action" = 'upgrade' ] && [ "$(talos_version_on_node "$ip")" = "v${version}" ]; then
-        printf -- 'Node %s (%s) already runs v%s, skipping.\n' "$node_name" "$ip" "$version"
+    if [ "$action" = 'upgrade' ] && ! upgrade_pending "$host"; then
+        printf -- 'Node %s (%s) already runs v%s with its configured schematic, skipping.\n' \
+            "$node_name" "$ip" "$version"
         return 0
     fi
 
@@ -116,9 +119,9 @@ roll_node()
     [ "$evicted" = 'false' ] || kubectl -n longhorn-system patch node.longhorn.io "$node_name" --type=merge -p '{"spec":{"allowScheduling":true,"evictionRequested":false}}'
 
     # topf exits 0 when it skips a node, so confirm the node really moved before the next one
-    if [ "$action" = 'upgrade' ] && [ "$(talos_version_on_node "$ip")" != "v${version}" ]; then
-        printf -- 'Node %s did not reach v%s (reports %s). Stopping.\n' \
-            "$node_name" "$version" "$(talos_version_on_node "$ip")" >&2
+    if [ "$action" = 'upgrade' ] && upgrade_pending "$host"; then
+        printf -- 'Node %s still differs from its configured installer image. Stopping.\n' \
+            "$node_name" >&2
         exit 1
     fi
 
@@ -136,10 +139,28 @@ wait_for_node_ready()
     done
 }
 
-# talos_version_on_node <ip>
-talos_version_on_node()
+# upgrade_pending <host>
+#
+# Asks topf, which compares the node's installer image (Talos version and schematic) with the one
+# configured for it. Comparing the Talos version alone would miss a schematic change, such as an
+# added extension or kernel argument, and skip the node. The dry run exits 2 when an upgrade is
+# pending and 0 when the node is current.
+upgrade_pending()
 {
-    talosctl version --short --nodes "$1" 2>/dev/null | awk '/Tag:/ {print $2; exit}'
+    set +e
+    topf upgrade --dry-run --confirm=false --progress PLAIN --nodes-filter "^${1}\$" >/dev/null 2>&1
+    rc=$?
+    set -e
+
+    case "$rc" in
+        0) return 1 ;;
+        2) return 0 ;;
+        *)
+            printf -- 'Could not tell whether %s needs an upgrade (topf exited %s). Stopping.\n' \
+                "$1" "$rc" >&2
+            exit 1
+            ;;
+    esac
 }
 
 lh_wait_for_healthy_volumes()

@@ -1,0 +1,39 @@
+# Talos image factory schematic for the bare-metal NUCs (hestia, dike) - https://factory.talos.dev/
+# Expected schematic ID:
+# a0e669220b6b31597a405507ddd55d5c9aa532811f70815113caea19e2e5a249
+#
+# ASUS NUC 16 Pro: Intel Panther Lake (iGPU up to Arc B390), 2x Intel I226-V 2.5GbE (igc, in the
+# kernel), 2x Thunderbolt 4. Same as schematic.yaml minus qemu-guest-agent, plus:
+#   intel-ucode  CPU microcode, which a VM gets from its host but bare metal has to load itself
+#   xe           iGPU driver, with the GuC, HuC and GSC firmware (xe/ptl_*.bin)
+#   i915         only for its firmware: Panther Lake's display DMC (i915/xe3lpd*_dmc.bin) lives
+#                under i915/, which the xe extension does not ship. Without it xe cannot load the
+#                DMC and the iGPU loses its display power states. The i915 driver itself has no
+#                Panther Lake IDs, so it never binds the iGPU.
+#   thunderbolt  Thunderbolt/USB4 drivers, for the Longhorn mesh between the NUCs; the modules
+#                are loaded by node/<host>/03-thunderbolt.yaml. Note that this extension
+#                authorizes every Thunderbolt device at boot: anyone with physical access can
+#                plug one in.
+#
+# No force_probe kernel arguments: xe binds Panther Lake by default in Linux 6.18
+# (Talos 1.14), as ptl_desc in xe_pci.c no longer sets require_force_probe. Not siderolabs/mei either: xe authenticates HuC through the GSC
+# firmware itself, and only PXP and HDCP need the MEI GSC proxy.
+#
+# Kernel lockdown stays at Talos's default, confidentiality, as on t01 (schematic.yaml). Falco and
+# Tetragon need it relaxed to integrity; neither is deployed (Falco's destination is commented
+# out in k8s/infrastructure/controllers/AppProject.yaml). Running either would need `-lockdown`
+# and `lockdown=integrity` in extraKernelArgs, here and in schematic.yaml.
+#
+# Kernel arguments are baked into the signed UKI with Secure Boot, so they live here rather than
+# in a patch. Any change here changes the schematic ID, i.e. the installer image.
+---
+customization:
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/i915
+      - siderolabs/intel-ucode
+      - siderolabs/iscsi-tools
+      - siderolabs/thunderbolt
+      - siderolabs/util-linux-tools
+      - siderolabs/xe
+  bootloader: sd-boot

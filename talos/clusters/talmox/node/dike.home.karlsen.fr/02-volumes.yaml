@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# One NVMe drive for everything. The VMs have a separate data disk for Longhorn
+# (all/13-longhorn.yaml.tpl); here the user volume shares the system disk instead.
+#
+# EPHEMERAL grows to fill its disk by default, which would leave Longhorn nothing, so it is
+# capped. It holds images, logs and etcd. dike has a 250 GB drive (Samsung 980), so the cap is
+# 64 GiB, the size of a VM's whole OS disk, which leaves Longhorn ~166 GiB; hestia, with 1 TB,
+# uses 128 GiB. The cap is set at install time: changing it later means wiping EPHEMERAL.
+#
+# Both documents merge with the ones in all/, which keep their encryption settings.
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+provisioning:
+  maxSize: 64GiB
+  grow: false
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: longhorn-data
+provisioning:
+  diskSelector: {match: system_disk}  # a top-level CEL variable, not a disk.* field
+  minSize: 100GiB  # restated: this provisioning block replaces the one in all/, it does not merge
+  grow: true

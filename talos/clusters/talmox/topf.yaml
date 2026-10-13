@@ -9,13 +9,13 @@ clusterName: talmox
 clusterEndpoint: https://192.168.1.200:6443
 # Minor upgrades go through `talosctl upgrade-k8s`, which validates skew and rolls the
 # components in order; this field is updated afterwards so `topf apply` does not revert it.
-kubernetesVersion: 1.37.0
-talosVersion: 1.14.1
+kubernetesVersion: 1.37.1
+talosVersion: 1.14.2
 
 # topf derives the installer image from the fields below:
 #   <factory>/<platform>-installer[-secureboot]/<schematicId>:v<talosVersion>
 # It injects it as a cluster-level patch, so no `machine.install.image` patch is needed.
-platform: nocloud  # Proxmox VMs boot the nocloud disk image
+platform: nocloud  # Proxmox VMs boot the nocloud disk image; the bare-metal NUCs override it
 secureboot: true  # SecureBoot + UKI, so the -secureboot installer variant
 schematicId: '@schematic.yaml'
 
@@ -25,25 +25,34 @@ secretsPath: secrets.sops.yaml  # decrypted transparently by topf via sops
 # Values used by only one patch are written in that patch instead of here.
 data:
   vip: 192.168.1.200  # keep in step with clusterEndpoint above
-  link: eth0
   oidcIssuerUrl: https://auth.karlsen.fr
   oidcClientId: kube_login
 
 # Per-node values are available as {{ .Node.Data.<key> }}.
-# `mac` is not consumed by topf; it documents the Proxmox VM NIC.
+#   zone         topology zone label; upgrade.sh also uses it as the Kubernetes node name
+#   link         the link that carries DHCP and the control-plane VIP
+#   diskKey      disk encryption key, nodeID or tpm; see all/18-disk-encryption.yaml.tpl
+#   installDisk  NUCs: serial of the install disk, see node/<host>/00-install.yaml.tpl
+#   mac          VMs: documents the Proxmox NIC, unused. NUCs: mac0/mac1 name the bond members, and
+#                mac0 is also the bond's own MAC, which the Kea reservation on helios is keyed on.
 nodes:
   - host: t01.talmox.hera.home.karlsen.fr
     ip: 192.168.1.201
     role: control-plane
-    data: {zone: t01, mac: 'BC:24:11:10:FE:09'}
+    data: {zone: t01, link: eth0, diskKey: nodeID, mac: 'BC:24:11:10:FE:09'}
 
-  - host: t02.talmox.hera.home.karlsen.fr
-    ip: 192.168.1.202
+  # ASUS NUC 16 Pro, bare metal, on harmonia ports 3+4 (static LAG1). See node/hestia.home.karlsen.fr/.
+  - host: hestia.home.karlsen.fr
+    ip: 192.168.0.50
     role: control-plane
-    data: {zone: t02, mac: 'BC:24:11:10:FE:0A'}
+    platform: metal
+    schematicId: '@schematic.metal.yaml'
+    data: {zone: hestia, link: bond0, diskKey: tpm, installDisk: S7HDNJ0L802614A, mac0: '48:21:0B:7D:F6:25', mac1: '48:21:0B:7D:F6:26'}
 
-  - host: t03.talmox.hera.home.karlsen.fr
-    ip: 192.168.1.203
+  # ASUS NUC 16 Pro, bare metal, on harmonia ports 5+6 (static LAG2). See node/dike.home.karlsen.fr/.
+  - host: dike.home.karlsen.fr
+    ip: 192.168.0.60
     role: control-plane
-    data: {zone: t03, mac: 'BC:24:11:10:FE:0B'}
-    schematicId: '@schematic.igpu.yaml'  # iGPU passthrough, see the file
+    platform: metal
+    schematicId: '@schematic.metal.yaml'
+    data: {zone: dike, link: bond0, diskKey: tpm, installDisk: S64BNJ0T221755X, mac0: '48:21:0B:7D:F4:73', mac1: '48:21:0B:7D:F4:74'}
