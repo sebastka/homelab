@@ -8,11 +8,8 @@ spec:
   sourceRepos: [https://github.com/sebastka/homelab.git]
   destinations:
     - {namespace: default,          name: talmox}
-    - {namespace: argocd,           name: talmox}
     - {namespace: jellyfin,         name: talmox}
     - {namespace: metube,           name: talmox}
-    - {namespace: opentogethertube, name: talmox}
-    # - {namespace: vert,             name: talmox}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
     - {group: '', kind: PersistentVolume}  # Needed by Jellyfin
