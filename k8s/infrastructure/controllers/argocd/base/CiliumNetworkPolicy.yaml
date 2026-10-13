@@ -81,6 +81,14 @@ kind: CiliumNetworkPolicy
 metadata:
   name: allow-redis-secret-init
   namespace: argocd
+  # The Job is a Helm pre-install/pre-upgrade hook, which Argo CD runs as a PreSync hook, i.e.
+  # before any normal resource of the sync exists. As a plain resource this policy would arrive
+  # too late, and the default-deny would cut the Job off from the API server. A PreSync hook one
+  # wave earlier is created just before it, and kept until the next sync recreates it.
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: '-1'
 spec:
   # The chart's Job that generates the Redis password once, as the argocd-redis Secret.
   endpointSelector: {matchLabels: {app.kubernetes.io/name: argocd-redis-secret-init}}

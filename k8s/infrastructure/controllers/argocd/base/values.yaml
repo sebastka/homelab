@@ -98,6 +98,7 @@ redis:
     limits: {memory: 256Mi}
 redisSecretInit:
   enabled: true
+  securityContext: {runAsNonRoot: true}  # Pod level too, for Kyverno's require-securitycontext
 
 # Rendered by the chart, which cannot leave it out, and deleted in kustomization.yaml.
 server:
