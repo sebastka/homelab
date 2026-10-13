@@ -14,6 +14,9 @@
 - [portracker](https://github.com/mostafa-wahied/portracker)
 - [carpal](https://github.com/peeley/carpal)
 - [TeXlyre](https://github.com/TeXlyre/texlyre)
+- [OpenTogetherTube](https://github.com/dyc3/opentogethertube)
+- [VERT.sh](https://github.com/VERT-sh/vert)
+- [slink](https://github.com/andrii-kryvoviaz/slink)
 
 ## Sources / Inspirations
 
