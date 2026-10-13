@@ -3,7 +3,6 @@
 ---
 
 global:
-  domain: argocd.talmox.hera.home.karlsen.fr
   securityContext:
     runAsUser: 999
     runAsGroup: 999
@@ -15,34 +14,17 @@ configs:
   cm:
     create: true
     application.resourceTrackingMethod: annotation+label
-    admin.enabled: false
-    url: https://argocd.talmox.hera.home.karlsen.fr
-    oidc.config: |
-      name: Authelia
-      issuer: https://auth.karlsen.fr
-      clientID: argocd
-      clientSecret: $oidc:authelia.clientSecret
-      cliClientID: argocd-cli
-      enablePKCEAuthentication: true
-      requestedScopes: [openid, email, groups, profile]
-      enableUserInfoGroups: true
-      userInfoPath: /api/oidc/userinfo
+    url: http://localhost:8080
     kustomize.buildOptions: --enable-helm --load-restrictor LoadRestrictionsNone
     timeout.reconciliation: 10m
     timeout.reconciliation.jitter: 120s
   cmp:
     create: true
   params:
-    server.insecure: true
     controller.diff.server.side: true
     applicationsetcontroller.enable.progressive.syncs: "true"
     controller.operation.processors: '5'
     controller.kubectl.parallelism.limit: '10'
-  rbac:
-    policy.csv: |
-      g, k8s_admins, role:admin
-      g, k8s_users, role:readonly
-    policy.default: ''
   repositories:
     gh-sebastka-homelab:
       url: git@github.com:sebastka/homelab.git
@@ -108,39 +90,19 @@ repoServer:
         - {name: custom-tools, mountPath: /custom-tools}
 
 redis:
-  enabled: false
-externalRedis:
-  host: valkey
-  port: 6379
+  enabled: true
+  readinessProbe: {enabled: true}
+  livenessProbe: {enabled: true}
+  resources:
+    requests: {memory: 64Mi}
+    limits: {memory: 256Mi}
+redisSecretInit:
+  enabled: true
 
+# Rendered by the chart, which cannot leave it out, and deleted in kustomization.yaml.
 server:
   metrics:
-    enabled: true
-    serviceMonitor: {enabled: true}
-  resources:
-    requests: {memory: 128Mi}
-    limits: {memory: 256Mi}
-
-  httproute:
-    enabled: true
-    # labels: {}
-    # annotations: {}
-    parentRefs:
-      - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
-    hostnames: [argocd.talmox.hera.home.karlsen.fr]
-    rules:
-      - matches: [path: {type: PathPrefix, value: /}]
-
-  service:
-    servicePortHttp2: 8080
-    servicePortHttp2AppProtocol: kubernetes.io/h2c
-  grpcroute:
-    enabled: true
-    parentRefs:
-      - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
-    hostnames: [argocd.talmox.hera.home.karlsen.fr]
-    rules:
-      - matches: [{headers: [{name: Content-Type, value: application/grpc}]}]
+    enabled: false
 
 applicationSet:
   metrics:

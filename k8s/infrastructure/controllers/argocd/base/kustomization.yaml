@@ -1,4 +1,5 @@
 # https://argo-cd.readthedocs.io/en/stable/getting_started/
+# https://argo-cd.readthedocs.io/en/stable/operator-manual/core/
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -6,7 +7,6 @@ namespace: argocd
 
 components:
   - ../../../../common/images
-  - ../../../../common/valkey
 
 resources:
   - Namespace.yaml
@@ -22,3 +22,17 @@ helmCharts:
     includeCRDs: true
     apiVersions: [monitoring.coreos.com/v1]  # Chart guards every ServiceMonitor behind .Capabilities.APIVersions.Has
     valuesFile: values.yaml
+
+# Core mode: no API server in the cluster. The UI and CLI run locally (`argocd admin dashboard`,
+# `argocd --core`) against the Kubernetes API with your own kubeconfig. The chart always renders
+# the server, so it is deleted here, by name, since argocd-cm, argocd-cmd-params-cm,
+# argocd-rbac-cm and argocd-secret carry the same component label and the controllers need them.
+patches:
+  - target: {kind: Deployment, name: argocd-server}
+    patch: &delete '{"$patch": "delete", "apiVersion": "v1", "kind": "Deployment", "metadata": {"name": "argocd-server"}}'
+  - {target: {kind: Service, name: argocd-server}, patch: *delete}
+  - {target: {kind: ServiceAccount, name: argocd-server}, patch: *delete}
+  - {target: {kind: Role, name: argocd-server}, patch: *delete}
+  - {target: {kind: RoleBinding, name: argocd-server}, patch: *delete}
+  - {target: {kind: ClusterRole, name: argocd-server}, patch: *delete}
+  - {target: {kind: ClusterRoleBinding, name: argocd-server}, patch: *delete}

@@ -201,42 +201,6 @@ identity_providers:
         id_token_signed_response_alg: ES256
         token_endpoint_auth_method: client_secret_basic
 
-      - client_id: argocd
-        client_name: Argo CD
-        client_secret: {{ secret "/secrets/client-secrets/argocd" }}
-        public: false
-        authorization_policy: two_factor
-        pre_configured_consent_duration: 3 months
-        claims_policy: embed_id_token_claims
-        require_pkce: true
-        pkce_challenge_method: S256
-        redirect_uris: [https://argocd.talmox.hera.home.karlsen.fr/auth/callback]
-        scopes: [openid, groups, email, profile]
-        response_types: [code]
-        grant_types: [authorization_code]
-        access_token_signed_response_alg: none
-        userinfo_signed_response_alg: none
-        id_token_signed_response_alg: ES256
-        token_endpoint_auth_method: client_secret_basic
-
-      - client_id: argocd-cli
-        client_name: Argo CD (CLI)
-        # client_secret:
-        public: true
-        authorization_policy: two_factor
-        pre_configured_consent_duration: 3 months
-        claims_policy: embed_id_token_claims
-        require_pkce: true
-        pkce_challenge_method: S256
-        redirect_uris: [http://localhost:8085/auth/callback]
-        scopes: [openid, groups, email, profile, offline_access]
-        response_types: [code]
-        grant_types: [authorization_code, refresh_token]
-        access_token_signed_response_alg: none
-        userinfo_signed_response_alg: none
-        id_token_signed_response_alg: ES256
-        token_endpoint_auth_method: none
-
       - client_id: envoy
         client_name: Envoy Gateway
         client_secret: {{ secret "/secrets/client-secrets/envoy" }}

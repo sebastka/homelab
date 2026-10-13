@@ -48,6 +48,7 @@ spec:
                       - cr.smallstep.com/smallstep/step-ca
 
                       # infrastructure/controllers/argocd
+                      - ecr-public.aws.com/docker/library/redis
                       # ecr-public.aws.com/docker/library/haproxy
                       - quay.io/argoproj/argocd
                       - quay.io/argoprojlabs/argocd-extension-installer

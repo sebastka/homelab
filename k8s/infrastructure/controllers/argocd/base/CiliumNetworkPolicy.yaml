@@ -8,10 +8,9 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: argocd-application-controller}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '8082', protocol: TCP}]]}  # Host probes
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-server}], toPorts: [ports: [{port: '8082', protocol: TCP}]]}
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8082', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8082', protocol: TCP}]]}  # Metrics
   egress:
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: valkey}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-redis}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-repo-server}}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
     - {toEntities: [kube-apiserver]}
 ---
@@ -24,34 +23,15 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: argocd-repo-server}}
   ingress:
     - {fromEntities: [host], toPorts: [ports: [{port: '8084', protocol: TCP}]]}  # Host probes
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8084', protocol: TCP}]]}
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-server}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8084', protocol: TCP}]]}  # Metrics
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-application-controller}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-applicationset-controller}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
   egress:
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: valkey}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-redis}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    # `kustomize build --enable-helm` pulls charts from whichever registry a kustomization names,
+    # and the initContainer fetches the kustomize release. Too open-ended to enumerate.
     - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}
     - {toFQDNs: [{matchName: github.com}], toPorts: [ports: [{port: '22', protocol: TCP}]]}  # git over SSH
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-server
-  namespace: argocd
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: argocd-server}}
-  ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8083', protocol: TCP}]]}  # metrics
-  egress:
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: valkey}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-repo-server}}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-application-controller}}], toPorts: [ports: [{port: '8082', protocol: TCP}]]}
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-applicationset-controller}}], toPorts: [ports: [{port: '7000', protocol: TCP}]]}
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Needed for OIDC / Authelia
-    - {toEntities: [kube-apiserver]}
-    # Add egress to world if using webhooks in the future
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
@@ -61,7 +41,7 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: argocd-notifications-controller}}
   ingress:
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9001', protocol: TCP}]]}  # metrics
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '9001', protocol: TCP}]]}  # Metrics
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: ntfy, app.kubernetes.io/name: ntfy}}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
     - {toEntities: [kube-apiserver]}
@@ -74,24 +54,35 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: argocd-applicationset-controller}}
   ingress:
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # metrics
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-server}], toPorts: [ports: [{port: '7000', protocol: TCP}]]}  # webhooks
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Metrics
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-repo-server}}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: valkey}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-redis}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
     - {toEntities: [kube-apiserver]}
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-valkey
+  name: allow-redis
   namespace: argocd
 spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: valkey}}
+  # Its probes are exec, run inside the pod, so the host needs no rule.
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: argocd-redis}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-server}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-repo-server}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-application-controller}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-applicationset-controller}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
-  # egress: []
+    - fromEndpoints:
+        - matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-application-controller}
+        - matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-repo-server}
+        - matchLabels: {k8s:io.kubernetes.pod.namespace: argocd, app.kubernetes.io/name: argocd-applicationset-controller}
+      toPorts: [ports: [{port: '6379', protocol: TCP}]]
+  egress: []
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-redis-secret-init
+  namespace: argocd
+spec:
+  # The chart's Job that generates the Redis password once, as the argocd-redis Secret.
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: argocd-redis-secret-init}}
+  egress:
+    - {toEntities: [kube-apiserver]}
