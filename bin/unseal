@@ -1,0 +1,91 @@
+#!/bin/sh
+set -eu
+
+# unseal SealedSecret.<name>.yaml...
+#
+# Decrypts each SealedSecret.<name>.yaml into Secret.<name>.yaml next to it, offline, with the
+# cluster's sealed-secrets private key (see bin/lib/sealed-secrets.sh). Same as
+#   kubeseal --recovery-unseal --recovery-private-key seal.key -o yaml \
+#       -f SealedSecret.<name>.yaml >Secret.<name>.yaml
+# but without a key file on disk.
+#
+# Values are written readable under `stringData`, with the original base64 `data` block kept
+# below as a comment for reference. A value that is not valid text (a keystore, a binary key)
+# stays base64 under `data`, since stringData would mangle it. `seal` accepts either form.
+#
+# The result is a plaintext Secret: it is written owner-only and is gitignored (Secret.*.yaml).
+# An existing Secret.<name>.yaml is overwritten.
+ROOT="$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)"
+. "${ROOT}/bin/lib/sealed-secrets.sh"
+
+main()
+{
+    [ "$#" -gt 0 ] || usage 'SealedSecret.<name>.yaml'
+
+    key="$(keypair_value key)"
+    for sealed in "$@"; do
+        unseal "$sealed"
+    done
+}
+
+# unseal <SealedSecret.<name>.yaml>
+unseal()
+{
+    name="${1##*/}"
+    case "$name" in
+        SealedSecret.*.yaml) ;;
+        *) printf -- '%s: not a SealedSecret.<name>.yaml file\n' "$1" >&2; exit 1 ;;
+    esac
+    secret="$(dirname -- "$1")/${name#Sealed}"
+
+    # Decrypted in full before the target is touched, so a failure leaves any old file intact
+    output="$(printf -- '%s\n' "$key" \
+        | kubeseal --recovery-unseal --recovery-private-key /dev/stdin -o yaml -f "$1")"
+    output="$(to_string_data "$output")"
+
+    (umask 077; printf -- '%s\n' "$output" >"$secret")
+    printf -- '%s -> %s\n' "$1" "$secret"
+}
+
+# to_string_data <secret yaml>
+#
+# Moves every text value from base64 `data` to readable `stringData` (multi-line values as
+# literal blocks), then appends the original `data` block as a comment.
+to_string_data()
+{
+    # kubeseal's recovery output writes empty values as null, and points ownerReferences at the
+    # SealedSecret with an empty uid; the controller sets those itself, so neither belongs in a
+    # file that will be sealed again.
+    secret="$(printf -- '%s\n' "$1" \
+        | yq 'del(.metadata.ownerReferences) | (.data[] | select(. == null)) = ""')"
+
+    text_keys=''
+    for k in $(printf -- '%s\n' "$secret" | yq -r '.data // {} | keys | .[]'); do
+        ! is_text "$(printf -- '%s\n' "$secret" | yq -r ".data[\"$k\"]")" || text_keys="$text_keys $k"
+    done
+
+    # Secret keys are limited to [-._a-zA-Z0-9], so a space-separated list is unambiguous.
+    # shellcheck disable=SC2016  # $text and $k are yq variables, not shell ones
+    printf -- '%s\n' "$secret" | TEXT_KEYS="$text_keys" yq '
+        (strenv(TEXT_KEYS) | split(" ") | map(select(. != ""))) as $text
+        | .stringData = ((.data // {}) | with_entries(select(.key as $k | $text | contains([$k]))) | map_values(@base64d))
+        | .data = ((.data // {}) | with_entries(select(.key as $k | $text | contains([$k]) | not)))
+        | (.stringData[] | select(test("\n"))) style = "literal"
+        | del(.data | select(length == 0))
+        | del(.stringData | select(length == 0))'
+
+    if [ -n "$(printf -- '%s\n' "$secret" | yq '.data // {} | keys | .[]')" ]; then
+        printf -- '%s\n' "$secret" | yq '{"data": .data}' | sed 's/^/# /'
+    fi
+}
+
+# is_text <base64 value>
+#
+# True when the decoded value is valid UTF-8 without NUL bytes, i.e. safe in stringData.
+is_text()
+{
+    printf -- '%s' "$1" | base64 -d | iconv -f UTF-8 -t UTF-8 >/dev/null 2>&1 || return 1
+    [ "$(printf -- '%s' "$1" | base64 -d | wc -c)" = "$(printf -- '%s' "$1" | base64 -d | tr -d '\000' | wc -c)" ]
+}
+
+main "$@"

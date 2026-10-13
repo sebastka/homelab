@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-# ./bin/upgrade_engines.sh
+# upgrade_engines
 #
 # Moves every Longhorn volume to the default engine image (the `default-engine-image` setting,
 # i.e. the engine shipped with the installed Longhorn), one volume at a time, waiting for each to

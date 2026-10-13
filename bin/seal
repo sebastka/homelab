@@ -1,0 +1,59 @@
+#!/bin/sh
+set -eu
+
+# seal Secret.<name>.yaml...
+#
+# Seals each Secret.<name>.yaml into SealedSecret.<name>.yaml next to it, offline, with the
+# cluster's sealed-secrets certificate (see bin/lib/sealed-secrets.sh). Same as
+#   kubeseal --cert seal.crt -o yaml -f Secret.<name>.yaml >SealedSecret.<name>.yaml
+# but without a certificate file on disk.
+#
+# Comment lines at the top of an existing SealedSecret file are kept, so notes there survive a
+# reseal. The Secret files themselves are gitignored.
+ROOT="$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)"
+. "${ROOT}/bin/lib/sealed-secrets.sh"
+
+main()
+{
+    [ "$#" -gt 0 ] || usage 'Secret.<name>.yaml'
+
+    cert="$(keypair_value crt)"
+    for secret in "$@"; do
+        seal "$secret"
+    done
+}
+
+# seal <Secret.<name>.yaml>
+seal()
+{
+    name="${1##*/}"
+    case "$name" in
+        Secret.*.yaml) ;;
+        *) printf -- '%s: not a Secret.<name>.yaml file\n' "$1" >&2; exit 1 ;;
+    esac
+    sealed="$(dirname -- "$1")/Sealed${name}"
+
+    header=''
+    [ ! -f "$sealed" ] || header="$(leading_comments "$sealed")"
+
+    # Sealed in full before the target is touched, so a failure leaves the old file intact
+    output="$(printf -- '%s\n' "$cert" | kubeseal --cert /dev/stdin -o yaml -f "$1")"
+
+    {
+        [ -z "$header" ] || printf -- '%s\n' "$header"
+        case "$output" in ---*) ;; *) printf -- '%s\n' '---' ;; esac
+        printf -- '%s\n' "$output"
+    } >"$sealed"
+
+    printf -- '%s -> %s\n' "$1" "$sealed"
+}
+
+# leading_comments <file>
+#
+# The comment lines before the first YAML content, skipping `---` and blank lines.
+leading_comments()
+{
+    awk '/^#/ {print; next} /^(---)?[[:space:]]*$/ {next} {exit}' "$1"
+}
+
+main "$@"
