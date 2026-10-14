@@ -12,7 +12,7 @@ spec:
       app: grafana
   grafanaCom:
     id: 21419
-    revision: 6  # renovate: datasource=grafana-dashboards depName=21419
+    revision: 6  # renovate: datasource=custom.grafana-dashboards depName=21419
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -30,4 +30,4 @@ spec:
       datasourceName: VictoriaMetrics
   grafanaCom:
     id: 21689
-    revision: 1  # renovate: datasource=grafana-dashboards depName=21689
+    revision: 1  # renovate: datasource=custom.grafana-dashboards depName=21689

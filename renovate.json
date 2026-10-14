@@ -120,8 +120,8 @@
       "minimumReleaseAge": "0 days"
     },
     {
-      "description": "The Grafana datasources return versions only, with no timestamp, so the same stall applies. Custom datasources are namespaced with a custom. prefix, matching the datasource= annotations in the manifests",
-      "matchDatasources": ["custom.grafana-plugins", "grafana-dashboards"],
+      "description": "The Grafana plugins datasource returns versions only, with no timestamp, so the same stall applies. Dashboards are unaffected: their revisions carry createdAt. Custom datasources are namespaced with a custom. prefix, matching the datasource= annotations in the manifests",
+      "matchDatasources": ["custom.grafana-plugins"],
       "minimumReleaseAge": "0 days"
     },
     {
@@ -146,6 +146,13 @@
       "format": "json",
       "transformTemplates": [
         "{\"releases\": $map(items, function($v) { {\"version\": $v.version} })}"
+      ]
+    },
+    "grafana-dashboards": {
+      "defaultRegistryUrlTemplate": "https://grafana.com/api/dashboards/{{packageName}}/revisions",
+      "format": "json",
+      "transformTemplates": [
+        "{\"releases\": $map(items, function($v) { {\"version\": $string($v.revision), \"releaseTimestamp\": $v.createdAt} })}"
       ]
     }
   },
