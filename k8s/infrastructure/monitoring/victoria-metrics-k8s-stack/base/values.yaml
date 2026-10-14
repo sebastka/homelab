@@ -16,9 +16,13 @@ vmsingle:
       volumeName: victoriametrics-data-pv
       accessModes: [ReadWriteOnce]
       resources: {requests: {storage: 20Gi}}
+    # Without a CPU limit, it would size its per-CPU buffers for every core of the node (12-16) and
+    # get OOMKilled while ingesting vmagent's backlog after a restart
+    extraEnvs: [{name: GOMAXPROCS, value: '2'}]
+    # Steady state 850-950Mi of RSS with 30d of retention; it caches up to 60% of the limit
     resources:
-      requests: {memory: 256Mi}
-      limits: {memory: 1Gi}
+      requests: {memory: 1024Mi}
+      limits: {memory: 2048Mi}
     securityContext:
       allowPrivilegeEscalation: false
       readOnlyRootFilesystem: true
@@ -33,6 +37,9 @@ vmagent:
     nodeScrapeNamespaceSelector: {}
     # kube-apiserver's /metrics is ~24MB uncompressed, over the 16MB default.
     extraArgs: {promscrape.maxScrapeSize: 64MiB}
+    # Without a CPU limit, it would open 2 remote-write queues per core of the node (24 on t01)
+    # and flood vmsingle with its backlog after a restart
+    extraEnvs: [{name: GOMAXPROCS, value: '2'}]
     resources:
       requests: {memory: 128Mi}
       limits: {memory: 512Mi}
