@@ -177,12 +177,17 @@ One node at a time; each one joins etcd as it is applied. hestia is used as the 
   repo, and safe to delete and regenerate.
 - **Two kinds of cluster access, one kubeconfig.** Everything lands in
   `$XDG_CONFIG_HOME/kube/<cluster>/config.yaml`, written by `kubeconfig.sh` (which `full` and
-  `credentials` call). The `topf@<cluster>` user is a 12-hour `system:masters` certificate from
-  `topf kubeconfig`, break-glass only and with no notion of OIDC. The `oidc@<cluster>` user
-  beside it wires the `kubectl oidc-login` exec plugin so normal access goes through Authelia
-  and the `authelia:`-prefixed RBAC. Switch between them with `kubectl config use-context`. The
-  file is regenerated from scratch on each run, which refreshes an expired certificate; only the
-  current context is carried over, and a first run leaves `topf@<cluster>` current.
+  `credentials` call). The `topf@<cluster>` user is break-glass only, with no notion of OIDC: an
+  exec plugin, `topf-kube-credential`, mints a fresh 12-hour `system:masters` certificate with
+  `topf kubeconfig` on each use, so no admin key is stored and it never goes stale (each call
+  decrypts `secrets.sops.yaml`, so expect gpg). The plugin is generic, taking only the cluster's
+  `topf.yaml` (by absolute path, as its argument), and must be on `PATH` under that bare name:
+  it comes from the NixOS configuration, `users/sebastian/scripts/topf-kube-credential.sh`. The
+  `oidc@<cluster>` user beside it wires the `kubectl oidc-login` exec plugin so normal access
+  goes through Authelia and the `authelia:`-prefixed RBAC. Switch between them with
+  `kubectl config use-context`. With a kuberc in `Allowlist` mode, allow both by name:
+  `kubectl-oidc_login` and `topf-kube-credential`. The file is regenerated from scratch on each
+  run; only the current context is carried over, and a first run leaves `topf@<cluster>` current.
 - **Filesystem trim.** Talos ships a `FilesystemTrimConfig` document by default, weekly, at a
   stable per-volume offset, but it cannot reach an encrypted volume unless `allowDiscards` is
   set — and every volume here is LUKS2. It is enabled on EPHEMERAL

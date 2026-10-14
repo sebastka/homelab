@@ -7,13 +7,15 @@ set -eu
 # (seal.key, seal.crt) from the secrets in this repo, without contacting the cluster. The
 # kubeconfig holds one cluster and two users:
 #
-#   topf@<cluster>  Break-glass admin: a 12h system:masters certificate from `topf kubeconfig`.
+#   topf@<cluster>  Break-glass admin: an exec plugin (topf-kube-credential) that mints a fresh 12h
+#                   system:masters certificate with `topf kubeconfig` on every use. No admin key
+#                   is stored in the file.
 #   oidc@<cluster>  Day-to-day access through Authelia via the kubectl oidc-login plugin, landing
 #                   on the RBAC bound to the `authelia:` prefixes.
 #
-# The file is regenerated from scratch on every run, so it also refreshes an expired admin
-# certificate. Only the current context is carried over; a first run leaves topf@<cluster>
-# current, since OIDC needs Authelia to be running in the cluster.
+# Both users are plugins, so the file holds no secret and does not go stale: rerun only when the
+# cluster or the OIDC settings change. Only the current context is carried over; a first run
+# leaves topf@<cluster> current, since OIDC needs Authelia to be running in the cluster.
 #
 # Add `setup` to run the interactive `kubectl oidc-login setup` flow first, which checks the
 # issuer and client against the provider.
@@ -45,6 +47,7 @@ main()
     trap 'rm -f "$tmp"' EXIT
 
     topf kubeconfig >"$tmp"
+    topf_exec_user "$tmp"
     oidc_add_user "$tmp"
 
     if [ -n "$current" ]; then
@@ -87,6 +90,29 @@ sealed_secret_write_keys()
             printf -- '%s\n' "$keypair" | yq -r ".${type}" | base64 -d >"$1/seal.${type}"
         )
     done
+}
+
+# topf_exec_user <kubeconfig>
+#
+# Replaces the certificate `topf kubeconfig` embeds for topf@<cluster> with the
+# topf-kube-credential plugin, on PATH from the NixOS configuration (users/sebastian/scripts). The
+# command is the bare name, which a kuberc allowlist can name too; the repository-specific part,
+# this cluster's topf.yaml, goes in its argument as an absolute path, since kubectl runs it from
+# anywhere.
+# IfAvailable lets gpg ask for a PIN on the terminal when sops needs one.
+topf_exec_user()
+{
+    command -v topf-kube-credential >/dev/null \
+        || printf -- 'Warning: topf-kube-credential is not on PATH; topf@%s will not work until it is.\n' "$CLUSTER_NAME" >&2
+
+    USER_NAME="topf@${CLUSTER_NAME}" yq -i 'del(.users[] | select(.name == strenv(USER_NAME)))' "$1"
+    kubectl config set-credentials "topf@${CLUSTER_NAME}" \
+        --kubeconfig "$1" \
+        --exec-api-version=client.authentication.k8s.io/v1 \
+        --exec-interactive-mode=IfAvailable \
+        --exec-command=topf-kube-credential \
+        --exec-arg="$(cd "$(dirname "$TOPFCONFIG")" && pwd)/$(basename "$TOPFCONFIG")" \
+        >/dev/null
 }
 
 # oidc_add_user <kubeconfig>
