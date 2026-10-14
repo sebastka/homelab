@@ -1,10 +1,8 @@
 {
-	// https://tailscale.com/kb/1192/acl-samples
+	// Only machines authenticated with an OAuth client advertise routes, so routes are approved
+	// per tag; anything else a device advertises waits for review in the admin console.
 	"autoApprovers": {
 		"routes": {
-			"0.0.0.0/0": [
-				"group:admins",
-			],
 			// The home LAN, advertised by the operator's Connector on talmox (tag:k8s).
 			"192.168.0.0/16": [
 				"tag:k8s",

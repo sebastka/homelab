@@ -27,7 +27,6 @@ things are down: it must be appliable without Proxmox, the cluster or Cloudflare
 | `tailnet.tf`        | Tailnet settings, DNS, contacts                                      |
 | `oauth_clients.tf`  | The operator's OAuth client and its generated Secret                 |
 | `templates/`        | The Secret template                                                  |
-| `devices.tf`        | Forgets the decommissioned hermes; can go once applied               |
 | `secrets.sops.yaml` | Committed, PGP-encrypted: the OAuth client and the state passphrase  |
 | `terraform.tfstate` | Committed, encrypted with the passphrase                             |
 
