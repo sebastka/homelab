@@ -138,6 +138,11 @@
       "description": "Majors always need a human; keep them off automerge",
       "matchUpdateTypes": ["major"],
       "automerge": false
+    },
+    {
+      "description": "Grafana dashboard revisions are plain integers, so every new one counts as a major; automerge them anyway. Kept after the majors rule, which it overrides",
+      "matchDatasources": ["custom.grafana-dashboards"],
+      "automerge": true
     }
   ],
   "customDatasources": {
