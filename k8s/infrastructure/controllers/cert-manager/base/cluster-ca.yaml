@@ -20,11 +20,13 @@ spec:
   commonName: Karlsen Homelab Cluster Root CA
   # dnsNames: []
   subject: {organizations: [Karlsen], countries: ['NO'], organizationalUnits: [Homelab]}
-  privateKey: {algorithm: ECDSA, size: 521}
+  # Keep the key on renewal: leaves are not reissued when the CA is, so a new key would break
+  # every leaf still signed by the old one (hubble's mTLS did exactly that in 2026-10).
+  privateKey: {algorithm: ECDSA, size: 521, rotationPolicy: Never}
   issuerRef: {group: cert-manager.io, kind: ClusterIssuer, name: selfsigned-issuer}
   # usages: []
-  # duration
-  # renewBefore
+  duration: 87600h  # 10 years: must outlive every leaf it signs (hubble's last a year)
+  renewBefore: 8760h
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
