@@ -40,7 +40,7 @@ spec:
         # The image's own Tesseract data, plus PAPERLESS_OCR_LANGUAGES from tesseract-ocr/tessdata, into TESSDATA_PREFIX (/mnt/tessdata)
         - name: tessdata
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command: [paperless-tessdata]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -58,7 +58,7 @@ spec:
         # https://github.com/paperless-ngx/paperless-ngx/tree/dev/docker/rootfs/etc/s6-overlay/s6-rc.d
         - name: wait-for-db
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command: [paperless-wait-for-db]  # pg_isready's job, with psycopg
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -72,7 +72,7 @@ spec:
             limits: {memory: 128Mi}
         - name: wait-for-redis
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command: [python3, /usr/local/bin/wait-for-redis.py]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -88,7 +88,7 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
         - name: folders
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command:
             - python3
             - -c
@@ -118,7 +118,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
         - name: migrate
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command: [python3, manage.py, migrate, --noinput]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -139,7 +139,7 @@ spec:
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: llmindex-migrate
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command: [python3, manage.py, document_llmindex, migrate]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -160,7 +160,7 @@ spec:
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: reindex
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command: [python3, manage.py, document_index, reindex, --if-needed, --no-progress-bar]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -181,7 +181,7 @@ spec:
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: superuser
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command: [python3, manage.py, manage_superuser]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -202,7 +202,7 @@ spec:
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: system-checks
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command: [python3, manage.py, check]
           envFrom:
             - configMapRef: {name: paperless-env}
@@ -224,7 +224,7 @@ spec:
       containers:
         - name: consumer
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           # document_consumer stops cleanly on SIGINT (KeyboardInterrupt) but, as PID 1, would ignore
           # Kubernetes' SIGTERM: run it as a child and pass SIGTERM on as SIGINT
           command:
@@ -257,7 +257,7 @@ spec:
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: scheduler
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command: [celery, "--app", "paperless", "beat", "--loglevel", "INFO"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -279,7 +279,7 @@ spec:
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
         - name: worker
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command: [celery, "--app", "paperless", "worker", "--loglevel", "INFO"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -311,7 +311,7 @@ spec:
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: webserver
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
-          image: ghcr.io/sebastka/paperless:3.3.1@sha256:fb06df2e309918de7df394a070bdef4d63ce724dcd7caf6fb438e974283f5538
+          image: ghcr.io/sebastka/paperless:3.3.1@sha256:dc45fea63b05f0439a650a4c1b23a1b499ef9d11d4deaa41f36ae783edc472d6
           command: [granian, "--interface", "asginl", "--no-access-log", "--ws", "paperless.asgi:application"]
           securityContext:
             allowPrivilegeEscalation: false
