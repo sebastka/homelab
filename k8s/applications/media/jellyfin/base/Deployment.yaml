@@ -50,11 +50,11 @@ spec:
           envFrom:
             - configMapRef: {name: jellyfin-env}
           ports:
-            - {name: http, protocol: TCP, containerPort: 8096}
+            - {name: http,      protocol: TCP, containerPort: 8096}
             - {name: discovery, protocol: UDP, containerPort: 7359}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
-            - {name: cache-volume, mountPath: /cache, subPath: jellyfin-cache}
+            - {name: cache-volume, mountPath: /cache}
             - {name: config-volume, mountPath: /config, subPath: jellyfin-config}
             - {name: media-volume, mountPath: /mnt/media/nb_dl, subPath: deluge/downloads/nb_dl, readOnly: true}
             - {name: media-volume, mountPath: /mnt/media/other, subPath: deluge/downloads/other, readOnly: true}
@@ -65,7 +65,7 @@ spec:
           livenessProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 10, periodSeconds: 30}
           readinessProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 10, periodSeconds: 30}
       volumes:
-        - {name: tmp-volume, emptyDir: {medium: Memory}}
+        - {name: tmp-volume,   emptyDir: {medium: Memory}}
+        - {name: cache-volume, emptyDir: {sizeLimit: 20Gi}}
         - {name: config-volume, persistentVolumeClaim: {claimName: jellyfin-config-pvc}}
-        - {name: cache-volume, persistentVolumeClaim: {claimName: jellyfin-cache-pvc}}
-        - {name: media-volume, persistentVolumeClaim: {claimName: jellyfin-media-pvc}}
+        - {name: media-volume,  persistentVolumeClaim: {claimName: jellyfin-media-pvc}}
