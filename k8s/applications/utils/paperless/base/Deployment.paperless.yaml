@@ -132,10 +132,10 @@ spec:
             limits: {memory: 384Mi}
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
-            # - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
-            # - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
+            # Every manage.py command runs paperless's paths check, which writes to consume too
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: llmindex-migrate
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
@@ -155,6 +155,8 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
+            # Every manage.py command runs paperless's paths check, which writes to consume too
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: reindex
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
@@ -174,6 +176,8 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
+            # Every manage.py command runs paperless's paths check, which writes to consume too
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: superuser
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
@@ -193,6 +197,8 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
+            # Every manage.py command runs paperless's paths check, which writes to consume too
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
         - name: system-checks
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/paperless/Dockerfile
@@ -212,6 +218,8 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
+            # Every manage.py command runs paperless's paths check, which writes to consume too
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             - {name: tessdata-volume, mountPath: /mnt/tessdata, readOnly: true}
       containers:
         - name: consumer
