@@ -17,6 +17,12 @@ crds:
       requests: {memory: 128Mi}
       limits: {memory: 256Mi}
 
+# Without cert-manager, the chart generates a new webhook CA and certificate on every render: each
+# new revision ArgoCD renders replaces the caBundle and the Secret while the running operator keeps
+# serving the previous certificate, and every VM resource fails admission until it restarts.
+admissionWebhooks:
+  certManager: {enabled: true}
+
 serviceMonitor:
   enabled: true
   vm: true  # Creates VMServiceScrape instead of ServiceMonitor

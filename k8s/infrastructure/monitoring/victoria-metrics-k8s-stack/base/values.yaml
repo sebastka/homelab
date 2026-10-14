@@ -112,17 +112,18 @@ kubeProxy:
 # https://github.com/siderolabs/talos/discussions/7214
 kubeControllerManager:
   enabled: true
-  serviceMonitor:
-    relabelings:
-      - sourceLabels: [__meta_kubernetes_pod_node_name]
-        separator: ;
-        regex: ^(.*)$
-        targetLabel: nodename
-        replacement: $1
-        action: replace
-    metricRelabelings:
-      - action: labeldrop
-        regex: pod
+  vmScrape:
+    spec:
+      endpoints:
+        - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+          port: http-metrics
+          scheme: https
+          # Talos serves kube-controller-manager's metrics with a self-signed certificate valid for 127.0.0.1 only.
+          tlsConfig: {insecureSkipVerify: true}
+          relabelConfigs:
+            - {sourceLabels: [__meta_kubernetes_pod_node_name], targetLabel: nodename}
+          metricRelabelConfigs:
+            - {action: labeldrop, regex: pod}
 
 # etcd runs on the hosts, so the chart scrapes it via a headless Service plus a
 # hand-written Endpoints. ArgoCD excludes Endpoints/EndpointSlice by default, so
@@ -132,17 +133,18 @@ kubeEtcd: {enabled: false}
 
 kubeScheduler:
   enabled: true
-  serviceMonitor:
-    relabelings:
-      - sourceLabels: [__meta_kubernetes_pod_node_name]
-        separator: ;
-        regex: ^(.*)$
-        targetLabel: nodename
-        replacement: $1
-        action: replace
-    metricRelabelings:
-      - action: labeldrop
-        regex: pod
+  vmScrape:
+    spec:
+      endpoints:
+        - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+          port: http-metrics
+          scheme: https
+          # Talos serves kube-scheduler's metrics with a self-signed certificate valid for 127.0.0.1 only.
+          tlsConfig: {insecureSkipVerify: true}
+          relabelConfigs:
+            - {sourceLabels: [__meta_kubernetes_pod_node_name], targetLabel: nodename}
+          metricRelabelConfigs:
+            - {action: labeldrop, regex: pod}
 
 kubelet:
   vmScrape:
