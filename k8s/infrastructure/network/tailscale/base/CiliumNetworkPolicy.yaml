@@ -1,0 +1,19 @@
+# The operator is a tailnet node itself, besides talking to the Kubernetes API.
+#
+# Tailscale reaches its DERP relays by the IP addresses in the DERP map the control plane sends,
+# not by DNS name, so toFQDNs cannot cover them: relays (TCP 443, HTTP 80 fallback), STUN (UDP
+# 3478) and direct WireGuard paths (any UDP port) are allowed to the world entity. TCP 443 to the
+# world also covers the control plane (login, controlplane, api and log.tailscale.com).
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-operator
+  namespace: tailscale
+spec:
+  endpointSelector: {matchLabels: {app: operator}}
+  ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}, {port: '80', protocol: TCP}]]}  # Control plane, DERP
+    - {toEntities: [world], toPorts: [ports: [{port: '1', endPort: 65535, protocol: UDP}]]}  # STUN, WireGuard

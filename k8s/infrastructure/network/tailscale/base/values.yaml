@@ -4,10 +4,16 @@
 
 installCRDs: true
 
+# Fully qualified, as Kyverno's registry allowlist compares image names literally; the chart
+# defaults to the short Docker Hub names.
 operatorConfig:
+  image: {repository: docker.io/tailscale/k8s-operator}
   resources:
     requests: {memory: 100Mi}
     limits: {memory: 100Mi}
+
+proxyConfig:
+  image: {repository: docker.io/tailscale/tailscale}  # The Connector's image
 
 ingressClass:
   enabled: false

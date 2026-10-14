@@ -1,0 +1,24 @@
+# The Connector: the tailnet's subnet router for the home LAN. Tailscale reaches the world as the
+# operator does (see ../../base/CiliumNetworkPolicy.yaml); on top of that it forwards the tailnet's
+# traffic into 192.168.0.0/16, on any port.
+#
+# Within that range, the cluster nodes are Cilium's host/remote-node entities rather than CIDR
+# addresses, and a LoadBalancer IP (192.168.2.x) is translated to its backend pods before policy
+# applies: the Gateway's Envoys, whose namespace sits outside the default-deny.
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-connector-talmox
+  namespace: tailscale
+spec:
+  endpointSelector: {matchLabels: {tailscale.com/parent-resource-type: connector, tailscale.com/parent-resource: talmox}}
+  ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}  # containerboot keeps the node's state in a Secret
+    - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}, {port: '80', protocol: TCP}]]}  # Control plane, DERP
+    - {toEntities: [world], toPorts: [ports: [{port: '1', endPort: 65535, protocol: UDP}]]}  # STUN, WireGuard
+    # The routed home LAN
+    - {toCIDR: [192.168.0.0/16]}
+    - {toEntities: [host, remote-node]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}]}

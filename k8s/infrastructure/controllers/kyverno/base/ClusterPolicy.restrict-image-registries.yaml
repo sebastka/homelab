@@ -171,6 +171,8 @@ spec:
                       # infrastructure/network/gateway
 
                       # infrastructure/network/tailscale
+                      - docker.io/tailscale/k8s-operator
+                      - docker.io/tailscale/tailscale
 
                       # infrastructure/storage/longhorn
                       - docker.io/longhornio/csi-attacher
