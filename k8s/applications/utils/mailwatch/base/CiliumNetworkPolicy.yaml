@@ -11,7 +11,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: mailwatch}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Envoy Gateway
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # OIDC (auth.karlsen.fr) and our own MTA-STS/BIMI hosts, via the Gateway

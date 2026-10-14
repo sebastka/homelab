@@ -7,7 +7,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: metrics-server}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '10250', protocol: TCP}]]}  # Host probes
     - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '10250', protocol: TCP}]]}  # Aggregated API
   egress:
     - {toEntities: [host, remote-node], toPorts: [ports: [{port: '10250', protocol: TCP}]]}  # Kubelet scraping

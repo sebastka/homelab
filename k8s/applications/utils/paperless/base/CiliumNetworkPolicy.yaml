@@ -7,7 +7,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: paperless}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '8000', protocol: TCP}]]}
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8000', protocol: TCP}]]}
   egress:
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: valkey}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
@@ -29,7 +28,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: gotenberg}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: paperless}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
   # egress: []
 ---
@@ -41,17 +39,5 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: tika}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '9998', protocol: TCP}]]}
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: paperless}], toPorts: [ports: [{port: '9998', protocol: TCP}]]}
   # egress: []
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-valkey
-  namespace: argocd
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: valkey}}
-  ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: paperless}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}

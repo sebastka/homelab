@@ -1,3 +1,12 @@
+# Cluster-wide baseline: every namespace is isolated unless a CiliumNetworkPolicy next to the
+# component opens a specific path. Cilium's own namespaces are exempt.
+#
+# Not needed anywhere: rules for kubelet probes. Cilium always admits traffic from the local node
+# to its endpoints (allow-localhost: always, the default), whatever the policy says.
+#
+# `Exists` is load-bearing in every selector below: a NotIn match also succeeds when the key is
+# absent, which would drag Cilium's own reserved endpoints (health, ingress) -- they carry no
+# pod-namespace label at all -- into default-deny and drop every node-to-node health probe.
 ---
 apiVersion: cilium.io/v2
 kind: CiliumClusterwideNetworkPolicy
@@ -7,7 +16,12 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  endpointSelector: {matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets, envoy-gateway-system]}]}
+  # An empty deny rule selects the endpoint into default-deny mode for that direction without
+  # denying anything outright, so the allow rules below and every CiliumNetworkPolicy still apply.
+  endpointSelector:
+    matchExpressions:
+      - {key: k8s:io.kubernetes.pod.namespace, operator: Exists}
+      - {key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets]}
   ingressDeny: [{}]
   egressDeny: [{}]
 ---
@@ -19,7 +33,11 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  endpointSelector: {matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets, envoy-gateway-system]}]}
+  # Cilium's own connectivity probes, from the per-node health endpoint.
+  endpointSelector:
+    matchExpressions:
+      - {key: k8s:io.kubernetes.pod.namespace, operator: Exists}
+      - {key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets]}
   ingress:
     - fromEntities: [health]
   egress:
@@ -33,7 +51,29 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  endpointSelector: {matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets, envoy-gateway-system]}]}
+  # Also arms the L7 DNS proxy, which is what makes `toFQDNs` rules elsewhere resolvable.
+  endpointSelector:
+    matchExpressions:
+      - {key: k8s:io.kubernetes.pod.namespace, operator: Exists}
+      - {key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets]}
   egress:
     - toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: kube-system, k8s-app: kube-dns}]
       toPorts: [{ports: [{port: '53', protocol: TCP}, {port: '53', protocol: UDP}], rules: {dns: [{matchPattern: '*'}]}}]
+---
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: allow-vmagent-scrape
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  # vmagent may scrape any endpoint, on any port: one rule here rather than one per component,
+  # so a new component cannot silently miss its metrics. vmagent's own egress is in
+  # monitoring/victoria-metrics-k8s-stack.
+  endpointSelector:
+    matchExpressions:
+      - {key: k8s:io.kubernetes.pod.namespace, operator: Exists}
+      - {key: k8s:io.kubernetes.pod.namespace, operator: NotIn, values: [kube-system, cilium-spire, cilium-secrets]}
+  ingress:
+    - fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring, app.kubernetes.io/name: vmagent}]

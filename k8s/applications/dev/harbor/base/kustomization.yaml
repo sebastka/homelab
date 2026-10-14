@@ -14,7 +14,6 @@ resources:
   - SealedSecret.harbor-secrets.yaml
   - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
-  - CiliumNetworkPolicy.yaml
 
 helmCharts:
   - name: harbor

@@ -7,7 +7,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: thelounge}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '9000', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '9000', protocol: TCP}]]}  # Envoy Gateway
     - {fromEntities: [world], toPorts: [ports: [{port: '9001', protocol: TCP}]]}  # identd-tcp
   egress:

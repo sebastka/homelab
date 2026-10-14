@@ -7,8 +7,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: alloy}}
   ingress:
-    - {fromEntities: [host], toPorts: [{ports: [{port: '12345', protocol: TCP}]}]}  # Health probes
-    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: monitoring}}], toPorts: [{ports: [{port: '12345', protocol: TCP}]}]}  # Prometheus scrape
     - {fromEntities: [cluster], toPorts: [{ports: [{port: '4317', protocol: TCP}, {port: '4318', protocol: TCP}]}]}  # OTLP trace ingestion from instrumented apps
   egress:
     - {toEntities: [kube-apiserver]}  # Pod discovery + log streaming via Kubernetes API

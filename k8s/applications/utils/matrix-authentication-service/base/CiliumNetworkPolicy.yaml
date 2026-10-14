@@ -7,7 +7,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: matrix-authentication-service}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '8081', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
   egress:
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}

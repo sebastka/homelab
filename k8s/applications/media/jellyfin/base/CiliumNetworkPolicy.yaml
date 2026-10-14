@@ -7,7 +7,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: jellyfin}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '8096', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8096', protocol: TCP}]]}  # Envoy Gateway
     # - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '7359', protocol: TCP}]]}  # Envoy Gateway
   egress:

@@ -18,6 +18,7 @@ patches:
 
 resources:
   - Namespace.yaml
+  - CiliumNetworkPolicy.yaml
   - EnvoyProxy.yaml
   - GatewayClass.yaml
   - SealedSecret.crowdsec-secrets.yaml

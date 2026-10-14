@@ -7,7 +7,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: authelia}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '9091', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '9091', protocol: TCP}]]}  # Envoy Gateway
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: authelia, app.kubernetes.io/name: valkey}}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
@@ -17,15 +16,3 @@ spec:
     - {toFQDNs: [matchName: time.cloudflare.com], toPorts: [ports: [{port: '123', protocol: UDP}]]}
     - {toFQDNs: [matchName: mds.fidoalliance.org], toPorts: [ports: [{port: '443', protocol: TCP}]]}
     - {toFQDNs: [{matchName: crl.globalsign.com}, {matchName: secure.globalsign.com}], toPorts: [ports: [{port: '80', protocol: TCP}]]}
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-valkey
-  namespace: argocd
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: valkey}}
-  ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: authelia, app.kubernetes.io/name: authelia}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
-  # egress: []

@@ -7,7 +7,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: deluged}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '58846', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: deluge, app.kubernetes.io/name: deluge-web}], toPorts: [ports: [{port: '58846', protocol: TCP}]]}  # deluge-web
     - {fromEntities: [world], toPorts: [ports: [{port: '6881', protocol: TCP}, {port: '6881', protocol: UDP}]]}  # torrent
   egress:
@@ -21,7 +20,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: deluge-web}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '8112', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8112', protocol: TCP}]]}  # Envoy Gateway
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: radarr, app.kubernetes.io/name: radarr}], toPorts: [ports: [{port: '8112', protocol: TCP}]]}  # radarr
   egress:

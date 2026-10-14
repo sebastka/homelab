@@ -22,7 +22,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app: longhorn-manager}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '9502', protocol: TCP}]]}  # Readiness probe
     - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '9502', protocol: TCP}, {port: '9503', protocol: TCP}]]}  # Admission webhook, recovery backend
   # egress: []
 ---

@@ -7,7 +7,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: backend}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Host probes
     - {fromCIDR: [192.168.0.0/16], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From Zabbix agents for active checks
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: frontend}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From frontend
   egress:
@@ -22,7 +21,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: frontend}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: backend}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Zabbix server API

@@ -7,7 +7,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {control-plane: controller-manager}}
   ingress:
-    - {fromEntities: [host], toPorts: [{ports: [{port: '8081', protocol: TCP}]}]}  # Host health probes
     - {fromEntities: [kube-apiserver], toPorts: [{ports: [{port: '9443', protocol: TCP}]}]}  # Webhook
   egress:
     - {toEntities: [kube-apiserver]}
@@ -19,7 +18,6 @@ metadata:
   namespace: intel-device-plugins
 spec:
   endpointSelector: {matchLabels: {app: intel-gpu-plugin}}
-  ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Host probes
+  # ingress: []
   egress:
     - {toEntities: [kube-apiserver]}

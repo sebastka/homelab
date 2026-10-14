@@ -7,7 +7,6 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: tlsrpt}}
   ingress:
-    - {fromEntities: [host], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Host probes
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Envoy Gateway
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # OIDC discovery, token & userinfo (auth.karlsen.fr via the Gateway)

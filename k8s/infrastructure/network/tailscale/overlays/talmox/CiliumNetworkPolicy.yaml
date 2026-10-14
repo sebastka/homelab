@@ -4,7 +4,7 @@
 #
 # Within that range, the cluster nodes are Cilium's host/remote-node entities rather than CIDR
 # addresses, and a LoadBalancer IP (192.168.2.x) is translated to its backend pods before policy
-# applies: the Gateway's Envoys, whose namespace sits outside the default-deny.
+# applies: the Gateway's Envoys, which admit the cluster entity on their listeners.
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy

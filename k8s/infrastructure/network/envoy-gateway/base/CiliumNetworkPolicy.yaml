@@ -1,0 +1,80 @@
+# Envoy Gateway: the controller, the proxies it deploys for the `default` and `internal` Gateways,
+# the global rate limiter and the CrowdSec bouncers. valkey has its own policy, in its component.
+# Built from Hubble's view of the namespace's traffic. Metrics: allow-vmagent-scrape (cilium).
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-envoy-gateway
+  namespace: envoy-gateway-system
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: gateway-helm}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: envoy}], toPorts: [ports: [{port: '18000', protocol: TCP}]]}  # xDS to the proxies
+    - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: envoy-ratelimit}], toPorts: [ports: [{port: '18001', protocol: TCP}]]}  # xDS to ratelimit
+    - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '9443', protocol: TCP}]]}  # envoy-gateway-topology-injector webhook
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-envoy-proxy
+  namespace: envoy-gateway-system
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: envoy, app.kubernetes.io/component: proxy}}
+  ingress:
+    # The Gateways' listeners. Service ports below 1024 are remapped (+10000) since Envoy runs
+    # unprivileged; every listener's targetPort must be here or connections time out.
+    # world: clients from the internet and the LAN (externalTrafficPolicy: Local keeps their
+    # address). cluster: pods calling this cluster's own public names, such as the proxies' OIDC
+    # filter reaching auth.karlsen.fr, and the tailscale Connector routing the tailnet in.
+    - fromEntities: [world, cluster]
+      toPorts: [ports: [{port: '10080', protocol: TCP}, {port: '10443', protocol: TCP}, {port: '10022', protocol: TCP}, {port: '10389', protocol: TCP}, {port: '10636', protocol: TCP}, {port: '2200', protocol: TCP}]]
+  egress:
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: gateway-helm}], toPorts: [ports: [{port: '18000', protocol: TCP}]]}  # xDS
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: envoy-ratelimit}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: envoy-proxy-bouncer}], toPorts: [ports: [{port: '8080', protocol: TCP}, {port: '8081', protocol: TCP}]]}  # ext_authz, captcha
+    # Route backends live in whichever namespace owns the HTTPRoute, so this stays broad: the
+    # backend's own policy decides whether the Gateway may reach it. Also covers the proxies'
+    # own public names (OIDC to auth.karlsen.fr resolves to the default Gateway's address).
+    - {toEndpoints: [matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: Exists}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-envoy-ratelimit
+  namespace: envoy-gateway-system
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: envoy-ratelimit}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: envoy}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
+  egress:
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: gateway-helm}], toPorts: [ports: [{port: '18001', protocol: TCP}]]}  # xDS
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: valkey}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-envoy-proxy-bouncer
+  namespace: envoy-gateway-system
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: envoy-proxy-bouncer}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: envoy}], toPorts: [ports: [{port: '8080', protocol: TCP}, {port: '8081', protocol: TCP}]]}  # ext_authz, captcha
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: crowdsec, k8s-app: crowdsec, type: lapi}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: crowdsec, k8s-app: crowdsec, type: appsec}], toPorts: [ports: [{port: '7422', protocol: TCP}]]}  # WAF
+    - {toFQDNs: [matchName: challenges.cloudflare.com], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Turnstile captcha verification
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-envoy-gateway-certgen
+  namespace: envoy-gateway-system
+spec:
+  # The chart's hook Job that mints the controller's certificates. Labelled `app: certgen`, so
+  # none of the app.kubernetes.io selectors above reach it.
+  endpointSelector: {matchLabels: {app: certgen}}
+  egress:
+    - {toEntities: [kube-apiserver]}
