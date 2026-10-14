@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/opt/paperless/bin/python
 """Interactive AI review of an existing paperless-ngx library.
 
 Walks every document, asks paperless for LLM suggestions, and shows only the
@@ -9,9 +9,10 @@ namespace, so PAPERLESS_URL defaults to http://localhost:8000 and only a token
 is needed:
 
     kubectl exec -it -n paperless deploy/paperless -c worker -- \\
-      env PAPERLESS_TOKEN=... paperless-ai-review --dry-run --limit 20
+      paperless-ai-review --dry-run --limit 20
 
-Get a token from Settings -> My Profile -> API token. Override PAPERLESS_URL to
+It asks for an API token (Settings -> My Profile -> API token), or reads PAPERLESS_TOKEN: the image
+has no shell or `env` to set one through kubectl exec. Override PAPERLESS_URL to
 run it from outside the cluster instead.
 
 Every document costs one LLM call, so start with --limit. Suggestions are
@@ -27,6 +28,7 @@ Titles and dates are shown but only applied with --titles / --dates.
 from __future__ import annotations
 
 import argparse
+import getpass
 import json
 import os
 import sys
@@ -99,8 +101,10 @@ def main() -> int:
 
     base = os.environ.get("PAPERLESS_URL", "http://localhost:8000")
     token = os.environ.get("PAPERLESS_TOKEN")
+    if not token and sys.stdin.isatty():
+        token = getpass.getpass("API token (Settings -> My Profile -> API token): ").strip()
     if not token:
-        print("set PAPERLESS_TOKEN (Settings -> My Profile -> API token)", file=sys.stderr)
+        print("set PAPERLESS_TOKEN, or run with a terminal (kubectl exec -it)", file=sys.stderr)
         return 2
 
     api = Api(base, token)
