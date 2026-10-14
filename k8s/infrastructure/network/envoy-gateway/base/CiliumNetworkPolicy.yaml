@@ -22,15 +22,8 @@ metadata:
   name: allow-envoy-proxy
   namespace: envoy-gateway-system
 spec:
+  # Egress for both Gateways' proxies; ingress is per Gateway, below.
   endpointSelector: {matchLabels: {app.kubernetes.io/name: envoy, app.kubernetes.io/component: proxy}}
-  ingress:
-    # The Gateways' listeners. Service ports below 1024 are remapped (+10000) since Envoy runs
-    # unprivileged; every listener's targetPort must be here or connections time out.
-    # world: clients from the internet and the LAN (externalTrafficPolicy: Local keeps their
-    # address). cluster: pods calling this cluster's own public names, such as the proxies' OIDC
-    # filter reaching auth.karlsen.fr, and the tailscale Connector routing the tailnet in.
-    - fromEntities: [world, cluster]
-      toPorts: [ports: [{port: '10080', protocol: TCP}, {port: '10443', protocol: TCP}, {port: '10022', protocol: TCP}, {port: '10389', protocol: TCP}, {port: '10636', protocol: TCP}, {port: '2200', protocol: TCP}]]
   egress:
     - {toEndpoints: [matchLabels: {app.kubernetes.io/name: gateway-helm}], toPorts: [ports: [{port: '18000', protocol: TCP}]]}  # xDS
     - {toEndpoints: [matchLabels: {app.kubernetes.io/name: envoy-ratelimit}], toPorts: [ports: [{port: '8081', protocol: TCP}]]}
@@ -39,6 +32,35 @@ spec:
     # backend's own policy decides whether the Gateway may reach it. Also covers the proxies'
     # own public names (OIDC to auth.karlsen.fr resolves to the default Gateway's address).
     - {toEndpoints: [matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: Exists}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-envoy-proxy-default
+  namespace: envoy-gateway-system
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: envoy, gateway.envoyproxy.io/owning-gateway-name: default}}
+  ingress:
+    # The Gateway's listeners. Service ports below 1024 are remapped (+10000) since Envoy runs
+    # unprivileged; every listener's targetPort must be here or connections time out.
+    # world: clients from the internet and the LAN (externalTrafficPolicy: Local keeps their
+    # address). cluster: pods calling this cluster's own public names, such as the proxies' OIDC
+    # filter reaching auth.karlsen.fr, and the tailscale Connector routing the tailnet in.
+    - {fromEntities: [world, cluster], toPorts: [ports: [{port: '10080', protocol: TCP}, {port: '10443', protocol: TCP}, {port: '10022', protocol: TCP}, {port: '10389', protocol: TCP}, {port: '10636', protocol: TCP}, {port: '2200', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-envoy-proxy-internal
+  namespace: envoy-gateway-system
+spec:
+  # The internal Gateway trusts the whole pod network at L7 (gateway/default-deny-ingress-internal),
+  # because tailnet clients reach it through the Connector's pod address. This is what keeps that
+  # trust to the Connector alone: no other pod may connect.
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: envoy, gateway.envoyproxy.io/owning-gateway-name: internal}}
+  ingress:
+    - {fromEntities: [world], toPorts: [ports: [{port: '10080', protocol: TCP}, {port: '10443', protocol: TCP}]]}  # The LAN (externalTrafficPolicy: Local keeps the client's address)
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: tailscale, tailscale.com/parent-resource-type: connector}], toPorts: [ports: [{port: '10080', protocol: TCP}, {port: '10443', protocol: TCP}]]}  # Tailnet clients, through the Connector
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy

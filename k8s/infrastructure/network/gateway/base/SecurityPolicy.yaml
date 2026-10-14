@@ -8,7 +8,6 @@ metadata:
   namespace: gateway
 spec:
   targetRefs:
-    - {group: gateway.networking.k8s.io, kind: Gateway, name: internal}
     - {group: gateway.networking.k8s.io, kind: Gateway, name: default}
   authorization:
     defaultAction: Deny
@@ -17,6 +16,27 @@ spec:
         principal:
           clientCIDRs:
             - 192.168.0.0/24  # Physical machines
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: default-deny-ingress-internal
+  namespace: gateway
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: Gateway, name: internal}
+  authorization:
+    defaultAction: Deny
+    rules:
+      - action: Allow
+        principal:
+          clientCIDRs:
+            - 192.168.0.0/24  # Physical machines
+            # Tailnet clients, through the Connector (subnet router): it SNATs to its own pod
+            # address, so Envoy cannot tell them apart from any other pod. Cilium can: the
+            # internal proxies only admit the Connector from the pod network (allow-envoy-proxy-
+            # internal, in envoy-gateway-system), and the tailnet policy decides who reaches it.
+            - 10.244.0.0/16
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
