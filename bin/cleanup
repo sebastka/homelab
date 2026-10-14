@@ -1,0 +1,79 @@
+#!/bin/sh
+set -eu
+
+# cleanup
+#
+# Deletes what the cluster keeps around after the fact, across all namespaces:
+#
+#   - old ReplicaSets: owned by a Deployment, scaled to 0 and with no pods left. Each Deployment
+#     keeps up to revisionHistoryLimit (default 10) of them for `kubectl rollout undo`, which a
+#     GitOps cluster does not use: a rollback is a revert in git;
+#   - finished pods: phase Succeeded (Job pods, completed init-style pods) or Failed (evicted,
+#     OOM-killed, errored). Their Jobs and controllers are left alone, only the pods go.
+#
+# Lists everything first, per namespace, and waits for <enter>. Uses the current kubectl context.
+main()
+{
+    replicasets="$(old_replicasets)"
+    pods="$(finished_pods)"
+
+    if [ -z "$replicasets" ] && [ -z "$pods" ]; then
+        printf -- 'Nothing to clean up.\n'
+        return 0
+    fi
+
+    summary 'Old ReplicaSets' "$replicasets"
+    summary 'Finished pods' "$pods"
+    printf -- 'Press <enter> to delete them, or Ctrl-C to abort:'
+    read -r _
+
+    delete rs "$replicasets"
+    delete pod "$pods"
+    printf -- 'Done.\n'
+}
+
+# old_replicasets
+#
+# One "<namespace> <name>" per line. status.replicas also has to be 0, so a ReplicaSet still
+# scaling down in the middle of a rollout is left for the next run.
+old_replicasets()
+{
+    kubectl get replicasets --all-namespaces -o json | jq -r '.items[]
+        | select(.spec.replicas == 0 and (.status.replicas // 0) == 0)
+        | select(.metadata.ownerReferences // [] | any(.kind == "Deployment"))
+        | "\(.metadata.namespace) \(.metadata.name)"'
+}
+
+# finished_pods
+#
+# One "<namespace> <name>" per line.
+finished_pods()
+{
+    kubectl get pods --all-namespaces -o json | jq -r '.items[]
+        | select(.status.phase == "Succeeded" or .status.phase == "Failed")
+        | "\(.metadata.namespace) \(.metadata.name)"'
+}
+
+# summary <title> <"<namespace> <name>" lines>
+summary()
+{
+    [ -n "$2" ] || return 0
+    printf -- '%s: %s\n' "$1" "$(printf -- '%s\n' "$2" | wc -l)"
+    printf -- '%s\n' "$2" | awk '{ n[$1]++ } END { for (ns in n) printf "  %-30s %d\n", ns, n[ns] }' | sort
+}
+
+# delete <kind> <"<namespace> <name>" lines>
+#
+# One kubectl call per namespace. --ignore-not-found: a Job's ttlSecondsAfterFinished or a
+# controller may remove some in the meantime.
+delete()
+{
+    [ -n "$2" ] || return 0
+    for namespace in $(printf -- '%s\n' "$2" | awk '{ print $1 }' | sort -u); do
+        # shellcheck disable=SC2046 # one argument per name, names cannot contain spaces
+        kubectl delete "$1" --namespace "$namespace" --ignore-not-found --wait=false \
+            $(printf -- '%s\n' "$2" | awk -v ns="$namespace" '$1 == ns { print $2 }')
+    done
+}
+
+main "$@"
