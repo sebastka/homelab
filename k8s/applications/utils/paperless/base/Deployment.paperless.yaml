@@ -272,7 +272,8 @@ spec:
           volumeMounts:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /var/cache}
-            # - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
+            # paperless's paths check (Celery beat runs it too) writes to consume
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
@@ -334,7 +335,8 @@ spec:
             - {name: tmp-volume, mountPath: /tmp}
             - {name: cache-volume, mountPath: /var/cache}
             - {name: settings-volume, mountPath: /mnt/settings/webserver.py, subPath: webserver.py, readOnly: true}
-            # - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
+            # paperless's paths check (Celery beat runs it too) writes to consume
+            - {name: paperless-data-volume, mountPath: /usr/src/paperless/consume, subPath: paperless-consume}
             # - {name: paperless-data-volume, mountPath: /usr/src/paperless/export, subPath: paperless-export}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/data, subPath: paperless-data}
             - {name: paperless-data-volume, mountPath: /usr/src/paperless/media, subPath: paperless-media}
