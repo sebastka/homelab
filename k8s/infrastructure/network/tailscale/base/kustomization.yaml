@@ -10,7 +10,7 @@ resources:
 helmCharts:
   - name: tailscale-operator
     repo: https://pkgs.tailscale.com/helmcharts
-    version: 1.102.4  # renovate: datasource=helm registryUrl=https://pkgs.tailscale.com/helmcharts depName=tailscale-operator
+    version: 1.104.1  # renovate: datasource=helm registryUrl=https://pkgs.tailscale.com/helmcharts depName=tailscale-operator
     releaseName: tailscale
     namespace: tailscale
     includeCRDs: true
