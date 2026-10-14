@@ -276,8 +276,8 @@ spec:
                       - docker.io/binwiederhier/ntfy
 
                       # applications/utils/paperless
-                      - ghcr.io/paperless-ngx/paperless-ngx  # Until ghcr.io/sebastka/paperless is rolled out
-                      - ghcr.io/sebastka/paperless  # containers repo, apps/paperless: DHI base, no s6
+                      # - ghcr.io/paperless-ngx/paperless-ngx
+                      - ghcr.io/sebastka/paperless  # Custom dhi.io-based, s6-less image
                       - docker.io/apache/tika
                       - docker.io/gotenberg/gotenberg
 
