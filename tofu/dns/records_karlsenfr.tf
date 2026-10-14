@@ -326,8 +326,8 @@ resource "cloudflare_dns_record" "karlsenfr_txt_verify_openai" {
 }
 
 resource "cloudflare_dns_record" "karlsenfr_txt_verify_tailscale" {
-  content = "\"TAILSCALE-g6rDWqQAfTJPKHMoTTym\""
-  name    = cloudflare_zone.karlsenfr.name
+  content = "\"v2=u83JYJhNAB1pPii6wLTzYQcCenK8WqgAHXYF3ZAChhfQ\""
+  name    = "_tailscale-challenge"
   proxied = false
   ttl     = 1
   type    = "TXT"
