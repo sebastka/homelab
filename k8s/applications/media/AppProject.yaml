@@ -5,7 +5,7 @@ metadata:
   name: media
   namespace: argocd
 spec:
-  sourceRepos: [git@github.com:sebastka/homelab.git, https://github.com/sebastka/homelab.git]
+  sourceRepos: [git@github.com:sebastka/homelab.git]
   destinations:
     - {namespace: default,  name: talmox}
     - {namespace: jellyfin, name: talmox}

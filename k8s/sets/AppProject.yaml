@@ -5,6 +5,6 @@ metadata:
   name: app-of-apps
   namespace: argocd
 spec:
-  sourceRepos: [git@github.com:sebastka/homelab.git, https://github.com/sebastka/homelab.git]
+  sourceRepos: [git@github.com:sebastka/homelab.git]
   destinations: [{namespace: argocd, server: 'https://kubernetes.default.svc'}]
   clusterResourceWhitelist: []
