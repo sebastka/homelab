@@ -37,19 +37,28 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:
-        - name: tessdata-sync
-          image: registry.k8s.io/git-sync/git-sync:v4.7.1
-          args: [--repo=https://github.com/tesseract-ocr/tessdata.git, --root=/mnt/tessdata, --link=tessdata.git, --one-time, --sync-timeout=600s]
+        - name: tessdata
+          image: ghcr.io/paperless-ngx/paperless-ngx:3.3.1@sha256:cb91bfb468e63025a9d10c01b54c33665113668eee61b490db96de19b860b9c4
+          command:
+            - sh
+            - -ec
+            - |
+              cp -R /usr/share/tesseract-ocr/5/tessdata/. /mnt/tessdata/
+              for lang in $PAPERLESS_OCR_LANGUAGES; do
+                curl -fsSL --retry 3 -o "/mnt/tessdata/$lang.traineddata" \
+                  "https://raw.githubusercontent.com/tesseract-ocr/tessdata/4.1.0/$lang.traineddata"
+              done
+          envFrom:
+            - configMapRef: {name: paperless-env}
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 256Mi}
-            limits: {memory: 512Mi}
+            requests: {memory: 64Mi}
+            limits: {memory: 64Mi}
           volumeMounts:
             - {name: tessdata-volume, mountPath: /mnt/tessdata}
-            - {name: tmp-volume, mountPath: /tmp}
         # Mirrors the s6 init chain from the upstream image
         # Deliberately skipped: init-tesseract-langs, tessdata-sync and init-modify-user / init-env-file / init-custom-init
         # https://github.com/paperless-ngx/paperless-ngx/tree/dev/docker/rootfs/etc/s6-overlay/s6-rc.d
@@ -308,5 +317,5 @@ spec:
         - {name: cache-volume, emptyDir: {}}
         - {name: scripts-volume, configMap: {name: paperless-scripts, defaultMode: 493}}  # 0o755 = 493
         - {name: settings-volume, configMap: {name: paperless-settings}}
-        - {name: tessdata-volume, persistentVolumeClaim: {claimName: paperless-tessdata-pvc}}
+        - {name: tessdata-volume, emptyDir: {sizeLimit: 256Mi}}
         - {name: paperless-data-volume, persistentVolumeClaim: {claimName: paperless-data-pvc}}
