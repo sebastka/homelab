@@ -37,19 +37,23 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       initContainers:
         - name: deluged-init
-          # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
-          image: ghcr.io/home-operations/deluge:2.2.0@sha256:b3119066a3415c99e93efa01973b418b9607929c953e26a2f1eaa05161a55e45
-          command: ['/bin/sh', '-c']
+          # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/deluge/Dockerfile
+          image: ghcr.io/sebastka/deluge:2.2.0@sha256:67d5c7aac5278c3d0b8f45a002327d6619e9a90d56302753da09b17f74fce968
+          # The image has no shell: Python, from Deluge's own virtualenv
+          command: [/opt/deluge/bin/python, -c]
           args:
             - |
-              set -eu
-              mkdir -p /config/plugins/.python-eggs
-              rm -f /config/auth /config/core.conf /config/autoadd.conf /config/daemon.cert /config/daemon.pkey # /config/label.conf
-              cp /tmp/core.conf /tmp/autoadd.conf /config/
-              printf -- '%s:%s:10\n' "$DELUGED_USERNAME" "$DELUGED_PASSWORD" \
-                >/config/auth
-              cp /mnt/tls/tls.crt /config/daemon.cert
-              cp /mnt/tls/tls.key /config/daemon.pkey
+              import os, shutil
+              os.makedirs('/config/plugins/.python-eggs', exist_ok=True)
+              for name in ('auth', 'core.conf', 'autoadd.conf', 'daemon.cert', 'daemon.pkey'):  # label.conf
+                  if os.path.lexists(f'/config/{name}'):
+                      os.remove(f'/config/{name}')
+              for name in ('core.conf', 'autoadd.conf'):
+                  shutil.copy(f'/tmp/{name}', f'/config/{name}')
+              with open('/config/auth', 'w') as f:
+                  f.write(f"{os.environ['DELUGED_USERNAME']}:{os.environ['DELUGED_PASSWORD']}:10\n")
+              shutil.copy('/mnt/tls/tls.crt', '/config/daemon.cert')
+              shutil.copy('/mnt/tls/tls.key', '/config/daemon.pkey')
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -67,10 +71,10 @@ spec:
             - {name: deluged-tls-volume, mountPath: /mnt/tls, readOnly: true}
       containers:
         - name: deluged
-          # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
-          image: ghcr.io/home-operations/deluge:2.2.0@sha256:b3119066a3415c99e93efa01973b418b9607929c953e26a2f1eaa05161a55e45
+          # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/deluge/Dockerfile
+          image: ghcr.io/sebastka/deluge:2.2.0@sha256:67d5c7aac5278c3d0b8f45a002327d6619e9a90d56302753da09b17f74fce968
           command:
-            - /usr/bin/deluged
+            - /opt/deluge/bin/deluged
             - --config=/config
             - --loglevel=info
             - --pidfile=/tmp/deluged.pid

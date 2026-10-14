@@ -37,67 +37,62 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       initContainers:
         - name: deluge-web-init
-          # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
-          image: ghcr.io/home-operations/deluge:2.2.0@sha256:b3119066a3415c99e93efa01973b418b9607929c953e26a2f1eaa05161a55e45
-          command: ['/bin/sh', '-c']
+          # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/deluge/Dockerfile
+          image: ghcr.io/sebastka/deluge:2.2.0@sha256:67d5c7aac5278c3d0b8f45a002327d6619e9a90d56302753da09b17f74fce968
+          # The image has no shell: Python, from Deluge's own virtualenv. Deluge's config files are
+          # two JSON objects in a row: format version, then the settings.
+          command: [/opt/deluge/bin/python, -c]
           args:
             - |
-              set -eu
+              import json, os, shutil
 
-              # Clean up volumes
-              for d in config; do [ ! -d "/$d" ] || { rm -rf "/$d"/* "/$d"/.[!.]*; }; done
+              # Clean up the volume
+              for entry in os.scandir('/config'):
+                  if entry.is_dir(follow_symlinks=False):
+                      shutil.rmtree(entry.path)
+                  else:
+                      os.remove(entry.path)
 
-              mkdir -p /config/plugins/.python-eggs
+              os.makedirs('/config/plugins/.python-eggs')
 
-              # Generate web.conf for deluge-web interface configuration
-              jq -n \
-                --arg DELUGE_WEB_PASSWORD_SALT "$DELUGE_WEB_PASSWORD_SALT" \
-                --arg DELUGE_WEB_PASSWORD_SHA1 "$DELUGE_WEB_PASSWORD_SHA1" \
-                '{
-                  file: 2,
-                  format: 1
-                }, {
-                  base: "/",
-                  https: false,
-                  cert: "ssl/daemon.cert",
-                  pkey: "ssl/daemon.pkey",
-                  default_daemon: "",
-                  enabled_plugins: [],
-                  first_login: false,
-                  interface: "0.0.0.0",
-                  language: "",
-                  port: 8112,
-                  pwd_salt: $DELUGE_WEB_PASSWORD_SALT,
-                  pwd_sha1: $DELUGE_WEB_PASSWORD_SHA1,
-                  session_timeout: 3600,
-                  sessions: {},
-                  show_session_speed: true,
-                  show_sidebar: true,
-                  sidebar_multiple_filters: true,
-                  sidebar_show_zero: true,
-                  theme: "gray"
-                }' \
-                >/config/web.conf
+              def write_config(path, version, settings):
+                  with open(path, 'w') as f:
+                      f.write(json.dumps({'file': version, 'format': 1}, indent=2) + '\n')
+                      f.write(json.dumps(settings, indent=2) + '\n')
 
-              # Generate hostlist.conf for deluge-web to connect to deluged
-              jq -n \
-                --arg DELUGED_USERNAME "$DELUGED_USERNAME" \
-                --arg DELUGED_PASSWORD "$DELUGED_PASSWORD" \
-                '{
-                  file: 3,
-                  format: 1
-                },{
-                  hosts: [
-                    [
-                      "60fd37b1be6940388eae58b4628680c2",
-                      "daemon",
+              # web.conf: deluge-web's interface configuration
+              write_config('/config/web.conf', 2, {
+                  'base': '/',
+                  'https': False,
+                  'cert': 'ssl/daemon.cert',
+                  'pkey': 'ssl/daemon.pkey',
+                  'default_daemon': '',
+                  'enabled_plugins': [],
+                  'first_login': False,
+                  'interface': '0.0.0.0',
+                  'language': '',
+                  'port': 8112,
+                  'pwd_salt': os.environ['DELUGE_WEB_PASSWORD_SALT'],
+                  'pwd_sha1': os.environ['DELUGE_WEB_PASSWORD_SHA1'],
+                  'session_timeout': 3600,
+                  'sessions': {},
+                  'show_session_speed': True,
+                  'show_sidebar': True,
+                  'sidebar_multiple_filters': True,
+                  'sidebar_show_zero': True,
+                  'theme': 'gray',
+              })
+
+              # hostlist.conf: the daemon deluge-web connects to
+              write_config('/config/hostlist.conf', 3, {
+                  'hosts': [[
+                      '60fd37b1be6940388eae58b4628680c2',
+                      'daemon',
                       58846,
-                      $DELUGED_USERNAME,
-                      $DELUGED_PASSWORD
-                    ]
-                  ]
-                }' \
-                >/config/hostlist.conf
+                      os.environ['DELUGED_USERNAME'],
+                      os.environ['DELUGED_PASSWORD'],
+                  ]],
+              })
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -111,10 +106,10 @@ spec:
             - {name: deluge-web-config-volume, mountPath: /config}
       containers:
         - name: deluge-web
-          # Dockerfile: https://github.com/home-operations/containers/blob/main/apps/deluge/Dockerfile
-          image: ghcr.io/home-operations/deluge:2.2.0@sha256:b3119066a3415c99e93efa01973b418b9607929c953e26a2f1eaa05161a55e45
+          # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/deluge/Dockerfile
+          image: ghcr.io/sebastka/deluge:2.2.0@sha256:67d5c7aac5278c3d0b8f45a002327d6619e9a90d56302753da09b17f74fce968
           command:
-            - /usr/bin/deluge-web
+            - /opt/deluge/bin/deluge-web
             - --config=/config
             - --loglevel=info
             - --pidfile=/tmp/deluge-web.pid
