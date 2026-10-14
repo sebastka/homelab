@@ -238,7 +238,8 @@ spec:
                       # - ghcr.io/sebastka/carat
 
                       # applications/utils/deluge
-                      - ghcr.io/home-operations/deluge
+                      # - ghcr.io/home-operations/deluge
+                      - ghcr.io/sebastka/deluge  # containers repo, apps/deluge: plugins fixed
 
                       # applications/utils/element-admin
                       - ghcr.io/sebastka/element-admin
