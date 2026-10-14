@@ -3,6 +3,7 @@
 !.gitattributes
 !.github
 !.gitignore
+!.mcp.json
 !.sops.yaml
 !.trivyignore.yaml
 !.yamllint.yaml

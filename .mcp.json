@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "victoriametrics": {
+      "type": "http",
+      "url": "https://mcp-victoriametrics.talmox.hera.home.karlsen.fr/mcp",
+      "headers": {"x-api-key": "${HOMELAB_MCP_KEY}"}
+    },
+    "victorialogs": {
+      "type": "http",
+      "url": "https://mcp-victorialogs.talmox.hera.home.karlsen.fr/mcp",
+      "headers": {"x-api-key": "${HOMELAB_MCP_KEY}"}
+    },
+    "grafana": {
+      "type": "http",
+      "url": "https://mcp-grafana.talmox.hera.home.karlsen.fr/mcp",
+      "headers": {"x-api-key": "${HOMELAB_MCP_KEY}"}
+    }
+  }
+}
