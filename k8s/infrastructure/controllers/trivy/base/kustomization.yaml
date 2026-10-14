@@ -8,6 +8,19 @@ resources:
   - CiliumNetworkPolicy.yaml
   - GrafanaDashboard.yaml
 
+# The chart's emptyDir for the server's DB has no size limit.
+patches:
+  - target: {group: apps, version: v1, kind: StatefulSet, name: trivy-server}
+    patch: |-
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata: {name: trivy-server}
+      spec:
+        template:
+          spec:
+            volumes:
+              - {name: data, emptyDir: {sizeLimit: 5Gi}}
+
 helmCharts:
   - name: trivy-operator
     repo: oci://ghcr.io/aquasecurity/helm-charts

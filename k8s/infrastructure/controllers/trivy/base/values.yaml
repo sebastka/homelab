@@ -29,8 +29,9 @@ service:
 
 trivy:
   ignoreUnfixed: true
-  storageClassName: longhorn
-  storageSize: 5Gi
+  # The server's vulnerability DB, downloaded again on start: an emptyDir (size-limited in
+  # kustomization.yaml) rather than a Longhorn volume.
+  storageClassEnabled: false
   resources:
     requests: {memory: 128Mi}
     limits: {memory: 1Gi}
