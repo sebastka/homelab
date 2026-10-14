@@ -8,6 +8,12 @@
 
 container_runtime: containerd
 
+# The LAPI secret and registration token, from our SealedSecret. Left to the chart, they come from
+# `lookup` or else a random value: rendered offline (kustomize, ArgoCD) `lookup` finds nothing, so
+# every render minted new ones and every commit restarted LAPI.
+secrets:
+  externalSecret: {name: crowdsec-secrets}  # Keys: csLapiSecret, registrationToken
+
 agent:
   hostVarLog: true
   lapiURL: http://crowdsec-service.crowdsec.svc.cluster.local:8080
