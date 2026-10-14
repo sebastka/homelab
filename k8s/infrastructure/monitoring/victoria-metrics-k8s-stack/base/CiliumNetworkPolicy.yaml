@@ -22,6 +22,7 @@ spec:
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '8428', protocol: TCP}]]}  # Envoy Gateway web UI
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: grafana}}], toPorts: [ports: [{port: '8428', protocol: TCP}]]}  # Grafana datasource
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: crowdsec}}], toPorts: [ports: [{port: '8428', protocol: TCP}]]}  # CrowdSec notification plugin
+    - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '8428', protocol: TCP}]]}  # API server service proxy (desktop clients' metrics)
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy

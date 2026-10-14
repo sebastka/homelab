@@ -13,6 +13,8 @@ spec:
   config:
     log:
       mode: console
+    analytics:
+      reporting_enabled: 'false'  # Anonymous usage stats to stats.grafana.org
     # auth:
     #   disable_login_form: "true"
     server:
