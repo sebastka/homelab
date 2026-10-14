@@ -12,7 +12,7 @@ configMapGenerator:
   - {name: paperless-scripts, files: [post-consumption.sh=assets/scripts/post-consumption.sh, worker-health.sh=assets/scripts/worker-health.sh, paperless-ai-review.py=assets/scripts/paperless-ai-review.py]}
 
 components:
-  - ../../../common/valkey
+  - ../../../../common/valkey
 
 resources:
   - Namespace.yaml

@@ -10,7 +10,7 @@ configMapGenerator:
   - {namespace: n8n, name: n8n-env, envs: [assets/n8n.env]}
 
 components:
-  - ../../../common/valkey
+  - ../../../../common/valkey
 
 resources:
   - Namespace.yaml

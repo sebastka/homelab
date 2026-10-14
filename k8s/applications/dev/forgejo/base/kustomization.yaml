@@ -6,7 +6,7 @@ kind: Kustomization
 namespace: forgejo
 
 components:
-  - ../../../common/images
+  - ../../../../common/images
 
 resources:
   - Namespace.yaml

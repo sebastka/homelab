@@ -6,8 +6,8 @@ kind: Kustomization
 namespace: harbor
 
 components:
-  - ../../../common/images
-  - ../../../common/valkey
+  - ../../../../common/images
+  - ../../../../common/valkey
 
 resources:
   - Namespace.yaml
