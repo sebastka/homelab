@@ -116,10 +116,6 @@ spec:
                       # infrastructure/monitoring/grafana-operator
                       - ghcr.io/grafana/grafana-operator
 
-                      # infrastructure/monitoring/headlamp
-                      - ghcr.io/headlamp-k8s/headlamp
-                      - ghcr.io/kubebeam/trivy-headlamp-plugin
-
                       # infrastructure/monitoring/metrics-server
                       - registry.k8s.io/metrics-server/metrics-server
 

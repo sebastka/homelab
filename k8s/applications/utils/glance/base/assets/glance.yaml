@@ -149,7 +149,6 @@ pages:
               - cloudnative-pg/charts
               ## monitoring
               - grafana/grafana-operator
-              - kubernetes-sigs/headlamp
               - prometheus-community/helm-charts
               - kubernetes-sigs/metrics-server
               - portainer/portainer

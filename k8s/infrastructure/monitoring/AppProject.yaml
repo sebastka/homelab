@@ -11,7 +11,6 @@ spec:
     - {namespace: kube-system,    name: talmox}
     - {namespace: alloy,          name: talmox}
     - {namespace: grafana,        name: talmox}
-    - {namespace: headlamp,       name: talmox}
     - {namespace: metrics-server, name: talmox}
     - {namespace: monitoring,     name: talmox}
     - {namespace: stork,          name: talmox}

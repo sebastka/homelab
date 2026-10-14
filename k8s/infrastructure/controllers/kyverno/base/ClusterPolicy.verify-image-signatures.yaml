@@ -9,7 +9,6 @@
 #   docker.io/redis/redis-stack; docker.io/bitnami/sealed-secrets-controller
 #   mirror.gcr.io/aquasec/trivy (mirror carries no cosign artifacts; ghcr.io source is signed)
 #   intel/{intel-deviceplugin-operator,intel-gpu-plugin} (inaccessible via docker.io)
-#   ghcr.io/headlamp-k8s/headlamp; ghcr.io/kubebeam/trivy-headlamp-plugin
 #   quay.io/prometheus/{prometheus,alertmanager,node-exporter}; prom/memcached-exporter
 #   docker.io/kiwigrid/k8s-sidecar
 #   docker.io/envoyproxy/{envoy,gateway,ratelimit}; ghcr.io/kdwils/envoy-proxy-bouncer
