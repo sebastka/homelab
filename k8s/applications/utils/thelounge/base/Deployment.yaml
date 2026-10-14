@@ -1,0 +1,98 @@
+# https://github.com/thelounge/thelounge
+# https://github.com/thelounge/thelounge-docker
+# https://hub.docker.com/r/thelounge/thelounge/
+
+# When using maxHistory = -1, SQLite will spill a temp sort to /tmp.
+# To avoid this, "USING INDEX network_channel_time" and adding a "(network, channel, time DESC)" composite index to the "messages" table is recommended.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thelounge
+  namespace: thelounge
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: thelounge
+      # app.kubernetes.io/version: stable
+      app.kubernetes.io/component: irc-client
+      app.kubernetes.io/part-of: thelounge
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: thelounge
+      labels:
+        app.kubernetes.io/name: thelounge
+        # app.kubernetes.io/version: stable
+        app.kubernetes.io/component: irc-client
+        app.kubernetes.io/part-of: thelounge
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccount: thelounge
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        - name: init-vapid
+          # Dockerfile: https://gitlab.com/gitlab-ci-utils/curl-jq/-/blob/main/Dockerfile
+          image: registry.gitlab.com/gitlab-ci-utils/curl-jq:5.0.3@sha256:eaf99ecea8b7e4fbbe161db8ba6fa2099a1d53b4e108926492d3c6577135b1f0
+          command: [/bin/sh, -c]
+          args:
+            - |
+              set -eu
+              jq -n '{publicKey: env.VAPID_PUBLIC_KEY, privateKey: env.VAPID_PRIVATE_KEY}' \
+                >/mnt/thelounge/vapid.json
+              cp /mnt/config.js /mnt/thelounge/config.js
+              chmod 600 /mnt/thelounge/config.js /mnt/thelounge/vapid.json
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 12Mi}
+            limits: {memory: 12Mi}
+          envFrom:
+            - secretRef: {name: thelounge-secrets}
+          volumeMounts:
+            - {name: thelounge-data-volume, mountPath: /mnt/thelounge}
+            - {name: thelounge-config-volume, mountPath: /mnt/config.js, subPath: config.js, readOnly: true}
+      containers:
+        - name: thelounge
+          # Dockerfile: https://github.com/thelounge/thelounge-docker/blob/master/Dockerfile
+          image: ghcr.io/thelounge/thelounge:4.5.2@sha256:708fbedbec293e6a80c30300a8786355539035f9ca35751af40d96eec280b710
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 384Mi}
+            limits: {memory: 768Mi}
+          ports:
+            - {name: http, containerPort: 9000, protocol: TCP}
+            - {name: identd-tcp, containerPort: 9001, protocol: TCP}
+          startupProbe: {httpGet: {port: 9000, path: /},   initialDelaySeconds: 2,  periodSeconds: 10, timeoutSeconds: 5, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 9000, path: /},  initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 9000, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            # - {name: tmp-volume, mountPath: /tmp}
+            - {name: cluster-ca-volume, mountPath: /etc/ssl/cluster-ca, readOnly: true}
+            - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/config.js, subPath: config.js, readOnly: true}
+            - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/vapid.json, subPath: vapid.json, readOnly: true}
+            - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/logs, subPath: logs}
+            - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/packages, subPath: packages}
+            - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/storage, subPath: storage}
+            - {name: thelounge-data-volume, mountPath: /var/opt/thelounge/users, subPath: users}
+      volumes:
+        # - {name: tmp-volume, emptyDir: {}}
+        - {name: thelounge-config-volume, configMap: {name: thelounge-config}}
+        - {name: thelounge-data-volume, persistentVolumeClaim: {claimName: thelounge-data-pvc}}
+        - {name: cluster-ca-volume, configMap: {name: cluster-ca-bundle}}

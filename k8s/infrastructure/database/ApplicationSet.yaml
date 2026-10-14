@@ -9,7 +9,7 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: https://github.com/sebastka/homelab.git
+        repoURL: git@github.com:sebastka/homelab.git
         revision: HEAD
         directories:
           - path: k8s/infrastructure/database/*/overlays/*
@@ -22,10 +22,10 @@ spec:
     spec:
       project: *x-project
       sources:
-        - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
+        - {repoURL: git@github.com:sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
       destination: {namespace: default, name: '{{ path[5] }}'}
       syncPolicy:
         automated: {allowEmpty: false, enabled: true, prune: true, selfHeal: true}
         # managedNamespaceMetadata:
         retry: {backoff: {duration: 5s, factor: 2, maxDuration: 3m}, limit: 5, refresh: true}
-        syncOptions: [ServerSideApply=true]
+        syncOptions: [ServerSideApply=true, SkipDryRunOnMissingResource=true]

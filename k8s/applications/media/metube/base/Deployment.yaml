@@ -1,0 +1,108 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: metube
+  namespace: metube
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: metube
+      # app.kubernetes.io/version: stable
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: metube
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: metube
+      labels:
+        app.kubernetes.io/name: metube
+        # app.kubernetes.io/version: stable
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: metube
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: metube
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      # initContainers:
+      #   - name: init-dirs
+      #     # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
+      #     image: ghcr.io/alexta69/metube:2026.04.28@sha256:caf21da7d83a4003b429ef1126e9c1499f36f8401a1f8a7b158f70b94ade8edd
+      #     command: [/bin/sh, '-c']
+      #     args:
+      #       - |
+      #         set -eux
+      #         mkdir -p /mnt/persistent/downloads/audio
+      #     securityContext:
+      #       allowPrivilegeEscalation: false
+      #       readOnlyRootFilesystem: true
+      #       capabilities: {drop: [ALL]}
+      #     resources:
+      #       requests: {memory: 24Mi}
+      #       limits: {memory: 24Mi}
+      #     env:
+      #       - {name: TZ, value: Europe/Oslo}
+      #     volumeMounts:
+      #       - {name: persistent-volume, mountPath: /mnt/persistent/downloads, subPath: downloads}
+      containers:
+        - name: metube
+          # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
+          image: ghcr.io/alexta69/metube:2026.10.09@sha256:df929ef2453fd75c1f1cbd8dafb309ee03ff18d8705c7c1e01642b1202d4a650
+          command: [python3, app/main.py]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 256Mi}
+            limits: {memory: 768Mi}
+          env:
+            - {name: TZ, value: Europe/Oslo}
+          envFrom:
+            - configMapRef: {name: metube-env}
+          ports:
+            - {name: http, containerPort: 8081}
+          startupProbe: {httpGet: {port: 8081, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8081, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8081, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: persistent-volume, mountPath: /mnt/persistent/downloads, subPath: downloads}
+            - {name: persistent-volume, mountPath: /mnt/persistent/state, subPath: state}
+            - {name: persistent-volume, mountPath: /mnt/persistent/temp, subPath: temp}
+            - {name: ytdl-options, mountPath: /mnt/ytdl-options.json, subPath: ytdl-options.json}
+        - name: bgutils-pot
+          # Dockerfile: https://github.com/alexta69/metube/blob/master/Dockerfile
+          image: ghcr.io/alexta69/metube:2026.10.09@sha256:df929ef2453fd75c1f1cbd8dafb309ee03ff18d8705c7c1e01642b1202d4a650
+          command: [bgutil-pot, server]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 128Mi}
+          env:
+            - {name: TZ, value: Europe/Oslo}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 4416}
+          startupProbe: {httpGet: {port: 4416, path: /ping}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 4416, path: /ping}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 4416, path: /ping}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+      volumes:
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: persistent-volume, persistentVolumeClaim: {claimName: metube-persistent-pvc}}
+        - {name: ytdl-options, configMap: {name: ytdl-options}}

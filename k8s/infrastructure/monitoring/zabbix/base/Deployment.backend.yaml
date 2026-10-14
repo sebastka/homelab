@@ -5,28 +5,29 @@ metadata:
   name: backend
   namespace: zabbix
   annotations:
-    reloader.stakater.com/auto: "true"
+    reloader.stakater.com/auto: 'true'
 spec:
   strategy: {type: Recreate}
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: backend
-      app.kubernetes.io/version: stable
+      # app.kubernetes.io/version: stable
       app.kubernetes.io/component: server
       app.kubernetes.io/part-of: zabbix
-    # app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       namespace: zabbix
       labels:
         app.kubernetes.io/name: backend
-        app.kubernetes.io/version: stable
+        # app.kubernetes.io/version: stable
         app.kubernetes.io/component: server
         app.kubernetes.io/part-of: zabbix
-      # app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccountName: backend
+      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1997

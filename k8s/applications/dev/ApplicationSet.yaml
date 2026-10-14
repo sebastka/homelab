@@ -9,28 +9,23 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: https://github.com/sebastka/homelab.git
+        repoURL: git@github.com:sebastka/homelab.git
         revision: HEAD
         directories:
-          - path: k8s/applications/dev/*
-          - {path: k8s/applications/dev/debian-debug, exclude: true}
-          - {path: k8s/applications/dev/harbor,       exclude: true}
+          - path: k8s/applications/dev/*/overlays/*
   template:
     metadata:
-      name: '{{ path.basename }}'
+      name: '{{ path[3] }}-{{ path[5] }}'
       labels:
-        fr.karlsen: *x-project
-      finalizers:
-        - resources-finalizer.argocd.argoproj.io
+        karlsen.fr/cluster: '{{ path[5] }}'
+        karlsen.fr/project: *x-project
     spec:
       project: *x-project
       sources:
-        - {repoURL: https://github.com/sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
-      destination: {name: in-cluster, namespace: argocd}
+        - {repoURL: git@github.com:sebastka/homelab.git, targetRevision: HEAD, path: '{{ path }}'}
+      destination: {namespace: default, name: '{{ path[5] }}'}
       syncPolicy:
-        syncOptions:
-          - ServerSideApply=true
-        automated:
-          prune: true
-          selfHeal: true
-          enabled: true
+        automated: {allowEmpty: false, enabled: true, prune: true, selfHeal: true}
+        # managedNamespaceMetadata:
+        retry: {backoff: {duration: 5s, factor: 2, maxDuration: 3m}, limit: 5, refresh: true}
+        syncOptions: [ServerSideApply=true]

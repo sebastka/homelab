@@ -5,7 +5,7 @@ metadata:
   name: network
   namespace: argocd
 spec:
-  sourceRepos: [https://github.com/sebastka/homelab.git]
+  sourceRepos: [git@github.com:sebastka/homelab.git, https://github.com/sebastka/homelab.git]
   destinations:
     - {namespace: default,              name: talmox}
     - {namespace: kube-system,          name: talmox}

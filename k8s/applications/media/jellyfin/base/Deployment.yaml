@@ -1,0 +1,71 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: jellyfin
+  namespace: jellyfin
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: jellyfin
+      # app.kubernetes.io/version: stable
+      app.kubernetes.io/component: media-server
+      app.kubernetes.io/part-of: jellyfin
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: jellyfin
+      labels:
+        app.kubernetes.io/name: jellyfin
+        # app.kubernetes.io/version: stable
+        app.kubernetes.io/component: media-server
+        app.kubernetes.io/part-of: jellyfin
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: jellyfin
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2501
+        runAsGroup: 2501
+        fsGroup: 2501
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+        # supplementalGroups: [44, 104]
+      containers:
+        - name: jellyfin
+          # Dockerfile: https://hub.docker.com/r/jellyfin/jellyfin/dockerfile
+          image: ghcr.io/jellyfin/jellyfin:12.2@sha256:c3efa69a22f2691fc88d6bb035e87a8560e395a6047f062fb381c61c3185e8f5
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 512Mi, gpu.intel.com/xe: 1}
+            limits: {memory: 6144Mi, gpu.intel.com/xe: 1}
+          envFrom:
+            - configMapRef: {name: jellyfin-env}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8096}
+            - {name: discovery, protocol: UDP, containerPort: 7359}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /cache, subPath: jellyfin-cache}
+            - {name: config-volume, mountPath: /config, subPath: jellyfin-config}
+            - {name: media-volume, mountPath: /mnt/media/nb_dl, subPath: deluge/downloads/nb_dl, readOnly: true}
+            - {name: media-volume, mountPath: /mnt/media/other, subPath: deluge/downloads/other, readOnly: true}
+            - {name: media-volume, mountPath: /mnt/media/ptp_dl, subPath: deluge/downloads/ptp_dl, readOnly: true}
+            - {name: media-volume, mountPath: /mnt/media/ptp_up, subPath: deluge/downloads/ptp_up, readOnly: true}
+            - {name: media-volume, mountPath: /mnt/media/jellyfin, subPath: jellyfin, readOnly: true}
+          startupProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 10, periodSeconds: 30}
+          readinessProbe: {httpGet: {port: 8096, path: /health}, initialDelaySeconds: 10, periodSeconds: 30}
+      volumes:
+        - {name: tmp-volume, emptyDir: {medium: Memory}}
+        - {name: config-volume, persistentVolumeClaim: {claimName: jellyfin-config-pvc}}
+        - {name: cache-volume, persistentVolumeClaim: {claimName: jellyfin-cache-pvc}}
+        - {name: media-volume, persistentVolumeClaim: {claimName: jellyfin-media-pvc}}

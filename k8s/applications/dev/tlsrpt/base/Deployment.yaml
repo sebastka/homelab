@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tlsrpt
+  namespace: tlsrpt
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tlsrpt
+      # app.kubernetes.io/version:
+      app.kubernetes.io/component: web
+      app.kubernetes.io/part-of: tlsrpt
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: tlsrpt
+      labels:
+        app.kubernetes.io/name: tlsrpt
+        # app.kubernetes.io/version:
+        app.kubernetes.io/component: web
+        app.kubernetes.io/part-of: tlsrpt
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: tlsrpt
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: tlsrpt
+          image: ghcr.io/sebastka/tlsrpt:2026.09.25-cdc3080@sha256:0c83d4ce6e969d034a42437177ae270b99e5a502b4718b7d0ef88754811c9809
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 128Mi}
+            limits: {memory: 256Mi}
+          envFrom:
+            - configMapRef: {name: tlsrpt-env}
+            - secretRef: {name: tlsrpt}  # IMAP_PASSWORD, DB_PASSWORD, OIDC_CLIENT_SECRET
+          ports:
+            - {name: http, protocol: TCP, containerPort: 3000}
+          startupProbe:   {httpGet: {port: 3000, path: /api/health}, initialDelaySeconds: 2, periodSeconds: 5, failureThreshold: 12}
+          livenessProbe:  {httpGet: {port: 3000, path: /api/health},                         periodSeconds: 60}
+          readinessProbe: {httpGet: {port: 3000, path: /api/health},                         periodSeconds: 30}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - {name: tmp, emptyDir: {sizeLimit: 64Mi}}

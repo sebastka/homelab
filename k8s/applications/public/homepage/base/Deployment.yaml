@@ -1,0 +1,74 @@
+# Set up redirections in html because of HTST preload requirements on headers
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website
+  namespace: homepage
+  annotations:
+    reloader.stakater.com/auto: 'true'
+    argocd.argoproj.io/sync-wave: '2'
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: homepage
+      app.kubernetes.io/version: v1
+      app.kubernetes.io/component: karlsenfr
+      app.kubernetes.io/part-of: homepage
+      # app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: homepage
+      labels:
+        app.kubernetes.io/name: homepage
+        app.kubernetes.io/version: v1
+        app.kubernetes.io/component: karlsenfr
+        app.kubernetes.io/part-of: homepage
+        # app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: homepage
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: nginx
+          # Dockerfile: https://github.com/nginx/docker-nginx-unprivileged/blob/main/Dockerfile-alpine-slim.template
+          image: docker.io/nginxinc/nginx-unprivileged:1.31.6-alpine-slim@sha256:ac4d9c7e457c6510b95ac72dd84b27f7cc68ecb9a83fbd44f05a6460cf08aba4
+          command: [nginx]
+          args: ['-c', '/etc/nginx/nginx.custom.conf', '-g', 'daemon off;']
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 24Mi}
+            limits: {memory: 128Mi}
+          ports:
+            - {name: http, containerPort: 8080}
+          startupProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/client_temp,  subPath: client_temp,              readOnly: true}
+            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/fastcgi_temp, subPath: fastcgi_temp,             readOnly: true}
+            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/proxy_temp,   subPath: proxy_temp,               readOnly: true}
+            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/scgi_temp,    subPath: scgi_temp,                readOnly: true}
+            - {name: var-cache-nginx-volume, mountPath: /var/cache/nginx/uwsgi_temp,   subPath: uwsgi_temp,               readOnly: true}
+            - {name: nginx-config-volume,    mountPath: /etc/nginx/nginx.custom.conf,  subPath: nginx.custom.conf,        readOnly: true}
+            - {name: nginx-config-volume,    mountPath: /etc/nginx/conf.d/sites.conf,  subPath: 'sites.conf',             readOnly: true}
+            - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/autoconfig,     subPath: mnt/karlsenfr/autoconfig, readOnly: true}
+            - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/mta-sts,        subPath: mnt/karlsenfr/mta-sts,    readOnly: true}
+            - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/openpgpkey,     subPath: mnt/karlsenfr/openpgpkey, readOnly: true}
+            - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/other,          subPath: mnt/karlsenfr/other,      readOnly: true}
+            - {name: karlsenfr-volume,       mountPath: /mnt/karlsenfr/www,            subPath: mnt/karlsenfr/www,        readOnly: true}
+      volumes:
+        - {name: nginx-config-volume,    configMap: {name: nginx-config}}
+        - {name: karlsenfr-volume,       image: {reference: ghcr.io/sebastka/karlsen-fr:b90a989@sha256:0b61289cf209db2fb87273f5abecf08d94a68c931340e7142e85884652ab65e8}}
+        - {name: var-cache-nginx-volume, emptyDir: {}}

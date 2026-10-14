@@ -8,7 +8,7 @@ metadata:
     karlsen.fr/project: *x-project
 spec:
   sources:
-    - {repoURL: https://github.com/sebastka/homelab.git, path: k8s/applications, targetRevision: HEAD}
+    - {repoURL: git@github.com:sebastka/homelab.git, path: k8s/applications, targetRevision: HEAD}
   destination: {namespace: argocd, server: 'https://kubernetes.default.svc'}
   project: app-of-apps
   syncPolicy:

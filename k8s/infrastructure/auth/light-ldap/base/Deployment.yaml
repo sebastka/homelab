@@ -5,28 +5,29 @@ metadata:
   name: light-ldap
   namespace: light-ldap
   annotations:
-    reloader.stakater.com/auto: "true"
+    reloader.stakater.com/auto: 'true'
 spec:
   strategy: {type: Recreate}
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: light-ldap
-      app.kubernetes.io/version: stable
+      # app.kubernetes.io/version: stable
       app.kubernetes.io/component: ldap-server
       app.kubernetes.io/part-of: light-ldap
-      # app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       namespace: light-ldap
       labels:
         app.kubernetes.io/name: light-ldap
-        app.kubernetes.io/version: stable
+        # app.kubernetes.io/version: stable
         app.kubernetes.io/component: ldap-server
         app.kubernetes.io/part-of: light-ldap
-        # app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccountName: light-ldap
+      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001

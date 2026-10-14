@@ -10,21 +10,22 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: valkey
-      app.kubernetes.io/version: stable
+      # app.kubernetes.io/version: stable
       app.kubernetes.io/component: key-value-store
       # app.kubernetes.io/part-of:
-      # app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/managed-by: kustomize
   template:
     metadata:
       # namespace:
       labels:
         app.kubernetes.io/name: valkey
-        app.kubernetes.io/version: stable
+        # app.kubernetes.io/version: stable
         app.kubernetes.io/component: key-value-store
         # app.kubernetes.io/part-of:   # Do not set, since selectors are immutable
-        # app.kubernetes.io/managed-by: kustomize
+        app.kubernetes.io/managed-by: kustomize
     spec:
       serviceAccountName: valkey
+      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 999

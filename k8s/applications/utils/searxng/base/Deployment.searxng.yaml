@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: searxng
+  namespace: searxng
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: searxng
+      # app.kubernetes.io/version: stable
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: searxng
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: searxng
+      labels:
+        app.kubernetes.io/name: searxng
+        # app.kubernetes.io/version: stable
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: searxng
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccount: searxng
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 977
+        runAsGroup: 977
+        fsGroup: 977
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: searxng
+          # Dockerfile: https://github.com/searxng/searxng/blob/master/container/dist.dockerfile
+          image: docker.io/searxng/searxng:2026.9.15-ca4965040@sha256:f1aca3f61c7ff4552b8d54c0ab7fb458e907b78f51c503210cf450c900adca2c
+          command: ["/usr/local/searxng/.venv/bin/granian", "searx.webapp:app"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 128Mi}
+            limits: {memory: 512Mi}
+          envFrom:
+            - secretRef: {name: searxng-secrets}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8080}
+          startupProbe: {httpGet: {port: 8080, path: /healthz}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8080, path: /healthz}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8080, path: /healthz}, initialDelaySeconds: 10, periodSeconds: 120}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp}
+            - {name: cache-volume, mountPath: /var/cache/searxng}
+            - {name: searxng-config-volume, mountPath: /etc/searxng/settings.yml, subPath: settings.yaml, readOnly: true}
+            - {name: searxng-config-volume, mountPath: /etc/searxng/limiter.toml, subPath: limiter.toml, readOnly: true}
+      volumes:
+        - {name: tmp-volume, emptyDir: {}}
+        - {name: cache-volume, emptyDir: {}}  # Use Longhorn if persistent data is needed
+        - {name: searxng-config-volume, configMap: {name: searxng-config}}
