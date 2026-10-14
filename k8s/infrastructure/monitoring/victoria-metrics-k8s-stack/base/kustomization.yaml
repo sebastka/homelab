@@ -4,8 +4,5 @@ kind: Kustomization
 namespace: monitoring
 
 resources:
-  - CiliumNetworkPolicy.yaml
-  - VMRule.etcd.yaml
-  - VMRule.oom.yaml
-  - SealedSecret.alertmanager-ntfy.yaml
-  - HTTPRoute.yaml
+  - victoria-metrics  # The stack's own resources; its Helm chart renders in the overlay, from victoria-metrics/values.yaml
+  - mcp               # MCP server over vmsingle's read APIs, for AI assistants

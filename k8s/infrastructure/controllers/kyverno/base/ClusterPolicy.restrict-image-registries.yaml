@@ -112,6 +112,7 @@ spec:
 
                       # infrastructure/monitoring/grafana
                       - docker.io/grafana/grafana
+                      - docker.io/grafana/mcp-grafana
 
                       # infrastructure/monitoring/grafana-operator
                       - ghcr.io/grafana/grafana-operator
@@ -126,12 +127,14 @@ spec:
 
                       # infrastructure/monitoring/victoria-logs
                       - docker.io/victoriametrics/victoria-logs
+                      - ghcr.io/victoriametrics/mcp-victorialogs
 
                       # infrastructure/monitoring/victoria-metrics-k8s-stack
                       - docker.io/victoriametrics/operator
                       - docker.io/victoriametrics/victoria-metrics
                       - docker.io/victoriametrics/vmagent
                       - docker.io/victoriametrics/vmalert
+                      - ghcr.io/victoriametrics/mcp-victoriametrics
                       - ghcr.io/victoriametrics/sync-job
                       - docker.io/prom/alertmanager
                       # - docker.io/prometheus/node-exporter

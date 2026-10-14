@@ -14,4 +14,4 @@ helmCharts:
     releaseName: victoria-metrics-k8s-stack
     namespace: monitoring
     includeCRDs: false
-    valuesFile: ../../base/values.yaml
+    valuesFile: ../../base/victoria-metrics/values.yaml

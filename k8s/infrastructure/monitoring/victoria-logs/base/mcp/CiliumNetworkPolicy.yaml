@@ -1,0 +1,12 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-mcp-victorialogs
+  namespace: victoria-logs
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: mcp-victorialogs}}
+  ingress:
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
+  egress:
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: victoria-logs, app.kubernetes.io/name: victoria-logs-single}}], toPorts: [ports: [{port: '9428', protocol: TCP}]]}  # VictoriaLogs

@@ -1,0 +1,54 @@
+# https://github.com/VictoriaMetrics/mcp-victoriametrics
+# MCP server over vmsingle's read APIs, for AI assistants (Claude Code): Streamable HTTP on /mcp,
+# behind the internal gateway with an API key (SecurityPolicy.yaml).
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-victoriametrics
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mcp-victoriametrics
+      app.kubernetes.io/component: mcp
+      app.kubernetes.io/part-of: victoria-metrics
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mcp-victoriametrics
+        app.kubernetes.io/component: mcp
+        app.kubernetes.io/part-of: victoria-metrics
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000  # mcp, by name in the image
+        runAsGroup: 1000
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: mcp-victoriametrics
+          image: ghcr.io/victoriametrics/mcp-victoriametrics:v1.20.2@sha256:bcbf84f945d6efb03fb8b2d2ccc3294420dccdc0b445752dce96f02619416dfe
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 32Mi}
+            limits: {memory: 256Mi}
+          env:
+            - {name: MCP_SERVER_MODE, value: http}
+            - {name: MCP_LISTEN_ADDR, value: ':8080'}
+            - {name: VM_INSTANCE_TYPE, value: single}
+            - {name: VM_INSTANCE_ENTRYPOINT, value: 'http://vmsingle-victoria-metrics-k8s-stack.monitoring.svc.cluster.local.:8428'}
+            # The upstream defaults (export, flags and the debug/test tools), and documentation: its
+            # embedded search index alone takes ~470Mi of memory
+            - {name: MCP_DISABLED_TOOLS, value: 'export,flags,metric_relabel_debug,downsampling_filters_debug,retention_filters_debug,test_rules,documentation'}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8080}
+          startupProbe: {httpGet: {port: http, path: /health/readiness}, periodSeconds: 2, failureThreshold: 30}
+          livenessProbe: {httpGet: {port: http, path: /health/liveness}, periodSeconds: 60}
+          readinessProbe: {httpGet: {port: http, path: /health/readiness}, periodSeconds: 30}

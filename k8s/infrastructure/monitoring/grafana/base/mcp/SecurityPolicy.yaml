@@ -1,0 +1,17 @@
+# MCP clients authenticate with an API key (the x-api-key header; SealedSecret.mcp-api-keys.yaml,
+# one entry per client). Merged with the internal Gateway's policy, so its client-CIDR allowlist
+# (LAN and tailnet) still applies.
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: mcp-api-key
+  namespace: grafana
+spec:
+  mergeType: StrategicMerge
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: mcp-grafana}
+  apiKeyAuth:
+    credentialRefs: [{group: '', kind: Secret, name: mcp-api-keys}]
+    extractFrom: [headers: [x-api-key]]
+    sanitize: true  # Not passed on to the MCP server

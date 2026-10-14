@@ -4,10 +4,5 @@ kind: Kustomization
 namespace: grafana
 
 resources:
-  - HTTPRoute.yaml
-  - SealedSecret.admin-credentials.yaml
-  - SealedSecret.oidc.yaml
-  - Grafana.yaml
-  - GrafanaDashboard.yaml
-  - GrafanaDatasource.yaml
-  - CiliumNetworkPolicy.yaml
+  - grafana  # The Grafana instance, its datasources and dashboards
+  - mcp      # MCP server over Grafana's API, for AI assistants
