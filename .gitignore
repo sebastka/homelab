@@ -17,6 +17,8 @@ charts/
 Secret.*.yaml
 values.default.yaml
 values.*.default.yaml
+values.schema.json
+values.*.schema.json
 # WIP
 joplin
 nextcloud
