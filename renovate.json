@@ -160,14 +160,14 @@
       "defaultRegistryUrlTemplate": "https://grafana.com/api/plugins/{{packageName}}/versions",
       "format": "json",
       "transformTemplates": [
-        "{\"releases\": $map(items, function($v) { {\"version\": $v.version} })}"
+        "{\"releases\": [$map(items, function($v) { {\"version\": $v.version} })]}"
       ]
     },
     "grafana-dashboards": {
       "defaultRegistryUrlTemplate": "https://grafana.com/api/dashboards/{{packageName}}/revisions",
       "format": "json",
       "transformTemplates": [
-        "{\"releases\": $map(items, function($v) { {\"version\": $string($v.revision), \"releaseTimestamp\": $v.createdAt} })}"
+        "{\"releases\": [$map(items, function($v) { {\"version\": $string($v.revision), \"releaseTimestamp\": $v.createdAt} })]}"
       ]
     }
   },
