@@ -23,6 +23,19 @@ crds:
 admissionWebhooks:
   certManager: {enabled: true}
 
+# VMServiceScrapes converted from ServiceMonitors get an owner reference, so they are deleted with
+# them (otherwise a removed ServiceMonitor leaves a scrape pool with no targets behind)
+operator:
+  enable_converter_ownership: true
+
+# Without these, the operator fills in the resources the CRs leave out, CPU limits included
+# (vmagent 200m: throttled while parsing kube-apiserver's metrics)
+env:
+  - {name: VM_VMAGENTDEFAULT_USEDEFAULTRESOURCES, value: 'false'}
+  - {name: VM_VMALERTDEFAULT_USEDEFAULTRESOURCES, value: 'false'}
+  - {name: VM_VMSINGLEDEFAULT_USEDEFAULTRESOURCES, value: 'false'}
+  - {name: VM_VMALERTMANAGER_USEDEFAULTRESOURCES, value: 'false'}
+
 serviceMonitor:
   enabled: true
   vm: true  # Creates VMServiceScrape instead of ServiceMonitor
