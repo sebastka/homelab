@@ -8,6 +8,9 @@ spec:
   groups:
     - name: cilium.drops
       rules:
+        # Drops to a pod-network address without a workload are left out: that pod is gone, and the
+        # sender has not noticed yet (typically vmagent scraping a replaced pod for a few minutes).
+        # Not a policy problem, and it fired on every rollout of a scraped pod.
         - alert: NetworkPolicyDroppingPackets
           expr: |
             (
@@ -15,7 +18,7 @@ spec:
                 label_replace(
                   label_replace(
                     label_replace(
-                      sum(rate(hubble_drop_total{reason="POLICY_DENIED"}[2m])) by (cluster, source_namespace, source_workload, destination_namespace, destination_workload, destination_ip, destination, direction),
+                      sum(rate(hubble_drop_total{reason="POLICY_DENIED", destination_workload!=""}[2m]) or rate(hubble_drop_total{reason="POLICY_DENIED", destination_workload="", destination_ip!~"10\\.244\\..+"}[2m])) by (cluster, source_namespace, source_workload, destination_namespace, destination_workload, destination_ip, destination, direction),
                       "destination_namespace", "external", "destination_namespace", "^$"
                     ),
                     "source_namespace", "external", "source_namespace", "^$"
@@ -33,7 +36,7 @@ spec:
                 label_replace(
                   label_replace(
                     label_replace(
-                      sum(rate(hubble_drop_total{reason="POLICY_DENIED"}[2m])) by (cluster, source_namespace, source_workload, destination_namespace, destination_workload, destination_ip, destination, direction),
+                      sum(rate(hubble_drop_total{reason="POLICY_DENIED", destination_workload!=""}[2m]) or rate(hubble_drop_total{reason="POLICY_DENIED", destination_workload="", destination_ip!~"10\\.244\\..+"}[2m])) by (cluster, source_namespace, source_workload, destination_namespace, destination_workload, destination_ip, destination, direction),
                       "destination_namespace", "external", "destination_namespace", "^$"
                     ),
                     "source_namespace", "external", "source_namespace", "^$"
