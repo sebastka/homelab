@@ -7,3 +7,11 @@ params:
   fs.inotify.max_user_instances: '8192'    # default 128
   vm.max_map_count: '262144'               # default 65530 - required by Thanos, JVM workloads
   net.core.somaxconn: '65536'              # default 4096 - required for high load on API server
+  # No IPv6: not on the LAN, not in Cilium. Sysctls rather than ipv6.disable=1, which removes
+  # IPv6 sockets and breaks containers listening on [::]. A new network namespace resets IPv6
+  # settings by default; inheriting them is what reaches the pods, whose router solicitations
+  # Cilium would otherwise drop (UNSUPPORTED_L3_PROTOCOL).
+  net.core.devconf_inherit_init_net: '1'
+  net.ipv6.conf.all.disable_ipv6: '1'
+  net.ipv6.conf.default.disable_ipv6: '1'
+  net.ipv6.conf.lo.disable_ipv6: '0'       # keep ::1 for software that tries localhost over IPv6 first
