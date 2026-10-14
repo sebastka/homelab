@@ -20,6 +20,16 @@
   },
   "customManagers": [
     {
+      "description": "kustomize images: entries. The built-in kustomize manager ignores newTag and skips newTag+digest as invalid-dependency-specification, so these would never be updated (k8s/common/images, crowdsec, falco). Matches both {name: X, newTag: ...} and {name: X, newName: Y, newTag: ...}, with or without digest. Depends on the flow-style formatting used in this repo.",
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)kustomization\\.ya?ml$/"],
+      "matchStrings": [
+        "newName: (?<depName>[^,}]+), newTag: (?<currentValue>[^,}]+)(?:, digest: (?<currentDigest>sha256:[0-9a-f]+))?",
+        "[{]name: (?<depName>[^,}]+), newTag: (?<currentValue>[^,}]+)(?:, digest: (?<currentDigest>sha256:[0-9a-f]+))?"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
       "customType": "regex",
       "managerFilePatterns": ["/(^|/)values\\.yaml$/"],
       "matchStrings": [
@@ -164,6 +174,13 @@
   "hostRules": [
     {
       "matchHost": "docker.io",
+      "username": "sebastka",
+      "password": "{{ secrets.DOCKERHUB_TOKEN }}"
+    },
+    {
+      "description": "Docker Hardened Images, direct-pull path (dhi.io). DHI authenticates with Docker Hub accounts, so this reuses the Docker Hub token above.",
+      "matchHost": "dhi.io",
+      "hostType": "docker",
       "username": "sebastka",
       "password": "{{ secrets.DOCKERHUB_TOKEN }}"
     },
