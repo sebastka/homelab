@@ -1,4 +1,4 @@
-# karlsen.org -- mail only, on Domeneshop.
+# karlsen.org -- mail on Domeneshop; the website and its CrowdSec captcha host on the homelab.
 
 resource "cloudflare_dns_record" "karlsenorg_caa" {
   name    = cloudflare_zone.karlsenorg.name
@@ -28,6 +28,16 @@ resource "cloudflare_dns_record" "karlsenorg_cname_autoconfig" {
 resource "cloudflare_dns_record" "karlsenorg_cname_mta-sts" {
   content = cloudflare_zone.karlsenorg.name
   name    = "mta-sts"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  zone_id = cloudflare_zone.karlsenorg.id
+}
+
+# CrowdSec captcha callback (envoy-proxy-bouncer-karlsenorg), as captcha.karlsen.fr
+resource "cloudflare_dns_record" "karlsenorg_cname_captcha" {
+  content = cloudflare_zone.karlsenorg.name
+  name    = "captcha"
   proxied = false
   ttl     = 1
   type    = "CNAME"

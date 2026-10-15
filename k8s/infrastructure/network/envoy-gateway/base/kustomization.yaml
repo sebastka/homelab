@@ -49,3 +49,11 @@ helmCharts:
     namespace: envoy-gateway-system
     includeCRDs: true
     valuesFile: values.crowdsec-envoy-bouncer-karlsenapp.yaml
+
+  - name: envoy-proxy-bouncer
+    repo: oci://ghcr.io/kdwils/charts
+    version: 0.8.2
+    releaseName: envoy-proxy-bouncer-karlsenorg
+    namespace: envoy-gateway-system
+    includeCRDs: true
+    valuesFile: values.crowdsec-envoy-bouncer-karlsenorg.yaml

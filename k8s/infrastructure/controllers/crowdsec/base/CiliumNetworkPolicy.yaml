@@ -19,7 +19,7 @@ metadata:
 spec:
   endpointSelector: {matchLabels: {k8s-app: crowdsec, type: lapi}}
   ingress:
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # envoy-proxy-bouncer
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # envoy-proxy-bouncer, internal gateway (HTTPRoute.yaml: cscli)
   egress:
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toFQDNs: [{matchPattern: '*.crowdsec.net'}, {matchPattern: '*.api.crowdsec.net'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
