@@ -37,6 +37,22 @@ spec:
         seccompProfile: {type: RuntimeDefault}
         sysctls:
           - {name: net.ipv4.ping_group_range, value: '0 1995'}
+      initContainers:
+        # /var/lib/zabbix is an emptyDir (read-only root filesystem), which hides the directories the
+        # image ships there; since 7.4.15 the entrypoint copies ssl/ssl_ca into ssl/ssl_ca_internal and
+        # fails without them. Seed the emptyDir with the image's own layout.
+        - name: seed-var-lib
+          image: docker.io/zabbix/zabbix-server-pgsql:alpine-7.4.15@sha256:777870429c94636f2396fd414a259080d167926552543c31b20ae9d0c9f2847f
+          command: [cp, -R, /var/lib/zabbix/., /seed/]  # Not -a: a non-root user cannot preserve the image's ownership
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 16Mi}
+            limits: {memory: 32Mi}
+          volumeMounts:
+            - {name: var-lib-volume, mountPath: /seed}
       containers:
         - name: backend
           # Dockerfile: https://github.com/zabbix/zabbix-docker/blob/7.4/Dockerfiles/server-pgsql/alpine/Dockerfile
