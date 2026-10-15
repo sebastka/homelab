@@ -38,7 +38,7 @@ spec:
       role_attribute_path: contains(groups[*], 'k8s_admins') && 'Admin' || 'Viewer'
       auth_style: InHeader
       # auto_login: "true"
-  version: 'docker.io/grafana/grafana:12.3.11@sha256:b6663cf3664f6452cc15bdf2f9e9c2822e6caa6bab85dabeace35cb735669f99'  # renovate: datasource=docker
+  version: 'docker.io/grafana/grafana:13.2.4@sha256:dbbc38ea21103cefb50396340cd88afec779c7e070b0a7bf5a75b4ce46651d3f'  # renovate: datasource=docker
   deployment:
     spec:
       template:
