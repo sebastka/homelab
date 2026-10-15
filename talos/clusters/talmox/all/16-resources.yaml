@@ -15,5 +15,5 @@ resources:
 apiVersion: v1alpha1
 kind: KubeSchedulerConfig
 resources:
-  requests: {memory: 64Mi}
-  limits: {memory: 128Mi}
+  requests: {memory: 128Mi}
+  limits: {memory: 256Mi}

@@ -24,7 +24,7 @@ vmsingle:
       requests: {memory: 1536Mi}
       limits: {memory: 2048Mi}
     securityContext:
-      allowPrivilegeEscalation: false
+      allowPrivilegeEscalation: falsealertmanager:
       readOnlyRootFilesystem: true
       capabilities: {drop: [ALL]}
 
@@ -51,8 +51,8 @@ vmalert:
   spec:
     image: {repository: docker.io/victoriametrics/vmalert}
     resources:
-      requests: {memory: 64Mi}
-      limits: {memory: 128Mi}
+      requests: {memory: 128Mi}
+      limits: {memory: 192Mi}
 
 alertmanager:
   enabled: true
@@ -61,7 +61,7 @@ alertmanager:
     secrets: [alertmanager-ntfy]
     resources:
       requests: {memory: 64Mi}
-      limits: {memory: 64Mi}
+      limits: {memory: 92Mi}
   config:
     global:
       resolve_timeout: 5m

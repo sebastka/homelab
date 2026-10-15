@@ -6,7 +6,7 @@ server:
   image: {repository: docker.io/victoriametrics/victoria-logs}
   retentionPeriod: 7d
   resources:
-    requests: {memory: 128Mi}
+    requests: {memory: 384Mi}
     limits: {memory: 512Mi}
   persistentVolume:
     enabled: true
