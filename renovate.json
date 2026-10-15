@@ -64,13 +64,12 @@
       "depNameTemplate": "{{depName}}"
     },
     {
-      "description": "The Grafana CR's version (the grafana image tag, as major.minor)",
+      "description": "The Grafana CR's version, a full image ref with digest (image:tag@sha256). The tag is a full major.minor.patch: config:recommended's workaround for grafana/grafana sets that versioning (with -security-NN releases) and overrides any versioningTemplate here",
       "customType": "regex",
       "managerFilePatterns": ["/(^|/)Grafana\\.yaml$/"],
-      "matchStrings": ["version:\\s*'(?<currentValue>[^']+)'\\s*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)"],
+      "matchStrings": ["version:\\s*'(?<depName>[^':@]+):(?<currentValue>[^'@]+)@(?<currentDigest>sha256:[a-f0-9]{64})'\\s*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)"],
       "datasourceTemplate": "{{datasource}}",
-      "depNameTemplate": "{{depName}}",
-      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)$"
+      "depNameTemplate": "{{depName}}"
     },
     {
       "customType": "regex",
