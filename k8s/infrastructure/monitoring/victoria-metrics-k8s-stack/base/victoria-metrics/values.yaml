@@ -24,7 +24,7 @@ vmsingle:
       requests: {memory: 1536Mi}
       limits: {memory: 2048Mi}
     securityContext:
-      allowPrivilegeEscalation: falsealertmanager:
+      allowPrivilegeEscalation: false
       readOnlyRootFilesystem: true
       capabilities: {drop: [ALL]}
 
