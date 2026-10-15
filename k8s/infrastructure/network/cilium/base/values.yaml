@@ -41,8 +41,8 @@ operator:
 # Roll out cilium agent pods automatically when ConfigMap is updated.
 rollOutCiliumPods: true
 resources:
-  requests: {memory: 512Mi}
-  limits: {memory: 512Mi}
+  requests: {memory: 384Mi}
+  limits: {memory: 768Mi}
 
 # debug:
 #  enabled: true
