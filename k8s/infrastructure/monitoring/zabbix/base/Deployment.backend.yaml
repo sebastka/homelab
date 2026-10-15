@@ -40,7 +40,7 @@ spec:
       containers:
         - name: backend
           # Dockerfile: https://github.com/zabbix/zabbix-docker/blob/7.4/Dockerfiles/server-pgsql/alpine/Dockerfile
-          image: docker.io/zabbix/zabbix-server-pgsql:alpine-7.4.9@sha256:92d280d694a2192dc0ca9e4677abd6ae2d68132d6739d5fcbde10b58f544e5d4
+          image: docker.io/zabbix/zabbix-server-pgsql:alpine-7.4.15@sha256:777870429c94636f2396fd414a259080d167926552543c31b20ae9d0c9f2847f
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
