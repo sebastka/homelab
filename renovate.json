@@ -64,6 +64,15 @@
       "depNameTemplate": "{{depName}}"
     },
     {
+      "description": "The Grafana CR's version (the grafana image tag, as major.minor)",
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)Grafana\\.yaml$/"],
+      "matchStrings": ["version:\\s*'(?<currentValue>[^']+)'\\s*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)"],
+      "datasourceTemplate": "{{datasource}}",
+      "depNameTemplate": "{{depName}}",
+      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)$"
+    },
+    {
       "customType": "regex",
       "managerFilePatterns": ["/(^|/)GrafanaDashboard\\.yaml$/"],
       "matchStrings": ["revision:\\s*(?<currentValue>\\d+)\\s*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)"],
@@ -138,6 +147,18 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["docker.io/searxng/searxng"],
       "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-(?<build>[a-f0-9]+)$"
+    },
+    {
+      "description": "Zabbix tags put the variant first (alpine-7.4.9), which docker versioning cannot parse: Renovate detected the images but never proposed an update",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["docker.io/zabbix/zabbix-server-pgsql", "docker.io/zabbix/zabbix-web-nginx-pgsql"],
+      "versioning": "regex:^alpine-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
+    },
+    {
+      "description": "v1.120.1 is a stray tag (built with v1.20.1, no matching release) that semver ranks above v1.20.x",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/victoriametrics/mcp-victoriametrics"],
+      "allowedVersions": "<1.100.0"
     },
     {
       "matchDatasources": ["docker"],
