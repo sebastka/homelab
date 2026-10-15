@@ -58,6 +58,7 @@ resources:
   - PersistentVolumeClaim.yaml
   - SealedSecret.crowdsec-secrets.yaml
   - CiliumNetworkPolicy.yaml
+  - HTTPRoute.yaml
   - GrafanaDashboard.yaml
 
 helmCharts:
