@@ -5,11 +5,13 @@ namespace: grafana
 
 resources:
   - SealedSecret.mcp-api-keys.yaml
+  - SealedSecret.mcp-server-token.yaml
   - GrafanaServiceAccount.yaml
   - ServiceAccount.yaml
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
+  - HTTPRouteFilter.yaml
   - SecurityPolicy.yaml
   - BackendTrafficPolicy.yaml
   - CiliumNetworkPolicy.yaml

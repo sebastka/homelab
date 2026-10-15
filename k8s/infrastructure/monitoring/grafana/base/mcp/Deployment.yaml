@@ -59,6 +59,8 @@ spec:
           env:
             - {name: GRAFANA_URL, value: 'http://grafana-service.grafana.svc.cluster.local.:3000'}
             - {name: GRAFANA_SERVICE_ACCOUNT_TOKEN, valueFrom: {secretKeyRef: {name: mcp-grafana-token, key: token}}}
+            # Callers must present it as a bearer token; the gateway injects it (HTTPRouteFilter.yaml)
+            - {name: MCP_GRAFANA_SERVER_TOKEN, valueFrom: {secretKeyRef: {name: mcp-server-token, key: token}}}
           ports:
             - {name: http, protocol: TCP, containerPort: 8000}
             - {name: healthz, protocol: TCP, containerPort: 8001}

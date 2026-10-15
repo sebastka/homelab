@@ -9,5 +9,4 @@ spec:
     - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
   hostnames: [mcp-grafana.talmox.hera.home.karlsen.fr]
   rules:
-    - matches: [path: {type: PathPrefix, value: /mcp}]
-      backendRefs: [{name: mcp-grafana, kind: Service, port: 80}]
+    - {matches: [path: {type: PathPrefix, value: /mcp}], filters: [{type: ExtensionRef, extensionRef: {group: gateway.envoyproxy.io, kind: HTTPRouteFilter, name: inject-server-token}}], backendRefs: [{name: mcp-grafana, kind: Service, port: 80}]}

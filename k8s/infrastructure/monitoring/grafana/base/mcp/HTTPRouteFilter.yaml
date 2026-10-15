@@ -1,0 +1,14 @@
+# mcp-grafana requires a bearer token (--server-auth-token): the gateway adds it once the API key
+# has been checked (SecurityPolicy.yaml), so clients only ever hold the API key.
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: inject-server-token
+  namespace: grafana
+spec:
+  credentialInjection:
+    header: Authorization
+    overwrite: true
+    credential:
+      valueRef: {group: '', kind: Secret, name: mcp-server-token}
