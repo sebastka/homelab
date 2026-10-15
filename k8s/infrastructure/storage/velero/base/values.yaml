@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/vmware-tanzu/helm-charts/refs/heads/main/charts/velero/values.schema.json
+# yaml-language-server: $schema=values.schema.json
 # https://github.com/vmware-tanzu/helm-charts/blob/main/charts/velero/values.yaml
 ---
 

@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/stakater/Reloader/refs/heads/master/deployments/kubernetes/chart/reloader/values.schema.json
+# yaml-language-server: $schema=values.schema.json
 # https://github.com/stakater/Reloader/blob/master/deployments/kubernetes/chart/reloader/values.yaml
 ---
 

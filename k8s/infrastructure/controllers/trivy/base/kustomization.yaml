@@ -23,8 +23,8 @@ patches:
 
 helmCharts:
   - name: trivy-operator
-    repo: oci://ghcr.io/aquasecurity/helm-charts
-    version: 0.32.1
+    repo: https://aquasecurity.github.io/helm-charts  # Charts after 0.32.1 are not pushed to ghcr.io/aquasecurity/helm-charts (OCI)
+    version: 0.37.0
     releaseName: trivy-operator
     namespace: trivy
     includeCRDs: true

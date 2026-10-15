@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/crowdsecurity/helm-charts/refs/heads/main/charts/crowdsec/values.schema.json
+# yaml-language-server: $schema=values.schema.json
 # https://github.com/crowdsecurity/helm-charts/blob/main/charts/crowdsec/values.yaml
 # https://docs.crowdsec.net/u/getting_started/installation/kubernetes/
 # https://docs.crowdsec.net/docs/next/configuration/values_parameters/

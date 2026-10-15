@@ -23,5 +23,5 @@ cleanupController:
 
 reportsController:
   resources:
-    requests: {memory: 128Mi}
+    requests: {memory: 192Mi}
     limits: {memory: 256Mi}

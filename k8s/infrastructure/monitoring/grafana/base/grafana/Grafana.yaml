@@ -45,6 +45,9 @@ spec:
         spec:
           containers:
             - name: grafana
+              resources:
+                requests: {memory: 384Mi}
+                limits: {memory: 1024Mi}
               env:
                 - {name: GF_SECURITY_ADMIN_USER, valueFrom: {secretKeyRef: {name: admin-credentials, key: username}}}
                 - {name: GF_SECURITY_ADMIN_PASSWORD, valueFrom: {secretKeyRef: {name: admin-credentials, key: password}}}
