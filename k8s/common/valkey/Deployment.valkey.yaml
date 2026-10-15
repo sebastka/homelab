@@ -35,8 +35,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       containers:
         - name: valkey
-          # Dockerfile: https://github.com/valkey-io/valkey-container/blob/mainline/9.0/alpine/Dockerfile
-          image: docker.io/valkey/valkey:9.1.2-alpine3.24@sha256:48332870af354a799964c0012ae1194a0bf2bf894eb508f945810596dc2d8d11
+          image: valkey  # Pinned in common/images (dhi.io/valkey)
           args: [--save, ""]
           securityContext:
             allowPrivilegeEscalation: false

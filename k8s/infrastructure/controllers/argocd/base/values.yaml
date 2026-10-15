@@ -91,6 +91,7 @@ repoServer:
 
 redis:
   enabled: true
+  image: {repository: valkey, tag: pinned-in-common-images}
   readinessProbe: {enabled: true}
   livenessProbe: {enabled: true}
   resources:

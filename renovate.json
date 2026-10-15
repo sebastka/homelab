@@ -24,8 +24,8 @@
       "customType": "regex",
       "managerFilePatterns": ["/(^|/)kustomization\\.ya?ml$/"],
       "matchStrings": [
-        "newName: (?<depName>[^,}]+), newTag: (?<currentValue>[^,}]+)(?:, digest: (?<currentDigest>sha256:[0-9a-f]+))?",
-        "[{]name: (?<depName>[^,}]+), newTag: (?<currentValue>[^,}]+)(?:, digest: (?<currentDigest>sha256:[0-9a-f]+))?"
+        "newName:\\s*(?<depName>[^,}\\s]+),\\s*newTag:\\s*(?<currentValue>[^,}\\s]+)(?:,\\s*digest:\\s*(?<currentDigest>sha256:[0-9a-f]+))?",
+        "[{]name:\\s*(?<depName>[^,}\\s]+),\\s*newTag:\\s*(?<currentValue>[^,}\\s]+)(?:,\\s*digest:\\s*(?<currentDigest>sha256:[0-9a-f]+))?"
       ],
       "datasourceTemplate": "docker"
     },
@@ -118,7 +118,7 @@
         "docker.io/alpine/git",
         "docker.io/mikefarah/yq",
         "docker.io/nginxinc/nginx-unprivileged",
-        "docker.io/valkey/valkey",
+        "dhi.io/valkey",
         "registry.k8s.io/kubectl",
         "registry.k8s.io/metrics-server/metrics-server",
         "ghcr.io/maxmind/geoipupdate",
@@ -146,6 +146,11 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["docker.io/searxng/searxng"],
       "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-(?<build>[a-f0-9]+)$"
+    },
+    {
+      "description": "Images whose version is the placeholder pinned-in-common-images are pinned by common/images (kustomize images: name, tag and digest), which Renovate tracks there. E.g. Argo CD's chart Redis, set to valkey in its values",
+      "matchCurrentValue": "pinned-in-common-images",
+      "enabled": false
     },
     {
       "description": "Zabbix tags put the variant first (alpine-7.4.9), which docker versioning cannot parse: Renovate detected the images but never proposed an update",
