@@ -1,0 +1,19 @@
+---
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-requests-limits
+  annotations:
+    policies.kyverno.io/title: Require Resource Requests and Limits
+    policies.kyverno.io/description: Require all containers to define memory requests and limits to prevent resource starvation and ensure predictable scheduling.
+spec:
+  validationActions: [Audit]
+  evaluation: {background: {enabled: true}}
+  matchConstraints:
+    resourceRules: [{apiGroups: [''], apiVersions: [v1], resources: [pods], operations: [CREATE, UPDATE]}]
+    namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: NotIn, values: [kube-system, kube-node-lease, kube-public]}]}
+  variables:
+    - {name: containers, expression: 'object.spec.containers + object.spec.?initContainers.orValue([])'}
+  validations:
+    - expression: variables.containers.all(c, c.?resources.?requests.?memory.hasValue() && c.?resources.?limits.?memory.hasValue())
+      message: All containers must define memory requests and limits.

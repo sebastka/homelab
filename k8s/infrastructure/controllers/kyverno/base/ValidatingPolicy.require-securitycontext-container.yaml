@@ -1,0 +1,26 @@
+# Separate from require-securitycontext-pod: it excludes more namespaces (the CNI, Envoy and Kyverno
+# itself run containers that legitimately need more).
+---
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-securitycontext-container
+  annotations:
+    policies.kyverno.io/title: Require Container Security Context
+    policies.kyverno.io/description: Require containers to set allowPrivilegeEscalation false, readOnlyRootFilesystem true, drop all capabilities, and not run privileged.
+spec:
+  validationActions: [Audit]
+  evaluation: {background: {enabled: true}}
+  matchConstraints:
+    resourceRules: [{apiGroups: [''], apiVersions: [v1], resources: [pods], operations: [CREATE, UPDATE]}]
+    namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: NotIn, values: [kube-system, kube-node-lease, kube-public, kyverno, envoy-gateway-system, cilium-spire, cilium-secrets]}]}
+  variables:
+    - {name: containers, expression: 'object.spec.containers + object.spec.?initContainers.orValue([])'}
+  validations:
+    - expression: >-
+        variables.containers.all(c,
+          !c.?securityContext.?privileged.orValue(false) &&
+          c.?securityContext.?allowPrivilegeEscalation.orValue(true) == false &&
+          c.?securityContext.?readOnlyRootFilesystem.orValue(false) &&
+          c.?securityContext.?capabilities.?drop.orValue([]).exists(d, d == 'ALL'))
+      message: "All containers must set allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, drop all capabilities, and must not run as privileged."

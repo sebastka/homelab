@@ -1,0 +1,19 @@
+---
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-securitycontext-pod
+  annotations:
+    policies.kyverno.io/title: Require Pod Security Context
+    policies.kyverno.io/description: Require Pods to set runAsNonRoot and seccompProfile RuntimeDefault at pod level.
+spec:
+  validationActions: [Audit]
+  evaluation: {background: {enabled: true}}
+  matchConstraints:
+    resourceRules: [{apiGroups: [''], apiVersions: [v1], resources: [pods], operations: [CREATE, UPDATE]}]
+    namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: NotIn, values: [kube-system, kube-node-lease, kube-public]}]}
+  validations:
+    - expression: >-
+        object.spec.?securityContext.?runAsNonRoot.orValue(false) &&
+        object.spec.?securityContext.?seccompProfile.?type.orValue('') == 'RuntimeDefault'
+      message: "Pod must set runAsNonRoot: true and seccompProfile: {type: RuntimeDefault} at the pod level."

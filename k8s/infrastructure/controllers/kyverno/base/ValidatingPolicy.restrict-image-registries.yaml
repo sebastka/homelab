@@ -1,0 +1,37 @@
+# Only images from the repositories in assets/allowed-images.yaml may run. Each entry covers every tag
+# and digest of the repository: an image matches when it is the entry, or the entry followed by :tag
+# and/or @digest.
+---
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-image-registries
+  annotations:
+    policies.kyverno.io/title: Restrict Image Registries
+    policies.kyverno.io/description: Restrict which image registries can be used in Pods to reduce the attack surface and prevent accidental usage of unapproved images.
+spec:
+  validationActions: [Deny]
+  evaluation: {background: {enabled: false}}
+  # Pod rules are also generated for their controllers (Deployment, StatefulSet, CronJob...), so a
+  # workload with a disallowed image is refused at apply time, not when its pods are created
+  matchConstraints:
+    resourceRules: [{apiGroups: [''], apiVersions: [v1], resources: [pods], operations: [CREATE, UPDATE]}]
+    namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: NotIn, values: [kube-system, kube-node-lease, kube-public]}]}
+  variables:
+    - name: containers
+      expression: object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])
+    # assets/allowed-images.yaml, inlined between the ''' at build time (kustomization.yaml
+    # replacements) and read line by line: its `- repository` entries, comments dropped
+    - name: allowed
+      expression: >-
+        '''assets/allowed-images.yaml'''.split('\n').map(l, l.split('#')[0].trim())
+          .filter(l, l.startsWith('- ')).map(l, l.substring(2).trim())
+    - name: denied
+      expression: >-
+        variables.containers.map(c, c.image).filter(i,
+          !variables.allowed.exists(a, i == a || i.startsWith(a + ':') || i.startsWith(a + '@')))
+  validations:
+    - expression: size(variables.denied) == 0
+      messageExpression: >-
+        'One or more images are not in the allowlist: ' + variables.denied.join(', ') +
+        '. Add the image to ValidatingPolicy/restrict-image-registries to permit it.'

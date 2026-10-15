@@ -1,0 +1,17 @@
+---
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-probes
+  annotations:
+    policies.kyverno.io/title: Require Liveness and Readiness Probes
+    policies.kyverno.io/description: Require all containers in Deployments, StatefulSets, and DaemonSets to define liveness and readiness probes so Kubernetes can properly manage container lifecycle.
+spec:
+  validationActions: [Audit]
+  evaluation: {background: {enabled: true}}
+  matchConstraints:
+    resourceRules: [{apiGroups: [apps], apiVersions: [v1], resources: [deployments, statefulsets, daemonsets], operations: [CREATE, UPDATE]}]
+    namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: NotIn, values: [kube-system, kube-node-lease, kube-public]}]}
+  validations:
+    - expression: object.spec.template.spec.containers.all(c, has(c.livenessProbe) && has(c.readinessProbe))
+      message: All containers must define liveness and readiness probes.

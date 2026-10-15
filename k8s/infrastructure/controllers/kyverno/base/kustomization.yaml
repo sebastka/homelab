@@ -11,26 +11,42 @@ images:
 
 # Wave 0: CRDs + Operator
 # Wave 1: CiliumNetworkPolicies
-# Wave 2: ClusterPolicies
+# Wave 2: ValidatingPolicies
 patches:
   - target: {kind: CiliumNetworkPolicy}
     patch: |
       - {op: add, path: /metadata/annotations, value: {argocd.argoproj.io/sync-wave: '1'}}
-  - target: {kind: ClusterPolicy}
+  # One key, not the whole map: the policies' title and description annotations are kept
+  - target: {group: policies.kyverno.io, kind: ValidatingPolicy}
     patch: |
-      - {op: add, path: /metadata/annotations, value: {argocd.argoproj.io/sync-wave: '2'}}
+      - {op: add, path: /metadata/annotations/argocd.argoproj.io~1sync-wave, value: '2'}
+
+# The allowlist of restrict-image-registries, as a YAML list: a build-time-only ConfigMap
+# (local-config: never rendered) whose content replaces the placeholder between the ''' of the
+# policy's `allowed` variable
+configMapGenerator:
+  - name: allowed-images
+    files: [images=assets/allowed-images.yaml]
+    options:
+      disableNameSuffixHash: true
+      annotations: {config.kubernetes.io/local-config: 'true'}
+
+replacements:
+  - source: {kind: ConfigMap, name: allowed-images, fieldPath: data.images}
+    targets:
+      - select: {kind: ValidatingPolicy, name: restrict-image-registries}
+        fieldPaths: ['spec.variables.[name=allowed].expression']
+        options: {delimiter: "'''", index: 1}
 
 resources:
   - Namespace.yaml
-  # - ClusterPolicy.spread-pods.yaml
-  - ClusterPolicy.trivy-node-collector-fix-proxy-bins.yaml
-  - ClusterPolicy.require-securitycontext.yaml
-  - ClusterPolicy.disallow-latest-tag.yaml
-  - ClusterPolicy.require-requests-limits.yaml
-  - ClusterPolicy.require-labels.yaml
-  - ClusterPolicy.require-probes.yaml
-  - ClusterPolicy.restrict-image-registries.yaml
-  # - ClusterPolicy.verify-image-signatures.yaml
+  - ValidatingPolicy.require-securitycontext-pod.yaml
+  - ValidatingPolicy.require-securitycontext-container.yaml
+  - ValidatingPolicy.disallow-latest-tag.yaml
+  - ValidatingPolicy.require-requests-limits.yaml
+  - ValidatingPolicy.require-labels.yaml
+  - ValidatingPolicy.require-probes.yaml
+  - ValidatingPolicy.restrict-image-registries.yaml
   - CiliumNetworkPolicy.yaml
 
 helmCharts:

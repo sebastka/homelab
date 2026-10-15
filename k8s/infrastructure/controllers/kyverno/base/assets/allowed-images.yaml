@@ -1,0 +1,269 @@
+# Images allowed to run: one repository per entry, covering any tag or digest of it.
+# Inlined into ValidatingPolicy.restrict-image-registries.yaml at build time (kustomization.yaml
+# replacements) and read there line by line: keep each entry on its own `- repository` line.
+---
+# Shared (used in multiple places)
+- docker.io/library/alpine
+- docker.io/library/node
+- docker.io/library/busybox
+- docker.io/alpine/kubectl
+- docker.io/alpine/curl
+- docker.io/alpine/git
+- docker.io/valkey/valkey
+- docker.io/mikefarah/yq
+- docker.io/nginxinc/nginx-unprivileged
+- registry.k8s.io/kubectl
+- registry.k8s.io/git-sync/git-sync
+- registry.gitlab.com/gitlab-ci-utils/curl-jq
+
+# infrastructure/auth/authelia
+- docker.io/authelia/authelia
+
+# infrastructure/auth/light-ldap
+- docker.io/lldap/lldap
+
+# infrastructure/auth/step-ca
+- cr.smallstep.com/smallstep/step-ca
+
+# infrastructure/controllers/argocd
+- ecr-public.aws.com/docker/library/redis
+# - ecr-public.aws.com/docker/library/haproxy
+- quay.io/argoproj/argocd
+- quay.io/argoprojlabs/argocd-extension-installer
+# - ghcr.io/dexidp/dex
+
+# infrastructure/controllers/cert-manager
+- quay.io/jetstack/cert-manager-cainjector
+- quay.io/jetstack/cert-manager-controller
+- quay.io/jetstack/cert-manager-webhook
+- quay.io/jetstack/cert-manager-startupapicheck
+- quay.io/jetstack/trust-manager
+- quay.io/jetstack/trust-pkg-debian-trixie
+
+# infrastructure/controllers/crowdsec
+- docker.io/crowdsecurity/crowdsec
+
+# infrastructure/controllers/falco
+# - docker.io/falcosecurity/falco
+# - docker.io/falcosecurity/falcoctl
+# - docker.io/falcosecurity/falcosidekick
+# - docker.io/falcosecurity/falcosidekick-ui
+# - docker.io/redis/redis-stack
+
+# infrastructure/controllers/intel-device-plugins
+- intel/intel-deviceplugin-operator
+- intel/intel-gpu-plugin
+
+# infrastructure/controllers/kyverno
+- reg.kyverno.io/kyverno/kyverno-cli
+- reg.kyverno.io/kyverno/kyvernopre
+- reg.kyverno.io/kyverno/kyverno
+- reg.kyverno.io/kyverno/background-controller
+- reg.kyverno.io/kyverno/cleanup-controller
+- reg.kyverno.io/kyverno/reports-controller
+- ghcr.io/kyverno/readiness-checker
+
+# infrastructure/controllers/node-feature-discovery
+- registry.k8s.io/nfd/node-feature-discovery
+
+# infrastructure/controllers/reloader
+- ghcr.io/stakater/reloader
+
+# infrastructure/controllers/sealed-secrets
+- docker.io/bitnami/sealed-secrets-controller
+
+# infrastructure/controllers/trivy
+# - ghcr.io/aquasecurity/*
+# - mirror.gcr.io/aquasec/trivy-operator
+# - mirror.gcr.io/aquasec/trivy
+
+# infrastructure/database/database-backup
+- docker.io/library/postgres
+- docker.io/library/mariadb
+
+# infrastructure/monitoring/alloy
+- docker.io/grafana/alloy
+- quay.io/prometheus-operator/prometheus-config-reloader
+
+# infrastructure/monitoring/grafana
+- docker.io/grafana/grafana
+- docker.io/grafana/mcp-grafana
+
+# infrastructure/monitoring/grafana-operator
+- ghcr.io/grafana/grafana-operator
+
+# infrastructure/monitoring/metrics-server
+- registry.k8s.io/metrics-server/metrics-server
+
+# infrastructure/monitoring/prometheus-operator-crds
+
+# infrastructure/monitoring/stork
+- ghcr.io/sebastka/stork
+
+# infrastructure/monitoring/victoria-logs
+- docker.io/victoriametrics/victoria-logs
+- ghcr.io/victoriametrics/mcp-victorialogs
+
+# infrastructure/monitoring/victoria-metrics-k8s-stack
+- docker.io/victoriametrics/operator
+- docker.io/victoriametrics/victoria-metrics
+- docker.io/victoriametrics/vmagent
+- docker.io/victoriametrics/vmalert
+- ghcr.io/victoriametrics/mcp-victoriametrics
+- ghcr.io/victoriametrics/sync-job
+- docker.io/prom/alertmanager
+# - docker.io/prometheus/node-exporter
+- quay.io/prometheus/node-exporter
+- registry.k8s.io/kube-state-metrics/kube-state-metrics
+- registry.k8s.io/kubectl
+- quay.io/brancz/kube-rbac-proxy
+
+# infrastructure/monitoring/zabbix
+- docker.io/zabbix/zabbix-server-pgsql
+- docker.io/zabbix/zabbix-web-nginx-pgsql
+
+# infrastructure/network/cilium
+- quay.io/cilium/cilium
+- quay.io/cilium/startup-script
+- quay.io/cilium/cilium-operator
+- quay.io/cilium/cilium-envoy
+- quay.io/cilium/certgen
+- quay.io/cilium/hubble-relay
+- quay.io/cilium/hubble-ui-backend
+- quay.io/cilium/hubble-ui
+- quay.io/cilium/operator-generic
+- quay.io/cilium/clustermesh-apiserver
+- ghcr.io/spiffe/spire-agent
+- ghcr.io/spiffe/spire-server
+
+# infrastructure/network/envoy-gateway
+- docker.io/envoyproxy/envoy
+- docker.io/envoyproxy/gateway
+- docker.io/envoyproxy/ratelimit
+- ghcr.io/kdwils/envoy-proxy-bouncer
+
+# infrastructure/network/gateway
+
+# infrastructure/network/tailscale
+- docker.io/tailscale/k8s-operator
+- docker.io/tailscale/tailscale
+
+# infrastructure/storage/longhorn
+- docker.io/longhornio/csi-attacher
+- docker.io/longhornio/csi-node-driver-registrar
+- docker.io/longhornio/csi-provisioner
+- docker.io/longhornio/csi-resizer
+- docker.io/longhornio/csi-snapshotter
+- docker.io/longhornio/livenessprobe
+- docker.io/longhornio/longhorn-engine
+- docker.io/longhornio/longhorn-instance-manager
+- docker.io/longhornio/longhorn-manager
+- docker.io/longhornio/longhorn-share-manager
+- docker.io/longhornio/longhorn-ui
+
+# infrastructure/network/snapshots-controller
+- registry.k8s.io/sig-storage/snapshot-controller
+
+# infrastructure/storage/velero
+- docker.io/velero/velero
+- docker.io/velero/velero-plugin-for-aws
+# - registry.k8s.io/kubectl
+
+# applications/dev/debian-debug
+- ghcr.io/sebastka/debian-debug
+
+# applications/dev/forgejo
+- code.forgejo.org/forgejo/forgejo
+
+# applications/dev/harbor
+# - goharbor/*
+
+# applications/dev/tlsrpt
+- ghcr.io/sebastka/tlsrpt
+
+# applications/dev/whoami
+- ghcr.io/traefik/whoami
+
+# applications/media/jellyfin
+- ghcr.io/jellyfin/jellyfin
+
+# applications/media/metube
+- ghcr.io/alexta69/metube
+
+# applications/media/opentogethertube
+- docker.io/dyc3/opentogethertube
+
+# applications/media/radarr
+- ghcr.io/home-operations/radarr
+
+# applications/media/vert
+
+# applications/public/element
+- docker.io/vectorim/element-web
+
+# application/public/homepage
+
+# applications/public/slink
+# - docker.io/anirdev/slink
+
+# applications/public/synapse
+- ghcr.io/element-hq/synapse
+
+# applications/utils/carat
+# carat ships FROM scratch and is mounted as an image volume
+# (spec.volumes[].image), which this policy does not walk - only the
+# node runtime it is mounted into is actually checked here.
+# - ghcr.io/sebastka/carat
+
+# applications/utils/deluge
+# - ghcr.io/home-operations/deluge
+- ghcr.io/sebastka/deluge  # containers repo, apps/deluge: plugins fixed
+
+# applications/utils/element-admin
+- ghcr.io/sebastka/element-admin
+
+# applications/utils/glance
+- docker.io/glanceapp/glance
+
+# applications/utils/joplin
+# - docker.io/joplin/server
+# - docker.io/joplin/transcribe
+# - docker.io/joplin/htr-cli
+
+# applications/utils/mailwatch
+- ghcr.io/sebastka/mailwatch
+
+# applications/utils/matrix-authentication-service
+- ghcr.io/element-hq/matrix-authentication-service
+- ghcr.io/maxmind/geoipupdate
+
+# applications/utils/n8n
+- docker.n8n.io/n8nio/n8n
+- n8nio/runners
+
+# applications/utils/nextcloud
+# - library/nextcloud
+# - library/nginx
+# - xperimental/nextcloud-exporter
+# - h2non/imaginary
+# - bitnamilegacy/mariadb
+# - bitnamilegacy/postgresql
+# - bitnamilegacy/redis
+
+# applications/utils/ntfy
+- docker.io/binwiederhier/ntfy
+
+# applications/utils/paperless
+# - ghcr.io/paperless-ngx/paperless-ngx
+- ghcr.io/sebastka/paperless  # Custom dhi.io-based, s6-less image
+- docker.io/apache/tika
+- docker.io/gotenberg/gotenberg
+
+# applications/utils/qbittorrent
+# - ghcr.io/qbittorrent/qbittorrent
+
+# applications/utils/searxng
+- docker.io/searxng/searxng
+
+# applications/utils/thelounge
+- ghcr.io/thelounge/thelounge

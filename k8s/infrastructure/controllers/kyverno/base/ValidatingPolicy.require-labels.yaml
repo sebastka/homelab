@@ -1,0 +1,17 @@
+---
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-labels
+  annotations:
+    policies.kyverno.io/title: Require Labels
+    policies.kyverno.io/description: Require the 'app.kubernetes.io/name' label on all Pods to enable consistent identification and policy targeting across the cluster.
+spec:
+  validationActions: [Audit]
+  evaluation: {background: {enabled: true}}
+  matchConstraints:
+    resourceRules: [{apiGroups: [''], apiVersions: [v1], resources: [pods], operations: [CREATE, UPDATE]}]
+    namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: NotIn, values: [kube-system, kube-node-lease, kube-public]}]}
+  validations:
+    - expression: "'app.kubernetes.io/name' in object.metadata.?labels.orValue({})"
+      message: Label 'app.kubernetes.io/name' is required on all pods.
