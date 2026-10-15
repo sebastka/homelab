@@ -21,7 +21,7 @@ vmsingle:
     extraEnvs: [{name: GOMAXPROCS, value: '2'}]
     # Steady state 850-950Mi of RSS with 30d of retention; it caches up to 60% of the limit
     resources:
-      requests: {memory: 1024Mi}
+      requests: {memory: 1536Mi}
       limits: {memory: 2048Mi}
     securityContext:
       allowPrivilegeEscalation: false

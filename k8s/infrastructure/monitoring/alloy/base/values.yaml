@@ -77,7 +77,9 @@ alloy:
       // Push logs to VictoriaLogs (Loki-compatible push API)
       loki.write "default" {
         endpoint {
-          url = "http://victoria-logs-single-server.victoria-logs.svc.cluster.local:9428/insert/loki/api/v1/push"
+          // _msg_field: JSON log lines carry their message in msg or message (trivy-operator, Go
+          // loggers), not _msg; the first non-empty field becomes the message. Plain lines are unaffected.
+          url = "http://victoria-logs-single-server.victoria-logs.svc.cluster.local:9428/insert/loki/api/v1/push?_msg_field=_msg,msg,message"
         }
         external_labels = {cluster = "talmox"}
       }

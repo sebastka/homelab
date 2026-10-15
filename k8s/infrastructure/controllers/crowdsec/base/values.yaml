@@ -33,9 +33,10 @@ agent:
       capabilities: {drop: [ALL]}
   persistentVolume:
     config: {existingClaim: crowdsec-data-pvc, subPath: agent-config}
-    resources:
-      requests: {memory: 64Mi}
-      limits: {memory: 256Mi}
+  # cpu: null drops the chart's default CPU request and limit (500m), which merge in otherwise
+  resources:
+    requests: {cpu: null, memory: 256Mi}
+    limits: {cpu: null, memory: 384Mi}
   acquisition:
     - {namespace: envoy-gateway-system, podName: 'envoy-gateway-default-*', poll_without_inotify: true, program: envoy}
     # - {namespace: nextcloud, podName: 'nextcloud-*', program: nextcloud}
@@ -70,9 +71,9 @@ lapi:
   persistentVolume:
     data: {existingClaim: crowdsec-data-pvc, subPath: lapi-data}
     config: {existingClaim: crowdsec-data-pvc, subPath: lapi-config}
-    resources:
-      requests: {memory: 64Mi}
-      limits: {memory: 256Mi}
+  resources:
+    requests: {cpu: null, memory: 128Mi}
+    limits: {cpu: null, memory: 256Mi}
   env:
     # - {name: ENROLL_KEY, valueFrom: {secretKeyRef: {name: crowdsec-secrets, key: ENROLL_KEY}}}  # Covered by envFrom below
     - {name: ENROLL_INSTANCE_NAME, value: talmox}
@@ -98,8 +99,8 @@ appsec:
     # readOnlyRootFilesystem: true
     capabilities: {drop: [ALL]}
   resources:
-    requests: {memory: 64Mi}
-    limits: {memory: 256Mi}
+    requests: {cpu: null, memory: 64Mi}
+    limits: {cpu: null, memory: 256Mi}
   acquisitions:
     - appsec_configs: [crowdsecurity/appsec-default]
       labels: {type: appsec}

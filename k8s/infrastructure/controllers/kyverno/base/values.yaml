@@ -14,3 +14,14 @@ features:
     mutateExisting: false
     # imageVerify: true
     generate: false
+
+# Memory only: the chart's CPU requests stay. Both peaked at ~110Mi on its 64Mi/128Mi defaults.
+cleanupController:
+  resources:
+    requests: {memory: 128Mi}
+    limits: {memory: 256Mi}
+
+reportsController:
+  resources:
+    requests: {memory: 128Mi}
+    limits: {memory: 256Mi}

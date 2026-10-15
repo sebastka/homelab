@@ -3,8 +3,8 @@
 apiVersion: v1alpha1
 kind: KubeAPIServerConfig
 resources:
-  requests: {memory: 2560Mi}
-  limits: {memory: 3072Mi}
+  requests: {memory: 3072Mi}
+  limits: {memory: 4096Mi}
 ---
 apiVersion: v1alpha1
 kind: KubeControllerManagerConfig

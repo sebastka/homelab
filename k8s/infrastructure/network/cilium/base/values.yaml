@@ -13,7 +13,9 @@ ipam:
   multiPoolPreAllocation: ""
 securityContext:
   capabilities:
-    ciliumAgent: [CHOWN, KILL, NET_ADMIN, NET_RAW, IPC_LOCK, SYS_ADMIN, SYS_RESOURCE, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
+    # NET_BIND_SERVICE: the DNS proxy forwards from the pod's own source port, and binding one below
+    # 1024 fails without it ("Cannot forward proxied DNS lookup ... bind: permission denied").
+    ciliumAgent: [CHOWN, KILL, NET_ADMIN, NET_RAW, IPC_LOCK, SYS_ADMIN, SYS_RESOURCE, DAC_OVERRIDE, FOWNER, SETGID, SETUID, NET_BIND_SERVICE]
     cleanCiliumState: [NET_ADMIN, SYS_ADMIN, SYS_RESOURCE]
 cgroup:
   autoMount:
