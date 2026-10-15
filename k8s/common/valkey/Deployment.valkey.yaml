@@ -36,7 +36,7 @@ spec:
       containers:
         - name: valkey
           image: valkey  # Pinned in common/images (dhi.io/valkey)
-          args: [--save, ""]
+          args: [--save, "", --protected-mode, "no"]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
