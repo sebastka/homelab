@@ -17,8 +17,8 @@ extraArgs:
 #   - clusterissuers.cert-manager.io/cloudflare-dns01-issuer
 
 resources:
-  requests: {memory: 48Mi}
-  limits: {memory: 64Mi}
+  requests: {memory: 64Mi}
+  limits: {memory: 92Mi}
 webhook:
   resources:
     requests: {memory: 48Mi}
