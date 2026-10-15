@@ -9,8 +9,7 @@
 - docker.io/alpine/kubectl
 - docker.io/alpine/curl
 - docker.io/alpine/git
-- dhi.io/valkey  # common/images: common/valkey and Argo CD's Redis
-- docker.io/valkey/valkey  # Until every Valkey runs dhi.io/valkey; then remove
+- dhi.io/valkey
 - docker.io/mikefarah/yq
 - docker.io/nginxinc/nginx-unprivileged
 - registry.k8s.io/kubectl
@@ -27,7 +26,7 @@
 - cr.smallstep.com/smallstep/step-ca
 
 # infrastructure/controllers/argocd
-- ecr-public.aws.com/docker/library/redis  # Until Argo CD's Redis runs dhi.io/valkey; then remove
+# - ecr-public.aws.com/docker/library/redis
 # - ecr-public.aws.com/docker/library/haproxy
 - quay.io/argoproj/argocd
 - quay.io/argoprojlabs/argocd-extension-installer
