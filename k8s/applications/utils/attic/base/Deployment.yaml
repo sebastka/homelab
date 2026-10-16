@@ -50,7 +50,7 @@ spec:
             - secretRef: {name: attic-secrets}  # ATTIC_SERVER_TOKEN_RS256_SECRET_BASE64
           resources:
             requests: {memory: 64Mi}
-            limits: {memory: 1Gi}  # Chunking and zstd of large NARs while they are pushed
+            limits: {memory: 1024Mi}  # Chunking and zstd of large NARs while they are pushed
           ports:
             - {name: http, protocol: TCP, containerPort: 8080}
           startupProbe: {tcpSocket: {port: 8080}, initialDelaySeconds: 2, periodSeconds: 5, failureThreshold: 12}
