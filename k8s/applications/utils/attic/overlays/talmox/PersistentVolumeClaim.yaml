@@ -13,4 +13,4 @@ spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 25Gi}}
   storageClassName: longhorn-encrypted
-  # volumeName: attic-data-pv  # Keep empty to automatically provision a volume
+  volumeName: attic-data-pv
