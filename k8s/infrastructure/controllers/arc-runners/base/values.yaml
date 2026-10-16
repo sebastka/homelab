@@ -44,6 +44,10 @@ template:
       runAsUser: 1001
       runAsGroup: 1001
       seccompProfile: {type: RuntimeDefault}
+    # One runner per node when possible: builds take every idle core (no CPU limit), so two on one node compete while
+    # another sits idle. Preferred, not required: a runner still starts when they can't be spread.
+    topologySpreadConstraints:
+      - {maxSkew: 1, topologyKey: kubernetes.io/hostname, whenUnsatisfiable: ScheduleAnyway, labelSelector: {matchLabels: {actions.github.com/scale-set-name: talmox-nix}}}
     containers:
       - name: runner
         image: ghcr.io/sebastka/nix-actions-runner:sha-6683d3023a415942ea5a17b2d81eb210ee0bd720@sha256:433a10454ebe99833868bac064990681973561ec7851e8b6301112ed0b0c2d43
@@ -53,4 +57,4 @@ template:
           capabilities: {drop: [ALL]}
         resources:
           requests: {cpu: '2', memory: 8192Mi, ephemeral-storage: 20Gi}
-          limits: {memory: 24576Mi, ephemeral-storage: 80Gi}
+          limits: {memory: 24576Mi, ephemeral-storage: 40Gi}
