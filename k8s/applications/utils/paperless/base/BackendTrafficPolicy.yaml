@@ -7,5 +7,5 @@ metadata:
 spec:
   mergeType: StrategicMerge  # Merge with the Gateway-scoped policy so the rate limit there still applies here.
   targetRefs:
-    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: paperless}
   timeout: {http: {maxStreamDuration: 0s}}

@@ -8,7 +8,7 @@ metadata:
   namespace: paperless
 spec:
   targetRefs:
-    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: paperless}
   # authorization: {defaultAction: Allow}
   extAuth:
     failOpen: false

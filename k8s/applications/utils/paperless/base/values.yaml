@@ -1,0 +1,89 @@
+# yaml-language-server: $schema=values.schema.json
+# https://github.com/sebastka/charts/blob/master/charts/paperless/values.yaml
+---
+# https://docs.paperless-ngx.com/configuration/
+
+paperless:
+  existingSecret: paperless-secrets
+  annotations:
+    reloader.stakater.com/auto: 'true'
+    argocd.argoproj.io/sync-wave: '2'
+  # Set by the chart: the paths, PAPERLESS_REDIS, the Tika and Gotenberg endpoints, TESSDATA_PREFIX,
+  # PAPERLESS_BIND_ADDR / PAPERLESS_PORT and GRANIAN_HOST / GRANIAN_PORT
+  env:
+    PAPERLESS_REDIS_PREFIX: paperless_
+
+    # Database
+    PAPERLESS_DBHOST: db02.hera.home.karlsen.fr
+    PAPERLESS_DBENGINE: postgresql
+    PAPERLESS_DBNAME: paperless
+    PAPERLESS_DBUSER: paperless
+    PAPERLESS_DB_OPTIONS: connect_timeout=10,sslmode=disable,pool.max_size=50
+
+    # Hosting & Security
+    PAPERLESS_URL: https://paperless.karlsen.app
+    PAPERLESS_ALLAUTH_TRUSTED_PROXY_COUNT: 1
+    PAPERLESS_ALLAUTH_TRUSTED_CLIENT_IP_HEADER: X-Forwarded-For
+    PAPERLESS_ADMIN_USER: sebastian
+    PAPERLESS_ADMIN_MAIL: sebastian@karlsen.fr
+
+    # Authentication & SSO
+    PAPERLESS_ACCOUNT_ALLOW_SIGNUPS: false
+    PAPERLESS_DISABLE_REGULAR_LOGIN: true
+    PAPERLESS_REDIRECT_LOGIN_TO_SSO: true
+    PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
+
+    # OCR
+    PAPERLESS_OCR_LANGUAGE: nor
+    PAPERLESS_OCR_LANGUAGES: nor
+    PAPERLESS_ARCHIVE_FILE_GENERATION: always
+    PAPERLESS_OCR_USER_ARGS: '{"invalidate_digital_signatures":true}'
+
+    # Software tweaks
+    PAPERLESS_TASK_WORKERS: 1
+    PAPERLESS_WORKER_PREFETCH_MULTIPLIER: 1
+    PAPERLESS_TASK_ACKS_LATE: true
+    PAPERLESS_TIME_ZONE: Europe/Oslo
+    PAPERLESS_DATE_PARSER_LANGUAGES: nb+en
+    PAPERLESS_SANITY_TASK_CRON: 30 0 * * *
+
+    # Document consumption
+    PAPERLESS_CONSUMER_DELETE_DUPLICATES: true
+    PAPERLESS_CONSUMER_POLLING_INTERVAL: 0
+    CONSUMER_POLLING_INTERVAL: 0
+
+    # Webserver
+    PAPERLESS_WEBSERVER_WORKERS: 1
+    GRANIAN_WORKERS: 1
+    USERMAP_UID: 1000
+    USERMAP_GID: 1000
+
+    # Email sending
+    PAPERLESS_EMAIL_HOST: smtp.domeneshop.no
+    PAPERLESS_EMAIL_PORT: 465
+    PAPERLESS_EMAIL_HOST_USER: karlsenfr1
+    PAPERLESS_EMAIL_FROM: noreply@karlsen.fr
+    PAPERLESS_EMAIL_USE_TLS: false
+    PAPERLESS_EMAIL_USE_SSL: true
+
+    # AI: Gemini via its OpenAI-compatible endpoint (https://ai.google.dev/gemini-api/docs/openai).
+    # Sends document content and metadata to Google
+    PAPERLESS_AI_ENABLED: true
+    PAPERLESS_AI_LLM_BACKEND: openai-like
+    PAPERLESS_AI_LLM_ENDPOINT: https://generativelanguage.googleapis.com/v1beta/openai/
+    PAPERLESS_AI_LLM_MODEL: gemini-pro-latest
+    PAPERLESS_AI_LLM_EMBEDDING_BACKEND: openai-like
+    PAPERLESS_AI_LLM_EMBEDDING_ENDPOINT: https://generativelanguage.googleapis.com/v1beta/openai/
+    PAPERLESS_AI_LLM_EMBEDDING_MODEL: gemini-embedding-2
+    PAPERLESS_AI_LLM_OUTPUT_LANGUAGE: en-us
+
+persistence:
+  existingClaim: paperless-data-pvc  # Longhorn-encrypted, Velero-backed: in PersistentVolumeClaim.yaml
+
+valkey:
+  image: {repository: valkey, tag: pinned-in-common-images}  # dhi.io/valkey, pinned in common/images
+
+# Paperless to its components, and their ingress from paperless only. The gateway, the database, mail
+# and Gemini: CiliumNetworkPolicy.yaml
+ciliumNetworkPolicy:
+  enabled: true

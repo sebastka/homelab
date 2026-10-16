@@ -3,27 +3,18 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: paperless
 
-generatorOptions:
-  disableNameSuffixHash: true
-
-configMapGenerator:
-  - {name: paperless-env, envs: [assets/paperless.env]}
-  - {name: paperless-settings, files: [webserver.py=assets/settings/webserver.py]}
-  - {name: paperless-scripts, files: [post-consumption.sh=assets/scripts/post-consumption.sh, worker-health.py=assets/scripts/worker-health.py, paperless-ai-review.py=assets/scripts/paperless-ai-review.py]}
-
 components:
-  - ../../../../common/valkey
+  - ../../../../common/images  # valkey
 
 resources:
   - Namespace.yaml
-  - SealedSecret.paperless-secrets.yaml
-  - PersistentVolumeClaim.yaml
-  - ServiceAccounts.yaml
-  - Deployment.paperless.yaml
-  - Deployment.gotenberg.yaml
-  - Deployment.tika.yaml
-  - Services.yaml
-  - HTTPRoute.yaml
   - BackendTrafficPolicy.yaml
-  - SecurityPolicy.yaml
   - CiliumNetworkPolicy.yaml
+
+helmCharts:
+  - name: paperless
+    repo: oci://ghcr.io/sebastka/charts
+    version: 0.1.3
+    releaseName: paperless
+    namespace: paperless
+    valuesFile: values.yaml

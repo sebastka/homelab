@@ -1,5 +1,8 @@
 # Paperless-ngx
 
+- Chart: https://github.com/sebastka/charts/tree/master/charts/paperless (`values.yaml`). Kept here: the
+  Namespace, the Secret, the PersistentVolumeClaim (Longhorn, Velero), the HTTPRoute with its Envoy
+  Gateway policies, and a CiliumNetworkPolicy on top of the chart's (gateway, database, mail, Gemini)
 - Git: https://github.com/paperless-ngx/paperless-ngx
 - Documentation:
   + Advanced Topics: https://docs.paperless-ngx.com/advanced_usage
@@ -16,11 +19,11 @@ Rootlessness achieved by running the [scripts](https://github.com/paperless-ngx/
 ## Administration:
 
 All logs:
-- `kubectl -n paperless logs --all-containers --max-log-requests 10 --follow pods/<pod-name>`
+- `kubectl -n paperless logs --all-containers --max-log-requests 15 --follow deploy/paperless`
 
 Sanity check:
 - `python3 manage.py document_sanity_checker`
-- `kubectl -n paperless exec -it <pod-name> -c paperless-celery-worker -- python3 manage.py document_sanity_checker`
+- `kubectl -n paperless exec -it deploy/paperless -c worker -- python3 manage.py document_sanity_checker`
 
 ## To do:
 

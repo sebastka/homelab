@@ -4,3 +4,7 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - SealedSecret.paperless-secrets.yaml
+  - PersistentVolumeClaim.yaml
+  - HTTPRoute.yaml
+  - SecurityPolicy.yaml

@@ -1,3 +1,6 @@
+# On top of the chart's (ciliumNetworkPolicy.enabled in values.yaml): paperless to Valkey, Tika and
+# Gotenberg, tessdata's downloads, and those components' ingress from paperless only. Cilium allows the
+# union of every policy selecting an endpoint, so this one only adds what is specific to this cluster.
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
@@ -9,35 +12,9 @@ spec:
   ingress:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8000', protocol: TCP}]]}
   egress:
-    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: valkey}], toPorts: [ports: [{port: '6379', protocol: TCP}]]}
-    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: tika}], toPorts: [ports: [{port: '9998', protocol: TCP}]]}
-    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: gotenberg}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Needed for OIDC / Authelia
     - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toFQDNs: [matchName: imap.domeneshop.no], toPorts: [ports: [{port: '993', protocol: TCP}]]}
     - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}
     - {toFQDNs: [{matchName: api.github.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}
-    - {toFQDNs: [matchName: raw.githubusercontent.com], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # tessdata init container
     - {toFQDNs: [matchName: generativelanguage.googleapis.com], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Gemini: AI suggestions + embeddings
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-gotenberg
-  namespace: paperless
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: gotenberg}}
-  ingress:
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: paperless}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}
-  # egress: []
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-tika
-  namespace: paperless
-spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: tika}}
-  ingress:
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: paperless, app.kubernetes.io/name: paperless}], toPorts: [ports: [{port: '9998', protocol: TCP}]]}
-  # egress: []
