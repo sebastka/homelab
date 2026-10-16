@@ -1,0 +1,16 @@
+# The store (deduplicated chunks) and its SQLite database. Only builds missing from cache.nixos.org (upstream key
+# skipped at push), unused ones removed after 30 days (server.toml): a few tens of GB. Rebuildable: a lost volume only
+# costs one rebuild, so no recurring backup (no recurring-job labels).
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: attic-data-pvc
+  namespace: attic
+  labels:
+    app.kubernetes.io/name: attic
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 25Gi}}
+  storageClassName: longhorn-encrypted
+  # volumeName: attic-data-pv  # Keep empty to automatically provision a volume

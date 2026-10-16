@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: attic
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - {namespace: attic, name: attic-config, files: [server.toml=assets/server.toml]}
+
+resources:
+  - Namespace.yaml
+  - ServiceAccount.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - CiliumNetworkPolicy.yaml

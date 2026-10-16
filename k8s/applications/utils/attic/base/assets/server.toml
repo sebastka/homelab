@@ -1,0 +1,29 @@
+# Attic: https://github.com/zhaofengli/attic/blob/main/server/src/config-template.toml
+# The token signing key comes from the environment: ATTIC_SERVER_TOKEN_RS256_SECRET_BASE64 (attic-secrets).
+
+listen = "[::]:8080"
+allowed-hosts = ["attic.karlsen.app"]
+api-endpoint = "https://attic.karlsen.app/"
+
+# One instance, its database beside the store, on the same volume
+[database]
+url = "sqlite:///var/lib/attic/server.db?mode=rwc"
+
+[storage]
+type = "local"
+path = "/var/lib/attic/storage"
+
+# Deduplication: NARs above 64 KiB are split into chunks, shared between paths and versions
+[chunking]
+nar-size-threshold = 65536
+min-size = 16384
+avg-size = 65536
+max-size = 262144
+
+[compression]
+type = "zstd"
+
+# Paths unused for 30 days are removed (per cache: `attic cache configure --retention-period`)
+[garbage-collection]
+interval = "12 hours"
+default-retention-period = "30 days"

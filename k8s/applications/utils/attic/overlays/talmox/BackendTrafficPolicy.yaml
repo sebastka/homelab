@@ -1,0 +1,18 @@
+# Replaces the default gateway's default-backend-traffic-policy for this route (no mergeType):
+# - a higher rate limit: a host's switch asks the cache for thousands of paths (one .narinfo request each), far above
+#   its 300 requests a minute. Still one, the route being public.
+# - no timeout: pushes of large NARs (and their download) outlast Envoy's default request timeout
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: nix-cache
+  namespace: attic
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  rateLimit:
+    global:
+      rules:
+        - {clientSelectors: [{sourceCIDR: {type: Distinct, value: 0.0.0.0/0}}], limit: {requests: 6000, unit: Minute}}
+  timeout: {http: {requestTimeout: 0s, maxStreamDuration: 0s}}

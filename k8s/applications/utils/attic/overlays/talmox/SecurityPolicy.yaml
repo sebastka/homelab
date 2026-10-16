@@ -1,0 +1,14 @@
+# Open past the default gateway's default-deny-ingress (LAN only): Attic's tokens decide who reads and writes.
+# Cross namespace attachment?
+# - https://github.com/envoyproxy/gateway/issues/5143
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-all-http
+  namespace: attic
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  authorization:
+    defaultAction: Allow

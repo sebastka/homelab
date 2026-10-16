@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: attic
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: attic
+  ports:
+    - {name: http, protocol: TCP, port: 80, targetPort: http}

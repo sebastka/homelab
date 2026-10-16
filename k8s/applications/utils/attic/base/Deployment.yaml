@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: attic
+  namespace: attic
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  strategy: {type: Recreate}  # One instance: SQLite, and a ReadWriteOncePod volume
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: attic
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: attic
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: attic
+      labels:
+        app.kubernetes.io/name: attic
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: attic
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: attic
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: attic
+          # Image: https://github.com/zhaofengli/attic/blob/main/flake/packages.nix (attic-server-image)
+          # Tags are commits only (no releases): latest, pinned by digest.
+          image: ghcr.io/zhaofengli/attic:latest@sha256:18574aba70fc89d2b695273fbe2e7b2f8ad7e8e786b4cc535124fbe14bada1d0
+          args: [-f, /etc/attic/server.toml, --mode, monolithic]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          env:
+            - {name: TZ, value: Europe/Oslo}
+            - {name: RUST_LOG, value: info}
+          envFrom:
+            - secretRef: {name: attic-secrets}  # ATTIC_SERVER_TOKEN_RS256_SECRET_BASE64
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 1Gi}  # Chunking and zstd of large NARs while they are pushed
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8080}
+          startupProbe: {tcpSocket: {port: 8080}, initialDelaySeconds: 2, periodSeconds: 5, failureThreshold: 12}
+          livenessProbe: {tcpSocket: {port: 8080}, periodSeconds: 60}
+          readinessProbe: {tcpSocket: {port: 8080}, periodSeconds: 30}
+          volumeMounts:
+            - {name: config-volume,     mountPath: /etc/attic/server.toml, subPath: server.toml, readOnly: true}
+            - {name: attic-data-volume, mountPath: /var/lib/attic,         subPath: attic-data,  readOnly: false}
+            - {name: tmp-volume,        mountPath: /tmp,                   subPath: tmp,         readOnly: false}
+      volumes:
+        - {name: config-volume, configMap: {name: attic-config}}
+        - {name: attic-data-volume, persistentVolumeClaim: {claimName: attic-data-pvc}}
+        - {name: tmp-volume, emptyDir: {}}

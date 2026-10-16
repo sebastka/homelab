@@ -8,6 +8,7 @@ spec:
   sourceRepos: [git@github.com:sebastka/homelab.git]
   destinations:
     - {namespace: default,                       name: talmox}
+    - {namespace: attic,                         name: talmox}
     - {namespace: carat,                         name: talmox}
     - {namespace: deluge,                        name: talmox}
     - {namespace: element-admin,                 name: talmox}
