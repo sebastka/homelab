@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=values.schema.json
+# https://github.com/actions/actions-runner-controller/blob/master/charts/gha-runner-scale-set-controller/values.yaml
+---
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile: {type: RuntimeDefault}
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: {drop: [ALL]}
+
+resources:
+  requests: {memory: 64Mi}
+  limits: {memory: 256Mi}
+
+flags:
+  logLevel: info
+  logFormat: json
+  watchSingleNamespace: arc-runners
+  healthProbeBindAddress: ':8081'

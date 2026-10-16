@@ -25,6 +25,10 @@
 # infrastructure/auth/step-ca
 - cr.smallstep.com/smallstep/step-ca
 
+# infrastructure/controllers/arc (controller and listeners), arc-runners (runners)
+- ghcr.io/actions/gha-runner-scale-set-controller
+- ghcr.io/sebastka/nix-actions-runner
+
 # infrastructure/controllers/argocd
 # - ecr-public.aws.com/docker/library/redis
 # - ecr-public.aws.com/docker/library/haproxy

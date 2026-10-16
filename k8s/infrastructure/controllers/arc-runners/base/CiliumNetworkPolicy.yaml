@@ -1,0 +1,12 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-runners
+  namespace: arc-runners
+spec:
+  endpointSelector: {}
+  # ingress: []
+  egress:
+    - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}, {port: '80', protocol: TCP}]]}
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # attic.karlsen.app (via the Gateway)

@@ -9,6 +9,8 @@ spec:
   destinations:
     - {namespace: default,              name: talmox}
     - {namespace: argocd,               name: talmox}
+    - {namespace: arc-systems,          name: talmox}
+    - {namespace: arc-runners,          name: talmox}
     - {namespace: kube-system,          name: talmox}
     - {namespace: cert-manager,         name: talmox}
     - {namespace: crowdsec,             name: talmox}

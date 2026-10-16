@@ -1,0 +1,12 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-arc
+  namespace: arc-systems
+spec:
+  endpointSelector: {}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toFQDNs: [{matchName: api.github.com}, {matchName: github.com}, {matchPattern: '*.actions.githubusercontent.com'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}

@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=values.schema.json
+# https://github.com/actions/actions-runner-controller/blob/master/charts/gha-runner-scale-set/values.yaml
+---
+
+githubConfigUrl: https://github.com/sebastka/nixos
+# GitHub App (Repository permissions: Administration: Read and write, Metadata: Read-only), installed on
+# sebastka/nixos only: github_app_id, github_app_installation_id, github_app_private_key (SealedSecret.github-app.yaml)
+githubConfigSecret: github-app
+
+runnerScaleSetName: talmox-nix  # runs-on: talmox-nix
+minRunners: 0
+maxRunners: 2
+
+# Explicit: the chart otherwise looks the controller up in the live cluster (Helm's `lookup`), empty when rendered
+controllerServiceAccount:
+  namespace: arc-systems
+  name: arc-gha-rs-controller
+
+# The listener (in arc-systems: its long poll to GitHub)
+listenerTemplate:
+  spec:
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 65532
+      runAsGroup: 65532
+      seccompProfile: {type: RuntimeDefault}
+    containers:
+      - name: listener
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: {drop: [ALL]}
+        resources:
+          requests: {memory: 32Mi}
+          limits: {memory: 128Mi}
+
+# The runners: GitHub's runner with Nix, single-user, unprivileged (uid 1001, no capabilities, no sandbox). Builds
+# write to the container's own filesystem (/nix, the workspace): ephemeral storage, gone with the pod.
+template:
+  spec:
+    automountServiceAccountToken: false  # Jobs run arbitrary code: no Kubernetes API token for them
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1001
+      runAsGroup: 1001
+      seccompProfile: {type: RuntimeDefault}
+    containers:
+      - name: runner
+        image: ghcr.io/sebastka/nix-actions-runner:sha-6683d3023a415942ea5a17b2d81eb210ee0bd720@sha256:433a10454ebe99833868bac064990681973561ec7851e8b6301112ed0b0c2d43
+        command: [/home/runner/run.sh]
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: {drop: [ALL]}
+        resources:
+          requests: {cpu: '2', memory: 8192Mi, ephemeral-storage: 20Gi}
+          limits: {memory: 24576Mi, ephemeral-storage: 80Gi}
