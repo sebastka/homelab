@@ -209,6 +209,9 @@
 # applications/public/synapse
 - ghcr.io/element-hq/synapse
 
+# applications/utils/attic
+- ghcr.io/zhaofengli/attic
+
 # applications/utils/carat
 # carat ships FROM scratch and is mounted as an image volume
 # (spec.volumes[].image), which this policy does not walk - only the
