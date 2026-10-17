@@ -11,21 +11,32 @@ only ever stores them encrypted, and passes them on to the other desktops, which
 - Web UI: <https://syncthing.talmox.hera.home.karlsen.fr>, LAN and tailnet only. The `gui` Service is
   ClusterIP, the route is on the internal gateway (not forwarded by helios), and the
   CiliumNetworkPolicy only admits 8384 from that gateway's proxies, never the public one's. Only
-  22000 is public. Behind Syncthing's login too: the init container sets its credentials from
-  `SealedSecret.syncthing-gui.yaml` on every start.
-- Data: `syncthing-data-pvc` (config, keys, index, encrypted folders), with Longhorn recurring
-  snapshots and the nightly Velero backup.
+  22000 is public. Behind Syncthing's login too (user and password hash in `config.xml`).
+- Config and identity in git: `SealedSecret.syncthing-config.yaml` (`config.xml`, with the login and
+  API key) and `SealedSecret.syncthing-identity.yaml` (`cert.pem`/`key.pem`: the device ID, kept even
+  if the PVC is lost). The plaintext `Secret.*.yaml` next to them are gitignored.
+- Data: `syncthing-data-pvc` (index, encrypted folders), with Longhorn recurring snapshots and the
+  nightly Velero backup.
+
+## Config changes
+
+The `config` init container copies the Secrets onto the PVC on every start, overwriting the live
+`config.xml`: git is the source of truth. Changes made in the web UI (accepting a device or folder)
+work, but only until the next restart. Before overwriting, the init container logs the lines the live
+config has that git doesn't (`kubectl logs -n syncthing deploy/syncthing -c config`), and the
+reverse. To keep a change, add it to `config.xml` in `Secret.syncthing-config.yaml` and reseal it.
+
+After a Syncthing upgrade that changes the config format (the `version` attribute), Syncthing
+migrates the copy at every start, and the log lists the differences until git's `config.xml` is
+updated too.
 
 ## First deployment
 
 1. Create the Longhorn volume `syncthing-data-pv` (20 GiB, `longhorn-encrypted`) and its PV.
 2. Sync the kyverno app first (it allows `docker.io/syncthing/syncthing`), then this one.
-3. In the web UI:
-   - Settings > Connections: untick global discovery, local discovery, relaying and NAT traversal
-     (the desktops know its address). Keep the listen address `default`.
-   - Settings > General: usage reporting off.
-   - Remove the "Default Folder" that `syncthing generate` creates (it is shared with no one).
-   - Actions > Show ID: the server's device ID.
+
+The config in git already disables global and local discovery, relaying, NAT traversal and usage
+reporting (the desktops know the server's address). The device ID is in Actions > Show ID.
 
 ## Desktops
 
@@ -33,7 +44,9 @@ only ever stores them encrypted, and passes them on to the other desktops, which
    `syncthing-encryption-password` (a long random password, the same on every desktop) to
    `secrets/desktop.sops.yaml`. Rebuild each desktop.
 2. Here, accept each desktop's connection request (or add its device ID), then accept the folders it
-   offers: they are set up as "Receive Encrypted".
+   offers: they are set up as "Receive Encrypted". Then copy the new `<device>` and `<folder>` entries
+   into git's `config.xml` before the next restart, from the live config:
+   `kubectl exec -n syncthing deploy/syncthing -- cat /var/syncthing/config/config.xml`.
 
 The encryption password never reaches the server. Keep it safe: without it, the server's copies (and
 their backups) cannot be decrypted.

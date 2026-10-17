@@ -5,7 +5,7 @@ metadata:
   name: syncthing
   namespace: syncthing
   annotations:
-    reloader.stakater.com/auto: 'true'  # UI credentials
+    reloader.stakater.com/auto: 'true'  # Config and identity (Secrets)
 spec:
   strategy: {type: Recreate}
   replicas: 1
@@ -33,28 +33,39 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:
-        # Creates the keys (the device ID) and config on first start, and (re)applies the web UI
-        # credentials from the Secret on every start; an existing identity is kept.
-        - name: generate
+        # The config and identity come from git (the Secrets): copied onto the PVC on every start, where
+        # Syncthing can still write them (config migrations on upgrade, UI changes until the next restart).
+        # Before overwriting, logs what the live config.xml has that git doesn't: add it to the Secret to keep it.
+        - name: config
           # Dockerfile: https://github.com/syncthing/syncthing/blob/main/Dockerfile
           image: docker.io/syncthing/syncthing:2.1.6@sha256:4d0281bdcb4ed9baf503d251d0544ddd856f49fce3f114056257ae172b7fb670
           command: [/bin/sh, -c]
           args:
-            - exec /bin/syncthing generate --home=/var/syncthing/config --no-port-probing --gui-user="$GUI_USER" --gui-password="$GUI_PASSWORD"
-          env:
-            - {name: HOME,         value: /var/syncthing}
-            - {name: GUI_USER,     valueFrom: {secretKeyRef: {name: syncthing-gui, key: username}}}
-            - {name: GUI_PASSWORD, valueFrom: {secretKeyRef: {name: syncthing-gui, key: password}}}
+            - |
+              set -eu
+              dir=/var/syncthing/config
+              mkdir -p "$dir"
+              if [ -f "$dir/config.xml" ] && ! cmp -s /seed/config/config.xml "$dir/config.xml"; then
+                # -U0: changed lines only; a changed value shows up in both lists
+                changes=$(diff -U0 /seed/config/config.xml "$dir/config.xml" | sed -E 's#(<(password|apikey)>)[^<]*#\1REDACTED#' || true)
+                echo 'config.xml: missing from git (live only, now overwritten; add them to the Secret to keep them):'
+                echo "$changes" | sed -n 's/^+\([^+]\)/  \1/p'
+                echo 'config.xml: in git only (dropped or changed by Syncthing, e.g. on upgrade):'
+                echo "$changes" | sed -n 's/^-\([^-]\)/  \1/p'
+              fi
+              cp /seed/config/config.xml /seed/identity/cert.pem /seed/identity/key.pem "$dir/"
+              chmod 600 "$dir/config.xml" "$dir/key.pem"
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
           resources:
-            requests: {memory: 32Mi}
-            limits: {memory: 128Mi}
+            requests: {memory: 16Mi}
+            limits: {memory: 64Mi}
           volumeMounts:
-            - {name: data, mountPath: /var/syncthing, subPath: data, readOnly: false}
-            - {name: tmp,  mountPath: /tmp,           subPath: tmp,  readOnly: false}
+            - {name: data-volume,     mountPath: /var/syncthing, subPath: data, readOnly: false}
+            - {name: config-volume,   mountPath: /seed/config,                  readOnly: true}
+            - {name: identity-volume, mountPath: /seed/identity,                readOnly: true}
       containers:
         - name: syncthing
           # Dockerfile: https://github.com/syncthing/syncthing/blob/main/Dockerfile
@@ -79,8 +90,10 @@ spec:
           livenessProbe:  {httpGet: {port: gui, path: /rest/noauth/health}, periodSeconds: 60, failureThreshold: 3}
           readinessProbe: {httpGet: {port: gui, path: /rest/noauth/health}, periodSeconds: 15}
           volumeMounts:
-            - {name: data, mountPath: /var/syncthing, subPath: data, readOnly: false}
-            - {name: tmp,  mountPath: /tmp,           subPath: tmp,  readOnly: false}
+            - {name: tmp-volume,  mountPath: /tmp,           subPath: run-tmp, readOnly: false}
+            - {name: data-volume, mountPath: /var/syncthing, subPath: data,    readOnly: false}
       volumes:
-        - {name: data, persistentVolumeClaim: {claimName: syncthing-data-pvc}}
-        - {name: tmp, emptyDir: {}}
+        - {name: tmp-volume,      emptyDir: {}}
+        - {name: data-volume,     persistentVolumeClaim: {claimName: syncthing-data-pvc}}
+        - {name: config-volume,   secret:                {secretName: syncthing-config}}
+        - {name: identity-volume, secret:                {secretName: syncthing-identity}}
