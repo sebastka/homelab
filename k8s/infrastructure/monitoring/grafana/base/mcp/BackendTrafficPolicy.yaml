@@ -6,7 +6,6 @@ metadata:
   name: mcp-stream-timeout
   namespace: grafana
 spec:
-  mergeType: StrategicMerge  # Merge with the Gateway-scoped policy so its settings still apply here.
   targetRefs:
     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: mcp-grafana}
   timeout: {http: {requestTimeout: 0s, maxStreamDuration: 0s}}
