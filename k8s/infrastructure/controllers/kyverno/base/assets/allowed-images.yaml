@@ -272,5 +272,8 @@
 # applications/utils/searxng
 - docker.io/searxng/searxng
 
+# applications/utils/syncthing
+- docker.io/syncthing/syncthing
+
 # applications/utils/thelounge
 - ghcr.io/thelounge/thelounge

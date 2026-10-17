@@ -107,6 +107,15 @@ resource "cloudflare_dns_record" "karlsenfr_cname_openpgpkey" {
   zone_id = cloudflare_zone.karlsenfr.id
 }
 
+resource "cloudflare_dns_record" "karlsenfr_cname_sync" {
+  content = cloudflare_zone.karlsenfr.name
+  name    = "sync"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  zone_id = cloudflare_zone.karlsenfr.id
+}
+
 resource "cloudflare_dns_record" "karlsenfr_cname_www" {
   content = cloudflare_zone.karlsenfr.name
   name    = "www"

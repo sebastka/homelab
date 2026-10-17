@@ -1,0 +1,13 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-syncthing
+  namespace: syncthing
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: syncthing}}
+  ingress:
+    - {fromEntities: [world], toPorts: [ports: [{port: '22000', protocol: TCP}, {port: '22000', protocol: UDP}]]}  # Devices: LAN and internet
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: tailscale}}], toPorts: [ports: [{port: '22000', protocol: TCP}, {port: '22000', protocol: UDP}]]}  # Devices on the tailnet, via the Connector
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system, gateway.envoyproxy.io/owning-gateway-namespace: gateway, gateway.envoyproxy.io/owning-gateway-name: internal}}], toPorts: [ports: [{port: '8384', protocol: TCP}]]}  # Web UI: internal gateway only (LAN and tailnet), never the public one
+  # egress: []  # none: the desktops connect to it (global discovery, relays and NAT traversal disabled)

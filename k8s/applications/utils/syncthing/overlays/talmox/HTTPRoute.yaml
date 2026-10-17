@@ -1,0 +1,14 @@
+# Web UI on the internal gateway (LAN and tailnet only), behind Syncthing's own login
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: gui
+  namespace: syncthing
+spec:
+  parentRefs:
+    - {namespace: gateway, name: internal, sectionName: https-wc-talmox-hera-home-karlsen-fr}
+  hostnames: [syncthing.talmox.hera.home.karlsen.fr]
+  rules:
+    - matches: [path: {type: PathPrefix, value: /}]
+      backendRefs: [{name: gui, kind: Service, port: 80}]

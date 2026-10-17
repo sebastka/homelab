@@ -1,0 +1,18 @@
+# Config, keys (the device identity), index database and the encrypted folders. Create the
+# Longhorn volume syncthing-data-pv (longhorn-encrypted) before the first sync.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: syncthing-data-pvc
+  namespace: syncthing
+  labels:
+    app.kubernetes.io/name: syncthing
+    recurring-job.longhorn.io/source: enabled
+    recurring-job-group.longhorn.io/group1: enabled
+    backup.velero.io/nightly-hetzner: enabled
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 20Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: syncthing-data-pv

@@ -19,6 +19,7 @@ spec:
     - {namespace: ntfy,                          name: talmox}
     - {namespace: paperless,                     name: talmox}
     - {namespace: searxng,                       name: talmox}
+    - {namespace: syncthing,                     name: talmox}
     - {namespace: thelounge,                     name: talmox}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}

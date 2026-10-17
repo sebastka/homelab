@@ -1,0 +1,86 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syncthing
+  namespace: syncthing
+  annotations:
+    reloader.stakater.com/auto: 'true'  # UI credentials
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: syncthing
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: syncthing
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: syncthing
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: syncthing
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: syncthing
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        # Creates the keys (the device ID) and config on first start, and (re)applies the web UI
+        # credentials from the Secret on every start; an existing identity is kept.
+        - name: generate
+          # Dockerfile: https://github.com/syncthing/syncthing/blob/main/Dockerfile
+          image: docker.io/syncthing/syncthing:2.1.6@sha256:4d0281bdcb4ed9baf503d251d0544ddd856f49fce3f114056257ae172b7fb670
+          command: [/bin/sh, -c]
+          args:
+            - exec /bin/syncthing generate --home=/var/syncthing/config --no-port-probing --gui-user="$GUI_USER" --gui-password="$GUI_PASSWORD"
+          env:
+            - {name: HOME,         value: /var/syncthing}
+            - {name: GUI_USER,     valueFrom: {secretKeyRef: {name: syncthing-gui, key: username}}}
+            - {name: GUI_PASSWORD, valueFrom: {secretKeyRef: {name: syncthing-gui, key: password}}}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 32Mi}
+            limits: {memory: 128Mi}
+          volumeMounts:
+            - {name: data, mountPath: /var/syncthing, subPath: data, readOnly: false}
+            - {name: tmp,  mountPath: /tmp,           subPath: tmp,  readOnly: false}
+      containers:
+        - name: syncthing
+          # Dockerfile: https://github.com/syncthing/syncthing/blob/main/Dockerfile
+          image: docker.io/syncthing/syncthing:2.1.6@sha256:4d0281bdcb4ed9baf503d251d0544ddd856f49fce3f114056257ae172b7fb670
+          args: [serve, --home=/var/syncthing/config, --no-browser]
+          env:
+            - {name: HOME, value: /var/syncthing}
+            - {name: STGUIADDRESS, value: '0.0.0.0:8384'}
+            - {name: STNOUPGRADE, value: '1'}  # Upgrades come with the image (Renovate)
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 128Mi}
+            limits: {memory: 512Mi}
+          ports:
+            - {name: sync-tcp,  protocol: TCP, containerPort: 22000}
+            - {name: sync-quic, protocol: UDP, containerPort: 22000}
+            - {name: gui,       protocol: TCP, containerPort: 8384}
+          startupProbe:   {httpGet: {port: gui, path: /rest/noauth/health}, periodSeconds: 5,  failureThreshold: 60}
+          livenessProbe:  {httpGet: {port: gui, path: /rest/noauth/health}, periodSeconds: 60, failureThreshold: 3}
+          readinessProbe: {httpGet: {port: gui, path: /rest/noauth/health}, periodSeconds: 15}
+          volumeMounts:
+            - {name: data, mountPath: /var/syncthing, subPath: data, readOnly: false}
+            - {name: tmp,  mountPath: /tmp,           subPath: tmp,  readOnly: false}
+      volumes:
+        - {name: data, persistentVolumeClaim: {claimName: syncthing-data-pvc}}
+        - {name: tmp, emptyDir: {}}
