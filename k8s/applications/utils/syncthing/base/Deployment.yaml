@@ -73,8 +73,8 @@ spec:
           args: [serve, --home=/var/syncthing/config, --no-browser]
           env:
             - {name: HOME, value: /var/syncthing}
-            - {name: STGUIADDRESS, value: '0.0.0.0:8384'}
-            - {name: STNOUPGRADE, value: '1'}  # Upgrades come with the image (Renovate)
+            - {name: STNOUPGRADE, value: '1'}                # Upgrades come with the image (Renovate)
+            # - {name: STGUIADDRESS, value: '0.0.0.0:8384'}  # Set in config.xml
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true

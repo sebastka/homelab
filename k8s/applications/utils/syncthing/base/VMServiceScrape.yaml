@@ -1,0 +1,13 @@
+---
+# Syncthing's Prometheus metrics, on the web UI port (metricsWithoutAuth in config.xml). Network
+# access: allow-vmagent-scrape (cilium).
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: syncthing
+  namespace: syncthing
+spec:
+  selector:
+    matchLabels: {app.kubernetes.io/name: syncthing, app.kubernetes.io/component: gui}
+  endpoints:
+    - {port: http, path: /metrics, interval: 60s}

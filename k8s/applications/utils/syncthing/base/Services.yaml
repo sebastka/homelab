@@ -4,6 +4,9 @@ kind: Service
 metadata:
   name: gui
   namespace: syncthing
+  labels:
+    app.kubernetes.io/name: syncthing
+    app.kubernetes.io/component: gui  # VMServiceScrape
 spec:
   type: ClusterIP
   selector:

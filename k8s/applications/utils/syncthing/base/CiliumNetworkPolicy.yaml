@@ -1,4 +1,5 @@
 ---
+# Metrics (vmagent to 8384): allow-vmagent-scrape (cilium), cluster-wide.
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:

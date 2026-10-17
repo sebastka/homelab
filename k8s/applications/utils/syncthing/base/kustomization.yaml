@@ -9,3 +9,4 @@ resources:
   - Deployment.yaml
   - Services.yaml
   - CiliumNetworkPolicy.yaml
+  - VMServiceScrape.yaml
