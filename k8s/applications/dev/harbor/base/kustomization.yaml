@@ -18,7 +18,7 @@ resources:
 helmCharts:
   - name: harbor
     repo: https://helm.goharbor.io
-    version: 1.19.2
+    version: 1.19.4
     releaseName: harbor
     namespace: harbor
     includeCRDs: true
