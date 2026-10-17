@@ -1,18 +1,5 @@
----
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: BackendTrafficPolicy
-metadata:
-  name: internal-backend-traffic-policy
-  namespace: gateway
-spec:
-  targetRefs:
-    - {group: gateway.networking.k8s.io, kind: Gateway, name: internal}
-  rateLimit:
-    global:
-      rules:
-        - clientSelectors: [{sourceCIDR: {type: Distinct, value: 0.0.0.0/0}}]
-          limit: {requests: 500, unit: Minute}
-          shared: true
+# No rate limit on the internal gateway (LAN and tailnet only): its busy UIs (Syncthing, Grafana, the MCP servers)
+# polled from one machine went over a shared per-client limit.
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: BackendTrafficPolicy
@@ -27,4 +14,4 @@ spec:
       rules:
         - clientSelectors: [{sourceCIDR: {type: Distinct, value: 0.0.0.0/0}}]
           limit: {requests: 300, unit: Minute}
-          shared: true
+          shared: false  # Per route: each public route has its own 300 a minute per client IP
