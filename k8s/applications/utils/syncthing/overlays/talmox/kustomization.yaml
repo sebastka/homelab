@@ -8,3 +8,4 @@ resources:
   - SealedSecret.syncthing-config.yaml
   - SealedSecret.syncthing-identity.yaml
   - HTTPRoute.yaml
+  - BackendTrafficPolicy.yaml
