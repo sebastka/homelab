@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# The I226-V's (igc) receive rings at their maximum, 4096 descriptors (256 by default): a burst at 2.5 Gbit/s fills
+# 256 in about a millisecond if the CPU doesn't empty them in time, and the packets past it are lost
+# (rx_missed_errors). With C3 off (./04-cpuidle.yaml), losses stayed at 0.15-0.29% on enp85s0 (2026-10-20).
+# Changing a ring resets its link for a second or two: apply one node at a time.
+# Check: talosctl -n <node> get ethernetstatus enp85s0 -o yaml    (rings: rx: 4096)
+---
+apiVersion: v1alpha1
+kind: EthernetConfig
+name: enp85s0
+rings:
+  rx: 4096
+---
+apiVersion: v1alpha1
+kind: EthernetConfig
+name: enp86s0
+rings:
+  rx: 4096
