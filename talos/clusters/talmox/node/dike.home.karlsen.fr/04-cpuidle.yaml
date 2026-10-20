@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# No C3 (C3_ACPI, 1048 us to wake): the I226-V's (igc) RX FIFO overflows while the CPU wakes from it, and bursts at
+# 2.5 Gbit/s (node to node, WireGuard) lose packets: rx_missed_errors, 0.1% of received packets on the bond in 6.9 days
+# (2026-10-20). C2 (127 us) stays, fast enough. The Core Ultra 7 356H only has ACPI C-states here (intel_idle has no
+# native table for it): POLL, C1 (state1), C2 (state2), C3 (state3), on its 16 CPUs.
+# Check: talosctl -n <node> read /sys/devices/system/cpu/cpu0/cpuidle/state3/disable    (1)
+#        talosctl -n <node> read /sys/class/net/enp85s0/statistics/rx_missed_errors     (the losses)
+---
+apiVersion: v1alpha1
+kind: SysfsConfig
+params:
+  devices.system.cpu.cpu0.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu1.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu2.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu3.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu4.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu5.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu6.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu7.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu8.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu9.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu10.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu11.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu12.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu13.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu14.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu15.cpuidle.state3.disable: '1'

@@ -2,8 +2,9 @@
 # Expected schematic ID:
 # a0e669220b6b31597a405507ddd55d5c9aa532811f70815113caea19e2e5a249
 #
-# ASUS NUC 16 Pro: Intel Panther Lake (iGPU up to Arc B390), 2x Intel I226-V 2.5GbE (igc, in the
-# kernel), 2x Thunderbolt 4. Same as schematic.yaml minus qemu-guest-agent, plus:
+# ASUS NUC 16 Pro (RNUC16GDKU760002): Intel Core Ultra 7 356H, Panther Lake (iGPU: Intel Graphics,
+# not Arc), 2x Intel I226-V 2.5GbE (igc, in the kernel), 2x Thunderbolt 4. Same as schematic.yaml
+# minus qemu-guest-agent, plus:
 #   intel-ucode  CPU microcode, which a VM gets from its host but bare metal has to load itself
 #   xe           iGPU driver, with the GuC, HuC and GSC firmware (xe/ptl_*.bin)
 #   i915         only for its firmware: Panther Lake's display DMC (i915/xe3lpd*_dmc.bin) lives
