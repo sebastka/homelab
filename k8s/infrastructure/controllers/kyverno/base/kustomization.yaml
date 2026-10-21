@@ -52,7 +52,7 @@ resources:
 helmCharts:
   - name: kyverno
     repo: oci://ghcr.io/kyverno/charts
-    version: 3.9.1
+    version: 3.9.2
     releaseName: kyverno
     namespace: kyverno
     includeCRDs: true
