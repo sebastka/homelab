@@ -42,7 +42,7 @@ spec:
         # image ships there; since 7.4.15 the entrypoint copies ssl/ssl_ca into ssl/ssl_ca_internal and
         # fails without them. Seed the emptyDir with the image's own layout.
         - name: seed-var-lib
-          image: docker.io/zabbix/zabbix-server-pgsql:alpine-7.4.15@sha256:777870429c94636f2396fd414a259080d167926552543c31b20ae9d0c9f2847f
+          image: docker.io/zabbix/zabbix-server-pgsql:alpine-7.4.16@sha256:3f6aed2097b8413f64de381f131450965cf20de9ff3ab03c2139a608d7f556ef
           command: [cp, -R, /var/lib/zabbix/., /seed/]  # Not -a: a non-root user cannot preserve the image's ownership
           securityContext:
             allowPrivilegeEscalation: false
@@ -56,7 +56,7 @@ spec:
       containers:
         - name: backend
           # Dockerfile: https://github.com/zabbix/zabbix-docker/blob/7.4/Dockerfiles/server-pgsql/alpine/Dockerfile
-          image: docker.io/zabbix/zabbix-server-pgsql:alpine-7.4.15@sha256:777870429c94636f2396fd414a259080d167926552543c31b20ae9d0c9f2847f
+          image: docker.io/zabbix/zabbix-server-pgsql:alpine-7.4.16@sha256:3f6aed2097b8413f64de381f131450965cf20de9ff3ab03c2139a608d7f556ef
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
