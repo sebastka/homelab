@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
-# The I226-V's (igc) receive rings at their maximum, 4096 descriptors (256 by default): a burst at 2.5 Gbit/s fills
-# 256 in about a millisecond if the CPU doesn't empty them in time, and the packets past it are lost
-# (rx_missed_errors). With C3 off (./04-cpuidle.yaml), losses stayed at 0.15-0.29% on enp85s0 (2026-10-20).
+# The I226-V's (igc) receive rings at their maximum, 4096 descriptors (256 by default): headroom for bursts at
+# 2.5 Gbit/s, which fill 256 in about a millisecond if the CPU doesn't empty them in time. Not the cause of the
+# losses (rx_missed_errors: PCIe ASPM, ./04-sysfs.yaml), kept all the same: a few MB of memory.
 # Changing a ring resets its link for a second or two: apply one node at a time.
 # Check: talosctl -n <node> get ethernetstatus enp85s0 -o yaml    (rings: rx: 4096)
 ---

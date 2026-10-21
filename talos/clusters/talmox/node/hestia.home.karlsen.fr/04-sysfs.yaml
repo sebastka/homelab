@@ -8,10 +8,13 @@
 # Check: talosctl -n <node> read /sys/class/net/enp85s0/device/link/l1_aspm    (0)
 #        talosctl -n <node> read /sys/class/net/enp85s0/statistics/rx_missed_errors     (the losses)
 #
-# Also no C3 (C3_ACPI, 1048 us to wake): the first suspect, which didn't reduce the losses. To revert once ASPM off is
-# confirmed here, unless it saves power (hera: 21 -> 18 W without it). The Core Ultra 7 356H only has ACPI C-states
-# here (intel_idle has no native table for it): POLL, C1 (state1), C2 (state2), C3 (state3), on its 16 CPUs.
-# Check: talosctl -n <node> read /sys/devices/system/cpu/cpu0/cpuidle/state3/disable    (1)
+# Also no C3 (C3_ACPI, 1048 us to wake): the first suspect, which didn't reduce the losses, kept for power. The CPUs
+# wake about every 0.5 ms, more often than C3's round trip: on hera (same CPU family), package power 21 -> 18 W
+# without it. The Core Ultra 7 356H only has ACPI C-states here (intel_idle has no native table for it): POLL, C1
+# (state1), C2 (state2), C3 (state3), on its 16 CPUs. By number: after a Talos upgrade, check state3 is still C3_ACPI
+# (a kernel with native C-states would renumber them).
+# Check: talosctl -n <node> read /sys/devices/system/cpu/cpu0/cpuidle/state3/name       (C3_ACPI)
+#        talosctl -n <node> read /sys/devices/system/cpu/cpu0/cpuidle/state3/disable    (1)
 ---
 apiVersion: v1alpha1
 kind: SysfsConfig
