@@ -105,17 +105,17 @@
         "type": "custom",
         "includeAll": false,
         "multi": false,
-        "query": "all : ,warning and worse : PRIORITY:<=4,error and worse : PRIORITY:<=3,critical and worse : PRIORITY:<=2",
+        "query": "all : *,warning and worse : PRIORITY:<=4,error and worse : PRIORITY:<=3,critical and worse : PRIORITY:<=2",
         "current": {
           "selected": true,
           "text": "all",
-          "value": ""
+          "value": "*"
         },
         "options": [
           {
             "selected": true,
             "text": "all",
-            "value": ""
+            "value": "*"
           },
           {
             "selected": false,
