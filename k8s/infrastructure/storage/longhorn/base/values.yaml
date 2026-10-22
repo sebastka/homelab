@@ -8,10 +8,18 @@
 defaultSettings:
   defaultDataLocality: best-effort
   defaultDataPath: /var/mnt/longhorn-data
+  # The data path is a dedicated Talos user volume on every node (talos/.../13-longhorn.yaml.tpl, node/*/02-volumes.yaml):
+  # nothing else writes there, so the 30% default reserve only blocked scheduling (replica evictions failed on dike and t01
+  # during the 1.14.4 upgrade). Applies to new disks; existing ones were set by hand (nodes.longhorn.io spec.disks).
+  storageReservedPercentageForDefaultDisk: 5
   allowCollectingLonghornUsageMetrics: false
   upgradeChecker: false
   replicaAutoBalance: best-effort
-  systemManagedCSIComponentsResourceLimits: '{"csi-attacher":{"requests":{"memory":"128Mi"},"limits":{"memory":"512Mi"}},"csi-provisioner":{"requests":{"memory":"64Mi"},"limits":{"memory":"512Mi"}},"csi-resizer":{"requests":{"memory":"128Mi"},"limits":{"memory":"512Mi"}},"csi-snapshotter":{"requests":{"memory":"64Mi"},"limits":{"memory":"512Mi"}},"longhorn-csi-plugin":{"requests":{"memory":"512Mi"},"limits":{"memory":"4096Mi"}},"node-driver-registrar":{"requests":{"memory":"64Mi"},"limits":{"memory":"128Mi"}},"longhorn-liveness-probe":{"requests":{"memory":"64Mi"},"limits":{"memory":"128Mi"}}}'
+  # longhorn-csi-plugin at 12Gi: it unlocks the LUKS volumes when they are mounted, and each unlock's argon2
+  # key derivation takes up to 1 GiB. After a node reboot all of its volumes (10 on t01) are mounted at once, and
+  # 4Gi was OOM-killed in a loop (Talos 1.14.4 upgrade, 2026-10-22). Idle it uses ~30Mi: the limit is a ceiling for
+  # that burst, not a reservation.
+  systemManagedCSIComponentsResourceLimits: '{"csi-attacher":{"requests":{"memory":"128Mi"},"limits":{"memory":"512Mi"}},"csi-provisioner":{"requests":{"memory":"64Mi"},"limits":{"memory":"512Mi"}},"csi-resizer":{"requests":{"memory":"128Mi"},"limits":{"memory":"512Mi"}},"csi-snapshotter":{"requests":{"memory":"64Mi"},"limits":{"memory":"512Mi"}},"longhorn-csi-plugin":{"requests":{"memory":"512Mi"},"limits":{"memory":"12288Mi"}},"node-driver-registrar":{"requests":{"memory":"64Mi"},"limits":{"memory":"128Mi"}},"longhorn-liveness-probe":{"requests":{"memory":"64Mi"},"limits":{"memory":"128Mi"}}}'
   freezeFilesystemForSnapshot: true
   snapshotDataIntegrity: enabled
   # snapshotDataIntegrityCronjob: '0 0 */7 * *'  # Default
