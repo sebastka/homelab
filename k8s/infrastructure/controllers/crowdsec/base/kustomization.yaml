@@ -45,7 +45,7 @@ patches:
 
 images:
   - {name: crowdsecurity/crowdsec, newName: docker.io/crowdsecurity/crowdsec}
-  - {name: curlimages/curl, newName: docker.io/alpine/curl, newTag: 8.19.0, digest: sha256:23b60dc412cd453aba2841da0ee8bc6ad8da32263c557fcc9eccd52840f4ca43}
+  - {name: curlimages/curl, newName: docker.io/alpine/curl, newTag: 8.19.0, digest: sha256:c103daf2dbf75dbaee86c278f45be6c82acd86eef27e17521d0992bf90031d81}
 
 generatorOptions:
   disableNameSuffixHash: true
