@@ -5,9 +5,13 @@
 server:
   image: {repository: docker.io/victoriametrics/victoria-logs}
   retentionPeriod: 7d
+  # Without a CPU limit it sizes its worker pools for every core of the node (12 on t01), and query and
+  # merge bursts were OOM-killed at 512Mi (13 restarts on 2026-10-20 and 22, while 5-minute samples
+  # peaked at ~360Mi): capped like vmsingle, with headroom for the bursts.
+  env: [{name: GOMAXPROCS, value: '2'}]
   resources:
     requests: {memory: 384Mi}
-    limits: {memory: 512Mi}
+    limits: {memory: 1024Mi}
   persistentVolume:
     enabled: true
     existingClaim: victorialogs-data-pvc
