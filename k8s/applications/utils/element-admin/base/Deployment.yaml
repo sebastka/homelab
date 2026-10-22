@@ -38,7 +38,7 @@ spec:
       containers:
         - name: element-admin
           # Dockerfile: https://github.com/element-hq/element-admin/blob/main/Dockerfile
-          image: ghcr.io/sebastka/element-admin:2026.10.14@sha256:b46fd4fd43b35cca56f0660227903a557b8230359b4745822e3b972862d779fc
+          image: ghcr.io/sebastka/element-admin:2026.10.21@sha256:f259c3a83380a31968adb2130f61c3ce9e342bd8f743f704277f8e765a7e1f53
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
