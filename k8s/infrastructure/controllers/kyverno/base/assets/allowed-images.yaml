@@ -222,10 +222,7 @@
 - ghcr.io/zhaofengli/attic
 
 # applications/utils/carat
-# carat ships FROM scratch and is mounted as an image volume
-# (spec.volumes[].image), which this policy does not walk - only the
-# node runtime it is mounted into is actually checked here.
-# - ghcr.io/sebastka/carat
+- ghcr.io/sebastka/carat
 
 # applications/utils/deluge
 # - ghcr.io/home-operations/deluge
