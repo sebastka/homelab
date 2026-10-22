@@ -5,5 +5,5 @@ kind: Component
 images:
   - {name: alpine,         newName: docker.io/library/alpine,  newTag: 3.23.4,         digest: sha256:5b10f432ef3da1b8d4c7eb6c487f2f5a8f096bc91145e68878dd4a5019afde11}
   - {name: alpine/kubectl, newName: docker.io/alpine/kubectl,  newTag: 1.36.1,         digest: sha256:c5b35e51aadf9eacc43cd301f519ae862a7f480a5b46d1b36b423d93c3b20abe}
-  - {name: busybox,        newName: docker.io/library/busybox, newTag: 1.38.0-glibc,   digest: sha256:3ba030337caebbfc2232b22b1e435eb213b28e5844a34942c74555bf904a265a}
+  - {name: busybox,        newName: docker.io/library/busybox, newTag: 1.38.0-glibc,   digest: sha256:99813cb178ace2cd9c6c53ee3bddef5d2f5708aa438335111d7a9e3c5e1aaebe}
   - {name: valkey,         newName: dhi.io/valkey,             newTag: 9.1.2-debian13, digest: sha256:88c9f6749db5757ecd2270fbb000840bad1f3a002662ad034c86e1809f2b46b1}
