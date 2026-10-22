@@ -6,7 +6,6 @@ namespace: carat
 resources:
   - Namespace.yaml
   - ServiceAccount.yaml
-  - SealedSecret.regcred.yaml
   - SealedSecret.oidc.yaml
   - Deployment.yaml
   - Service.yaml
