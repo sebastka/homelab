@@ -119,6 +119,8 @@
         "docker.io/mikefarah/yq",
         "docker.io/nginxinc/nginx-unprivileged",
         "dhi.io/valkey",
+        "dhi.io/mariadb",
+        "dhi.io/postgres",
         "registry.k8s.io/kubectl",
         "registry.k8s.io/metrics-server/metrics-server",
         "ghcr.io/maxmind/geoipupdate",
@@ -168,6 +170,13 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/sebastka/carat"],
       "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-(?<build>[a-f0-9]+)$"
+    },
+    {
+      "description": "A PostgreSQL major needs a pg_upgrade or a dump and restore, not an image bump: the Deployment pins PGDATA to the major (database/postgres), so the new image would refuse the data directory. The PR only opens once approved on the Dependency Dashboard",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["dhi.io/postgres"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
     },
     {
       "description": "Majors always need a human; keep them off automerge",
