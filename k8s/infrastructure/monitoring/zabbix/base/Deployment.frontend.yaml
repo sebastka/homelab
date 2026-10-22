@@ -38,7 +38,7 @@ spec:
       containers:
         - name: frontend
           # Dockerfile: https://github.com/zabbix/zabbix-docker/blob/7.4/Dockerfiles/web-nginx-pgsql/alpine/Dockerfile
-          image: docker.io/zabbix/zabbix-web-nginx-pgsql:alpine-7.4.16@sha256:8c7384b600e0755c25d65e7def48c337689287d381c2d69358be9ab1068b32b5
+          image: docker.io/zabbix/zabbix-web-nginx-pgsql:alpine-7.4.16@sha256:898f28064ef8fdac969da0088663b27e2a66c28e5f865ebaf642839106e65fde
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
