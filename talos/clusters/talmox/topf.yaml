@@ -10,7 +10,7 @@ clusterEndpoint: https://192.168.1.200:6443
 # Minor upgrades go through `talosctl upgrade-k8s`, which validates skew and rolls the
 # components in order; this field is updated afterwards so `topf apply` does not revert it.
 kubernetesVersion: 1.37.1
-talosVersion: 1.14.2
+talosVersion: 1.14.4
 
 # topf derives the installer image from the fields below:
 #   <factory>/<platform>-installer[-secureboot]/<schematicId>:v<talosVersion>
