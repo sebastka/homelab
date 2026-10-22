@@ -36,7 +36,7 @@ data:
 #   mac          VMs: documents the Proxmox NIC, unused. NUCs: mac0/mac1 name the bond members, and
 #                mac0 is also the bond's own MAC, which the Kea reservation on helios is keyed on.
 nodes:
-  - host: t01.talmox.hera.home.karlsen.fr
+  - host: t01.hera.home.karlsen.fr
     ip: 192.168.1.201
     role: control-plane
     data: {zone: t01, link: eth0, diskKey: nodeID, mac: 'BC:24:11:10:FE:09'}
