@@ -85,6 +85,11 @@
 - docker.io/library/postgres
 - docker.io/library/mariadb
 
+# infrastructure/database/mariadb, infrastructure/database/postgres
+- dhi.io/mariadb
+- dhi.io/postgres
+- ghcr.io/sebastka/dbdump2s3  # common/dbdump2s3
+
 # infrastructure/monitoring/alloy
 - docker.io/grafana/alloy
 - quay.io/prometheus-operator/prometheus-config-reloader
