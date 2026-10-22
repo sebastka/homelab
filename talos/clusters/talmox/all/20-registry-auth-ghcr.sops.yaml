@@ -1,0 +1,24 @@
+#ENC[AES256_GCM,data:hHvEHAldpFUIEeIgpWY/zkTv4hJ08zrrQfJAkdXd1KQMxNh4MJepzHEia02axjunOHtEW3KZUHtW+PSPvLXuAoiBs/ccXuDVntoEcJ9PYZ+Wsa0eLh65Gxy8FSKzuu5H,iv:78IUgg0+2xpVm1uCjxoPBZkK0We9khKs//FzN1NQu3k=,tag:c2z34YYsf71sANEjij24WQ==,type:comment]
+#ENC[AES256_GCM,data:dK9apW2bsysH66jDVgitx+bHKrpdi7bvVznVYB61dpKpTiIRndAsiQGumx9uA9Udw+XVOgs1+S4bi5UZsZDu5N66kwSEFcMDfzUfkY0kbKnEm9IrTCu7hBCpOEf+,iv:BYaR7Xk90kN5slVV31bqJjKTveYkpb5U5/1HH8vLzp8=,tag:ad1cTkNpdM/wX8KD1tdAGA==,type:comment]
+apiVersion: ENC[AES256_GCM,data:gkbFuZcyUB0=,iv:ja8jRadN+ZaIpvtBEwPz6N3PgtpmSEtOABgjhb7jCtU=,tag:zmDbSB5Tnbh78sYa1Xph8w==,type:str]
+kind: ENC[AES256_GCM,data:vHZ0073s3d3BJpdtN3o5kXDR,iv:J8jOqcP6hoHgO0xSriMpXmmCyF9ElhqWTV+aIYJVzfA=,tag:awubm+QBh6cgDxGW4R3Uuw==,type:str]
+name: ENC[AES256_GCM,data:9RkVpjA2nA==,iv:BY2XW2jKy+srx/C4MlQN+9vq3nDAbqb364LBINfaZ3c=,tag:EBHZiEO4OWKqdud//aRzfA==,type:str]
+username: ENC[AES256_GCM,data:8WLsI8EUY2Q=,iv:S4fBMyGVnfz2YxdA5OrN5vn39UxJLPRVy/9GW6chxA0=,tag:Gz9o+CNVxIIlRvKSXbkzAg==,type:str]
+password: ENC[AES256_GCM,data:9KojxAmotKAtJliNQYWHr+c31lj2DRcJEq3HFKD1VHKUoHRA70tAmg==,iv:EeX32ESDoEei9PYJealr9ZyyFXti00m0LfQmOkGpl+o=,tag:sGkTEWeFH6PS+KoSHV0Fkw==,type:str]
+sops:
+    lastmodified: "2026-10-22T10:03:07Z"
+    mac: ENC[AES256_GCM,data:2CF/eHL7iMknhwUv/ZUIOX6Mig32NpKVbYI2NEnRtr3n8MqeHMH8X+A5MvZNNRRl6c5S2E2y3MoPSTfUXpO4uF2voaZu+43S/nazMRg44KluzaRVNYpaWqtuXer6IQ+Pq1P0u0eO5D1VAMPbxDoaibwLy9ZN1yR8AVVcq4XeisE=,iv:LLqSSarazc+n19dHnnDSW3Uy4vHAXbPMr5UNnYPQOnM=,tag:C86RNELAzQks8CWjOCn90A==,type:str]
+    pgp:
+        - created_at: "2026-10-22T10:03:07Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4DXGd213oGda4SAQdAPVQuuKNvpz+HLjKpbZ6/MJs3btZTe253Ck9qqcRpbFUw
+            FCnvvh7sSW1M1G+KlEnysslP4D2p1ZF6Udqz0IU3xsuFCIt84UegmlUzjpEFuTYQ
+            0l4Bz++eqc2SdP4oRjzqc9gfSn7IpDZ/ormDAzNsNd86ylf8XBPWywyUJBPh7eyr
+            5LtErk3i34CzfVug2cE6s8TJbxaB7G9XMfT7DfKfeKOZKLLhm8Ke2sp4l832hiL6
+            =oV++
+            -----END PGP MESSAGE-----
+          fp: 0B25B26C537B40B5B208F3A6C74C02E66D0CBECF
+    unencrypted_suffix: _unencrypted
+    version: 3.13.3
