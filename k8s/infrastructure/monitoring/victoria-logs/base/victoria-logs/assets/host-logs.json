@@ -1,0 +1,353 @@
+{
+  "title": "Host Logs",
+  "uid": "host-logs-victorialogs",
+  "description": "systemd journal of the hosts outside the cluster (helios, through Vector), by host and unit. Any host shipping its journal with a host field shows up here. Queries are LogsQL.",
+  "tags": [
+    "logs",
+    "hosts",
+    "victorialogs"
+  ],
+  "editable": true,
+  "graphTooltip": 1,
+  "schemaVersion": 42,
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "refresh": "30s",
+  "timezone": "browser",
+  "links": [
+    {
+      "title": "Learn LogsQL",
+      "type": "link",
+      "icon": "external link",
+      "targetBlank": true,
+      "url": "https://docs.victoriametrics.com/victorialogs/logsql/"
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "label": "Logs datasource",
+        "type": "datasource",
+        "query": "victoriametrics-logs-datasource",
+        "refresh": 1,
+        "current": {}
+      },
+      {
+        "name": "host",
+        "label": "Host",
+        "type": "query",
+        "datasource": {
+          "type": "victoriametrics-logs-datasource",
+          "uid": "${datasource}"
+        },
+        "definition": "host:*",
+        "query": {
+          "field": "host",
+          "limit": 0,
+          "query": "host:*",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".+",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "options": []
+      },
+      {
+        "name": "unit",
+        "label": "Unit",
+        "type": "query",
+        "datasource": {
+          "type": "victoriametrics-logs-datasource",
+          "uid": "${datasource}"
+        },
+        "definition": "{host=~\"(${host:pipe})\"}",
+        "query": {
+          "field": "_SYSTEMD_UNIT",
+          "limit": 0,
+          "query": "{host=~\"(${host:pipe})\"}",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
+        "refresh": 2,
+        "sort": 1,
+        "multi": true,
+        "includeAll": true,
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "options": []
+      },
+      {
+        "name": "priority",
+        "label": "Priority",
+        "type": "custom",
+        "includeAll": false,
+        "multi": false,
+        "query": "all : ,warning and worse : PRIORITY:<=4,error and worse : PRIORITY:<=3,critical and worse : PRIORITY:<=2",
+        "current": {
+          "selected": true,
+          "text": "all",
+          "value": ""
+        },
+        "options": [
+          {
+            "selected": true,
+            "text": "all",
+            "value": ""
+          },
+          {
+            "selected": false,
+            "text": "warning and worse",
+            "value": "PRIORITY:<=4"
+          },
+          {
+            "selected": false,
+            "text": "error and worse",
+            "value": "PRIORITY:<=3"
+          },
+          {
+            "selected": false,
+            "text": "critical and worse",
+            "value": "PRIORITY:<=2"
+          }
+        ]
+      },
+      {
+        "name": "search",
+        "label": "Search (LogsQL)",
+        "type": "textbox",
+        "query": "",
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        }
+      },
+      {
+        "name": "limit",
+        "label": "Lines",
+        "type": "custom",
+        "query": "100,250,500,1000,5000",
+        "current": {
+          "selected": true,
+          "text": "500",
+          "value": "500"
+        },
+        "options": [
+          {
+            "selected": false,
+            "text": "100",
+            "value": "100"
+          },
+          {
+            "selected": false,
+            "text": "250",
+            "value": "250"
+          },
+          {
+            "selected": true,
+            "text": "500",
+            "value": "500"
+          },
+          {
+            "selected": false,
+            "text": "1000",
+            "value": "1000"
+          },
+          {
+            "selected": false,
+            "text": "5000",
+            "value": "5000"
+          }
+        ]
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Log volume by unit",
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 16,
+        "x": 0,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 60,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            },
+            "lineWidth": 1
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": [
+            "sum"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "{host=~\"(${host:pipe})\", _SYSTEMD_UNIT=~\"(${unit:pipe})\"} $priority $search | stats by (host, _SYSTEMD_UNIT) count() hits",
+          "queryType": "statsRange",
+          "refId": "A",
+          "legendFormat": "{{host}} {{_SYSTEMD_UNIT}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "bargauge",
+      "title": "Warnings and worse, by unit",
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${datasource}"
+      },
+      "description": "PRIORITY 4 (warning) or lower over the time range, whatever the Priority filter says",
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "{host=~\"(${host:pipe})\", _SYSTEMD_UNIT=~\"(${unit:pipe})\"} PRIORITY:<=4 $search | stats by (host, _SYSTEMD_UNIT) count() hits | sort by (hits desc) | limit 15",
+          "queryType": "stats",
+          "refId": "A",
+          "legendFormat": "{{host}} {{_SYSTEMD_UNIT}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "logs",
+      "title": "Logs",
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 26,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true,
+        "enableInfiniteScrolling": false
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "{host=~\"(${host:pipe})\", _SYSTEMD_UNIT=~\"(${unit:pipe})\"} $priority $search | sort by (_time) desc | limit $limit",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ]
+    }
+  ]
+}

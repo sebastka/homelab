@@ -5,6 +5,7 @@ namespace: victoria-logs
 
 configMapGenerator:
   - {name: kubernetes-logs-dashboard, options: {disableNameSuffixHash: true}, files: [kubernetes-logs.json=assets/kubernetes-logs.json]}
+  - {name: host-logs-dashboard,       options: {disableNameSuffixHash: true}, files: [host-logs.json=assets/host-logs.json]}
 
 resources:
   - CiliumNetworkPolicy.yaml

@@ -47,3 +47,21 @@ spec:
       dashboards: grafana
   grafanaCom:
     id: 22084
+---
+# The hosts outside the cluster (helios's journal, through Vector): assets/host-logs.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: host-logs
+  namespace: victoria-logs
+spec:
+  allowCrossNamespaceImport: true
+  folder: Logs
+  resyncPeriod: 10m
+  instanceSelector:
+    matchLabels:
+      app: grafana
+      dashboards: grafana
+  configMapRef:
+    name: host-logs-dashboard
+    key: host-logs.json
