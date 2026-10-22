@@ -1,0 +1,14 @@
+---
+# helios, the router (NixOS, nixos repo: hosts/helios/monitoring.nix): outside the cluster, on the LAN. Its firewall
+# lets the cluster's nodes in (vmagent's connections come from its node's IP), and vmagent's policy lets them out
+# (base/victoria-metrics/CiliumNetworkPolicy.yaml).
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMStaticScrape
+metadata:
+  name: helios
+  namespace: monitoring
+spec:
+  jobName: helios
+  targetEndpoints:
+    - {targets: ['192.168.0.1:9100'], labels: {instance: helios.home.karlsen.fr, exporter: node}}  # Prometheus' node exporter: CPU, temperatures, network, conntrack, systemd units
+    - {targets: ['192.168.0.1:9547'], labels: {instance: helios.home.karlsen.fr, exporter: kea}}   # Kea's DHCP statistics (leases, pool usage), exported by the Stork agent

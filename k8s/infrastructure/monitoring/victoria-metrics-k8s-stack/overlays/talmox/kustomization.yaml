@@ -6,6 +6,7 @@ namespace: monitoring
 resources:
   - ../../base
   - VMStaticScrape.etcd.yaml
+  - VMStaticScrape.helios.yaml
 
 helmCharts:
   - name: victoria-metrics-k8s-stack

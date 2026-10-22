@@ -36,6 +36,7 @@ spec:
     - {toEntities: [kube-apiserver]}  # Service discovery + config reads
     - {toEntities: [host, remote-node], toPorts: [ports: [{port: '10250', protocol: TCP}, {port: '10257', protocol: TCP}, {port: '10259', protocol: TCP}, {port: '2381', protocol: TCP}]]}  # Kubelet + controller-manager + scheduler + etcd metrics
     - {toEntities: [cluster]}  # Pod scraping across all namespaces
+    - {toCIDR: [192.168.0.1/32], toPorts: [ports: [{port: '9100', protocol: TCP}, {port: '9547', protocol: TCP}]]}  # helios: node exporter, Kea (VMStaticScrape.helios.yaml)
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
