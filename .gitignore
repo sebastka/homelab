@@ -34,3 +34,4 @@ tofu/dns/zonefiles/
 
 # topf
 talos/clusters/*/output/
+talos/output/
