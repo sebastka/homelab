@@ -193,6 +193,10 @@
 # applications/dev/whoami
 - ghcr.io/traefik/whoami
 
+# applications/media/ferrocine
+- ghcr.io/sebastka/ferrocine
+- ghcr.io/sebastka/ferrocine-ui
+
 # applications/media/jellyfin
 - ghcr.io/jellyfin/jellyfin
 
