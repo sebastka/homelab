@@ -263,6 +263,24 @@ identity_providers:
         id_token_signed_response_alg: ES256
         token_endpoint_auth_method: client_secret_basic
 
+      - client_id: ferrocine
+        client_name: Ferrocine
+        client_secret: {{ secret "/secrets/client-secrets/ferrocine" }}
+        public: false
+        authorization_policy: two_factor
+        pre_configured_consent_duration: 3 months
+        claims_policy: embed_id_token_claims
+        require_pkce: true
+        pkce_challenge_method: S256
+        redirect_uris: [https://ferrocine.karlsen.app/auth/callback]
+        scopes: [openid, email, profile, groups]
+        response_types: [code]
+        grant_types: [authorization_code]
+        access_token_signed_response_alg: none
+        userinfo_signed_response_alg: none
+        id_token_signed_response_alg: ES256
+        token_endpoint_auth_method: client_secret_basic
+
       # - client_id: harbor
       #   client_name: Harbor
       #   client_secret: {{ secret "/secrets/client-secrets/harbor" }}
