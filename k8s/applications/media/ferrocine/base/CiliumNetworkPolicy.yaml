@@ -1,0 +1,40 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata: {name: allow-ferrocine-ui, namespace: ferrocine}
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: ferrocine-ui}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
+  egress:
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: ferrocine, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '8096', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata: {name: allow-ferrocine, namespace: ferrocine}
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: ferrocine, app.kubernetes.io/component: server}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: ferrocine-ui}], toPorts: [ports: [{port: '8096', protocol: TCP}]]}
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: postgres, app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Authelia (OIDC)
+    - toFQDNs:
+        - {matchName: api.themoviedb.org}       # TMDB
+        - {matchName: image.tmdb.org}
+        - {matchName: www.themoviedb.org}
+        - {matchName: api4.thetvdb.com}         # TheTVDB
+        - {matchPattern: '*.thetvdb.com'}
+        - {matchName: www.omdbapi.com}          # OMDb
+        - {matchName: webservice.fanart.tv}     # fanart.tv
+        - {matchPattern: '*.fanart.tv'}
+        - {matchName: graphql.anilist.co}       # AniList
+        - {matchPattern: '*.anilist.co'}
+        - {matchName: img.anili.st}
+        - {matchName: anidb.net}                # AniDB: anime titles, images
+        - {matchName: cdn-eu.anidb.net}
+        - {matchName: api.opensubtitles.com}    # OpenSubtitles
+        - {matchPattern: '*.opensubtitles.com'}
+        - {matchPattern: '*.opensubtitles.org'}
+      toPorts: [ports: [{port: '443', protocol: TCP}]]
+    - {toFQDNs: [{matchName: api.anidb.net}], toPorts: [ports: [{port: '9001', protocol: TCP}]]}  # AniDB's HTTP API (plain http)

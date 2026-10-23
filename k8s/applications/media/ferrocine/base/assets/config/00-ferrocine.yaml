@@ -1,0 +1,46 @@
+---
+server:
+  public_url: https://ferrocine.karlsen.app
+
+database:
+  url: postgres://ferrocine:${POSTGRES_PASSWORD}@postgres.postgres.svc.cluster.local/ferrocine
+  max_connections: 10
+
+auth:
+  oidc:
+    issuer: https://auth.karlsen.fr
+    client_id: ferrocine
+    client_secret: ${OIDC_CLIENT_SECRET}
+    scopes: [openid, profile, email, groups]
+    groups_claim: groups
+    users: []             # Anyone Authelia lets in (two-factor)
+    admins: [k8s_admins]  # Scans, refreshes, settings
+
+transcoding:
+  hw_accel: auto            # The node's Intel GPU (gpu.intel.com/xe), proven by a test encode at start
+  device: /dev/dri/renderD128
+  temp_dir: /transcodes
+
+# Every external provider, each off while its variable is unset: add the key to the ferrocine Secret
+# (overlays/talmox) and reseal. The network policy already allows them all.
+metadata:
+  tmdb:
+    api_key: ${TMDB_API_KEY:-}            # A v4 read access token or a v3 key
+  tvdb:
+    api_key: ${TVDB_API_KEY:-}            # DVD and absolute episode orders
+    pin: ${TVDB_PIN:-}
+  omdb:
+    api_key: ${OMDB_API_KEY:-}            # IMDb, Rotten Tomatoes and Metacritic ratings
+  fanart:
+    api_key: ${FANART_API_KEY:-}          # Logos, textless backdrops
+  anilist:
+    enabled: true                         # No key; only for libraries with anime: true
+  anidb:
+    client: ${ANIDB_CLIENT:-}             # Anime episodes
+    client_version: ${ANIDB_CLIENT_VERSION:-1}
+
+subtitles:
+  opensubtitles:
+    api_key: ${OPENSUBTITLES_API_KEY:-}   # Also needs an account
+    username: ${OPENSUBTITLES_USERNAME:-}
+    password: ${OPENSUBTITLES_PASSWORD:-}

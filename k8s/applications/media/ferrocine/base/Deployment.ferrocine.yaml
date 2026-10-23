@@ -1,0 +1,70 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ferrocine
+  namespace: ferrocine
+  labels:
+    app.kubernetes.io/name: ferrocine
+  annotations:
+    reloader.stakater.com/auto: 'true'  # The ferrocine Secret (the config ConfigMap's name changes with it)
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ferrocine
+      app.kubernetes.io/component: server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ferrocine
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: ferrocine
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: ferrocine
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: ferrocine
+          # Dockerfile: https://github.com/sebastka/ferrocine/blob/master/Dockerfile
+          image: ghcr.io/sebastka/ferrocine:2026-10-23.1@sha256:0b7493f5d5f83423999a08601d51f46b30dc56dd313f17eb07e0eb8209759082
+          args: [run]
+          env:
+            - {name: FERROCINE_CONFIG, value: /etc/ferrocine}
+            - {name: FERROCINE_LOG_FORMAT, value: json}
+          envFrom:
+            - secretRef: {name: ferrocine}  # POSTGRES_PASSWORD, OIDC_CLIENT_SECRET
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            # The GPU device plugin hands over one of the NUCs' Intel GPUs (one each, not shared): the
+            # one Jellyfin is not using. The device node comes owned by the pod's user.
+            requests: {memory: 256Mi, gpu.intel.com/xe: 1}
+            limits: {memory: 2Gi, gpu.intel.com/xe: 1}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8096}
+          startupProbe:   {httpGet: {port: http, path: /healthz}, periodSeconds: 5, failureThreshold: 60}  # Migrations run at start
+          livenessProbe:  {httpGet: {port: http, path: /healthz}, periodSeconds: 30}
+          readinessProbe: {httpGet: {port: http, path: /readyz},  periodSeconds: 10}
+          volumeMounts:
+            - {name: config-volume,     mountPath: /etc/ferrocine,                                       readOnly: true}
+            - {name: media-volume,      mountPath: /media/nb_dl,       subPath: deluge/downloads/nb_dl,  readOnly: true}
+            - {name: media-volume,      mountPath: /media/other,       subPath: deluge/downloads/other,  readOnly: true}
+            - {name: media-volume,      mountPath: /media/ptp_dl,      subPath: deluge/downloads/ptp_dl, readOnly: true}
+            - {name: media-volume,      mountPath: /media/ptp_up,      subPath: deluge/downloads/ptp_up, readOnly: true}
+            - {name: media-volume,      mountPath: /media/jellyfin,    subPath: jellyfin,                readOnly: true}
+            - {name: transcodes-volume, mountPath: /transcodes,        subPath: transcodes,              readOnly: false}
+            - {name: tmp-volume,        mountPath: /tmp,               subPath: tmp,                     readOnly: false}  # Mesa's shader cache
+      volumes:
+        - {name: config-volume,     configMap: {name: ferrocine-config}}
+        - {name: media-volume,      persistentVolumeClaim: {claimName: ferrocine-media-pvc, readOnly: true}}
+        - {name: transcodes-volume, emptyDir: {sizeLimit: 20Gi}}  # HLS segments of running playbacks
+        - {name: tmp-volume,        emptyDir: {medium: Memory, sizeLimit: 64Mi}}

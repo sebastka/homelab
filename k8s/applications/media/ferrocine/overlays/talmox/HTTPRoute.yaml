@@ -1,0 +1,19 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web
+  namespace: ferrocine
+spec:
+  parentRefs:
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
+  hostnames: [ferrocine.karlsen.app]
+  rules:
+    - matches: [path: {type: PathPrefix, value: /}]
+      backendRefs: [{name: ferrocine-ui, kind: Service, port: 80}]
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              # The UI's nginx sets the rest (CSP, nosniff, frame, referrer, permissions)
+              - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}

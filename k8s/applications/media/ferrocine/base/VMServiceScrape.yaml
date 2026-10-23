@@ -1,0 +1,10 @@
+---
+# /metrics on the server's port, open (no metrics_token): the UI does not proxy it, so only vmagent
+# reaches it (allow-vmagent-scrape, cilium)
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata: {name: ferrocine, namespace: ferrocine}
+spec:
+  selector: {matchLabels: {app.kubernetes.io/name: ferrocine}}
+  endpoints:
+    - {port: http, path: /metrics, interval: 60s}

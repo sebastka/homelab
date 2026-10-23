@@ -1,0 +1,22 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ferrocine
+
+# Ferrocine reads every *.yaml in /etc/ferrocine, merged in name order
+configMapGenerator:
+  - name: ferrocine-config
+    files:
+      - 00-ferrocine.yaml=assets/config/00-ferrocine.yaml
+      - 10-libraries.yaml=assets/config/10-libraries.yaml
+
+resources:
+  - Namespace.yaml
+  - ServiceAccount.yaml
+  - Deployment.ferrocine.yaml
+  - Deployment.ferrocine-ui.yaml
+  - Service.yaml
+  - SecurityPolicy.yaml
+  - BackendTrafficPolicy.yaml
+  - CiliumNetworkPolicy.yaml
+  - VMServiceScrape.yaml

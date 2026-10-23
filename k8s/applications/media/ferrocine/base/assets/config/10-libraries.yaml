@@ -1,0 +1,18 @@
+---
+# The same folders as Jellyfin, from the same NFS share, read-only (PersistentVolume.yaml).
+# ptp_dl, ptp_up, nb_dl and other are Deluge's downloads, as named by the releases; jellyfin/ holds
+# hard links renamed for media servers (Movies, and Shows with Season NN folders).
+libraries:
+  - id: movies
+    name: Movies
+    kind: movies
+    paths:
+      - /media/jellyfin/Movies
+      - /media/ptp_dl
+      - /media/ptp_up
+      - /media/nb_dl
+      - /media/other
+  - id: shows
+    name: TV shows
+    kind: shows
+    paths: [/media/jellyfin/Shows]

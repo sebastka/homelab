@@ -1,0 +1,13 @@
+# Direct play streams a whole file, and remuxed or transcoded playbacks fetch segments for as long as
+# they last: past Envoy's default 15s request timeout either would be cut off mid-film.
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: streaming-timeout
+  namespace: ferrocine
+spec:
+  mergeType: StrategicMerge  # Keeps the gateway's per-route rate limit
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  timeout: {http: {requestTimeout: 0s, maxStreamDuration: 0s}}
