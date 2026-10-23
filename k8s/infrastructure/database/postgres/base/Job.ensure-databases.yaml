@@ -1,0 +1,59 @@
+# Creates the databases and roles in assets/databases.csv and assets/users.csv (overlay), and
+# re-applies each role's password from the postgres-users Secret. A PostSync hook, so it runs on
+# every sync: adding a database is a CSV row, a key in the Secret, and a sync.
+#
+# The image's POSTGRES_DB/POSTGRES_USER only act on an empty volume, so they could never add a
+# database later; this can, and ALTER ROLE on every run makes the passwords self-healing.
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres-ensure-databases
+  namespace: postgres
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation  # Replace the previous run rather than keeping one Job per sync
+spec:
+  backoffLimit: 4
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: postgres
+        app.kubernetes.io/component: ensure-databases
+        app.kubernetes.io/part-of: postgres
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      restartPolicy: Never
+      serviceAccountName: postgres-ensure-databases
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 70
+        runAsGroup: 70
+        fsGroup: 70  # Group-owns the Secret volume, so the 0440 files below are readable
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: ensure
+          image: postgres  # Pinned in k8s/common/images
+          command: [sh, -eu, /mnt/scripts/ensure-databases.sh]
+          env:
+            - {name: POSTGRES_HOST, value: postgres}
+          envFrom:
+            - secretRef: {name: postgres-superuser}  # POSTGRES_PASSWORD
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 128Mi}
+          volumeMounts:
+            - {name: scripts-volume,         mountPath: /mnt/scripts,         readOnly: true}
+            - {name: users-databases-volume, mountPath: /mnt/users-databases, readOnly: true}
+            - {name: passwords-volume,       mountPath: /mnt/passwords,       readOnly: true}  # One file per role
+            - {name: tmp-volume,             mountPath: /tmp,                 readOnly: false}
+      volumes:
+        - {name: scripts-volume,         configMap: {name: postgres-scripts, defaultMode: 365}}  # 0555; yamllint forbids octal literals
+        - {name: users-databases-volume, configMap: {name: postgres-users-databases}}
+        - {name: passwords-volume,       secret: {secretName: postgres-users, defaultMode: 288}}  # 0440
+        - {name: tmp-volume,             emptyDir: {sizeLimit: 16Mi}}

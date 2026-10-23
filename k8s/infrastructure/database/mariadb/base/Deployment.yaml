@@ -1,0 +1,71 @@
+# The MariaDB server that replaces db01 (PVE VM). One instance on a Longhorn volume: Recreate,
+# because the volume is ReadWriteOncePod and a rolling update would wait on it forever.
+#
+# No Reloader annotation on purpose: neither Secret is worth a database restart. The root password
+# lives in the data volume after the first start (changing mariadb-root changes nothing), and the
+# user passwords are applied by the ensure-databases Job, which runs on every sync.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  namespace: mariadb
+  labels:
+    app.kubernetes.io/name: mariadb
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mariadb
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: mariadb
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mariadb
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: mariadb
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      terminationGracePeriodSeconds: 120  # Time for mariadbd to shut down cleanly
+      serviceAccountName: mariadb
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: mariadb
+          # Dockerfile: https://hub.docker.com/hardened-images/catalog/dhi/mariadb
+          image: mariadb  # Pinned in k8s/common/images
+          args: [mariadbd]
+          env:
+            # innodb-buffer-pool-size as on db01. key-buffer-size is MyISAM's, and every table here
+            # is InnoDB: the default 128M would sit unused.
+            - {name: MARIADB_OPTIONS, value: '--skip-name-resolve --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --innodb-buffer-pool-size=512M --key-buffer-size=16M'}
+          envFrom:
+            - secretRef: {name: mariadb-root}  # MARIADB_ROOT_PASSWORD
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 768Mi}
+            limits: {memory: 1536Mi}
+          ports:
+            - {name: mariadb, protocol: TCP, containerPort: 3306}
+          startupProbe:   {exec: {command: [sh, -c, 'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" exec mariadb-admin --protocol=socket ping -u root --silent']}, periodSeconds: 5, failureThreshold: 60}
+          livenessProbe:  {exec: {command: [sh, -c, 'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" exec mariadb-admin --protocol=socket ping -u root --silent']}, periodSeconds: 10}
+          readinessProbe: {exec: {command: [sh, -c, 'MYSQL_PWD="$MARIADB_ROOT_PASSWORD" exec mariadb --protocol=socket -u root -e "SELECT 1" >/dev/null']}, periodSeconds: 5}
+          volumeMounts:
+            - {name: data-volume, mountPath: /var/lib/mysql, subPath: mariadb-data, readOnly: false}
+            - {name: tmp-volume,  mountPath: /run/mariadb,   subPath: run,          readOnly: false}
+            - {name: tmp-volume,  mountPath: /tmp,           subPath: tmp,          readOnly: false}
+      volumes:
+        - {name: data-volume, persistentVolumeClaim: {claimName: mariadb-data-pvc}}
+        - {name: tmp-volume,  emptyDir: {sizeLimit: 512Mi}}

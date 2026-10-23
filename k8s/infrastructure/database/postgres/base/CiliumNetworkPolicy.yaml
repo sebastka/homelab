@@ -1,0 +1,21 @@
+# Clients are allowed by namespace label: a consumer's Namespace gets karlsen.fr/database: postgres,
+# and its own policy an egress rule to this one (toEndpoints, namespace postgres, port 5432).
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata: {name: allow-postgres, namespace: postgres}
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: postgres}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}  # ensure-databases Job
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: databases-backup}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}  # Nightly dumps
+    - {fromEndpoints: [matchLabels: {io.cilium.k8s.namespace.labels.karlsen.fr/database: postgres}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}  # Consumers
+  egress: []
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata: {name: allow-postgres-ensure-databases, namespace: postgres}
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: postgres, app.kubernetes.io/component: ensure-databases}}
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: postgres, app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}

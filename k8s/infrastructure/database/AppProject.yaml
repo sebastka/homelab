@@ -7,8 +7,10 @@ metadata:
 spec:
   sourceRepos: [git@github.com:sebastka/homelab.git]
   destinations:
-    - {namespace: default,          name: talmox}
-    - {namespace: databases-backup, name: talmox}
+    - { namespace: default, name: talmox }
+    - { namespace: databases-backup, name: talmox }
+    - { namespace: mariadb, name: talmox }
+    - { namespace: postgres, name: talmox }
   clusterResourceWhitelist:
-    - {group: '', kind: Namespace}
-    - {group: '', kind: PersistentVolume}  # Needed by database-backup
+    - { group: "", kind: Namespace }
+    - { group: "", kind: PersistentVolume } # Needed by database-backup

@@ -1,0 +1,93 @@
+# The PostgreSQL server that replaces db02 (PVE VM). One instance on a Longhorn volume: Recreate,
+# because the volume is ReadWriteOncePod and a rolling update would wait on it forever.
+#
+# No Reloader annotation on purpose: neither Secret is worth a database restart. The superuser
+# password lives in the data directory after the first start, and the role passwords are applied
+# by the ensure-databases Job, which runs on every sync.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: postgres
+  labels:
+    app.kubernetes.io/name: postgres
+spec:
+  strategy: {type: Recreate}
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgres
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: postgres
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: postgres
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: postgres
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      terminationGracePeriodSeconds: 120  # Time for the shutdown checkpoint
+      serviceAccountName: postgres
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 70
+        runAsGroup: 70
+        fsGroup: 70
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: postgres
+          # Dockerfile: https://hub.docker.com/hardened-images/catalog/dhi/postgres
+          image: postgres  # Pinned in k8s/common/images
+          # Flags rather than a postgresql.conf: nothing to mount, nothing to drift. shared_buffers is
+          # a quarter of the limit. max_connections 200, not 100: Zabbix's server alone holds one
+          # connection per poller process, and Synapse, MAS and Paperless pool their own.
+          args:
+            - -c
+            - listen_addresses=*
+            - -c
+            - max_connections=200
+            - -c
+            - shared_buffers=512MB
+            - -c
+            - effective_cache_size=1536MB
+            - -c
+            - work_mem=8MB
+            - -c
+            - maintenance_work_mem=128MB
+          env:
+            # Pinned to the major version, not left to the image: a PostgreSQL major upgrade needs a
+            # pg_upgrade or a dump and restore. With the image default (/var/lib/postgresql/<major>/
+            # data), a new major would start an EMPTY cluster next to the old one, and the
+            # ensure-databases Job would happily create empty databases in it. Pinned, the new
+            # major refuses this data directory and the pod fails instead.
+            - {name: PGDATA, value: /var/lib/postgresql/18/data}
+            # C.UTF-8 from the builtin provider: no dependence on the OS's locales (this image is
+            # musl), and stable sorting across image updates. Synapse's database asks for C instead:
+            # see databases.csv.
+            - {name: POSTGRES_INITDB_ARGS, value: '--encoding=UTF8 --locale-provider=builtin --builtin-locale=C.UTF-8 --auth-local=scram-sha-256 --auth-host=scram-sha-256'}
+          envFrom:
+            - secretRef: {name: postgres-superuser}  # POSTGRES_PASSWORD
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 1Gi}
+            limits: {memory: 2Gi}
+          ports:
+            - {name: postgres, protocol: TCP, containerPort: 5432}
+          startupProbe:   {exec: {command: [pg_isready, -U, postgres, -h, /var/run/postgresql]}, periodSeconds: 5, failureThreshold: 120}
+          livenessProbe:  {exec: {command: [pg_isready, -U, postgres, -h, /var/run/postgresql]}, periodSeconds: 10}
+          readinessProbe: {exec: {command: [pg_isready, -U, postgres, -h, /var/run/postgresql]}, periodSeconds: 5}
+          volumeMounts:
+            - {name: data-volume, mountPath: /var/lib/postgresql, subPath: postgres-data, readOnly: false}
+            - {name: tmp-volume,  mountPath: /var/run/postgresql, subPath: run,           readOnly: false}
+            - {name: tmp-volume,  mountPath: /tmp,                subPath: tmp,           readOnly: false}
+      volumes:
+        - {name: data-volume, persistentVolumeClaim: {claimName: postgres-data-pvc}}
+        - {name: tmp-volume,  emptyDir: {sizeLimit: 512Mi}}

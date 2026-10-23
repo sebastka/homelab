@@ -1,0 +1,19 @@
+# AUTHORITATIVE: ensure-databases.sh DROPS any database on the server that is not listed here, with
+# its contents. Removing a row is a data-destroying edit.
+#
+# database  letters, digits, _ and -
+# locale    optional: default (the cluster's builtin C.UTF-8), or C (libc), for applications that
+#           check for it. Only applies when the database is created.
+#
+# From db02 (ansible host_vars). Not carried over: harbor-core (Harbor is in the repository, not
+# deployed), joplin, joplintranscribe, opentogethertube (no consumer).
+database,locale
+crowdsec,default
+lldap,default
+mas,default
+n8n,default
+ntfy,default
+paperless,default
+stork,default
+synapse,C
+zabbix,default

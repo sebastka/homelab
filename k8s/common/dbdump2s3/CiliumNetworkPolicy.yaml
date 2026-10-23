@@ -1,0 +1,12 @@
+# The server in its own namespace (which admits the namespace's pods), and the bucket. Path-style and
+# virtual-hosted-style S3 addressing use the two names below.
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata: {name: allow-db-backup}
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: db-backup}}
+  egress:
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: mariadb, app.kubernetes.io/component: server}],  toPorts: [ports: [{port: '3306', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toFQDNs: [{matchName: hel1.your-objectstorage.com}, {matchPattern: '*.hel1.your-objectstorage.com'}], toPorts: [ports: [{port: '443', protocol: TCP}]]}

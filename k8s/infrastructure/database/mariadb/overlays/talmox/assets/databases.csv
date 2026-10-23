@@ -1,0 +1,14 @@
+# AUTHORITATIVE: ensure-databases.sh DROPS any database on the server that is not listed here, with
+# its contents. Removing a row is a data-destroying edit.
+#
+# database  bare identifier, [A-Za-z0-9_]
+# charset   optional, defaults to utf8mb4
+# collate   optional, defaults to utf8mb4_general_ci
+#
+# From db01 (ansible host_vars). Not carried over: nextcloud (no consumer).
+database,charset,collate
+authelia,utf8mb4,utf8mb4_general_ci
+beaclown_old,utf8mb4,utf8mb4_general_ci
+forgejo,utf8mb4,utf8mb4_0900_as_cs
+mailwatch,utf8mb4,utf8mb4_general_ci
+tlsrpt,utf8mb4,utf8mb4_general_ci

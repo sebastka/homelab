@@ -1,0 +1,21 @@
+# Clients are allowed by namespace label: a consumer's Namespace gets karlsen.fr/database: mariadb,
+# and its own policy an egress rule to this one (toEndpoints, namespace mariadb, port 3306).
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata: {name: allow-mariadb, namespace: mariadb}
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: mariadb, app.kubernetes.io/component: server}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: mariadb}], toPorts: [ports: [{port: '3306', protocol: TCP}]]}  # ensure-databases Job
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: databases-backup}], toPorts: [ports: [{port: '3306', protocol: TCP}]]}  # Nightly dumps
+    - {fromEndpoints: [matchLabels: {io.cilium.k8s.namespace.labels.karlsen.fr/database: mariadb}], toPorts: [ports: [{port: '3306', protocol: TCP}]]}  # Consumers
+  egress: []
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata: {name: allow-mariadb-ensure-databases, namespace: mariadb}
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: mariadb, app.kubernetes.io/component: ensure-databases}}
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: mariadb, app.kubernetes.io/name: mariadb, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '3306', protocol: TCP}]]}

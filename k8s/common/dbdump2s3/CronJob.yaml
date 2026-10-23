@@ -1,0 +1,72 @@
+# Nightly logical backup of every database in the namespace's databases.csv, encrypted to a PGP
+# public key and uploaded to Hetzner's object storage. Replaces database-backup (dumps to NFS).
+#
+# One manifest for both engines: what differs arrives through the overlay's dbdump2s3-env ConfigMap
+# (DUMP_KIND, DB_HOST) and the volume patch pointing at its CSVs and passwords. It reads the same
+# CSVs and passwords as the ensure-databases Job, so a database added there is backed up without
+# touching this file, and it logs in as each database's owner, never as root or the superuser:
+# their passwords are only read when the volume is initialised, the owners' on every sync.
+#
+# Object keys: daily/talmox/<kind>/<database>/YYYY-MM-DD.<ext>.gpg, plus monthly/... on the 1st.
+# Retention is the bucket's lifecycle rules. Restoring: the image's README.
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: db-backup
+spec:
+  schedule: '30 3 * * *'
+  timeZone: Europe/Oslo
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: db-backup
+            app.kubernetes.io/component: db-backup
+            app.kubernetes.io/managed-by: kustomize
+        spec:
+          restartPolicy: Never
+          serviceAccountName: db-backup
+          automountServiceAccountToken: false
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            fsGroup: 65532  # Group-owns the passwords Secret volume, so its 0440 files are readable
+            seccompProfile: {type: RuntimeDefault}
+          containers:
+            - name: backup
+              # Dockerfile: https://github.com/sebastka/containers/tree/main/apps/dbdump2s3
+              image: ghcr.io/sebastka/dbdump2s3:2026.10.23@sha256:b66a0d2dba26e820d5b3e18179ae0ee4913cd38c70b464bc0465fcf157c67176
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: {drop: [ALL]}
+              resources:
+                requests: {memory: 64Mi}
+                limits: {memory: 512Mi}  # xz and pg_dump stay well under this at current sizes
+              envFrom:
+                - configMapRef: {name: dbdump2s3-common}  # Bucket, encryption, CSV paths (assets/dbdump2s3.env)
+                - configMapRef: {name: dbdump2s3-env}     # DUMP_KIND, DB_HOST (overlay)
+                - secretRef: {name: dbdump2s3-s3}         # AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY (overlay)
+              env:
+                # aws-cli 2.23+ sends checksums some S3 implementations reject on multipart uploads
+                # (any dump over 8 MB): back to the earlier behaviour.
+                - {name: AWS_REQUEST_CHECKSUM_CALCULATION, value: when_required}
+                - {name: AWS_RESPONSE_CHECKSUM_VALIDATION, value: when_required}
+              volumeMounts:
+                - {name: users-databases-volume, mountPath: /mnt/users-databases, readOnly: true}
+                - {name: passwords-volume,       mountPath: /mnt/passwords,       readOnly: true}
+                - {name: tmp-volume,             mountPath: /tmp,                 readOnly: false}
+          volumes:
+            # Both names are the engine's (mariadb-users-databases or postgres-..., and the -users
+            # Secret): set by the overlay's patch.
+            - {name: users-databases-volume, configMap: {name: UNSET}}
+            - {name: passwords-volume,       secret: {secretName: UNSET, defaultMode: 288}}  # 0440; yamllint forbids octal literals
+            - {name: tmp-volume,             emptyDir: {sizeLimit: 8Gi}}  # One dump at a time lands here before encryption and upload: Synapse's is the largest

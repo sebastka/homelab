@@ -1,0 +1,19 @@
+# The data directory. Create the Longhorn volume mariadb-data-pv (longhorn-encrypted) before the
+# first sync. Longhorn snapshots and Velero copies of a running database are crash-consistent, which
+# InnoDB recovers from; the nightly logical dumps (database-backup) are the portable copy.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-data-pvc
+  namespace: mariadb
+  labels:
+    app.kubernetes.io/name: mariadb
+    recurring-job.longhorn.io/source: enabled
+    recurring-job-group.longhorn.io/group1: enabled
+    backup.velero.io/nightly-hetzner: enabled
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 5Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: mariadb-data-pv

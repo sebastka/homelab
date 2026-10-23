@@ -1,0 +1,33 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: mariadb
+
+components:
+  - ../../../../../common/dbdump2s3  # Nightly encrypted dumps to S3
+
+resources:
+  - ../../base
+  - PersistentVolumeClaim.yaml
+  - SealedSecret.mariadb-root.yaml   # MARIADB_ROOT_PASSWORD (and password): only read on first start
+  - SealedSecret.mariadb-users.yaml  # One key per user in assets/users.csv
+  - SealedSecret.dbdump2s3-s3.yaml   # AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY for the backup bucket
+
+configMapGenerator:
+  - name: dbdump2s3-env
+    literals: [DUMP_KIND=mariadb, DB_HOST=mariadb]
+  - name: mariadb-users-databases
+    files: [databases.csv=assets/databases.csv, users.csv=assets/users.csv]
+
+patches:
+  # The backup reads the same CSVs and passwords as the ensure-databases Job
+  - target: {kind: CronJob, name: db-backup}
+    patch: |-
+      apiVersion: batch/v1
+      kind: CronJob
+      metadata: {name: db-backup}
+      spec:
+        jobTemplate: {spec: {template: {spec: {volumes: [
+          {name: users-databases-volume, configMap: {name: mariadb-users-databases}},
+          {name: passwords-volume, secret: {secretName: mariadb-users}}
+        ]}}}}

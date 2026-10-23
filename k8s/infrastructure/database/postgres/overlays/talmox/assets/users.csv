@@ -1,0 +1,20 @@
+# AUTHORITATIVE: ensure-databases.sh DROPS any role on the server that is not listed here.
+#
+# user        letters, digits, _ and -
+# database    must appear in databases.csv
+# privileges  '|' separated, from ALL, CONNECT, CREATE, TEMPORARY; defaults to ALL. ALL makes the
+#             role the owner of the database and its public schema, as on db02.
+#
+# Adding a role: a row here, and its password as key <role> in Secret.postgres-users.yaml (reseal).
+# The passwords are db02's (secret_postgres_<role>_pw in ansible's secrets.sops.yaml), so the
+# consumers' own Secrets keep working when they move here.
+user,database,privileges
+crowdsec,crowdsec,ALL
+lldap,lldap,ALL
+mas,mas,ALL
+n8n,n8n,ALL
+ntfy,ntfy,ALL
+paperless,paperless,ALL
+stork-server,stork,ALL
+synapse,synapse,ALL
+zabbix,zabbix,ALL

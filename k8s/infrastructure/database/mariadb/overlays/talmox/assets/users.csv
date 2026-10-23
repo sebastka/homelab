@@ -1,0 +1,15 @@
+# AUTHORITATIVE: ensure-databases.sh DROPS any user on the server that is not listed here.
+#
+# user        bare identifier, [A-Za-z0-9_]; connects from any host ('user'@'%')
+# database    must appear in databases.csv
+# privileges  '|' separated, from the list in ensure-databases.sh; defaults to ALL
+#
+# Adding a user: a row here, and its password as key <user> in Secret.mariadb-users.yaml (reseal).
+# The passwords are db01's (secret_mariadb_<user>_pw in ansible's secrets.sops.yaml), so the
+# consumers' own Secrets keep working when they move here.
+user,database,privileges
+authelia,authelia,ALL
+beaclown,beaclown_old,ALL
+forgejo,forgejo,ALL
+mailwatch,mailwatch,ALL
+tlsrpt,tlsrpt,ALL

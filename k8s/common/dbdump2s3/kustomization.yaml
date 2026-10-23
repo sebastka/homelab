@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# Nightly encrypted dumps to S3, for a database server's namespace (infrastructure/database/mariadb,
+# postgres). Including it is not enough: the overlay also generates dbdump2s3-env (DUMP_KIND,
+# DB_HOST), provides the dbdump2s3-s3 Secret, and points the CronJob's two volumes at its CSVs and
+# users Secret.
+configMapGenerator:
+  - {name: dbdump2s3-common, envs: [assets/dbdump2s3.env]}
+
+resources:
+  - ServiceAccount.yaml
+  - CiliumNetworkPolicy.yaml
+  - CronJob.yaml
