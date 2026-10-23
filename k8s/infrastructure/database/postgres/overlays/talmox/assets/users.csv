@@ -10,6 +10,7 @@
 # consumers' own Secrets keep working when they move here.
 user,database,privileges
 crowdsec,crowdsec,ALL
+ferrocine,ferrocine,ALL
 lldap,lldap,ALL
 mas,mas,ALL
 n8n,n8n,ALL

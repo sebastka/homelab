@@ -9,6 +9,7 @@
 # deployed), joplin, joplintranscribe, opentogethertube (no consumer).
 database,locale
 crowdsec,default
+ferrocine,default
 lldap,default
 mas,default
 n8n,default
