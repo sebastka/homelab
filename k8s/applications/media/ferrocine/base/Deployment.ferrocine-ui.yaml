@@ -30,7 +30,7 @@ spec:
       containers:
         - name: ferrocine-ui
           # Dockerfile: https://github.com/sebastka/ferrocine-ui/blob/master/Dockerfile
-          image: ghcr.io/sebastka/ferrocine-ui:2026-10-23.1@sha256:0f79afa42b2ca59becfc9163bbca6076962945c57a3814aaf061cc466288b7e4
+          image: ghcr.io/sebastka/ferrocine-ui:sha-d2c7553@sha256:f1b3b453f6c49336cd2fdf6f57ed281b4d5c8b28dfa02bc590483ea0b4b6e097
           env:
             # nginx resolves it at run time with the pod's nameserver, without search domains: the full name
             - {name: FERROCINE_UPSTREAM, value: 'http://ferrocine.ferrocine.svc.cluster.local:8096'}
