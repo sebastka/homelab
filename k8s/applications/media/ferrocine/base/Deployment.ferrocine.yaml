@@ -50,7 +50,7 @@ spec:
             # The GPU device plugin hands over one of the NUCs' Intel GPUs (one each, not shared): the
             # one Jellyfin is not using. The device node comes owned by the pod's user.
             requests: {memory: 256Mi, gpu.intel.com/xe: 1}
-            limits: {memory: 2Gi, gpu.intel.com/xe: 1}
+            limits: {memory: 8192Mi, gpu.intel.com/xe: 1}  # A software 4K transcode next to the seek bar previews' ffmpeg went over 2Gi
           ports:
             - {name: http, protocol: TCP, containerPort: 8096}
           startupProbe:   {httpGet: {port: http, path: /healthz}, periodSeconds: 5, failureThreshold: 60}  # Migrations run at start
