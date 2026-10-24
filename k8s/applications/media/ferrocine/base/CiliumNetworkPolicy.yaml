@@ -18,7 +18,7 @@ spec:
     - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: ferrocine-ui}], toPorts: [ports: [{port: '8096', protocol: TCP}]]}
   egress:
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: postgres, app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
-    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Authelia (OIDC)
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Authelia (OIDC), avatars on www.karlsen.fr
     - toFQDNs:
         - {matchName: api.themoviedb.org}       # TMDB
         - {matchName: image.tmdb.org}
