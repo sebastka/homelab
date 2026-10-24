@@ -35,7 +35,7 @@ spec:
       containers:
         - name: ferrocine
           # Dockerfile: https://github.com/sebastka/ferrocine/blob/master/Dockerfile
-          image: ghcr.io/sebastka/ferrocine:sha-9520a5b@sha256:7861b5486c302c2e407306400c205376aec68a03b00cdb4dfb54755bec268b0c
+          image: ghcr.io/sebastka/ferrocine:sha-ea7f4fc@sha256:2ee7be8d079731cb89b8c8d474ddfb7f7ea3e3a63d8e975f21de24b6b5bd5090
           args: [run]
           env:
             - {name: FERROCINE_CONFIG, value: /etc/ferrocine}
