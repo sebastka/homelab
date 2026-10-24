@@ -33,7 +33,7 @@ spec:
       containers:
         - name: ferrocine
           # Dockerfile: https://github.com/sebastka/ferrocine/blob/master/Dockerfile
-          image: ghcr.io/sebastka/ferrocine:sha-d0d0dc6@sha256:17df8d566b621c603fffed0cfc589e9a027f1c6e6b41bee7ebb095e2d21cb931
+          image: ghcr.io/sebastka/ferrocine:sha-9520a5b@sha256:7861b5486c302c2e407306400c205376aec68a03b00cdb4dfb54755bec268b0c
           args: [run]
           env:
             - {name: FERROCINE_CONFIG, value: /etc/ferrocine}
@@ -63,8 +63,10 @@ spec:
             - {name: media-volume,      mountPath: /media/jellyfin,    subPath: jellyfin,                readOnly: true}
             - {name: transcodes-volume, mountPath: /transcodes,        subPath: transcodes,              readOnly: false}
             - {name: tmp-volume,        mountPath: /tmp,               subPath: tmp,                     readOnly: false}  # Mesa's shader cache
+            - {name: metadata-volume,   mountPath: /var/lib/ferrocine, subPath: var-lib,                 readOnly: false}
       volumes:
         - {name: config-volume,     configMap: {name: ferrocine-config}}
-        - {name: media-volume,      persistentVolumeClaim: {claimName: ferrocine-media-pvc, readOnly: true}}
+        - {name: media-volume,      persistentVolumeClaim: {claimName: ferrocine-media-pvc,    readOnly: true}}
+        - {name: metadata-volume,   persistentVolumeClaim: {claimName: ferrocine-metadata-pvc}}
         - {name: transcodes-volume, emptyDir: {sizeLimit: 20Gi}}  # HLS segments of running playbacks
         - {name: tmp-volume,        emptyDir: {medium: Memory, sizeLimit: 64Mi}}
