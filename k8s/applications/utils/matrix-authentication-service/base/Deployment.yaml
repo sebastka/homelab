@@ -9,7 +9,7 @@ metadata:
     reloader.stakater.com/auto: 'true'
 spec:
   strategy: {type: Recreate}
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: matrix-authentication-service
