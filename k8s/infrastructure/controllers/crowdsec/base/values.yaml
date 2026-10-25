@@ -168,7 +168,7 @@ config:
       user: crowdsec
       password: ${DB_PASSWORD}
       db_name: crowdsec
-      host: db02.hera.home.karlsen.fr
+      host: postgres.postgres.svc.cluster.local
       port: 5432
       sslmode: disable
       # max_open_conns
