@@ -73,6 +73,12 @@
 - quay.io/kubevirt/virt-controller
 - quay.io/kubevirt/virt-handler
 - quay.io/kubevirt/virt-launcher
+- quay.io/kubevirt/virt-exportproxy
+- quay.io/kubevirt/virt-exportserver
+- quay.io/kubevirt/virt-synchronization-controller
+- quay.io/kubevirt/virt-template-apiserver
+- quay.io/kubevirt/virt-template-controller
+- quay.io/kubevirt/sidecar-shim
 
 # infrastructure/controllers/kyverno
 - reg.kyverno.io/kyverno/kyverno-cli

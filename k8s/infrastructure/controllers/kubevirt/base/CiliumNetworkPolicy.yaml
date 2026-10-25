@@ -77,3 +77,27 @@ spec:
   egress:
     - {toEntities: [kube-apiserver]}
     - {toEndpoints: [matchLabels: {kubevirt.io: virt-handler}]}  # Live migration
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-virt-exportproxy
+  namespace: kubevirt
+spec:
+  endpointSelector: {matchLabels: {kubevirt.io: virt-exportproxy}}
+  # ingress: []  # Disk exports are not exposed outside the cluster
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toEndpoints: [{matchExpressions: [{key: kubevirt.io.virt-export-service, operator: Exists}, {key: k8s:io.kubernetes.pod.namespace, operator: Exists}]}], toPorts: [ports: [{port: '8443', protocol: TCP}]]}  # Export servers, in the VM's namespace
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-virt-template
+  namespace: kubevirt
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: virt-template}}
+  ingress:
+    - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '9443', protocol: TCP}]]}  # Aggregated API (apiserver), webhooks (controller-manager)
+  egress:
+    - {toEntities: [kube-apiserver]}
