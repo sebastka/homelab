@@ -29,7 +29,7 @@ Three control planes, all running workloads, so there is no `worker/` directory:
 
 | Node | Hardware | Address | Network |
 | ---- | -------- | ------- | ------- |
-| t01 | Proxmox VM on hera | 192.168.1.201 | `eth0` |
+| hera | ASUS NUC 15 Pro+, bare metal, two NVMe (the 9100 PRO is the file VM's, on `vfio-pci`) | 192.168.0.40 | `lan0` (one port) |
 | hestia | ASUS NUC 16 Pro, bare metal, one NVMe | 192.168.0.50 | `bond0` over harmonia ports 3+4 |
 | dike | ASUS NUC 16 Pro, bare metal, one NVMe | 192.168.0.60 | `bond0` over harmonia ports 5+6 |
 
@@ -148,10 +148,11 @@ One node at a time; each one joins etcd as it is applied. hestia is used as the 
   its host-root mount. `/var/lib/longhorn` only holds engine binaries and sockets, on EPHEMERAL.
 - **Hostnames.** `nodes[].host` is only used by topf for display, logging and node selection. The
   Talos hostnames are left on `auto: stable` (`all/01-hostname.yaml`), so the name handed out
-  by the Kea reservation wins, which is what keeps the Kubernetes node names at `t01`…`dike`
+  by the Kea reservation wins, which is what keeps the Kubernetes node names at `hera`…`dike`
   rather than the FQDNs. `upgrade.sh` relies on `data.zone` being that same name.
-- **etcd has three members, one per machine** (t01 on hera, hestia, dike; t02 and t03 were
-  retired). Any one machine can go down, hera included, and the remaining two keep quorum.
+- **etcd has three members, one per machine** (hera, hestia, dike; t01, the Proxmox VM hera ran
+  before it ran Talos itself, and t02 and t03 were retired). Any one machine can go down, and the
+  remaining two keep quorum.
 - **The NUCs share one NVMe drive between Talos and Longhorn.** `node/<host>/02-volumes.yaml`
   caps EPHEMERAL, since it would otherwise take the whole drive, and lets `longhorn-data` grow
   into the rest: hestia (1 TB 990 PRO) has 128 GiB + ~800 GiB, dike (250 GB 980) 64 GiB +

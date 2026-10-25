@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# The I226-V's (igc) receive ring at its maximum, as on the NUC 16s (node/dike.home.karlsen.fr/05-ethernet.yaml).
+# Check: talosctl -n hera get ethernetstatus enp87s0 -o yaml    (rings: rx: 4096)
+---
+apiVersion: v1alpha1
+kind: EthernetConfig
+name: enp87s0
+rings:
+  rx: 4096

@@ -36,10 +36,14 @@ data:
 #   mac          VMs: documents the Proxmox NIC, unused. NUCs: mac0/mac1 name the bond members, and
 #                mac0 is also the bond's own MAC, which the Kea reservation on helios is keyed on.
 nodes:
-  - host: t01.hera.home.karlsen.fr
-    ip: 192.168.1.201
+  # ASUS NUC 15 Pro+, bare metal, one port (formerly the Proxmox host of t01 and file01). Its Samsung 9100 PRO is
+  # the file VM's, bound to vfio-pci. See node/hera.home.karlsen.fr/.
+  - host: hera.home.karlsen.fr
+    ip: 192.168.0.40
     role: control-plane
-    data: {zone: t01, link: eth0, diskKey: nodeID, mac: 'BC:24:11:10:FE:09'}
+    platform: metal
+    schematicId: '@schematic.metal.yaml'
+    data: {zone: hera, link: lan0, diskKey: tpm, installDisk: AAFDB532007H4N, mac0: '88:ae:dd:68:ab:e8'}
 
   # ASUS NUC 16 Pro, bare metal, on harmonia ports 3+4 (static LAG1). See node/hestia.home.karlsen.fr/.
   - host: hestia.home.karlsen.fr

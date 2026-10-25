@@ -6,9 +6,9 @@ apiVersion: v1alpha1
 kind: KubeAPIServerConfig
 certExtraSANs:
   - 192.168.1.200
-  - 192.168.1.201
+  - 192.168.0.40
   - 192.168.0.50
   - 192.168.0.60
-  - t01.hera.home.karlsen.fr
+  - hera.home.karlsen.fr
   - hestia.home.karlsen.fr
   - dike.home.karlsen.fr

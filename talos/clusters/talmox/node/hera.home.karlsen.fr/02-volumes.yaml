@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# The Corsair MP600 Micro (1 TB) for everything Talos keeps, as on the NUC 16s (node/dike.home.karlsen.fr/02-volumes.yaml):
+# EPHEMERAL capped at 128 GiB, as on hestia (1 TB too), and Longhorn's user volume on the rest of the system disk.
+#
+# The Longhorn selector is not optional here: all/ selects any disk over 96 GiB, which on hera would also be the
+# Samsung 9100 PRO (4 TB): file01's data, passed through to the file VM (./03-vfio.yaml), that Talos must never
+# format. system_disk is the one Talos installed to (./00-install.yaml.tpl), and nothing else.
+#
+# Both documents merge with the ones in all/, which keep their encryption settings.
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+provisioning:
+  maxSize: 128GiB
+  grow: false
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: longhorn-data
+provisioning:
+  diskSelector: {match: system_disk}  # a top-level CEL variable, not a disk.* field
+  minSize: 100GiB  # restated: this provisioning block replaces the one in all/, it does not merge
+  grow: true

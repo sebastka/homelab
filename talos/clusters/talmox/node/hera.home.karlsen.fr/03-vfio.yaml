@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# The Samsung 9100 PRO (4 TB, 144d:a810 at 0000:01:00.0, alone in its IOMMU group) belongs to the file VM
+# (k8s/infrastructure/storage/file): bound to vfio-pci instead of nvme, so Talos never uses it and KubeVirt can
+# pass it through. The IOMMU is on by default on these Intel NUCs, and vfio_pci is loaded by all/13-longhorn.yaml.tpl.
+# Check: talosctl -n hera get pcidevices 0000:01:00.0 -o yaml    (driver: vfio-pci)
+# - https://docs.siderolabs.com/talos/v1.14/reference/configuration/hardware/pcidriverrebindconfig
+---
+apiVersion: v1alpha1
+kind: PCIDriverRebindConfig
+name: 0000:01:00.0
+targetDriver: vfio-pci
