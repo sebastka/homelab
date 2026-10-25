@@ -29,8 +29,9 @@ spec:
           interfaces:
             # Bridge binding: the VM takes its pod's address, so it sees the NFS clients' real addresses (masquerade
             # would show them all as 10.0.2.1). No live migration, which a passed-through disk rules out anyway.
-            # The MAC is the one hosts/file's network config matches.
-            - {name: default, bridge: {}, macAddress: '02:6b:76:00:f0:02'}
+            # No macAddress: the VM must keep its pod's MAC, which Cilium addresses the pod's traffic to; with any other
+            # MAC the VM never sees its inbound traffic.
+            - {name: default, bridge: {}}
           rng: {}
       networks:
         - {name: default, pod: {}}
