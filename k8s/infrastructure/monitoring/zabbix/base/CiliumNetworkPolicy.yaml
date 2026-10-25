@@ -9,9 +9,11 @@ spec:
   ingress:
     - {fromCIDR: [192.168.0.0/16], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From Zabbix agents for active checks
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: frontend}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From frontend
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: file, app.kubernetes.io/name: file}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # file (KubeVirt VM): active checks
   egress:
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: postgres, app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toCIDR: [192.168.0.0/16]}  # To LAN hosts: passive checks (10050), ICMP, MariaDB, etc.
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: file, app.kubernetes.io/name: file}}], toPorts: [ports: [{port: '10050', protocol: TCP}]]}  # file (KubeVirt VM): passive checks
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
