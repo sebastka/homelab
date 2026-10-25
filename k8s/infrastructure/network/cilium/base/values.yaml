@@ -62,6 +62,13 @@ bpf:
   lbModeAnnotation: true
   # tproxy: true
 
+# Fair queueing (EDT) on the nodes' devices, and BBR for pods: lower latency under load. BBR applies to sockets
+# created after it is on, i.e. to pods restarted since.
+# https://docs.cilium.io/en/stable/operations/performance/tuning/#bandwidth-manager
+bandwidthManager:
+  enabled: true
+  bbr: true
+
 # ipMasqAgent:
 #   enabled: true
 
