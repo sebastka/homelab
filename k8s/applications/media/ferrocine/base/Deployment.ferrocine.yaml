@@ -9,7 +9,7 @@ metadata:
   annotations:
     reloader.stakater.com/auto: 'true'  # The ferrocine Secret (the config ConfigMap's name changes with it)
 spec:
-  replicas: 0
+  replicas: 1
   strategy: {type: Recreate}
   selector:
     matchLabels:
