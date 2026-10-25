@@ -36,6 +36,15 @@
 - quay.io/argoprojlabs/argocd-extension-installer
 # - ghcr.io/dexidp/dex
 
+# infrastructure/controllers/cdi (cdi-operator deploys the others at its own version)
+- quay.io/kubevirt/cdi-operator
+- quay.io/kubevirt/cdi-apiserver
+- quay.io/kubevirt/cdi-controller
+- quay.io/kubevirt/cdi-uploadproxy
+- quay.io/kubevirt/cdi-uploadserver
+- quay.io/kubevirt/cdi-importer
+- quay.io/kubevirt/cdi-cloner
+
 # infrastructure/controllers/cert-manager
 - quay.io/jetstack/cert-manager-cainjector
 - quay.io/jetstack/cert-manager-controller
@@ -57,6 +66,13 @@
 # infrastructure/controllers/intel-device-plugins
 - intel/intel-deviceplugin-operator
 - intel/intel-gpu-plugin
+
+# infrastructure/controllers/kubevirt (virt-operator deploys the others at its own version)
+- quay.io/kubevirt/virt-operator
+- quay.io/kubevirt/virt-api
+- quay.io/kubevirt/virt-controller
+- quay.io/kubevirt/virt-handler
+- quay.io/kubevirt/virt-launcher
 
 # infrastructure/controllers/kyverno
 - reg.kyverno.io/kyverno/kyverno-cli
