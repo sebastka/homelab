@@ -7,7 +7,7 @@ set -eu
 # touches gpg, so pinentry never has to compete with the plan for the terminal.
 
 # Set by .envrc, so its absence means direnv did not run.
-REQUIRED_VARS='TF_VAR_state_encryption_passphrase TF_VAR_lxc_passwords CLOUDFLARE_API_TOKEN PROXMOX_VE_API_TOKEN'
+REQUIRED_VARS='TF_VAR_state_encryption_passphrase CLOUDFLARE_API_TOKEN'
 
 main()
 {
@@ -43,7 +43,7 @@ check_env()
     [ -n "$missing" ] || return 0
 
     printf -- 'Missing from the environment:%s\n' "$missing" >&2
-    printf -- 'Run from tofu/ with direnv allowed: direnv allow\n' >&2
+    printf -- 'Run from tofu-dns/ with direnv allowed: direnv allow\n' >&2
     return 1
 }
 

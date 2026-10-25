@@ -3,7 +3,7 @@
 
 set -eu
 
-readonly TOFU_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+readonly TOFU_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 # all_zones -- every zone we manage, one per line.
 all_zones()
@@ -41,11 +41,11 @@ cf_zones()
     done
 }
 
-# cf_token -- the Cloudflare API token, exported by ../../.envrc from sops.
+# cf_token -- the Cloudflare API token, exported by ../.envrc from sops.
 cf_token()
 {
     [ -n "${CLOUDFLARE_API_TOKEN:-}" ] || {
-        echo 'CLOUDFLARE_API_TOKEN is not set -- run from tofu/ with direnv allowed' >&2
+        echo 'CLOUDFLARE_API_TOKEN is not set -- run from tofu-dns/ with direnv allowed' >&2
         return 1
     }
     printf -- '%s\n' "$CLOUDFLARE_API_TOKEN"

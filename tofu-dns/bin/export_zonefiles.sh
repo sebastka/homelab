@@ -1,7 +1,7 @@
 #!/bin/sh
 # Dump a BIND zonefile for every domain in the Domeneshop account.
 #
-#   ./export_zonefiles.sh [output-dir]      # default: dns/zonefiles
+#   ./export_zonefiles.sh [output-dir]      # default: zonefiles
 #
 # The domain list comes from the registrar, not from this repo, so a domain
 # bought and forgotten still shows up here. Where the zone is served decides
@@ -21,7 +21,7 @@
 
 main()
 {
-    out="${1:-$TOFU_DIR/dns/zonefiles}"
+    out="${1:-$TOFU_DIR/zonefiles}"
     mkdir -p "$out"
 
     zone_hosts | while read -r id fqdn where; do

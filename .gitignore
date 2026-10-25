@@ -30,7 +30,7 @@ radarr
 !.terraform.lock.hcl
 *.backup
 tfplan
-tofu/dns/zonefiles/
+tofu-dns/zonefiles/
 
 # topf
 talos/clusters/*/output/

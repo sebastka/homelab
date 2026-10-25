@@ -6,7 +6,7 @@ only ever stores them encrypted, and passes them on to the other desktops, which
 
 - Sync: `sync.karlsen.fr:22000` (TCP and QUIC). At home helios resolves it to this LoadBalancer
   (`192.168.2.14`); elsewhere it is the public IP, which helios forwards here (ansible `routers.conf`
-  and `unbound`; nixos `hosts/helios`; DNS record in `tofu/dns`). Connections are TLS, mutually
+  and `unbound`; nixos `hosts/helios`; DNS record in `tofu-dns`). Connections are TLS, mutually
   authenticated by device ID: only devices added here get in.
 - Web UI: <https://syncthing.talmox.hera.home.karlsen.fr>, LAN and tailnet only. The `gui` Service is
   ClusterIP, the route is on the internal gateway (not forwarded by helios), and the

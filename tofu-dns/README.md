@@ -1,6 +1,8 @@
-# OpenTofu
+# OpenTofu: DNS
 
-Proxmox guests and DNS, in one root module with one encrypted state file.
+DNS (Cloudflare): every zone and record, in one root module with one encrypted state file. This directory was
+`tofu/` until 2026-10-25, when the Proxmox guests it also managed were gone (hera runs Talos itself, ../talos) and the
+`dns/` module became the root.
 
 ```sh
 ./run.sh   # init, fmt, validate, plan -- then apply on confirmation
@@ -28,16 +30,14 @@ A graphical pinentry avoids the clash altogether — drop `pinentry-program` fro
 
 | Path | What |
 | --- | --- |
-| `providers.tf` | Provider versions, state encryption, Proxmox and Cloudflare endpoints |
+| `providers.tf` | Provider versions, state encryption, the Cloudflare endpoint |
 | `secrets.tf` | Reads `secrets.sops.yaml` into `local.secrets` |
 | `secrets.sops.yaml` | Committed, PGP-encrypted: every credential |
-| `.envrc` | direnv: exports the state passphrase and both provider tokens from sops |
-| `locals.tf` | The guest inventory, per Proxmox node |
-| `modules.tf` | Wires `dns/` and `virtual_machines/` |
-| `ansible.tf` | Writes `../ansible/inventories/tofu.yaml` on apply; commit it with the state |
-| `dns/` | Cloudflare zones and records, and the `bin/` tooling around them |
+| `.envrc` | direnv: exports the state passphrase and the provider token from sops |
+| `zones.tf`, `records_*.tf` | Cloudflare zones, and each zone's records |
+| `outputs.tf` | Zone ids and the nameservers to check at the registrar |
+| `bin/` | Tooling around the zones: zonefile export, posture checks, Universal SSL |
 | `vars.domeneshop.tf` | Domeneshop's mail hosts and the SPF/DMARC strings built from them |
-| `virtual_machines/` | VM and LXC resources for one Proxmox node |
 
 ## Secrets
 
@@ -49,8 +49,7 @@ How each value reaches OpenTofu depends on when it is needed:
 - **State passphrase** — `TF_VAR_state_encryption_passphrase`. The encryption
   block is evaluated before variables are, so it cannot come from the data
   source.
-- **Provider tokens** — `CLOUDFLARE_API_TOKEN` and `PROXMOX_VE_API_TOKEN`, read
-  natively by the providers. Provider configuration is resolved before data
+- **Provider token** — `CLOUDFLARE_API_TOKEN`, read natively by the provider. Provider configuration is resolved before data
   sources too.
 - **Everything else** — `local.secrets`, via the `sops_file` data source in
   `secrets.tf`.
@@ -81,12 +80,12 @@ Each zone has its own file, named after the domain with the dots removed:
 
 | Zone | File |
 | --- | --- |
-| `karlsen.app` | `dns/records_karlsenapp.tf` |
-| `karlsen.fr` | `dns/records_karlsenfr.tf` |
-| `karlsen.org` | `dns/records_karlsenorg.tf` |
-| `bwdb.info` | `dns/records_bwdbinfo.tf` |
-| `spkag.com` | `dns/records_spkagcom.tf` |
-| `megka.no` | `dns/records_megkano.tf` |
+| `karlsen.app` | `records_karlsenapp.tf` |
+| `karlsen.fr` | `records_karlsenfr.tf` |
+| `karlsen.org` | `records_karlsenorg.tf` |
+| `bwdb.info` | `records_bwdbinfo.tf` |
+| `spkag.com` | `records_spkagcom.tf` |
+| `megka.no` | `records_megkano.tf` |
 
 Three of these were previously held behind aliases `a`–`e` in
 `secrets.sops.yaml`. That was dropped on 2026-10-07: the names were the only
@@ -105,7 +104,7 @@ then write an `import` block for it in the root module and apply:
 
 ```hcl
 import {
-  to = module.dns.cloudflare_dns_record.<name>
+  to = cloudflare_dns_record.<name>
   id = "<zone_id>/<record_id>"
 }
 ```
@@ -118,8 +117,8 @@ object".
 ### Zonefile dumps
 
 ```sh
-dns/bin/export_zonefiles.sh            # -> dns/zonefiles/
-dns/bin/export_zonefiles.sh /tmp/dns   # or somewhere else
+bin/export_zonefiles.sh            # -> zonefiles/
+bin/export_zonefiles.sh /tmp/dns   # or somewhere else
 ```
 
 The domain list comes from the registrar rather than from this repo, so a
@@ -134,31 +133,31 @@ since the records API does not return it. All eight then pass
 `named-checkzone` (the Domeneshop ones once you prepend an SOA).
 
 The dumps are reference copies and never an input to OpenTofu.
-`dns/zonefiles/` is gitignored as a directory, not file by file -- a zonefile
+`zonefiles/` is gitignored as a directory, not file by file -- a zonefile
 is its domain name written out over and over, filename included, and naming
 them individually in `.gitignore` would leak exactly what we are hiding.
 
 ### Checking
 
 ```sh
-dns/bin/check_zones.sh           # NS, MX, SPF, DMARC, DKIM, CAA, MTA-STS, DNSSEC
-dns/bin/check_zones.sh dmarc     # one section
+bin/check_zones.sh           # NS, MX, SPF, DMARC, DKIM, CAA, MTA-STS, DNSSEC
+bin/check_zones.sh dmarc     # one section
 ```
 
 It reads the secret zone names through sops, so nothing is hardcoded, and
 resolves against 1.1.1.1 rather than the system resolver -- see the note on
-`zone_hosts` in `dns/bin/lib/common`.
+`zone_hosts` in `bin/lib/common`.
 
 ```sh
-dns/bin/universal_ssl.sh             # report Universal SSL per zone
-dns/bin/universal_ssl.sh --disable   # turn it off, so our CAA is served
+bin/universal_ssl.sh             # report Universal SSL per zone
+bin/universal_ssl.sh --disable   # turn it off, so our CAA is served
 ```
 
 Needs a token with **Zone > SSL and Certificates > Edit**; the DNS token in
 `secrets.sops.yaml` cannot reach that endpoint. Pass it as
 `CLOUDFLARE_SSL_TOKEN`.
 
-The OPENPGPKEY record in `dns/records_karlsenfr.tf` is WKD-over-DNS for
+The OPENPGPKEY record in `records_karlsenfr.tf` is WKD-over-DNS for
 `sebastian@karlsen.fr`. To rebuild it after a key change, the owner name is the
 SHA-1 z-base-32 of the local part and the content is the minimal exported key:
 
@@ -168,7 +167,6 @@ gpg --export --export-options export-minimal,no-export-attributes <key-id> | bas
 
 ## Providers
 
-- **[bpg/proxmox](https://registry.terraform.io/providers/bpg/proxmox/latest/docs)** — VMs and LXC.
 - **[cloudflare/cloudflare](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs)** v5.
 - **[carlpett/sops](https://registry.terraform.io/providers/carlpett/sops/latest/docs)** — decrypts
   `secrets.sops.yaml`.
@@ -188,12 +186,12 @@ configuration; both are waiting on something outside it.
   matching the `ds*` selectors `karlsen.fr`, `c` and `e` already carry.
 - **No MTA-STS or TLS-RPT on `c` or `e`.** Both accept mail, so a downgrade
   attack on inbound SMTP is neither blocked nor reported. The serving side is
-  ready: `dns/bin/`'s policy document is shared by every zone, since they all
+  ready: `bin/`'s policy document is shared by every zone, since they all
   deliver to the same MX and the policy names no domain. Each still needs a
   Gateway listener and certificate, its hostname on the homepage `discovery`
   HTTPRoute and on the `mta-sts` `server_name`, then an `mta-sts` CNAME,
   `_mta-sts` TXT and `_smtp._tls` TXT here.
 
-`dns/bin/check_zones.sh` reports the current posture of every zone across NS,
+`bin/check_zones.sh` reports the current posture of every zone across NS,
 MX, SPF, DMARC, DKIM, CAA, MTA-STS and DNSSEC, reading the secret names
 through sops.

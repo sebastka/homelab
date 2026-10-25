@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-# Plan the root module, show it, and apply on confirmation, like ../tofu/run.sh. Every secret comes
+# Plan the root module, show it, and apply on confirmation, like ../tofu-dns/run.sh. Every secret comes
 # from direnv (.envrc), which decrypts secrets.sops.yaml once when the shell enters this directory;
 # this script only checks that it did. Nothing here touches gpg, so pinentry never has to compete
 # with the plan for the terminal.
