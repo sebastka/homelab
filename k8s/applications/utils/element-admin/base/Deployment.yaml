@@ -30,15 +30,15 @@ spec:
       automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       containers:
         - name: element-admin
-          # Dockerfile: https://github.com/element-hq/element-admin/blob/main/Dockerfile
-          image: ghcr.io/sebastka/element-admin:2026.10.21@sha256:f259c3a83380a31968adb2130f61c3ce9e342bd8f743f704277f8e765a7e1f53
+          # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/element-admin/Dockerfile
+          image: ghcr.io/sebastka/element-admin:2026.10.25@sha256:26b08bfc4cae45a10d8dc3778b71073a3b01aa6511a7279b609c325e7ef6efbf
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -48,13 +48,16 @@ spec:
             limits: {memory: 128Mi}
           ports:
             - {name: http, protocol: TCP, containerPort: 8080}
-          startupProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
-          livenessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
-          readinessProbe: {httpGet: {port: 8080, path: /}, initialDelaySeconds: 10, periodSeconds: 120}
+          startupProbe: {httpGet: {port: 8080, path: /health}, initialDelaySeconds: 2, periodSeconds: 10, failureThreshold: 3}
+          livenessProbe: {httpGet: {port: 8080, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
+          readinessProbe: {httpGet: {port: 8080, path: /health}, initialDelaySeconds: 10, periodSeconds: 120}
           env:
             - {name: TZ, value: Europe/Oslo}
-            - {name: SERVER_NAME, value: karlsen.fr}
           volumeMounts:
-            - {name: tmp-volume, mountPath: /tmp}
+            - {name: nginx-conf, mountPath: /etc/nginx/conf.d/default.conf, subPath: default.conf, readOnly: true}
+            - {name: tmp-volume, mountPath: /tmp,                           subPath: sys-tmp,      readOnly: false}
+            - {name: tmp-volume, mountPath: /run/nginx,                     subPath: run,          readOnly: false}
+            - {name: tmp-volume, mountPath: /var/lib/nginx/tmp,             subPath: nginx-tmp,    readOnly: false}
       volumes:
+        - {name: nginx-conf, configMap: {name: element-admin-nginx}}
         - {name: tmp-volume, emptyDir: {}}
