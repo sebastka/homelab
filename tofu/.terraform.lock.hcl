@@ -30,6 +30,7 @@ provider "registry.opentofu.org/bpg/proxmox" {
     "zh:bfa104d8aeae169d06ac630446e7c750eff1f10e2e78f2d9250fcbca3f5ff7f9",
     "zh:c243b5118a0c86b945fb3fc4169a22f5038277cd7849f1feabfc713184e73756",
     "zh:da2c5d1c9319603ca378e92ff741c97467b261480d0743528b02cb6ae41fbd1a",
+    "zh:f26e0763dbe6a6b2195c94b44696f2110f7f55433dc142839be16b9697fa5597",
     "zh:fc3a38a51b00388f697566631b5ce035c75261ab02f5f0ac07c8a87cea9df9e8",
   ]
 }
@@ -54,6 +55,7 @@ provider "registry.opentofu.org/cloudflare/cloudflare" {
     "zh:a182f4aec86c74e9db4affa22323c5a21f5d92c1fcf91b934570753d04f4daf8",
     "zh:a39bb8624fb6c714e38bc0e632aae117a9fede5a18a248ab15dd1b60013c0324",
     "zh:bef2ffbdb68569549fe432b550592e07456759a7288f84f7c37c9d933a493f54",
+    "zh:f809ab383cca0a5f83072981c64208cbd7fa67e986a86ee02dd2c82333221e32",
   ]
 }
 
