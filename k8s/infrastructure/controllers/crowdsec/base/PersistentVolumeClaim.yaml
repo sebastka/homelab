@@ -7,8 +7,6 @@ metadata:
   namespace: crowdsec
   labels:
     app.kubernetes.io/name: crowdsec
-    recurring-job.longhorn.io/source: crowdsec
-    recurring-job-group.longhorn.io/group1: enabled
     backup.velero.io/nightly-hetzner: enabled
 spec:
   accessModes: [ReadWriteOnce]

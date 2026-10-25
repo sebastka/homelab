@@ -8,8 +8,6 @@ metadata:
   namespace: syncthing
   labels:
     app.kubernetes.io/name: syncthing
-    recurring-job.longhorn.io/source: enabled
-    recurring-job-group.longhorn.io/group1: enabled
     backup.velero.io/nightly-hetzner: enabled
 spec:
   accessModes: [ReadWriteOncePod]

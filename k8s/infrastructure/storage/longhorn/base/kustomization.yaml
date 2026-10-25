@@ -10,7 +10,6 @@ resources:
   - StorageClass.longhorn-encrypted.yaml
   - VolumeSnapshotClass.yaml
   # - BackupTarget.yaml
-  - RecurringJob.yaml
   # - GrafanaDashboard.control-plane.yaml
   # - GrafanaDashboard.data-plane.yaml
   - CiliumNetworkPolicy.yaml
