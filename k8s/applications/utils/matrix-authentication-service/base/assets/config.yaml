@@ -32,7 +32,7 @@ http:
   # issuer: http://[::]:8080/
 
 database:
-  host: db02.hera.home.karlsen.fr
+  host: postgres.postgres.svc.cluster.local
   port: 5432
   ssl_mode: disable
   # passowrd: strenv(DATABASE_PASSWORD)

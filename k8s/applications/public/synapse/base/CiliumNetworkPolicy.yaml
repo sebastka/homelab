@@ -9,7 +9,7 @@ spec:
   ingress:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
   egress:
-    # - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}  # Covered by world
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: postgres, app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     # - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}  # Covered by world
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}
     - {toEntities: [world]}  # cluster, host
