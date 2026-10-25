@@ -9,5 +9,5 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs-static
   nfs:
-    server: file01.hera.home.karlsen.fr
+    server: file.home.karlsen.fr
     path: /mnt/nfs/homelab/k8s/deluge/downloads

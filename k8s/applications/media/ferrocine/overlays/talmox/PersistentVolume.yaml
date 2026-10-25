@@ -12,6 +12,6 @@ spec:
   storageClassName: nfs-static
   claimRef: {namespace: ferrocine, name: ferrocine-media-pvc}
   nfs:
-    server: file01.hera.home.karlsen.fr
+    server: file.home.karlsen.fr
     path: /mnt/nfs/homelab/k8s
     readOnly: true
