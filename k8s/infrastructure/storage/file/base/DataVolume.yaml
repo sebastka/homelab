@@ -13,7 +13,7 @@ spec:
     upload: {}
   storage:
     accessModes: [ReadWriteOnce]
-    volumeMode: Block
+    volumeMode: Filesystem
     storageClassName: longhorn-encrypted
     resources:
       requests: {storage: 16Gi}
