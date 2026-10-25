@@ -75,7 +75,7 @@ secretRefs:
 database:
   type: postgresdb
   useExternal: true
-  host: db02.hera.home.karlsen.fr
+  host: postgres.postgres.svc.cluster.local
   port: 5432
   database: n8n
   schema: public
