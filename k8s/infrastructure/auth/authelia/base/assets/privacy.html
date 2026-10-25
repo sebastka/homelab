@@ -87,7 +87,7 @@
                <li>Signing in through auth.karlsen.fr always requires a second factor, such as an authenticator app or a security key.</li>
                <li>Repeated failed sign-ins temporarily block both the account and the IP address they come from.</li>
                <li>Passwords are only stored hashed, and two-factor secrets are stored encrypted.</li>
-               <!-- Enable once the ZFS datasets of db01, db02 and file01 on hera are encrypted: -->
+               <!-- Enable once file01's data on hera is encrypted (the databases are on encrypted Longhorn volumes): -->
                <!-- <li>All data is stored on encrypted disks.</li> -->
                <li>Each service is isolated by network rules that only allow the connections it needs.</li>
                <li>Attacks are detected and blocked automatically, and the servers are monitored for suspicious activity.</li>
