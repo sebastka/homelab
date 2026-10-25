@@ -11,10 +11,12 @@ spec:
     - {namespace: argocd,               name: talmox}
     - {namespace: arc-systems,          name: talmox}
     - {namespace: arc-runners,          name: talmox}
+    - {namespace: cdi,                  name: talmox}
     - {namespace: kube-system,          name: talmox}
     - {namespace: cert-manager,         name: talmox}
     - {namespace: crowdsec,             name: talmox}
     - {namespace: intel-device-plugins, name: talmox}
+    - {namespace: kubevirt,             name: talmox}
     - {namespace: kyverno,              name: talmox}
     - {namespace: nfd,                  name: talmox}
     - {namespace: reloader,             name: talmox}
