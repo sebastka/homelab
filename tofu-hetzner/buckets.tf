@@ -86,3 +86,65 @@ resource "minio_s3_bucket" "velero" {
     prevent_destroy = true
   }
 }
+
+# ---------------------------------------------------------------------------------------- files ---
+#
+# file's data (the NFS server, a KubeVirt VM: the nixos repository's hosts/file/backup.nix), backed
+# up nightly by Kopia, one snapshot source per share (Documents, Downloads, Music, Pictures, Torrent,
+# Videos; not homelab), into one encrypted repository. Locked as the dumps are, and for the same
+# reason (a leaked key could otherwise delete them): 30 days, COMPLIANCE.
+#
+# Kopia locks what it writes itself (its repository is created with --retention-mode COMPLIANCE
+# --retention-period 30d) and renews the locks of what is still in use at each full maintenance
+# (--extend-object-locks), so current data stays locked for as long as it is kept; the bucket's
+# default lock below is a floor under that. Kopia decides what to keep (its snapshot policies), so
+# no expiration of current objects here.
+
+resource "minio_s3_bucket" "files" {
+  bucket = "sebastka-homelab-files"
+  acl    = "private"
+
+  # Object lock can only be enabled when a bucket is created: false here would mean replacing it
+  object_locking = true
+
+  lifecycle {
+    prevent_destroy = true # Holds the only off-site copy of file's data
+  }
+}
+
+# Required by object lock, and what keeps a compromised backup job from silently replacing or
+# deleting earlier data: an overwrite or delete only adds a version (Kopia's restore can then go
+# back in time with --point-in-time, within the noncurrent versions' lifetime).
+resource "minio_s3_bucket_versioning" "files" {
+  bucket = minio_s3_bucket.files.bucket
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+# Every new object version is locked for 30 days, whatever Kopia asks: compliance, as the dumps'.
+resource "minio_s3_bucket_retention" "files" {
+  bucket          = minio_s3_bucket.files.bucket
+  mode            = "COMPLIANCE"
+  unit            = "DAYS"
+  validity_period = 30
+}
+
+# What Kopia deletes (its maintenance drops the data no snapshot needs any more) only becomes a
+# noncurrent version behind a delete marker, still billed: removed a week later, or once its lock
+# has run out (Kopia's renewals end when it deletes, so at most 30 days after). No expiration of
+# current objects: Kopia alone decides what to keep.
+resource "minio_ilm_policy" "files" {
+  bucket = minio_s3_bucket.files.bucket
+
+  rule {
+    id = "noncurrent"
+
+    noncurrent_expiration {
+      days = "7d"
+    }
+  }
+
+  depends_on = [minio_s3_bucket_versioning.files]
+}

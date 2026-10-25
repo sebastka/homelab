@@ -1,7 +1,7 @@
 # OpenTofu — Hetzner
 
 Owns the Hetzner Object Storage buckets (Helsinki, `hel1.your-objectstorage.com`) that hold the
-homelab's off-site backups. Both were created in the Cloud Console and imported:
+homelab's off-site backups. The first two were created in the Cloud Console and imported:
 
 - `sebastka-homelab-databases`: the nightly PGP-encrypted database dumps
   (`k8s/common/dbdump2s3`). Object lock and versioning, with a 30-day COMPLIANCE lock on every new
@@ -11,6 +11,11 @@ homelab's off-site backups. Both were created in the Cloud Console and imported:
 - `sebastka-homelab`: Velero's backups. Velero manages them itself (30-day TTL), so no lifecycle
   policy, versioning or lock; it is here so the bucket is on record and protected by
   `prevent_destroy`.
+- `sebastka-homelab-files`: file's data (the NFS server, a KubeVirt VM; the nixos repository's
+  `hosts/file/backup.nix`), backed up nightly by Kopia into one encrypted repository, one snapshot
+  source per share. Object lock and versioning with a 30-day COMPLIANCE lock, as the dumps'; Kopia
+  renews the locks of the data it still uses, and decides what to keep: the lifecycle policy only
+  removes what Kopia deleted, a week later or once its lock has run out. Created by this root.
 
 The project holds nothing else: no servers, volumes, networks, firewalls, SSH keys, IPs, DNS zones
 or Storage Boxes (checked with the hcloud API, 2026-10-18), so there is no hcloud provider here.
@@ -58,7 +63,7 @@ The provider reads both variables itself, so they reach neither state nor the pl
 - **`s3_compat_mode`** is on: Hetzner implements a subset of S3, and the provider then reports an
   unsupported feature as such rather than failing every read. Creating or changing something
   Hetzner does not support still fails, by design.
-- **Both buckets have `prevent_destroy`**: removing one means removing that line first,
+- **Every bucket has `prevent_destroy`**: removing one means removing that line first,
   deliberately.
 - **Object lock can only be enabled when a bucket is created**, which is why
   `object_locking = true` must stay: false would mean replacing the bucket.
