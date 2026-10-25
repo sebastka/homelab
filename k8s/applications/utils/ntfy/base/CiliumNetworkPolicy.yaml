@@ -10,5 +10,5 @@ spec:
     # - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway / Covered by cluster policy below
     - {fromEntities: [cluster], toPorts: [ports: [{port: '8080', protocol: TCP}]]}
   egress:
-    - {toFQDNs: [matchName: db02.hera.home.karlsen.fr], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: postgres, app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toFQDNs: [matchName: smtp.domeneshop.no], toPorts: [ports: [{port: '465', protocol: TCP}]]}

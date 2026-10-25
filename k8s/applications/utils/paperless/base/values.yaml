@@ -14,7 +14,7 @@ paperless:
     PAPERLESS_REDIS_PREFIX: paperless_
 
     # Database
-    PAPERLESS_DBHOST: db02.hera.home.karlsen.fr
+    PAPERLESS_DBHOST: postgres.postgres.svc.cluster.local
     PAPERLESS_DBENGINE: postgresql
     PAPERLESS_DBNAME: paperless
     PAPERLESS_DBUSER: paperless
