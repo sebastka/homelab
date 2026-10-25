@@ -5,6 +5,7 @@ metadata:
   name: light-ldap
   labels:
     app.kubernetes.io/name: light-ldap
+    karlsen.fr/database: postgres
     pod-security.kubernetes.io/enforce: restricted
     pod-security.kubernetes.io/enforce-version: latest
     pod-security.kubernetes.io/audit: restricted

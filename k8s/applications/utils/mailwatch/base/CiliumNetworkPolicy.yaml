@@ -14,7 +14,7 @@ spec:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '3000', protocol: TCP}]]}  # Envoy Gateway
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # OIDC (auth.karlsen.fr) and our own MTA-STS/BIMI hosts, via the Gateway
-    - {toFQDNs: [matchName: db01.hera.home.karlsen.fr], toPorts: [ports: [{port: '3306', protocol: TCP}]]}  # MariaDB
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: mariadb, app.kubernetes.io/name: mariadb, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '3306', protocol: TCP}]]}  # MariaDB
     - {toCIDR: [192.168.0.1/32], toPorts: [ports: [{port: '53', protocol: UDP}, {port: '53', protocol: TCP}]]}  # DNSBL_RESOLVERS (unbound on helios: Spamhaus refuses public resolvers)
     - {toEntities: [world], toPorts: [ports: [{port: '53', protocol: UDP}, {port: '53', protocol: TCP}]]}  # DNS_RESOLVERS (1.1.1.1, 8.8.8.8) and authoritative nameserver probes
     - {toEntities: [world], toPorts: [ports: [{port: '25', protocol: TCP}]]}  # SMTP probes of every MX
