@@ -137,7 +137,7 @@ regulation:
 storage:
   # encryption_key: AUTHELIA_STORAGE_ENCRYPTION_KEY
   mysql:
-    address: tcp://db01.hera.home.karlsen.fr:3306
+    address: tcp://mariadb.mariadb.svc.cluster.local:3306
     database: authelia
     username: authelia
     # password: AUTHELIA_STORAGE_MYSQL_PASSWORD

@@ -104,7 +104,7 @@ gitea:
       SSH_CREATE_AUTHORIZED_KEYS_FILE: 'true'
     database:
       DB_TYPE: mysql
-      HOST: db01.hera.home.karlsen.fr
+      HOST: mariadb.mariadb.svc.cluster.local
       NAME: forgejo
       USER: forgejo
     security:
