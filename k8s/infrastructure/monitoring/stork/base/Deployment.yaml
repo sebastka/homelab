@@ -37,7 +37,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       containers:
         - name: stork
-          image: ghcr.io/sebastka/stork:2.6.0@sha256:34dc96c662c76b0b71f8ce3c28b2dfaab13ccaf86141821b94eb01418a2dd5c6
+          image: ghcr.io/sebastka/stork:2.6.0@sha256:586d43c97c5c65583b71751ce4f4161aa54e8dd714ee75c0403d8430f3189b6f
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
