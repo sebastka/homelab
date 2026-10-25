@@ -1,0 +1,39 @@
+---
+# The NFS server (NixOS: github.com/sebastka/nixos, hosts/file), replacing file01 (Proxmox VM on hera).
+# Its disks are separate resources (DataVolume.yaml, PersistentVolumeClaim.yaml), so deleting or recreating the VM
+# never takes them with it.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: file
+  namespace: file
+spec:
+  runStrategy: Always  # Waits for the root disk's upload on first start
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: file
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: file
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      terminationGracePeriodSeconds: 180  # ACPI shutdown: NFS clients and btrfs flushed
+      domain:
+        cpu: {cores: 2}
+        memory: {guest: 4Gi}
+        machine: {type: q35}
+        devices:
+          disks:
+            - {name: root, bootOrder: 1, disk: {bus: virtio}}
+            - {name: data, disk: {bus: virtio}}
+          interfaces:
+            # Bridge binding: the VM takes its pod's address, so it sees the NFS clients' real addresses (masquerade
+            # would show them all as 10.0.2.1). No live migration, which a passed-through disk rules out anyway.
+            # The MAC is the one hosts/file's network config matches.
+            - {name: default, bridge: {}, macAddress: '02:6b:76:00:f0:02'}
+          rng: {}
+      networks:
+        - {name: default, pod: {}}
+      volumes:
+        - {name: root, dataVolume: {name: file-root}}
+        - {name: data, persistentVolumeClaim: {claimName: file-data}}  # Test disk until file01's Samsung 9100 PRO

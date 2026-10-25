@@ -1,0 +1,21 @@
+---
+# file.home.karlsen.fr (helios: hosts/helios/lan.nix). externalTrafficPolicy Local keeps the clients' addresses,
+# which the VM's firewall and NFS exports rely on.
+apiVersion: v1
+kind: Service
+metadata:
+  name: file
+  namespace: file
+  labels:
+    arp.cilium.io/announce-service: default-arp-l2-announcement-policy
+    arp.cilium.io/ip-pool: default-arp-ip-pool
+  annotations:
+    lbipam.cilium.io/ips: 192.168.2.15
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    app.kubernetes.io/name: file
+  ports:
+    - {name: ssh, protocol: TCP, port: 22,   targetPort: 22}
+    - {name: nfs, protocol: TCP, port: 2049, targetPort: 2049}

@@ -1,0 +1,13 @@
+---
+# baseline: virt-launcher (the VM's pod) runs as non-root but needs a few capabilities restricted forbids.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: file
+  labels:
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/audit: baseline
+    pod-security.kubernetes.io/audit-version: latest
+    pod-security.kubernetes.io/warn: baseline
+    pod-security.kubernetes.io/warn-version: latest

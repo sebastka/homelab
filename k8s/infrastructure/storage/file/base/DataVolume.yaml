@@ -1,0 +1,19 @@
+---
+# The root disk: the NixOS KubeVirt image of hosts/file, uploaded once (virtctl image-upload, see the host's
+# default.nix); NixOS upgrades itself from there. Never pruned or deleted by Argo.
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: file-root
+  namespace: file
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  source:
+    upload: {}
+  storage:
+    accessModes: [ReadWriteOnce]
+    volumeMode: Block
+    storageClassName: longhorn-encrypted
+    resources:
+      requests: {storage: 16Gi}
