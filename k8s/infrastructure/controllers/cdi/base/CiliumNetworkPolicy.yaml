@@ -1,0 +1,51 @@
+---
+# Metrics (vmagent to 8443): allow-vmagent-scrape (cilium), cluster-wide.
+# Importer, uploadserver and cloner pods run in the namespace of the PVC they fill, under that
+# namespace's policies: an import from a URL needs egress there, and cdi-deployment and
+# cdi-uploadproxy need to reach them on 8443. Mirrors the release's network-policies.yaml.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-cdi-operator
+  namespace: cdi
+spec:
+  endpointSelector: {matchLabels: {cdi.kubevirt.io: cdi-operator}}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-cdi-apiserver
+  namespace: cdi
+spec:
+  endpointSelector: {matchLabels: {cdi.kubevirt.io: cdi-apiserver}}
+  ingress:
+    - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '8443', protocol: TCP}]]}  # Webhooks, upload token API
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-cdi-deployment
+  namespace: cdi
+spec:
+  endpointSelector: {matchLabels: {cdi.kubevirt.io: cdi-deployment}}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toEndpoints: [{matchLabels: {prometheus.cdi.kubevirt.io: 'true'}, matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: Exists}]}], toPorts: [ports: [{port: '8443', protocol: TCP}]]}  # Import progress
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-cdi-uploadproxy
+  namespace: cdi
+spec:
+  endpointSelector: {matchLabels: {cdi.kubevirt.io: cdi-uploadproxy}}
+  # ingress: []  # virtctl image-upload reaches it through a port-forward until it gets a route
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toEndpoints: [{matchLabels: {cdi.kubevirt.io: cdi-upload-server}, matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: Exists}]}], toPorts: [ports: [{port: '8443', protocol: TCP}]]}

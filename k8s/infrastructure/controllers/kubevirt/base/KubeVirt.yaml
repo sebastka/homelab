@@ -1,0 +1,17 @@
+---
+# https://kubevirt.io/user-guide/cluster_admin/updating_and_deletion/
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  certificateRotateStrategy: {}
+  configuration:
+    developerConfiguration:
+      featureGates: []
+    imagePullPolicy: IfNotPresent
+  customizeComponents: {}
+  imagePullPolicy: IfNotPresent
+  uninstallStrategy: BlockUninstallIfWorkloadsExist  # Deleting this resource never takes running VMs with it
+  workloadUpdateStrategy: {}

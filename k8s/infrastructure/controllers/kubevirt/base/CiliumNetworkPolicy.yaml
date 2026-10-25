@@ -1,0 +1,66 @@
+---
+# Metrics (vmagent to 8443): allow-vmagent-scrape (cilium), cluster-wide.
+# virt-launcher pods (the VMs) run in their own namespaces, under those namespaces' policies; those
+# need to let virt-api in. Mirrors the release's kubevirt-network-policies.yaml.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-virt-operator
+  namespace: kubevirt
+spec:
+  endpointSelector: {matchLabels: {kubevirt.io: virt-operator}}
+  ingress:
+    - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '8444', protocol: TCP}]]}  # Webhook
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-virt-api
+  namespace: kubevirt
+spec:
+  endpointSelector: {matchLabels: {kubevirt.io: virt-api}}
+  ingress:
+    - {fromEntities: [kube-apiserver], toPorts: [ports: [{port: '8443', protocol: TCP}]]}  # Webhooks, subresources API (console, VNC)
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toEndpoints: [matchExpressions: [{key: kubevirt.io, operator: In, values: [virt-operator, virt-controller]}]], toPorts: [ports: [{port: '8443', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {kubevirt.io: virt-handler}], toPorts: [ports: [{port: '0', protocol: TCP}]]}  # Console, VNC and the like, proxied to the VM's node
+    - {toEndpoints: [{matchLabels: {kubevirt.io: virt-launcher}, matchExpressions: [{key: k8s:io.kubernetes.pod.namespace, operator: Exists}]}]}  # VMs, in any namespace
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-virt-controller
+  namespace: kubevirt
+spec:
+  endpointSelector: {matchLabels: {kubevirt.io: virt-controller}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {kubevirt.io: virt-api}], toPorts: [ports: [{port: '8443', protocol: TCP}]]}
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-virt-operator-from-api
+  namespace: kubevirt
+spec:
+  endpointSelector: {matchLabels: {kubevirt.io: virt-operator}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {kubevirt.io: virt-api}], toPorts: [ports: [{port: '8443', protocol: TCP}]]}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-virt-handler
+  namespace: kubevirt
+spec:
+  endpointSelector: {matchLabels: {kubevirt.io: virt-handler}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {kubevirt.io: virt-api}], toPorts: [ports: [{port: '0', protocol: TCP}]]}
+    - {fromEndpoints: [matchLabels: {kubevirt.io: virt-handler}]}  # Live migration
+  egress:
+    - {toEntities: [kube-apiserver]}
+    - {toEndpoints: [matchLabels: {kubevirt.io: virt-handler}]}  # Live migration

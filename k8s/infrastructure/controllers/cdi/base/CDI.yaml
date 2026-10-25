@@ -1,0 +1,18 @@
+---
+# https://github.com/kubevirt/containerized-data-importer/blob/main/doc/cdi-config.md
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: CDI
+metadata:
+  name: cdi
+spec:
+  config:
+    featureGates:
+      - HonorWaitForFirstConsumer
+  imagePullPolicy: IfNotPresent
+  infra:
+    nodeSelector:
+      kubernetes.io/os: linux
+  workload:
+    nodeSelector:
+      kubernetes.io/os: linux
+  uninstallStrategy: BlockUninstallIfWorkloadsExist  # Deleting this resource never takes DataVolumes with it
