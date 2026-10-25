@@ -1,0 +1,31 @@
+---
+# Nightly backups that stopped succeeding. In place of a heartbeat: alerts through this cluster's own
+# Alertmanager, so they cannot report a dead cluster.
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: backups
+  namespace: monitoring
+spec:
+  groups:
+    - name: backups
+      rules:
+        # The dump job only succeeds when every database in databases.csv is uploaded and locked
+        # (common/dbdump2s3). Daily: 26h leaves room for a DST shift (the schedule is Europe/Oslo).
+        - alert: DatabaseBackupStale
+          expr: time() - kube_cronjob_status_last_successful_time{cronjob="db-backup"} > 26 * 3600
+          for: 30m
+          labels:
+            severity: critical
+          annotations:
+            summary: "No successful {{ $labels.namespace }} dump to S3 for {{ $value | humanizeDuration }}"
+            description: "The `db-backup` CronJob in `{{ $labels.namespace }}` last succeeded {{ $value | humanizeDuration }} ago. Check its failed Jobs: `kubectl -n {{ $labels.namespace }} get jobs`."
+
+        - alert: VeleroBackupStale
+          expr: time() - velero_backup_last_successful_timestamp{schedule!=""} > 26 * 3600
+          for: 30m
+          labels:
+            severity: critical
+          annotations:
+            summary: "No successful Velero backup for schedule {{ $labels.schedule }} for {{ $value | humanizeDuration }}"
+            description: "Velero's schedule `{{ $labels.schedule }}` last completed a backup {{ $value | humanizeDuration }} ago. Check `kubectl -n velero get backups` and the failed one's status.failureReason."

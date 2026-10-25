@@ -5,6 +5,7 @@ namespace: monitoring
 
 resources:
   - CiliumNetworkPolicy.yaml
+  - VMRule.backups.yaml
   - VMRule.etcd.yaml
   - VMRule.oom.yaml
   - SealedSecret.alertmanager-ntfy.yaml
