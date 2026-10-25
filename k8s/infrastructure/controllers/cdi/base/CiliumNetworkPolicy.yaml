@@ -3,6 +3,18 @@
 # Importer, uploadserver and cloner pods run in the namespace of the PVC they fill, under that
 # namespace's policies: an import from a URL needs egress there, and cdi-deployment and
 # cdi-uploadproxy need to reach them on 8443. Mirrors the release's network-policies.yaml.
+#
+# The API server, for every CDI pod that needs it (the label is CDI's own).
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-cluster-services
+  namespace: cdi
+spec:
+  endpointSelector: {matchLabels: {np.kubevirt.io/allow-access-cluster-services: 'true'}}
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:

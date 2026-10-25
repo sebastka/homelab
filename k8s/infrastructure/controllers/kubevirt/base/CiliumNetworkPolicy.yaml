@@ -2,6 +2,19 @@
 # Metrics (vmagent to 8443): allow-vmagent-scrape (cilium), cluster-wide.
 # virt-launcher pods (the VMs) run in their own namespaces, under those namespaces' policies; those
 # need to let virt-api in. Mirrors the release's kubevirt-network-policies.yaml.
+#
+# The API server, for every KubeVirt pod that needs it: the label is KubeVirt's own, and also covers
+# pods without a component policy, such as virt-operator's install-strategy Job.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-cluster-services
+  namespace: kubevirt
+spec:
+  endpointSelector: {matchLabels: {np.kubevirt.io/allow-access-cluster-services: 'true'}}
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
