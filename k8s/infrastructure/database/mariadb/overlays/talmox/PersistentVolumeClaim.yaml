@@ -1,6 +1,6 @@
 # The data directory. Create the Longhorn volume mariadb-data-pv (longhorn-encrypted) before the
 # first sync. Longhorn snapshots and Velero copies of a running database are crash-consistent, which
-# InnoDB recovers from; the nightly logical dumps (database-backup) are the portable copy.
+# InnoDB recovers from; the nightly logical dumps (dbdump2s3) are the portable copy.
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

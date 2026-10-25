@@ -1,7 +1,7 @@
 # The data directory. Create the Longhorn volume postgres-data-pv (longhorn-encrypted) before the
 # first sync. Longhorn snapshots and Velero copies of a running database are crash-consistent, which
-# PostgreSQL recovers from (WAL replay); the nightly logical dumps (database-backup) are the
-# portable copy.
+# PostgreSQL recovers from (WAL replay); the nightly logical dumps (dbdump2s3) are the portable
+# copy.
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

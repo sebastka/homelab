@@ -81,10 +81,6 @@
 # - mirror.gcr.io/aquasec/trivy-operator
 # - mirror.gcr.io/aquasec/trivy
 
-# infrastructure/database/database-backup
-- docker.io/library/postgres
-- docker.io/library/mariadb
-
 # infrastructure/database/mariadb, infrastructure/database/postgres
 - dhi.io/mariadb
 - dhi.io/postgres

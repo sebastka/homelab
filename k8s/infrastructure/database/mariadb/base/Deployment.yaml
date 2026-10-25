@@ -46,8 +46,9 @@ spec:
           args: [mariadbd]
           env:
             # innodb-buffer-pool-size as on db01. key-buffer-size is MyISAM's, and every table here
-            # is InnoDB: the default 128M would sit unused.
-            - {name: MARIADB_OPTIONS, value: '--skip-name-resolve --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --innodb-buffer-pool-size=512M --key-buffer-size=16M'}
+            # is InnoDB: the default 128M would sit unused. max-allowed-packet: Authelia's WebAuthn
+            # metadata cache (cached_data, mds3) is a single row that outgrows the 16M default.
+            - {name: MARIADB_OPTIONS, value: '--skip-name-resolve --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --innodb-buffer-pool-size=512M --key-buffer-size=16M --max-allowed-packet=64M'}
           envFrom:
             - secretRef: {name: mariadb-root}  # MARIADB_ROOT_PASSWORD
           securityContext:
