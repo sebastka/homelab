@@ -9,7 +9,14 @@ spec:
   certificateRotateStrategy: {}
   configuration:
     developerConfiguration:
-      featureGates: []
+      featureGates:
+        - HostDevices  # PCI passthrough (Alpha in 1.9: feature-gates.json of the release)
+    # https://kubevirt.io/user-guide/compute/host-devices/
+    # Only devices bound to vfio-pci on their node are offered, as a schedulable resource of that node.
+    permittedHostDevices:
+      pciHostDevices:
+        # hera's Samsung 9100 PRO (talos: node/hera.home.karlsen.fr/03-vfio.yaml), the file VM's data disk
+        - {pciVendorSelector: '144D:A810', resourceName: samsung.com/ssd-9100-pro}
     imagePullPolicy: IfNotPresent
   customizeComponents: {}
   imagePullPolicy: IfNotPresent
