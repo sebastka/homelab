@@ -5,11 +5,34 @@ kind: Kustomization
 resources:
   - Namespace.yaml
   - CiliumNetworkPolicy.yaml
+  - ConfigMap.nix-gc.yaml
+  - PersistentVolumeClaims.yaml
 
+# Two scale sets of one runner each, alike but for their name and Nix store volume (values.yaml)
 helmCharts:
   - name: gha-runner-scale-set
     repo: oci://ghcr.io/actions/actions-runner-controller-charts
     version: 0.15.1
-    releaseName: talmox-nix
+    releaseName: talmox-nix-1
     namespace: arc-runners
     valuesFile: values.yaml
+    valuesInline:
+      runnerScaleSetName: talmox-nix-1
+      template:
+        spec:
+          volumes:
+            - {name: nix-store, persistentVolumeClaim: {claimName: nix-store-1-pvc}}
+            - {name: nix-gc, configMap: {name: nix-gc}}
+  - name: gha-runner-scale-set
+    repo: oci://ghcr.io/actions/actions-runner-controller-charts
+    version: 0.15.1
+    releaseName: talmox-nix-2
+    namespace: arc-runners
+    valuesFile: values.yaml
+    valuesInline:
+      runnerScaleSetName: talmox-nix-2
+      template:
+        spec:
+          volumes:
+            - {name: nix-store, persistentVolumeClaim: {claimName: nix-store-2-pvc}}
+            - {name: nix-gc, configMap: {name: nix-gc}}

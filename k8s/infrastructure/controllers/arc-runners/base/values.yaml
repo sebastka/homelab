@@ -7,9 +7,12 @@ githubConfigUrl: https://github.com/sebastka/nixos
 # sebastka/nixos only: github_app_id, github_app_installation_id, github_app_private_key (SealedSecret.github-app.yaml)
 githubConfigSecret: github-app
 
-runnerScaleSetName: talmox-nix  # runs-on: talmox-nix
+# Two scale sets of one runner each, talmox-nix-1 and talmox-nix-2 (runnerScaleSetName and the volume set in
+# kustomization.yaml), so each runner has a Nix store of its own (PersistentVolumeClaims.yaml): one store, one Nix.
+# Both carry this label, which workflows target (runs-on: talmox-nix).
+scaleSetLabels: [talmox-nix]
 minRunners: 0
-maxRunners: 2
+maxRunners: 1
 
 # Explicit: the chart otherwise looks the controller up in the live cluster (Helm's `lookup`), empty when rendered
 controllerServiceAccount:
@@ -34,27 +37,61 @@ listenerTemplate:
           requests: {memory: 32Mi}
           limits: {memory: 128Mi}
 
-# The runners: GitHub's runner with Nix, single-user, unprivileged (uid 1001, no capabilities, no sandbox). Builds
-# write to the container's own filesystem (/nix, the workspace): ephemeral storage, gone with the pod.
+# The runners: GitHub's runner with Nix, single-user, unprivileged (uid 1001, no capabilities, no sandbox).
+# /nix is the scale set's volume (`nix-store`, in kustomization.yaml), kept between jobs: a job only writes the store
+# paths the previous ones didn't leave (on EPHEMERAL, a fresh /nix per job wrote ~10 GB each). The workspace stays
+# ephemeral.
 template:
+  metadata:
+    labels: {app.kubernetes.io/name: talmox-nix-runner}  # Both scale sets' runners, for the spread below
   spec:
     automountServiceAccountToken: false  # Jobs run arbitrary code: no Kubernetes API token for them
     securityContext:
       runAsNonRoot: true
       runAsUser: 1001
       runAsGroup: 1001
+      fsGroup: 1001  # The volume writable by the runner
+      fsGroupChangePolicy: OnRootMismatch  # Not a recursive chown of the whole store at each start
       seccompProfile: {type: RuntimeDefault}
     # One runner per node when possible: builds take every idle core (no CPU limit), so two on one node compete while
     # another sits idle. Preferred, not required: a runner still starts when they can't be spread.
     topologySpreadConstraints:
-      - {maxSkew: 1, topologyKey: kubernetes.io/hostname, whenUnsatisfiable: ScheduleAnyway, labelSelector: {matchLabels: {actions.github.com/scale-set-name: talmox-nix}}}
-    containers:
-      - name: runner
-        image: ghcr.io/sebastka/nix-actions-runner:sha-6683d3023a415942ea5a17b2d81eb210ee0bd720@sha256:433a10454ebe99833868bac064990681973561ec7851e8b6301112ed0b0c2d43
-        command: [/home/runner/run.sh]
+      - {maxSkew: 1, topologyKey: kubernetes.io/hostname, whenUnsatisfiable: ScheduleAnyway, labelSelector: {matchLabels: {app.kubernetes.io/name: talmox-nix-runner}}}
+    initContainers:
+      # The image's own Nix (nix, attic: its profile's closure) into the volume, which hides the image's /nix: copied
+      # as missing (a new image adds its paths, the rest stays), and a GC root so the GC never takes it.
+      - name: seed-nix-store
+        image: &image ghcr.io/sebastka/nix-actions-runner:sha-6683d3023a415942ea5a17b2d81eb210ee0bd720@sha256:433a10454ebe99833868bac064990681973561ec7851e8b6301112ed0b0c2d43
+        command:
+          - bash
+          - -euc
+          - |
+            profile="$(readlink -f /home/runner/.nix-profile)"
+            nix copy --no-check-sigs --to 'local?root=/mnt/store' "$profile"
+            mkdir -p /mnt/store/nix/var/nix/gcroots
+            ln -sfn "$profile" /mnt/store/nix/var/nix/gcroots/runner-image
         securityContext:
           allowPrivilegeEscalation: false
           capabilities: {drop: [ALL]}
         resources:
-          requests: {cpu: '2', memory: 8192Mi, ephemeral-storage: 20Gi}
-          limits: {memory: 24576Mi, ephemeral-storage: 40Gi}
+          requests: {memory: 256Mi}
+          limits: {memory: 1Gi}
+        volumeMounts:
+          - {name: nix-store, mountPath: /mnt/store/nix}
+    containers:
+      - name: runner
+        image: *image
+        command: [/home/runner/run.sh]
+        env:
+          # Garbage collection during builds when the store runs low: below 10 GiB free, down to 25 GiB free. In a
+          # file, not NIX_CONFIG: workflows set that one (GITHUB_ENV) for their substituters.
+          - {name: NIX_USER_CONF_FILES, value: /etc/nix-gc/nix.conf}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: {drop: [ALL]}
+        resources:
+          requests: {cpu: '2', memory: 8192Mi, ephemeral-storage: 5Gi}
+          limits: {memory: 24576Mi, ephemeral-storage: 20Gi}
+        volumeMounts:
+          - {name: nix-store, mountPath: /nix}
+          - {name: nix-gc, mountPath: /etc/nix-gc, readOnly: true}

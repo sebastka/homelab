@@ -1,0 +1,32 @@
+---
+# The Nix stores of the two scale sets' runners (talmox-nix-1 and -2, kustomization.yaml): a cache, rebuilt from the
+# substituters if lost. Their Longhorn volumes and PVs are named, created by hand before these claims:
+# - 1 replica: a second one would double every write, the point of the store being fewer writes.
+# - dataLocality disabled: best-effort would rebuild the whole store on each node a runner lands on.
+# - Encrypted (longhorn-encrypted), like every volume here.
+# The runner of a volume whose node is down waits for it; the other scale set's runner takes the jobs meanwhile.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nix-store-1-pvc
+  namespace: arc-runners
+  labels:
+    app.kubernetes.io/name: talmox-nix-runner
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 60Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: nix-store-1-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nix-store-2-pvc
+  namespace: arc-runners
+  labels:
+    app.kubernetes.io/name: talmox-nix-runner
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 60Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: nix-store-2-pv

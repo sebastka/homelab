@@ -1,0 +1,13 @@
+---
+# The runners' extra nix.conf (NIX_USER_CONF_FILES, values.yaml): automatic garbage collection of their 60 GiB store
+# during builds, below 10 GiB free, down to 25 GiB free. What a GC keeps: the image's Nix (its GC root), and nothing
+# else across jobs, so a GC sends the next job back to the substituters (Attic, cache.nixos.org) for what it deleted.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nix-gc
+  namespace: arc-runners
+data:
+  nix.conf: |
+    min-free = 10737418240
+    max-free = 26843545600
