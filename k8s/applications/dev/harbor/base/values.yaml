@@ -101,7 +101,7 @@ trivy:
 database:
   type: external
   external:
-    host: db02.hera.home.karlsen.fr
+    host: postgres.postgres.svc.cluster.local  # harbor-core and the harbor role are not in its databases.csv/users.csv yet
     port: '5432'
     username: harbor
     existingSecret: harbor-secrets  # password
