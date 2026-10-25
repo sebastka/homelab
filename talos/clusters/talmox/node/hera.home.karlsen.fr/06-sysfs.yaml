@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# No C3 on hera's CPUs, as on the NUC 16s (node/dike.home.karlsen.fr/04-sysfs.yaml, where the reasons are): the
+# Core Ultra 9 285H too only has ACPI C-states here (intel_idle has no native table for it), the same four: POLL, C1
+# (state1), C2 (state2), C3 (state3, C3_ACPI, 1048 us to wake), on its 16 CPUs. Package power 21 -> 18 W without it
+# (measured on hera, 2026-10-20). By number: after a Talos upgrade, check state3 is still C3_ACPI.
+# Check: talosctl -n hera read /sys/devices/system/cpu/cpu0/cpuidle/state3/name       (C3_ACPI)
+#        talosctl -n hera read /sys/devices/system/cpu/cpu0/cpuidle/state3/disable    (1)
+#
+# No l1_aspm for the I226-V, unlike the NUC 16s: PCIe ASPM is off in hera's firmware, so the attribute does not exist
+# (and rx_missed_errors stays at 0).
+---
+apiVersion: v1alpha1
+kind: SysfsConfig
+params:
+  devices.system.cpu.cpu0.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu1.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu2.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu3.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu4.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu5.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu6.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu7.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu8.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu9.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu10.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu11.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu12.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu13.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu14.cpuidle.state3.disable: '1'
+  devices.system.cpu.cpu15.cpuidle.state3.disable: '1'
