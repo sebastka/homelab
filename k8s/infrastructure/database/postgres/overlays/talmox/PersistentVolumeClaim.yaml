@@ -10,7 +10,6 @@ metadata:
   namespace: postgres
   labels:
     app.kubernetes.io/name: postgres
-    backup.velero.io/nightly-hetzner: enabled
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 30Gi}}

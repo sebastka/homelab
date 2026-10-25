@@ -9,7 +9,6 @@ metadata:
   namespace: mariadb
   labels:
     app.kubernetes.io/name: mariadb
-    backup.velero.io/nightly-hetzner: enabled
 spec:
   accessModes: [ReadWriteOncePod]
   resources: {requests: {storage: 5Gi}}
