@@ -6,3 +6,18 @@ resources:
   - https://github.com/kubevirt/containerized-data-importer/releases/download/v1.66.1/cdi-operator.yaml  # renovate: datasource=github-releases depName=kubevirt/containerized-data-importer
   - CDI.yaml
   - CiliumNetworkPolicy.yaml
+
+patches:
+  # The CRD as cdi-operator leaves it, so Argo and the operator do not undo each other: the operator
+  # drops the deprecated v1alpha1 seconds after every apply, and the API server adds the default
+  # conversion the release manifest leaves out. The test fails the build if a release reorders it.
+  - target: {group: apiextensions.k8s.io, kind: CustomResourceDefinition, name: cdis.cdi.kubevirt.io}
+    patch: |-
+      - op: test
+        path: /spec/versions/0/name
+        value: v1alpha1
+      - op: remove
+        path: /spec/versions/0
+      - op: add
+        path: /spec/conversion
+        value: {strategy: None}
