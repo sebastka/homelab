@@ -33,19 +33,21 @@ params: {vm.nr_hugepages: '1024'}
 # remove it from the OS and hand it exclusively to SPDK. Identify the PCI address
 # with `talosctl get hardwareinfo` then add a PCIDriverRebindConfig document.
 #
-# Encryption key: nodeID or TPM per node, see all/18-disk-encryption.yaml.tpl.
-{{- $key := "" }}{{ if eq .Node.Data.diskKey "tpm" }}{{ $key = "tpm: {checkSecurebootStatusOnEnroll: true}" }}{{ else if eq .Node.Data.diskKey "nodeID" }}{{ $key = "nodeID: {}" }}{{ else }}{{ fail (printf "diskKey must be nodeID or tpm, got %q" .Node.Data.diskKey) }}{{ end }}
+# The user volume shares the system disk on every node (system_disk: the disk Talos installed to, and nothing else);
+# node/<host>/02-volumes.yaml caps EPHEMERAL there, which would otherwise take the whole disk. Never a "big enough
+# disk" selector: on hera it would also match the Samsung 9100 PRO, the file VM's data (node/hera.home.karlsen.fr/
+# 03-vfio.yaml). Encrypted like STATE and EPHEMERAL (all/18-disk-encryption.yaml), sealed in the TPM.
 ---
 apiVersion: v1alpha1
 kind: UserVolumeConfig
 name: longhorn-data  # label: u-longhorn-data
 provisioning:
-  diskSelector: {match: 'disk.size > 96u * GiB'}
-  minSize: 1GiB
+  diskSelector: {match: system_disk}  # a top-level CEL variable, not a disk.* field
+  minSize: 100GiB
+  grow: true
 filesystem: {type: ext4}
 encryption:
   provider: luks2
-  # Lets fstrim return deleted replica blocks to the ZFS pool. Rationale in
-  # all/18-disk-encryption.yaml.tpl.
+  # Lets fstrim return deleted replica blocks to the drive. Rationale in all/18-disk-encryption.yaml.
   allowDiscards: true
-  keys: [{ {{- $key }}, slot: 0}]
+  keys: [{tpm: {checkSecurebootStatusOnEnroll: true}, slot: 0}]

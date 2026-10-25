@@ -15,7 +15,7 @@ talosVersion: 1.14.4
 # topf derives the installer image from the fields below:
 #   <factory>/<platform>-installer[-secureboot]/<schematicId>:v<talosVersion>
 # It injects it as a cluster-level patch, so no `machine.install.image` patch is needed.
-platform: nocloud  # Proxmox VMs boot the nocloud disk image; the bare-metal NUCs override it
+platform: metal  # Every node is a bare-metal NUC
 secureboot: true  # SecureBoot + UKI, so the -secureboot installer variant
 schematicId: '@schematic.yaml'
 
@@ -31,32 +31,25 @@ data:
 # Per-node values are available as {{ .Node.Data.<key> }}.
 #   zone         topology zone label; upgrade.sh also uses it as the Kubernetes node name
 #   link         the link that carries DHCP and the control-plane VIP
-#   diskKey      disk encryption key, nodeID or tpm; see all/18-disk-encryption.yaml.tpl
-#   installDisk  NUCs: serial of the install disk, see node/<host>/00-install.yaml.tpl
-#   mac          VMs: documents the Proxmox NIC, unused. NUCs: mac0/mac1 name the bond members, and
-#                mac0 is also the bond's own MAC, which the Kea reservation on helios is keyed on.
+#   installDisk  serial of the install disk, see all/00-install.yaml.tpl
+#   mac0, mac1   the ports, by MAC (node/<host>/01-*): the bond members on the NUC 16s, where mac0 is also the
+#                bond's own MAC, which the Kea reservation on helios is keyed on; hera's one port
 nodes:
   # ASUS NUC 15 Pro+, bare metal, one port (formerly the Proxmox host of t01 and file01). Its Samsung 9100 PRO is
   # the file VM's, bound to vfio-pci. See node/hera.home.karlsen.fr/.
   - host: hera.home.karlsen.fr
     ip: 192.168.0.40
     role: control-plane
-    platform: metal
-    schematicId: '@schematic.metal.yaml'
-    data: {zone: hera, link: lan0, diskKey: tpm, installDisk: AAFDB532007H4N, mac0: '88:ae:dd:68:ab:e8'}
+    data: {zone: hera, link: lan0, installDisk: AAFDB532007H4N, mac0: '88:ae:dd:68:ab:e8'}
 
   # ASUS NUC 16 Pro, bare metal, on harmonia ports 3+4 (static LAG1). See node/hestia.home.karlsen.fr/.
   - host: hestia.home.karlsen.fr
     ip: 192.168.0.50
     role: control-plane
-    platform: metal
-    schematicId: '@schematic.metal.yaml'
-    data: {zone: hestia, link: bond0, diskKey: tpm, installDisk: S7HDNJ0L802614A, mac0: '48:21:0B:7D:F6:25', mac1: '48:21:0B:7D:F6:26'}
+    data: {zone: hestia, link: bond0, installDisk: S7HDNJ0L802614A, mac0: '48:21:0B:7D:F6:25', mac1: '48:21:0B:7D:F6:26'}
 
   # ASUS NUC 16 Pro, bare metal, on harmonia ports 5+6 (static LAG2). See node/dike.home.karlsen.fr/.
   - host: dike.home.karlsen.fr
     ip: 192.168.0.60
     role: control-plane
-    platform: metal
-    schematicId: '@schematic.metal.yaml'
-    data: {zone: dike, link: bond0, diskKey: tpm, installDisk: S64BNJ0T221755X, mac0: '48:21:0B:7D:F4:73', mac1: '48:21:0B:7D:F4:74'}
+    data: {zone: dike, link: bond0, installDisk: S64BNJ0T221755X, mac0: '48:21:0B:7D:F4:73', mac1: '48:21:0B:7D:F4:74'}

@@ -18,11 +18,10 @@ talos/
     ├── topf.yaml               # cluster definition: versions, image factory, nodes, template data
     ├── secrets.sops.yaml       # Talos secrets bundle, sops/PGP encrypted
     ├── sealedsecrets.sops.yaml # sealed-secrets keypair, sops/PGP encrypted
-    ├── schematic.yaml          # image factory schematic for t01
-    ├── schematic.metal.yaml    # image factory schematic for the bare-metal NUCs
+    ├── schematic.yaml          # image factory schematic, for every node
     ├── all/                    # patches applied to every node
     ├── control-plane/          # patches applied to control-plane nodes
-    └── node/<host>/            # per-node patches: install disk, bond and volume layout of the NUCs
+    └── node/<host>/            # per-node patches: links, EPHEMERAL cap, hardware specifics
 ```
 
 Three control planes, all running workloads, so there is no `worker/` directory:
@@ -33,8 +32,9 @@ Three control planes, all running workloads, so there is no `worker/` directory:
 | hestia | ASUS NUC 16 Pro, bare metal, one NVMe | 192.168.0.50 | `bond0` over harmonia ports 3+4 |
 | dike | ASUS NUC 16 Pro, bare metal, one NVMe | 192.168.0.60 | `bond0` over harmonia ports 5+6 |
 
-What differs per node lives in `nodes[].data` (zone label, main link, MACs) and, for the NUCs,
-in `platform: metal`, their own schematic and `node/<host>/`.
+What differs per node lives in `nodes[].data` (zone label, main link, install disk serial, MACs)
+and in `node/<host>/`. Every node is bare metal, so `platform: metal` and the schematic are set
+once, at the top of `topf.yaml`.
 
 ## Configuration model
 
@@ -98,7 +98,7 @@ One node at a time; each one joins etcd as it is applied. hestia is used as the 
 
 1. **Image.** Submit the schematic once with `topf schematic-ids --submit-to-factory`, then
    write
-   `https://factory.talos.dev/image/<schematic.metal.yaml ID>/v<talosVersion>/metal-amd64-secureboot.iso`
+   `https://factory.talos.dev/image/<schematic.yaml ID>/v<talosVersion>/metal-amd64-secureboot.iso`
    to a USB stick.
 2. **Firmware.** Make sure the TPM (Intel PTT) is on: the NUCs' disks are sealed against it.
    Enable Secure Boot and put it in *Setup Mode* by clearing the keys.
@@ -110,10 +110,10 @@ One node at a time; each one joins etcd as it is applied. hestia is used as the 
    `talosctl get securitystate --insecure -n <address>` shows `SECUREBOOT true`.
 4. **MACs and disk.** `talosctl get links --insecure -n <address from the DHCP pool>`. Fill `mac0`
    (the port that is plugged in) and `mac1` in `topf.yaml`, and `installDisk` with the install
-   disk's serial from `talosctl get disks --insecure -n <address>`. Until both NUCs have them,
-   every topf command that includes them fails, so limit runs to the VMs with
-   `--nodes-filter '^t0'` (or `TOPF_NODES_FILTER`). Do not run `upgrade.sh` meanwhile: it reads
-   every node from `topf.yaml` itself and would try to roll the NUCs too.
+   disk's serial from `talosctl get disks --insecure -n <address>`. Until the new node is
+   applied, limit topf runs to the others with `--nodes-filter` (or `TOPF_NODES_FILTER`). Do not
+   run `upgrade.sh` meanwhile: it reads every node from `topf.yaml` itself and would try to roll
+   the new one too.
 5. **Address.** Add a Kea reservation for `mac0` (hostname `hestia`, 192.168.0.50) and the
    DNS records on helios, deploy them, then reboot the node so it comes back on its address.
 6. **Apply.** `topf apply --nodes-filter '^hestia\.'`. Talos installs to the NVMe drive and
@@ -131,10 +131,9 @@ One node at a time; each one joins etcd as it is applied. hestia is used as the 
   order; `kubernetesVersion` is then set to match so `topf apply` does not revert it. Bumping
   the field and running `topf apply` skips all of those checks and is only safe for patch
   releases.
-- **Schematic IDs are computed from the schematic files**, not copied around. `topf schematic-ids`
+- **Schematic IDs are computed from the schematic file**, not copied around. `topf schematic-ids`
   must keep printing
-  `e1a1dd0d784a29291835696e2d69baa729bf6320f3ddc22b41e5bf3df5768d16` (t01) and
-  `a0e669220b6b31597a405507ddd55d5c9aa532811f70815113caea19e2e5a249` (NUCs). A different ID means a
+  `a0e669220b6b31597a405507ddd55d5c9aa532811f70815113caea19e2e5a249`. A different ID means a
   different installer image, i.e. a reinstall on the next upgrade. New schematics the factory has
   never seen need one run with `--submit-to-factory`.
 - **OIDC is structured authentication config, not flags.** kube-apiserver refuses every
@@ -144,7 +143,7 @@ One node at a time; each one joins etcd as it is applied. hestia is used as the 
 - **Longhorn has no kubelet bind mount.** `machine.kubelet.extraMounts` no longer exists
   ([talos#14365](https://github.com/siderolabs/talos/issues/14365)) and is not needed here:
   Longhorn's `defaultDataPath` is `/var/mnt/longhorn-data`, its replicas live on the user
-  volume declared in `all/13-longhorn.yaml.tpl`, and `instance-manager` reaches that path through
+  volume declared in `all/13-longhorn.yaml`, and `instance-manager` reaches that path through
   its host-root mount. `/var/lib/longhorn` only holds engine binaries and sockets, on EPHEMERAL.
 - **Hostnames.** `nodes[].host` is only used by topf for display, logging and node selection. The
   Talos hostnames are left on `auto: stable` (`all/01-hostname.yaml`), so the name handed out
@@ -153,15 +152,13 @@ One node at a time; each one joins etcd as it is applied. hestia is used as the 
 - **etcd has three members, one per machine** (hera, hestia, dike; t01, the Proxmox VM hera ran
   before it ran Talos itself, and t02 and t03 were retired). Any one machine can go down, and the
   remaining two keep quorum.
-- **The NUCs share one NVMe drive between Talos and Longhorn.** `node/<host>/02-volumes.yaml`
-  caps EPHEMERAL, since it would otherwise take the whole drive, and lets `longhorn-data` grow
-  into the rest: hestia (1 TB 990 PRO) has 128 GiB + ~800 GiB, dike (250 GB 980) 64 GiB +
-  ~166 GiB. The cap is set at install time. dike's 980 is DRAM-less and rated for ~150 TBW,
+- **Talos and Longhorn share the system disk.** `node/<host>/02-volumes.yaml` caps EPHEMERAL,
+  since it would otherwise take the whole drive, and `longhorn-data` (`all/13-longhorn.yaml`,
+  `system_disk`) grows into the rest: hera (1 TB MP600 Micro) and hestia (1 TB 990 PRO) have
+  128 GiB + ~800 GiB, dike (250 GB 980) 64 GiB + ~166 GiB. The cap is set at install time. dike's 980 is DRAM-less and rated for ~150 TBW,
   so it is the first drive to replace.
-- **Disk encryption keys differ per node** (`diskKey` in `topf.yaml`, applied by
-  `all/18-disk-encryption.yaml.tpl` and `all/13-longhorn.yaml.tpl`). The VMs use `nodeID`, a key
-  derived from the machine UUID. The NUCs use `tpm`: STATE, EPHEMERAL and `longhorn-data` only
-  open on that NUC, booted with Secure Boot on and the enrolled keys in place. Anything that
+- **Disks are sealed against the TPM** (`all/18-disk-encryption.yaml` and
+  `all/13-longhorn.yaml`): STATE, EPHEMERAL and `longhorn-data` only open on that NUC, booted with Secure Boot on and the enrolled keys in place. Anything that
   changes the Secure Boot state, such as clearing or re-enrolling the keys or a BIOS update that
   resets them, leaves the volumes locked. The way back is wiping the node and applying it again,
   which costs its etcd membership and Longhorn replicas until they rebuild from the other nodes.
@@ -192,10 +189,9 @@ One node at a time; each one joins etcd as it is applied. hestia is used as the 
 - **Filesystem trim.** Talos ships a `FilesystemTrimConfig` document by default, weekly, at a
   stable per-volume offset, but it cannot reach an encrypted volume unless `allowDiscards` is
   set — and every volume here is LUKS2. It is enabled on EPHEMERAL
-  (`all/18-disk-encryption.yaml.tpl`) and on `longhorn-data` (`all/13-longhorn.yaml.tpl`); STATE is
+  (`all/18-disk-encryption.yaml`) and on `longhorn-data` (`all/13-longhorn.yaml`); STATE is
   left alone, being small and near-static. The flag is read when LUKS opens the volume, so it
-  takes effect on each node's next boot. The Proxmox disks are created with `discard = "on"`
-  on ZFS, so freed blocks go back to the pool. Check with
+  takes effect on each node's next boot. Check with
   `talosctl -n <ip> read /sys/block/dm-1/queue/discard_max_bytes` — non-zero means it is live.
 - **`upgrade.sh` checks for drift, it does not apply.** Before rolling anything it runs
   `topf apply --dry-run` and warns if the nodes do not match the config, since rolling a node

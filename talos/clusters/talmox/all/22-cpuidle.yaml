@@ -1,13 +1,13 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
-# No C3 on hera's CPUs, as on the NUC 16s (node/dike.home.karlsen.fr/04-sysfs.yaml, where the reasons are): the
-# Core Ultra 9 285H too only has ACPI C-states here (intel_idle has no native table for it), the same four: POLL, C1
-# (state1), C2 (state2), C3 (state3, C3_ACPI, 1048 us to wake), on its 16 CPUs. Package power 21 -> 18 W without it
-# (measured on hera, 2026-10-20). By number: after a Talos upgrade, check state3 is still C3_ACPI.
-# Check: talosctl -n hera read /sys/devices/system/cpu/cpu0/cpuidle/state3/name       (C3_ACPI)
-#        talosctl -n hera read /sys/devices/system/cpu/cpu0/cpuidle/state3/disable    (1)
+# No C3 (C3_ACPI, 1048 us to wake), for power: the CPUs wake about every 0.5 ms, more often than C3's round trip.
+# Package power 21 -> 18 W without it (measured on hera, 2026-10-20). It was also the first suspect for the NUC 16s'
+# receive losses, which it didn't reduce (node/<host>/04-sysfs.yaml has the real cause).
 #
-# No l1_aspm for the I226-V, unlike the NUC 16s: PCIe ASPM is off in hera's firmware, so the attribute does not exist
-# (and rx_missed_errors stays at 0).
+# Both CPUs, the Core Ultra 9 285H (hera) and Core Ultra 7 356H (hestia, dike), only have ACPI C-states here
+# (intel_idle has no native table for them), the same four: POLL, C1 (state1), C2 (state2), C3 (state3), on 16 CPUs.
+# By number: after a Talos upgrade, check state3 is still C3_ACPI (a kernel with native C-states would renumber them).
+# Check: talosctl -n <node> read /sys/devices/system/cpu/cpu0/cpuidle/state3/name       (C3_ACPI)
+#        talosctl -n <node> read /sys/devices/system/cpu/cpu0/cpuidle/state3/disable    (1)
 ---
 apiVersion: v1alpha1
 kind: SysfsConfig
