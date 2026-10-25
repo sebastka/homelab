@@ -6,7 +6,6 @@ namespace: file
 resources:
   - Namespace.yaml
   - DataVolume.yaml
-  - PersistentVolumeClaim.yaml
   - VirtualMachine.yaml
   - Service.yaml
   - CiliumNetworkPolicy.yaml

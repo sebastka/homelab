@@ -1,7 +1,7 @@
 ---
 # The NFS server (NixOS: github.com/sebastka/nixos, hosts/file), replacing file01 (Proxmox VM on hera).
-# Its disks are separate resources (DataVolume.yaml, PersistentVolumeClaim.yaml), so deleting or recreating the VM
-# never takes them with it.
+# Its root disk is a separate resource (DataVolume.yaml), so deleting or recreating the VM never takes it with it.
+# Its data is hera's Samsung 9100 PRO itself, passed through: the VM only ever runs on hera.
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
@@ -18,6 +18,9 @@ spec:
         app.kubernetes.io/managed-by: kustomize
     spec:
       terminationGracePeriodSeconds: 180  # ACPI shutdown: NFS clients and btrfs flushed
+      # Where the 9100 PRO is. Its host device resource would place it there anyway; this states it, and keeps the VM
+      # Pending rather than anywhere else while hera is away.
+      nodeSelector: {kubernetes.io/hostname: hera}
       domain:
         cpu: {cores: 2}
         memory: {guest: 4Gi}
@@ -25,7 +28,11 @@ spec:
         devices:
           disks:
             - {name: root, bootOrder: 1, disk: {bus: virtio}}
-            - {name: data, disk: {bus: virtio}}
+          # file01's Samsung 9100 PRO (btrfs, samsung_storage), passed through whole: an NVMe drive in the VM, mounted
+          # by its label (hosts/file/nfs.nix). Bound to vfio-pci on hera (talos: node/hera.home.karlsen.fr/03-vfio.yaml),
+          # permitted in the KubeVirt resource (controllers/kubevirt).
+          hostDevices:
+            - {name: data, deviceName: samsung.com/ssd-9100-pro}
           interfaces:
             # Bridge binding: the VM takes its pod's address, so it sees the NFS clients' real addresses (masquerade
             # would show them all as 10.0.2.1). No live migration, which a passed-through disk rules out anyway.
@@ -37,4 +44,3 @@ spec:
         - {name: default, pod: {}}
       volumes:
         - {name: root, dataVolume: {name: file-root}}
-        - {name: data, persistentVolumeClaim: {claimName: file-data}}  # Test disk until file01's Samsung 9100 PRO
