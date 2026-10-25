@@ -108,7 +108,7 @@
       "minimumReleaseAge": "0 days"
     },
     {
-      "description": "Skip the stability delay for base images and self-built images",
+      "description": "Skip the stability delay for base images and self-built images. No schedule here on purpose: a two-hour nightly window left these in the dashboard's Awaiting Schedule section for days at a time, because the hosted runner rarely scans inside it, which is the opposite of what minimumReleaseAge 0 asks for",
       "matchDatasources": ["docker"],
       "matchPackageNames": [
         "docker.io/library/alpine",
@@ -129,9 +129,7 @@
         "docker.io/gotenberg/gotenberg",
         "ghcr.io/sebastka/**"
       ],
-      "minimumReleaseAge": "0 days",
-      "schedule": ["after 4am and before 6am"],
-      "timezone": "Europe/Oslo"
+      "minimumReleaseAge": "0 days"
     },
     {
       "description": "OCI registries publish no release timestamp, so minimumReleaseAge can never be satisfied and internalChecksFilter=strict withholds the PR forever. Classic https:// helm repos (index.yaml created) and docker.io (Hub API) are unaffected and keep the 1 day delay. See REVIEW.md item 22",
