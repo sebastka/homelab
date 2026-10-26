@@ -22,7 +22,9 @@ spec:
       # Pending rather than anywhere else while hera is away.
       nodeSelector: {kubernetes.io/hostname: hera}
       domain:
-        cpu: {cores: 2}
+        # 4: Kopia's nightly backups (hosts/file/backup.nix) hash, compress (Documents) and encrypt in parallel; hera has
+        # 16 CPUs, mostly idle. KubeVirt requests a tenth of each core (400m), the rest is used when free.
+        cpu: {cores: 4}
         memory: {guest: 4Gi}
         machine: {type: q35}
         devices:
