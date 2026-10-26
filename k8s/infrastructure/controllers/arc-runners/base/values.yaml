@@ -61,7 +61,7 @@ template:
       # The image's own Nix (nix, attic: its profile's closure) into the volume, which hides the image's /nix: copied
       # as missing (a new image adds its paths, the rest stays), and a GC root so the GC never takes it.
       - name: seed-nix-store
-        image: &image ghcr.io/sebastka/nix-actions-runner:sha-6683d3023a415942ea5a17b2d81eb210ee0bd720@sha256:433a10454ebe99833868bac064990681973561ec7851e8b6301112ed0b0c2d43
+        image: &image ghcr.io/sebastka/nix-actions-runner:sha-fc293920041ce56bc41e94c49a76b1b752a0b028@sha256:f309602d13b44db3f2a8f0c9267fb0450e2d987842cf0dd24722e998130166e2
         command:
           - bash
           - -euc
