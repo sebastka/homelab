@@ -38,7 +38,7 @@ spec:
       initContainers:
         - name: deluged-init
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/deluge/Dockerfile
-          image: ghcr.io/sebastka/deluge:2.2.0@sha256:ec6e412ac855a40df31bcb2220278d3f789e442bd240497dbc5cf0f5ea0d0438
+          image: ghcr.io/sebastka/deluge:2.2.0@sha256:07d0898b016486fafcd0c5866192ffa7ffcd5a6361032d10afebe0a6e70d61a8
           # The image has no shell: Python, from Deluge's own virtualenv
           command: [/opt/deluge/bin/python, -c]
           args:
@@ -72,7 +72,7 @@ spec:
       containers:
         - name: deluged
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/deluge/Dockerfile
-          image: ghcr.io/sebastka/deluge:2.2.0@sha256:ec6e412ac855a40df31bcb2220278d3f789e442bd240497dbc5cf0f5ea0d0438
+          image: ghcr.io/sebastka/deluge:2.2.0@sha256:07d0898b016486fafcd0c5866192ffa7ffcd5a6361032d10afebe0a6e70d61a8
           command:
             - /opt/deluge/bin/deluged
             - --config=/config
