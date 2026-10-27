@@ -36,7 +36,7 @@ helmCharts:
 
   - name: envoy-proxy-bouncer
     repo: oci://ghcr.io/kdwils/charts
-    version: 0.8.2
+    version: 0.8.3
     releaseName: envoy-proxy-bouncer-karlsenfr
     namespace: envoy-gateway-system
     includeCRDs: true
@@ -44,7 +44,7 @@ helmCharts:
 
   - name: envoy-proxy-bouncer
     repo: oci://ghcr.io/kdwils/charts
-    version: 0.8.2
+    version: 0.8.3
     releaseName: envoy-proxy-bouncer-karlsenapp
     namespace: envoy-gateway-system
     includeCRDs: true
@@ -52,7 +52,7 @@ helmCharts:
 
   - name: envoy-proxy-bouncer
     repo: oci://ghcr.io/kdwils/charts
-    version: 0.8.2
+    version: 0.8.3
     releaseName: envoy-proxy-bouncer-karlsenorg
     namespace: envoy-gateway-system
     includeCRDs: true
