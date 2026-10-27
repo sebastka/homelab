@@ -67,7 +67,7 @@ spec:
       containers:
         - name: synapse
           # Dockerfile: https://github.com/element-hq/synapse/blob/develop/docker/Dockerfile
-          image: ghcr.io/element-hq/synapse:v1.163.2
+          image: ghcr.io/element-hq/synapse:v1.164.0
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
