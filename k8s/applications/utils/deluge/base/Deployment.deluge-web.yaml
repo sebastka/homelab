@@ -38,7 +38,7 @@ spec:
       initContainers:
         - name: deluge-web-init
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/deluge/Dockerfile
-          image: ghcr.io/sebastka/deluge:2.2.0@sha256:77ca81f0d9f3265cafaf8f2bb00e1266b982870c20d667161487cd92ab9188bd
+          image: ghcr.io/sebastka/deluge:2.2.0@sha256:210e458f2635482bbf3488c2b69997dd561b3c70ea9e5d4f978971ff99495039
           # The image has no shell: Python, from Deluge's own virtualenv. Deluge's config files are
           # two JSON objects in a row: format version, then the settings.
           command: [/opt/deluge/bin/python, -c]
@@ -107,7 +107,7 @@ spec:
       containers:
         - name: deluge-web
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/deluge/Dockerfile
-          image: ghcr.io/sebastka/deluge:2.2.0@sha256:77ca81f0d9f3265cafaf8f2bb00e1266b982870c20d667161487cd92ab9188bd
+          image: ghcr.io/sebastka/deluge:2.2.0@sha256:210e458f2635482bbf3488c2b69997dd561b3c70ea9e5d4f978971ff99495039
           command:
             - /opt/deluge/bin/deluge-web
             - --config=/config
