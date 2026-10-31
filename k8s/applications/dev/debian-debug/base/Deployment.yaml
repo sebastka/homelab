@@ -36,7 +36,7 @@ spec:
       containers:
         - name: debian-debug
           # Dockerfile: https://github.com/sebastka/containers/blob/main/apps/debian-debug/Dockerfile
-          image: ghcr.io/sebastka/debian-debug:2026.10.28@sha256:c8fa5e603bb5deebcb0497708ed21ba5649410f3d14022ea6824edd944444d4e
+          image: ghcr.io/sebastka/debian-debug:2026.10.31@sha256:6e110f0e0d5ebead25a52877f636e5e3431767d2eff67a4e4db630f8fdf3dbda
           command: [/bin/sh, -c]
           args:
             - |
