@@ -17,14 +17,18 @@ spec:
   matchConstraints:
     resourceRules: [{apiGroups: [''], apiVersions: [v1], resources: [pods], operations: [CREATE, UPDATE]}]
     namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: NotIn, values: [kube-system, kube-node-lease, kube-public]}]}
-  # Not on objects being deleted: removing their finalizers is an UPDATE, which must go through even when
-  # their image has since left the allowlist (otherwise a foreground deletion, as Argo CD's prune, hangs)
-  matchConditions:
-    - name: not-being-deleted
-      expression: '!has(object.metadata.deletionTimestamp)'
   variables:
     - name: containers
       expression: object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])
+    # On an UPDATE, the images the object already had: only new ones are checked. An object whose image has
+    # since left the allowlist must still be updatable, e.g. to remove its finalizers when it is deleted
+    # (otherwise a foreground deletion, as Argo CD's prune, hangs). Not a matchCondition on deletionTimestamp:
+    # autogen rewrites object.metadata to the pod template's, which never has one.
+    - name: oldImages
+      expression: >-
+        request.operation == 'UPDATE'
+          ? (oldObject.spec.containers + oldObject.spec.?initContainers.orValue([]) + oldObject.spec.?ephemeralContainers.orValue([])).map(c, c.image)
+          : []
     # assets/allowed-images.yaml, inlined between the ''' at build time (kustomization.yaml
     # replacements) and read line by line: its `- repository` entries, comments dropped
     - name: allowed
@@ -33,7 +37,7 @@ spec:
           .filter(l, l.startsWith('- ')).map(l, l.substring(2).trim())
     - name: denied
       expression: >-
-        variables.containers.map(c, c.image).filter(i,
+        variables.containers.map(c, c.image).filter(i, !(i in variables.oldImages) &&
           !variables.allowed.exists(a, i == a || i.startsWith(a + ':') || i.startsWith(a + '@')))
   validations:
     - expression: size(variables.denied) == 0
