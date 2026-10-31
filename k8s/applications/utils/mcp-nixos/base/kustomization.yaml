@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: mcp-nixos
+
+resources:
+  - Namespace.yaml
+  - ServiceAccount.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - HTTPRoute.yaml
+  - SealedSecret.api-keys.yaml  # X-API-Key values, one per client (SecurityPolicy.yaml)
+  - SecurityPolicy.yaml
+  - CiliumNetworkPolicy.yaml

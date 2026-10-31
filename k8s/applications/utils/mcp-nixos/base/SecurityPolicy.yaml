@@ -1,0 +1,19 @@
+# Replaces the Gateway-level default deny: reachable from the Internet (behind CrowdSec), for
+# requests carrying a key from Secret api-keys in X-API-Key. mcp-nixos itself has no authentication.
+# - https://gateway.envoyproxy.io/docs/tasks/security/apikey-auth/
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-api-key
+  namespace: mcp-nixos
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  apiKeyAuth:
+    credentialRefs: [{group: '', kind: Secret, name: api-keys}]  # One key per client: <client id>: <key>
+    extractFrom: [{headers: [X-API-Key]}]
+    sanitize: true  # Not passed on to mcp-nixos
+  extAuth:
+    failOpen: false
+    grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenapp, port: 8080}]}

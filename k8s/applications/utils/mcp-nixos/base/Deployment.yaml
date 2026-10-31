@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-nixos
+  namespace: mcp-nixos
+spec:
+  strategy: {type: RollingUpdate}  # Stateless: no session to lose
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mcp-nixos
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: mcp-nixos
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: mcp-nixos
+      labels:
+        app.kubernetes.io/name: mcp-nixos
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: mcp-nixos
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccount: mcp-nixos
+      automountServiceAccountToken: false
+      # The image (built with Nix) sets no user: runs as root otherwise
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: mcp-nixos
+          # https://github.com/utensils/mcp-nixos (flake.nix builds the image)
+          image: ghcr.io/utensils/mcp-nixos:3.1.0@sha256:21a84aae04f6f9e6a640d4dee6b38639fcfe5208f8f6dbf84a483acf2128df74
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          env:
+            - {name: MCP_NIXOS_TRANSPORT, value: http}  # Streamable HTTP, at /mcp
+            - {name: MCP_NIXOS_HOST, value: 0.0.0.0}
+            - {name: MCP_NIXOS_PORT, value: '8000'}
+            - {name: MCP_NIXOS_STATELESS_HTTP, value: '1'}  # No per-client session: survives restarts
+            - {name: HOME, value: /tmp}
+          resources:
+            requests: {memory: 128Mi}
+            limits: {memory: 512Mi}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8000}
+          # No health endpoint: GET /mcp answers 405
+          startupProbe: {tcpSocket: {port: 8000}, periodSeconds: 2, failureThreshold: 30}
+          livenessProbe: {tcpSocket: {port: 8000}, periodSeconds: 60}
+          readinessProbe: {tcpSocket: {port: 8000}, periodSeconds: 30}
+          volumeMounts:
+            - {name: tmp-volume, mountPath: /tmp, subPath: tmp, readOnly: false}
+      volumes:
+        - {name: tmp-volume, emptyDir: {sizeLimit: 256Mi}}
