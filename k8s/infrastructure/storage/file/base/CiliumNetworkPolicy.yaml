@@ -12,13 +12,13 @@ spec:
     - {fromCIDR: [192.168.0.0/24], toPorts: [ports: [{port: '22', protocol: TCP}]]}  # SSH: desktops
     - {fromCIDR: [192.168.0.0/16], toPorts: [ports: [{port: '2049', protocol: TCP}]]}  # NFS: the LAN
     - {fromEntities: [host, remote-node], toPorts: [ports: [{port: '2049', protocol: TCP}]]}  # NFS: kubelet mounts (PVs)
-    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: backend}}], toPorts: [ports: [{port: '10050', protocol: TCP}]]}  # Zabbix passive checks
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: zabbix-server}}], toPorts: [ports: [{port: '10050', protocol: TCP}]]}  # Zabbix passive checks
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: kubevirt, kubevirt.io: virt-api}}]}
   egress:
     - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}, {port: '80', protocol: TCP}]]}  # Upgrades: GitHub, cache.nixos.org
     - {toEntities: [world], toPorts: [ports: [{port: '123', protocol: UDP}]]}  # NTP
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Attic (attic.karlsen.app), through the gateway
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: backend}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Zabbix active checks
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: zabbix-server}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Zabbix active checks
 ---
 # CDI's upload server, while the root disk's image is uploaded
 apiVersion: cilium.io/v2

@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/sebastka/charts/master/charts/zabbix/values.schema.json
+# https://github.com/sebastka/charts/tree/master/charts/zabbix
+---
+database:
+  host: postgres.postgres.svc.cluster.local
+  user: zabbix
+  existingSecret: zabbix-secrets
+  existingSecretKey: POSTGRES_PASSWORD
+
+web:
+  timezone: Europe/Oslo
+
+# Exposed by HTTPRoute.yaml (internal Gateway, with its security headers), and the server Service
+# patched into the agents' LoadBalancer in kustomization.yaml
+httpRoute:
+  enabled: false

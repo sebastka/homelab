@@ -2,13 +2,13 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-backend
+  name: allow-server
   namespace: zabbix
 spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: backend}}
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: zabbix-server}}
   ingress:
     - {fromCIDR: [192.168.0.0/16], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From Zabbix agents for active checks
-    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: frontend}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From frontend
+    - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: zabbix-web}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # From frontend
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: file, app.kubernetes.io/name: file}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # file (KubeVirt VM): active checks
   egress:
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: postgres, app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
@@ -18,13 +18,13 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-frontend
+  name: allow-web
   namespace: zabbix
 spec:
-  endpointSelector: {matchLabels: {app.kubernetes.io/name: frontend}}
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: zabbix-web}}
   ingress:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
   egress:
-    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: backend}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Zabbix server API
+    - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: zabbix-server}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Zabbix server API
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: postgres, app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toEndpoints: [{matchLabels: {'k8s:io.kubernetes.pod.namespace': light-ldap, app.kubernetes.io/name: light-ldap}}], toPorts: [ports: [{port: '6360', protocol: TCP}]]}  # ldaps

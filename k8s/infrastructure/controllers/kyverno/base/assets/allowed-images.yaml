@@ -146,8 +146,9 @@
 - quay.io/brancz/kube-rbac-proxy
 
 # infrastructure/monitoring/zabbix
-- docker.io/zabbix/zabbix-server-pgsql
-- docker.io/zabbix/zabbix-web-nginx-pgsql
+- ghcr.io/sebastka/zabbix-server
+- ghcr.io/sebastka/zabbix-web-nginx
+- ghcr.io/sebastka/zabbix-web-php
 
 # infrastructure/network/cilium
 - quay.io/cilium/cilium

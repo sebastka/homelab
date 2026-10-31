@@ -1,5 +1,3 @@
-# https://kb.isc.org/docs/zabbix-quickstart-guide#debian-apt-compatible
-# https://github.com/isc-projects/zabbix/tree/master/docker
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -9,15 +7,52 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - {namespace: zabbix, name: zabbix-env, envs: [assets/zabbix.env]}
   - {namespace: zabbix, name: openldap-conf, files: [ldap.conf=assets/ldap.conf]}
 
 resources:
   - Namespace.yaml
-  - SealedSecret.zabbix-secrets.yaml
-  - ServiceAccount.yaml
-  - Deployment.backend.yaml
-  - Deployment.frontend.yaml
-  - Service.yaml
+  - SealedSecret.zabbix-secrets.yaml  # POSTGRES_PASSWORD (database.existingSecret)
   - HTTPRoute.yaml
   - CiliumNetworkPolicy.yaml
+
+helmCharts:
+  - name: zabbix
+    repo: oci://ghcr.io/sebastka/charts
+    version: 0.1.0
+    releaseName: zabbix
+    namespace: zabbix
+    valuesFile: values.yaml
+
+patches:
+  # Agents (active checks) reach the server at its LoadBalancer IP, 192.168.2.12 (nixos repo: hosts/helios/lan.nix,
+  # vips.zabbixServer). Local: the server sees the agents' own addresses.
+  - target: {kind: Service, name: zabbix-server}
+    patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: zabbix-server
+        labels:
+          arp.cilium.io/announce-service: default-arp-l2-announcement-policy
+          arp.cilium.io/ip-pool: default-arp-ip-pool
+        annotations:
+          lbipam.cilium.io/ips: 192.168.2.12
+      spec:
+        type: LoadBalancer
+        externalTrafficPolicy: Local
+  # LDAP login (lldap, ldaps): php makes the connection, trusting the cluster CA (namespace label
+  # karlsen.fr/inject-cluster-ca) through ldap.conf
+  - target: {kind: Deployment, name: zabbix-web}
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/1/volumeMounts/-
+        value: {name: openldap-conf, mountPath: /etc/openldap/ldap.conf, subPath: ldap.conf, readOnly: true}
+      - op: add
+        path: /spec/template/spec/containers/1/volumeMounts/-
+        value: {name: cluster-ca, mountPath: /etc/ssl/certs/cluster-root-ca.crt, subPath: cluster-root-ca.crt, readOnly: true}
+      - op: add
+        path: /spec/template/spec/volumes/-
+        value: {name: openldap-conf, configMap: {name: openldap-conf}}
+      - op: add
+        path: /spec/template/spec/volumes/-
+        value: {name: cluster-ca, configMap: {name: cluster-ca-bundle}}

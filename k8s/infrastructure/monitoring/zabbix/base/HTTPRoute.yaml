@@ -10,7 +10,7 @@ spec:
   hostnames: [zabbix.talmox.hera.home.karlsen.fr]
   rules:
     - matches: [path: {type: PathPrefix, value: /}]
-      backendRefs: [{name: web, kind: Service, port: 80}]
+      backendRefs: [{name: zabbix-web, kind: Service, port: 80}]
       filters:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
