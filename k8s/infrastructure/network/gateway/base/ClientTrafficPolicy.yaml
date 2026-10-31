@@ -1,4 +1,7 @@
 ---
+# HTTP/3 on both Gateways: their HTTPS listeners also listen on UDP 443 (QUIC), added to their LoadBalancer
+# Services, and advertise it with Alt-Svc. envoy-gateway's CiliumNetworkPolicy allows UDP 10443;
+# On the internal one, mostly for tailnet clients on mobile or lossy networks.
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
@@ -9,3 +12,4 @@ spec:
     - {group: gateway.networking.k8s.io, kind: Gateway, name: internal}
     - {group: gateway.networking.k8s.io, kind: Gateway, name: default}
   headers: {earlyRequestHeaders: {remove: [X-Forwarded-For, X-Real-IP]}}  #  Nothing sits in front of Envoy (DSR, no CDN), so any inbound X-Forwarded-For is forged. Removing it early leaves Envoy's own append as the only entry, so backends that trust the leftmost value see the real client
+  http3: {}
