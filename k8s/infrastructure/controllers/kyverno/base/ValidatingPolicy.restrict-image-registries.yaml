@@ -17,6 +17,11 @@ spec:
   matchConstraints:
     resourceRules: [{apiGroups: [''], apiVersions: [v1], resources: [pods], operations: [CREATE, UPDATE]}]
     namespaceSelector: {matchExpressions: [{key: kubernetes.io/metadata.name, operator: NotIn, values: [kube-system, kube-node-lease, kube-public]}]}
+  # Not on objects being deleted: removing their finalizers is an UPDATE, which must go through even when
+  # their image has since left the allowlist (otherwise a foreground deletion, as Argo CD's prune, hangs)
+  matchConditions:
+    - name: not-being-deleted
+      expression: '!has(object.metadata.deletionTimestamp)'
   variables:
     - name: containers
       expression: object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])
