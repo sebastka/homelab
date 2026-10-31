@@ -36,13 +36,6 @@ spec:
       allowedRoutes: {namespaces: {from: Selector, selector: {matchLabels: {app.kubernetes.io/name: light-ldap}}}}
       tls: {mode: Passthrough}
 
-    - name: step-ca
-      protocol: TLS
-      hostname: ca.karlsen.fr
-      port: 443
-      allowedRoutes: {namespaces: {from: All}}
-      tls: {mode: Passthrough}
-
     - name: http
       protocol: HTTP
       port: 80
@@ -86,3 +79,13 @@ spec:
       hostname: '*.karlsen.app'
       allowedRoutes: {namespaces: {from: All}}
       tls: {mode: Terminate, certificateRefs: [{kind: Secret, name: wc-karlsen-app-certificate}]}
+
+    # After the HTTPS listeners: Envoy Gateway names the Service's port 443 after the first listener on it, and
+    # only adds its UDP port (HTTP/3, ClientTrafficPolicy.yaml) when that first listener is HTTPS. Routing does
+    # not depend on the order (SNI).
+    - name: step-ca
+      protocol: TLS
+      hostname: ca.karlsen.fr
+      port: 443
+      allowedRoutes: {namespaces: {from: All}}
+      tls: {mode: Passthrough}
