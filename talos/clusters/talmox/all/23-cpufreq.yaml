@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# The CPUs' energy/performance preference (intel_pstate, HWP): balance_power rather than the default
+# balance_performance, which turbo-boosts single cores to their maximum (5.4 GHz on hera) for any small task.
+# Those sub-second bursts took hera's hottest core from ~52 °C to 60-90 °C at ~7% load, and its fan chased each
+# one (2026-11-01). Sustained work still reaches full speed; short tasks only ramp up more gently.
+# Applies live. Check: talosctl -n <node> read /sys/devices/system/cpu/cpu0/cpufreq/energy_performance_preference
+---
+apiVersion: v1alpha1
+kind: SysfsConfig
+params:
+  devices.system.cpu.cpu0.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu1.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu2.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu3.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu4.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu5.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu6.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu7.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu8.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu9.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu10.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu11.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu12.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu13.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu14.cpufreq.energy_performance_preference: balance_power
+  devices.system.cpu.cpu15.cpufreq.energy_performance_preference: balance_power
