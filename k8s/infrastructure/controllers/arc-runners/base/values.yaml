@@ -50,8 +50,8 @@ template:
       runAsNonRoot: true
       runAsUser: 1001
       runAsGroup: 1001
-      fsGroup: 1001  # The volume writable by the runner
-      fsGroupChangePolicy: OnRootMismatch  # Not a recursive chown of the whole store at each start
+      # fsGroup: 1001  # The volume writable by the runner
+      # fsGroupChangePolicy: OnRootMismatch  # Not a recursive chown of the whole store at each start
       seccompProfile: {type: RuntimeDefault}
     # One runner per node when possible: builds take every idle core (no CPU limit), so two on one node compete while
     # another sits idle. Preferred, not required: a runner still starts when they can't be spread.
