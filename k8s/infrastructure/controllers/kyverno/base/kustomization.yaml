@@ -7,7 +7,7 @@ components:
   - ../../../../common/images
 
 images:
-  - {name: ghcr.io/kyverno/readiness-checker, newTag: latest, digest: sha256:999f51fdb5d84b419bfd31a78cf186a36810b5eb12f66196a424a9f20ff66a7b}
+  - {name: ghcr.io/kyverno/readiness-checker, newTag: latest, digest: sha256:e86277f8bcd7d5bb30380792c935e29c424f8525bf68d4e1733a51dce7bfdba8}
 
 # Wave 0: CRDs + Operator
 # Wave 1: CiliumNetworkPolicies
