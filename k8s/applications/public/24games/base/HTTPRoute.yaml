@@ -15,6 +15,11 @@ spec:
         - type: ResponseHeaderModifier
           responseHeaderModifier:
             add:
+              # Everything from its own origin (checked against the built site, 2026-11-02): one module script and
+              # lazily loaded game chunks, no inline script or style (React's style props go through the CSSOM, which
+              # CSP allows), sprites from /assets plus one data: GIF, .wav sounds, the computer players' module
+              # Worker, and fetch() to /api/scores only
+              - {name: Content-Security-Policy, value: "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self'; worker-src 'self'; font-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"}
               - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
               - {name: X-Content-Type-Options, value: nosniff}
               - {name: X-Frame-Options, value: DENY}
