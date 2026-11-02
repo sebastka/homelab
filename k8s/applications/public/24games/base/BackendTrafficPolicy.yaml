@@ -14,5 +14,5 @@ spec:
   rateLimit:
     global:
       rules:
-        - {clientSelectors: {[{sourceCIDR: {type: Distinct, value: 0.0.0.0/0}}],                                                                             limit: {requests: 300, unit: Minute}}}
-        - {clientSelectors: {[{sourceCIDR: {type: Distinct, value: 0.0.0.0/0}, methods: {[{value: POST}]}, path: {type: PathPrefix, value: /api/scores/}}]}, limit: {requests: 10, unit: Minute}}
+        - {clientSelectors: [{sourceCIDR: {type: Distinct, value: 0.0.0.0/0}}],                                                                       limit: {requests: 300, unit: Minute}}
+        - {clientSelectors: [{sourceCIDR: {type: Distinct, value: 0.0.0.0/0}, methods: [{value: POST}], path: {type: PathPrefix, value: /api/scores/}}], limit: {requests: 10, unit: Minute}}
