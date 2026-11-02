@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 24games
+  namespace: 24games
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  strategy: {type: RollingUpdate}  # Stateless: the high scores are in MariaDB
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: 24games
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: 24games
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: 24games
+      labels:
+        app.kubernetes.io/name: 24games
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: 24games
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccount: 24games
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000  # The image's user (Docker Hardened Images' node)
+        runAsGroup: 1000
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: 24games
+          # Dockerfile: https://github.com/sebastka/24Games/blob/master/Dockerfile
+          image: ghcr.io/sebastka/24games:edge@sha256:607df82ee34e3f06daa5c0d3fde7481006904a537993aa62e2828e0a92896118
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          env:
+            # Shared high scores (the server creates its tables at start). The database and user are
+            # infrastructure/database/mariadb's (assets/*.csv), with the same password.
+            - {name: DB_HOST, value: mariadb.mariadb.svc.cluster.local}
+            - {name: DB_USER, value: 24games}
+            - {name: DB_NAME, value: 24games}
+            - {name: PUBLIC_URL, value: 'https://24games.karlsen.app'}  # Checked against score submissions
+          envFrom:
+            - secretRef: {name: 24games}  # DB_PASSWORD
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 256Mi}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8080}
+          startupProbe: {httpGet: {port: http, path: /api/health}, periodSeconds: 2, failureThreshold: 30}
+          livenessProbe: {httpGet: {port: http, path: /api/health}, periodSeconds: 60}
+          readinessProbe: {httpGet: {port: http, path: /api/health}, periodSeconds: 30}

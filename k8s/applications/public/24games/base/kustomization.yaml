@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: 24games
+
+resources:
+  - Namespace.yaml
+  - SealedSecret.24games.yaml  # DB_PASSWORD: the 24games user's, as in mariadb's Secret.mariadb-users.yaml
+  - ServiceAccount.yaml
+  - Deployment.yaml
+  - Service.yaml
+  - HTTPRoute.yaml
+  - SecurityPolicy.yaml
+  - BackendTrafficPolicy.yaml
+  - CiliumNetworkPolicy.yaml

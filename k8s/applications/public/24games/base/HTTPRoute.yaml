@@ -1,0 +1,23 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web
+  namespace: 24games
+spec:
+  parentRefs:
+    - {namespace: gateway, name: default, sectionName: https-wc-karlsen-app}
+  hostnames: [24games.karlsen.app]
+  rules:
+    - matches: [path: {type: PathPrefix, value: /}]
+      backendRefs: [{name: web, kind: Service, port: 80}]
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
+              - {name: X-Content-Type-Options, value: nosniff}
+              - {name: X-Frame-Options, value: DENY}
+              - {name: Referrer-Policy, value: no-referrer}
+              - {name: Cross-Origin-Opener-Policy, value: same-origin}
+              - {name: Permissions-Policy, value: 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'}

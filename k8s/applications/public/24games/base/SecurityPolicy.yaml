@@ -1,0 +1,15 @@
+# Cross namespace attachment?
+# - https://github.com/envoyproxy/gateway/issues/5143
+# Replaces the Gateway-level default deny: public (anyone can play and submit scores), behind CrowdSec.
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-all-http
+  namespace: 24games
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  extAuth:
+    failOpen: false
+    grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenapp, port: 8080}]}
