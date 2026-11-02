@@ -230,6 +230,9 @@
 
 # applications/media/vert
 
+# applications/public/24games
+- ghcr.io/sebastka/24games
+
 # applications/public/element
 - docker.io/vectorim/element-web
 

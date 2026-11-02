@@ -53,7 +53,7 @@ httproute:
 
 referenceGrant:
   create: true
-  fromNamespaces: [jellyfin, homepage, paperless, tlsrpt, mailwatch, ferrocine, mcp-nixos]
+  fromNamespaces: [jellyfin, homepage, paperless, tlsrpt, mailwatch, ferrocine, mcp-nixos, 24games]
 
 grafana:
   dashboard:
