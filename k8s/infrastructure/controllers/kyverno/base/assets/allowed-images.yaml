@@ -233,6 +233,9 @@
 # applications/public/24games
 - ghcr.io/sebastka/24games
 
+# applications/public/adibou2
+- ghcr.io/sebastka/adibou2
+
 # applications/public/element
 - docker.io/vectorim/element-web
 
