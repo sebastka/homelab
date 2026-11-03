@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: adibou2
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: adibou2
+  ports:
+    - {name: http, protocol: TCP, port: 80, targetPort: http}

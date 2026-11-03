@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adibou2
+  namespace: adibou2
+spec:
+  strategy: {type: RollingUpdate}  # Stateless: each browser keeps its own save files
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: adibou2
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: adibou2
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: adibou2
+      labels:
+        app.kubernetes.io/name: adibou2
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: adibou2
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccount: adibou2
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000  # The image's user (Docker Hardened Images' node)
+        runAsGroup: 1000
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: adibou2
+          # Dockerfile: https://github.com/sebastka/adibou2/blob/master/Dockerfile
+          # The site and the game's optimized data (574 MB, in the image), no state.
+          image: ghcr.io/sebastka/adibou2:edge@sha256:1acc184cfd10fbb475410b76fba3fe6aa6d9cb770732266e216035c29c50f99a
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 64Mi}
+            limits: {memory: 256Mi}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8080}
+          startupProbe: {httpGet: {port: http, path: /api/health}, periodSeconds: 2, failureThreshold: 30}
+          livenessProbe: {httpGet: {port: http, path: /api/health}, periodSeconds: 60}
+          readinessProbe: {httpGet: {port: http, path: /api/health}, periodSeconds: 30}

@@ -8,6 +8,7 @@ spec:
   sourceRepos: [git@github.com:sebastka/homelab.git]
   destinations:
     - {namespace: 24games,  name: talmox}
+    - {namespace: adibou2,  name: talmox}
     - {namespace: default,  name: talmox}
     - {namespace: element,  name: talmox}
     - {namespace: homepage, name: talmox}

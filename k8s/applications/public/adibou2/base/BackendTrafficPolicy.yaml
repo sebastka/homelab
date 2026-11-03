@@ -1,0 +1,16 @@
+# Replaces the default gateway's default-backend-traffic-policy for this route (no mergeType): a higher limit per
+# client IP than its 300 requests a minute. The game fetches its data as it reads it, one request per archive
+# piece (data/<version>/…), so a new screen can take a burst of requests.
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: rate-limit
+  namespace: adibou2
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  rateLimit:
+    global:
+      rules:
+        - {clientSelectors: [{sourceCIDR: {type: Distinct, value: 0.0.0.0/0}}], limit: {requests: 3000, unit: Minute}}
