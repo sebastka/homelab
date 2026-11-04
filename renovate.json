@@ -40,6 +40,19 @@
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     },
     {
+      "description": "Tool versions pinned in the CI workflows, e.g. trivy-action's `version:` (the Trivy it installs)",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/[^/]+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        ":\\s*(?<currentValue>\\S+)\\s*#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(?:\\s+versioning=(?<versioning>\\S+))?"
+      ],
+      "datasourceTemplate": "{{datasource}}",
+      "depNameTemplate": "{{depName}}",
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    },
+    {
       "customType": "regex",
       "managerFilePatterns": ["k8s/applications/dev/forgejo/kustomization\\.yaml"],
       "matchStrings": ["version:\\s*(?<currentValue>[^\\s#]+)"],
