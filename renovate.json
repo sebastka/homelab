@@ -198,6 +198,12 @@
       "description": "Grafana dashboard revisions are plain integers, so every new one counts as a major; automerge them anyway. Kept after the majors rule, which it overrides",
       "matchDatasources": ["custom.grafana-dashboards"],
       "automerge": true
+    },
+    {
+      "description": "prometheus-operator-crds majors are the operator's minor releases (v33 = v0.95), CRDs only, used as schemas by the VictoriaMetrics operator: automerge them, and fix a break afterwards. Kept after the majors rule, which it overrides",
+      "matchPackageNames": ["prometheus-operator-crds"],
+      "matchUpdateTypes": ["major"],
+      "automerge": true
     }
   ],
   "customDatasources": {
