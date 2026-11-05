@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 images:
-  - {name: alpine,         newName: docker.io/library/alpine,  newTag: 3.24.3,          digest: sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a}
+  - {name: alpine,         newName: docker.io/library/alpine,  newTag: 3.24.4,          digest: sha256:e2944c2947c8cabdd6b23a2ebcf8094a9f3d53ca9e0340edd065237ab74c18c0}
   - {name: alpine/kubectl, newName: docker.io/alpine/kubectl,  newTag: 1.37.2,          digest: sha256:5e2de75d37e811ba6eb92e06890b1b3263eae4f0a1c17b49269edec589b1352a}
   - {name: busybox,        newName: docker.io/library/busybox, newTag: 1.38.0-glibc,    digest: sha256:99813cb178ace2cd9c6c53ee3bddef5d2f5708aa438335111d7a9e3c5e1aaebe}
   - {name: mariadb,        newName: dhi.io/mariadb,            newTag: 13.1.1-debian13, digest: sha256:36b09e40cd10b807b06b0a52f0e587b11424d78d9d577a8a7db84e0b1fb0f8be}
