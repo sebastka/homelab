@@ -97,7 +97,7 @@ jobs:
       - name: Report HIGH and CRITICAL findings
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
         with:
-          version: v0.76.1  # renovate: datasource=github-releases depName=aquasecurity/trivy
+          version: v0.76.2  # renovate: datasource=github-releases depName=aquasecurity/trivy
           scan-type: image
           image-ref: ${{ matrix.image }}
           severity: HIGH,CRITICAL
@@ -119,7 +119,7 @@ jobs:
       - name: Scan manifests and OpenTofu
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25  # v0.36.0
         with:
-          version: v0.76.1  # renovate: datasource=github-releases depName=aquasecurity/trivy
+          version: v0.76.2  # renovate: datasource=github-releases depName=aquasecurity/trivy
           scan-type: config
           scan-ref: .
           format: sarif
