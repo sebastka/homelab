@@ -43,7 +43,7 @@ spec:
           containers:
             - name: backup
               # Dockerfile: https://github.com/sebastka/containers/tree/main/apps/dbdump2s3
-              image: ghcr.io/sebastka/dbdump2s3:2026.11.1@sha256:c104502f68d0c55b51a615c9ecbac5d2b89eab8377641667be43bf0fc1eb6fe0
+              image: ghcr.io/sebastka/dbdump2s3:2026.11.6@sha256:fec0fb8f06681b10373ed3777abbe829e86d83ac67943870819fbf9aceeecd73
               securityContext:
                 allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: true
