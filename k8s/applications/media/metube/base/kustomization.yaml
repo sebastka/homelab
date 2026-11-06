@@ -19,4 +19,5 @@ resources:
   - HTTPRoute.yaml
   - SealedSecret.oidc.yaml
   - SecurityPolicy.yaml
+  - BackendTrafficPolicy.yaml
   - CiliumNetworkPolicy.yaml

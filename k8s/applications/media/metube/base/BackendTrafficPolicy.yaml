@@ -1,0 +1,18 @@
+# No time limit on a response, where Envoy's default (15s, until the last byte) cut downloads on slow links
+# (measured 2026-11-06: a throttled download through the public Gateway reset at 15.4s):
+# - web: the finished videos (/download/…), which can take minutes away from home
+# - socket: Socket.IO, whose long-polls are held up to its 25s ping interval, and its WebSocket for as long as
+#   the page is open
+# Stalled streams are still closed by Envoy's stream idle timeout (5 min without a byte).
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: download-timeout
+  namespace: metube
+spec:
+  mergeType: StrategicMerge  # Keeps the gateway's per-route rate limit
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: socket}
+  timeout: {http: {requestTimeout: 0s, maxStreamDuration: 0s}}
