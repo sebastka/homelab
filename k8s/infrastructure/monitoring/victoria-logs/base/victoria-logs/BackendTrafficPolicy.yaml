@@ -1,0 +1,12 @@
+# No time limit on a response (the gateway's default is 30s, until the last byte): live tailing streams results for as long as it runs.
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: tail-timeout
+  namespace: victoria-logs
+spec:
+  mergeType: StrategicMerge  # Keeps the rest of the gateway's policy (the public one's per-route rate limit)
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: victoria-logs}
+  timeout: {http: {requestTimeout: 0s, maxStreamDuration: 0s}}

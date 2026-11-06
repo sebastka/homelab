@@ -1,0 +1,12 @@
+# No time limit on a response (the gateway's default is 30s, until the last byte): subscriptions are long-lived streams (JSON stream, SSE, WebSocket).
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: subscription-timeout
+  namespace: ntfy
+spec:
+  mergeType: StrategicMerge  # Keeps the rest of the gateway's policy (the public one's per-route rate limit)
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  timeout: {http: {requestTimeout: 0s, maxStreamDuration: 0s}}

@@ -11,6 +11,7 @@ resources:
   - CiliumNetworkPolicy.yaml
   - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
+  - BackendTrafficPolicy.yaml
   - GrafanaDashboard.yaml
 
 helmCharts:

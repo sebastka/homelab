@@ -13,6 +13,7 @@ resources:
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
+  - BackendTrafficPolicy.yaml
   - PersistentVolumeClaim.yaml
   - SealedSecret.oidc.yaml
   - SecurityPolicy.yaml

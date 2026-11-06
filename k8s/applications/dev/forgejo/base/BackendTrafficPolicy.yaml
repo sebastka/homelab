@@ -1,0 +1,12 @@
+# Long time limit on a response (the gateway's default is 30s, until the last byte): git clones, fetches and pushes of large repositories over HTTPS, and archive downloads.
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: git-timeout
+  namespace: forgejo
+spec:
+  mergeType: StrategicMerge  # Keeps the rest of the gateway's policy (the public one's per-route rate limit)
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  timeout: {http: {requestTimeout: 60s, maxStreamDuration: 0s}}

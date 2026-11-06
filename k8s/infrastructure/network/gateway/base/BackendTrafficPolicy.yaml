@@ -15,3 +15,17 @@ spec:
         - clientSelectors: [{sourceCIDR: {type: Distinct, value: 0.0.0.0/0}}]
           limit: {requests: 300, unit: Minute}
           shared: false  # Per route: each public route has its own 300 a minute per client IP
+  # Envoy's default is 15s for a whole response, until its last byte: it cut downloads on slow links. Routes with long
+  # downloads, streams or WebSockets set 0s in their own BackendTrafficPolicy (mergeType: StrategicMerge).
+  timeout: {http: {requestTimeout: 30s}}
+---
+# The internal gateway: no rate limit (above), the same default response time limit.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: internal-backend-traffic-policy
+  namespace: gateway
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: Gateway, name: internal}
+  timeout: {http: {requestTimeout: 30s}}

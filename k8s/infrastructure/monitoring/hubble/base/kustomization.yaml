@@ -5,6 +5,7 @@ namespace: kube-system
 
 resources:
   - HTTPRoute.yaml
+  - BackendTrafficPolicy.yaml
   - GRPCRoute.yaml
   - GrafanaDashboard.hubble.yaml
   - GrafanaDashboard.hubble-dns-namespace.yaml

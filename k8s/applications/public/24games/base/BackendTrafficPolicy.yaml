@@ -11,6 +11,7 @@ metadata:
 spec:
   targetRefs:
     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  timeout: {http: {requestTimeout: 60s}}  # Response time limit: the gateway default, which this policy replaces
   rateLimit:
     global:
       rules:

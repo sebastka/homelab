@@ -5,6 +5,7 @@ namespace: grafana
 
 resources:
   - HTTPRoute.yaml
+  - BackendTrafficPolicy.yaml
   - SealedSecret.admin-credentials.yaml
   - SealedSecret.oidc.yaml
   - Grafana.yaml

@@ -18,5 +18,6 @@ resources:
   - Deployment.yaml
   - Service.yaml
   - HTTPRoute.yaml
+  - BackendTrafficPolicy.yaml
   - SecurityPolicy.yaml
   - CiliumNetworkPolicy.yaml

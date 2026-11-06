@@ -15,6 +15,7 @@ resources:
   - SealedSecret.forgejo-gpg.yaml
   - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
+  - BackendTrafficPolicy.yaml
   - SecurityPolicy.yaml
   - CiliumNetworkPolicy.yaml
 

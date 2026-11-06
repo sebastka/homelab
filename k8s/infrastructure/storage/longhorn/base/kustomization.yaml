@@ -6,6 +6,7 @@ namespace: longhorn-system
 resources:
   - Namespace.yaml
   - HTTPRoute.yaml
+  - BackendTrafficPolicy.yaml
   - SealedSecret.longhorn-crypto.yaml
   - StorageClass.longhorn-encrypted.yaml
   - VolumeSnapshotClass.yaml

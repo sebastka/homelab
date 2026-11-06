@@ -17,5 +17,6 @@ resources:
   - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
+  - BackendTrafficPolicy.yaml
   - SecurityPolicy.yaml
   - CiliumNetworkPolicy.yaml
