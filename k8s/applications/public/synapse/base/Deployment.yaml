@@ -38,7 +38,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       initContainers:
         - name: config-merger
-          image: docker.io/mikefarah/yq:4.54.1
+          image: docker.io/mikefarah/yq:4.54.2
           command: ['/bin/sh', '-c']
           args:
             - |
