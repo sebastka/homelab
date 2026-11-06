@@ -46,13 +46,35 @@ spec:
             claims:
               - {name: groups, valueType: StringArray, values: ['k8s_admins']}
 ---
+# The Socket.IO route (HTTPRoute socket): the same session as the page, checked without the OIDC filter, whose
+# redirect to Authelia a socket cannot follow. The id token cookie that allow-sso's login sets is validated here;
+# without a valid one, or outside k8s_admins, 401/403 (the page logs in again on its next load). The socket pushes
+# the download queue and history, and MeTube's configuration.
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: allow-all-http
+  name: allow-sso-socket
   namespace: metube
 spec:
   targetRefs:
     - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: socket}
+  jwt:
+    providers:
+      - name: authelia
+        issuer: https://auth.karlsen.fr
+        audiences: [envoy]
+        remoteJWKS: {uri: https://auth.karlsen.fr/jwks.json}
+        extractFrom: {cookies: [oidc-id-token]}
   authorization:
-    defaultAction: Allow
+    defaultAction: Deny
+    rules:
+      - name: allow-homelab-users
+        action: Allow
+        principal:
+          jwt:
+            provider: authelia
+            claims:
+              - {name: groups, valueType: StringArray, values: ['k8s_admins']}
+  extAuth:
+    failOpen: false
+    grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenapp, port: 8080}]}
