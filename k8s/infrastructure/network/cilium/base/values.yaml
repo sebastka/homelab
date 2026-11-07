@@ -93,7 +93,10 @@ cni:
 # https://docs.cilium.io/en/stable/network/concepts/routing/
 routingMode: native
 # ipv4NativeRoutingCIDR: 10.244.0.0/16  # Set in overlay
-autoDirectNodeRoutes: true
+# The routes to the other nodes' pods are Talos's (talos: node/<host>/10-thunderbolt-mesh.yaml): over the Thunderbolt
+# cable to each node (metric 100), and over the LAN while it is down (metric 1024). Cilium's own would pin them to the
+# LAN (metric 0, dev bond0).
+autoDirectNodeRoutes: false
 
 gatewayAPI:
   enabled: true
