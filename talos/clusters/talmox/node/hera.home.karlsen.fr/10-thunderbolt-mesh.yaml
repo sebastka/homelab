@@ -2,8 +2,9 @@
 # hera's two cables of the Thunderbolt mesh (all/21-thunderbolt.yaml), clockwise hera -> hestia -> dike -> hera: tb-next
 # to hestia, tb-prev to dike. One /31 per cable in 10.250.0.0/24, and a host route to each neighbour's
 # node IP through its cable: node-to-node traffic (WireGuard, etcd, the API, NFS...) takes the mesh without the node IPs
-# changing, and the LAN otherwise. The links are named by their MAC, which thunderbolt_net derives from the machine and
-# the port: a cable moved to the other port changes it.
+# changing, and the LAN otherwise. The links are matched by their Thunderbolt port (bus path <domain>-<port>.0), not their
+# MAC: thunderbolt_net's MACs, and so the kernel's enx<MAC> names, can change at boot (hera's did, 2026-11-07). A cable
+# moved to the other port swaps tb-next and tb-prev.
 # The pods' routes to the other nodes are here too, over the cables and over the LAN as a fallback: they hard-code each
 # node's podCIDR (kubectl get nodes -o custom-columns=NODE:.metadata.name,PODCIDR:.spec.podCIDR), to update for a new or
 # reinstalled node.
@@ -12,7 +13,7 @@ apiVersion: v1alpha1
 kind: LinkAliasConfig
 name: tb-next
 selector:
-  match: mac(link.permanent_addr) == "02:b7:7f:7d:2c:e3"  # Thunderbolt port 1-1, cable to hestia
+  match: link.driver == "thunderbolt-net" && link.bus_path == "1-1.0"  # Thunderbolt port 1-1, cable to hestia
 ---
 apiVersion: v1alpha1
 kind: LinkConfig
@@ -34,7 +35,7 @@ apiVersion: v1alpha1
 kind: LinkAliasConfig
 name: tb-prev
 selector:
-  match: mac(link.permanent_addr) == "02:72:ff:3e:40:75"  # Thunderbolt port 0-1, cable to dike
+  match: link.driver == "thunderbolt-net" && link.bus_path == "0-1.0"  # Thunderbolt port 0-1, cable to dike
 ---
 apiVersion: v1alpha1
 kind: LinkConfig
@@ -66,13 +67,3 @@ routes:
     gateway: 192.168.0.60
     source: 192.168.0.40
     metric: 1024
----
-# Receive Packet Steering onto the P-cores (cpu0-5, 0x3f): the cables' receive interrupts land on E-cores (cpu10-13,
-# 4.5 GHz), and one core does each cable's receive work, which held traffic into hera at 4-5 Gbit/s. With RPS, its IP
-# and TCP processing moves to the P-cores: dike -> hera pods 5.3 -> 9.3 Gbit/s (iperf3, 2026-11-07). By the kernel's
-# link names (enx<MAC>, stable as the aliases' MACs). Merges with all/22-cpuidle.yaml.
-apiVersion: v1alpha1
-kind: SysfsConfig
-params:
-  class.net.enx0272ff3e4075.queues.rx-0.rps_cpus: '3f'  # tb-prev, cable to dike
-  class.net.enx02b77f7d2ce3.queues.rx-0.rps_cpus: '3f'  # tb-next, cable to hestia

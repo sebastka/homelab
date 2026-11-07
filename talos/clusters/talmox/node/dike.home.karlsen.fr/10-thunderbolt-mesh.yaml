@@ -2,8 +2,9 @@
 # dike's two cables of the Thunderbolt mesh (all/21-thunderbolt.yaml), clockwise hera -> hestia -> dike -> hera: tb-next
 # to hera, tb-prev to hestia. One /31 per cable in 10.250.0.0/24, and a host route to each neighbour's
 # node IP through its cable: node-to-node traffic (WireGuard, etcd, the API, NFS...) takes the mesh without the node IPs
-# changing, and the LAN otherwise. The links are named by their MAC, which thunderbolt_net derives from the machine and
-# the port: a cable moved to the other port changes it.
+# changing, and the LAN otherwise. The links are matched by their Thunderbolt port (bus path <domain>-<port>.0), not their
+# MAC: thunderbolt_net's MACs, and so the kernel's enx<MAC> names, can change at boot (hera's did, 2026-11-07). A cable
+# moved to the other port swaps tb-next and tb-prev.
 # The pods' routes to the other nodes are here too, over the cables and over the LAN as a fallback: they hard-code each
 # node's podCIDR (kubectl get nodes -o custom-columns=NODE:.metadata.name,PODCIDR:.spec.podCIDR), to update for a new or
 # reinstalled node.
@@ -12,7 +13,7 @@ apiVersion: v1alpha1
 kind: LinkAliasConfig
 name: tb-next
 selector:
-  match: mac(link.permanent_addr) == "12:fd:2e:4d:1c:e8"  # Thunderbolt port 0-3, cable to hera
+  match: link.driver == "thunderbolt-net" && link.bus_path == "0-3.0"  # Thunderbolt port 0-3, cable to hera
 ---
 apiVersion: v1alpha1
 kind: LinkConfig
@@ -34,7 +35,7 @@ apiVersion: v1alpha1
 kind: LinkAliasConfig
 name: tb-prev
 selector:
-  match: mac(link.permanent_addr) == "02:fd:2e:4d:1c:e8"  # Thunderbolt port 0-1, cable to hestia
+  match: link.driver == "thunderbolt-net" && link.bus_path == "0-1.0"  # Thunderbolt port 0-1, cable to hestia
 ---
 apiVersion: v1alpha1
 kind: LinkConfig
