@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
-# Thunderbolt/USB4 networking, for the Longhorn mesh between the NUCs (not configured yet).
-# The modules come from the siderolabs/thunderbolt extension in schematic.yaml.
-# thunderbolt_net creates a thunderbolt<N> link per peer once a cable is connected.
+# Thunderbolt 4 networking: a mesh of three direct cables between the nodes (node/<host>/10-thunderbolt-mesh.yaml).
+# The modules come from the siderolabs/thunderbolt extension in schematic.yaml. thunderbolt_net creates a link per
+# connected peer, renamed enx<MAC> by the kernel.
 ---
 apiVersion: v1alpha1
 kind: KernelModuleConfig
@@ -10,3 +10,11 @@ name: thunderbolt
 apiVersion: v1alpha1
 kind: KernelModuleConfig
 name: thunderbolt_net
+---
+# A route through a link that is present but has lost its carrier is ignored, so the traffic falls back to the LAN.
+# An unplugged cable removes its link, and its routes with it, which falls back by itself. As the default, it reaches
+# the Thunderbolt links, which appear after boot.
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  net.ipv4.conf.default.ignore_routes_with_linkdown: '1'

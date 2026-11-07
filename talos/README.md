@@ -124,6 +124,7 @@ One node at a time; each one joins etcd as it is applied. hestia is used as the 
 
 ## Things worth knowing
 
+- **The Thunderbolt mesh.** Three Thunderbolt 4 cables join the nodes in a triangle (40 Gb/s each), clockwise hera → hestia → dike → hera: on each node `tb-next` goes to the next node and `tb-prev` to the previous one (`node/<host>/10-thunderbolt-mesh.yaml`, named by MAC). Each cable is a `/31` in `10.250.0.0/24`, and each node has a host route to its two neighbours' node IPs through the cables, so all node-to-node traffic (WireGuard, etcd, the API, NFS) takes the mesh while the node IPs stay on the LAN. Cilium needs no change: it sends WireGuard to the node IPs, which the routes carry. Without a cable, its link and routes disappear and that pair's traffic falls back to the LAN. Roll out a change to the routes in two phases: first the links and addresses on every node (routes commented out), and the routes only once every cable answers on both ends (`talosctl -n <node> get addresses`, ping `10.250.0.x`). A node whose routes point at a cable with no address on the far end loses its peers. Check: `talosctl -n <node> read /sys/bus/thunderbolt/devices/<d>/rx_speed` (`20.0 Gb/s`, `rx_lanes` 2).
 - **Both versions are explicit.** `kubernetesVersion` is required, and topf writes the resulting
   image refs (`registry.k8s.io/kube-apiserver:v1.37.0`, `ghcr.io/siderolabs/kubelet:v1.37.0`, …)
   into the machine config. A Kubernetes **minor** upgrade goes through

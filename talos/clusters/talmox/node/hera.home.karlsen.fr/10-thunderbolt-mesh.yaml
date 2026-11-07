@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.14/website/content/v1.14/schemas/config.schema.json
+# hera's two cables of the Thunderbolt mesh (all/21-thunderbolt.yaml), clockwise hera -> hestia -> dike -> hera: tb-next
+# to hestia, tb-prev to dike. One /31 per cable in 10.250.0.0/24, and a host route to each neighbour's
+# node IP through its cable: node-to-node traffic (WireGuard, etcd, the API, NFS...) takes the mesh without the node IPs
+# changing, and the LAN otherwise. The links are named by their MAC, which thunderbolt_net derives from the machine and
+# the port: a cable moved to the other port changes it.
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: tb-next
+selector:
+  match: mac(link.permanent_addr) == "02:b7:7f:7d:2c:e3"  # Thunderbolt port 1-1, cable to hestia
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: tb-next
+up: true
+mtu: 1500  # As the LAN's: what Cilium sizes WireGuard for, and what a fallback to the LAN keeps working with
+addresses:
+  - address: 10.250.0.0/31
+routes:
+  - destination: 192.168.0.50/32  # hestia's node IP: everything this node sends to hestia takes the cable
+    gateway: 10.250.0.1
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: tb-prev
+selector:
+  match: mac(link.permanent_addr) == "02:72:ff:3e:40:75"  # Thunderbolt port 0-1, cable to dike
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: tb-prev
+up: true
+mtu: 1500  # As the LAN's: what Cilium sizes WireGuard for, and what a fallback to the LAN keeps working with
+addresses:
+  - address: 10.250.0.5/31
+routes:
+  - destination: 192.168.0.60/32  # dike's node IP: everything this node sends to dike takes the cable
+    gateway: 10.250.0.4
