@@ -18,10 +18,10 @@ helmCharts:
     valuesInline:
       cluster: {id: 1, name: talmox}
       ipv4NativeRoutingCIDR: 10.244.0.0/16  # Pod CIDR
-      encryption:
-        strictMode:
-          egress:
-            cidr: 10.244.0.0/16  # Should cover all Pod CIDRs in the cluster
+      # encryption:
+      #   strictMode:
+      #     egress:
+      #       cidr: 10.244.0.0/16  # Should cover all Pod CIDRs in the cluster
       # clustermesh: {}
       hubble:
         ui:
