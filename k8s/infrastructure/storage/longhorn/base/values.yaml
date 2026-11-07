@@ -8,6 +8,10 @@
 defaultSettings:
   defaultDataLocality: best-effort
   defaultDataPath: /var/mnt/longhorn-data
+  # A node holding the last replica of a detached volume may be drained: its data stays on the node's disk through the
+  # reboot. The default (block-if-contains-last-replica) blocked the Talos 1.14.5 upgrade's drain of hestia forever on the
+  # CI runners' single-replica Nix stores (arc-runners). A volume in use still blocks the drain of its last replica.
+  nodeDrainPolicy: allow-if-replica-is-stopped
   # The data path is a dedicated Talos user volume on every node (talos/.../13-longhorn.yaml.tpl, node/*/02-volumes.yaml):
   # nothing else writes there, so the 30% default reserve only blocked scheduling (replica evictions failed on dike and t01
   # during the 1.14.4 upgrade). Applies to new disks; existing ones were set by hand (nodes.longhorn.io spec.disks).
