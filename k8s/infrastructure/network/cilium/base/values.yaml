@@ -104,14 +104,17 @@ gatewayAPI:
   gatewayClass:
     create: 'true'
 
+# No transparent encryption: pod traffic between the nodes takes the Thunderbolt mesh, direct cables between them
+# (talos: node/<host>/10-thunderbolt-mesh.yaml), where WireGuard capped it at ~1.8 Gbit/s (one core per tunnel) against
+# ~10 Gbit/s unencrypted (iperf3, 2026-11-07). The cost: when a cable is down, that pair's pod traffic crosses the LAN in
+# clear text. Strict mode is disabled explicitly: the chart renders it from its own value, even with encryption off.
 encryption:
-  enabled: true
+  enabled: false
   type: wireguard
   nodeEncryption: true
   strictMode:
     egress:
-      enabled: true
-      # cidr: 10.244.0.0/16  # Set in overlay
+      enabled: false
 
 envoy:
   enabled: true
