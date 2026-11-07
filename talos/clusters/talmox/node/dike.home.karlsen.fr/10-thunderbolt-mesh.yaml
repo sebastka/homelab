@@ -4,6 +4,9 @@
 # node IP through its cable: node-to-node traffic (WireGuard, etcd, the API, NFS...) takes the mesh without the node IPs
 # changing, and the LAN otherwise. The links are named by their MAC, which thunderbolt_net derives from the machine and
 # the port: a cable moved to the other port changes it.
+# The pods' routes to the other nodes are here too, over the cables and over the LAN as a fallback: they hard-code each
+# node's podCIDR (kubectl get nodes -o custom-columns=NODE:.metadata.name,PODCIDR:.spec.podCIDR), to update for a new or
+# reinstalled node.
 ---
 apiVersion: v1alpha1
 kind: LinkAliasConfig
@@ -15,13 +18,17 @@ apiVersion: v1alpha1
 kind: LinkConfig
 name: tb-next
 up: true
-mtu: 1500  # As the LAN's: what Cilium sizes WireGuard for, and what a fallback to the LAN keeps working with
+mtu: 65520  # thunderbolt-net's maximum. The pods stay at 1500 (Cilium); the nodes' own connections adjust when one falls back to the LAN
 addresses:
   - address: 10.250.0.4/31
 routes:
   - destination: 192.168.0.40/32  # hera's node IP: everything this node sends to hera takes the cable
     gateway: 10.250.0.5
     source: 192.168.0.60  # The node IP, not the cable's address: peers (etcd's certificate checks, Cilium's node identities) see the usual address
+  - destination: 10.244.0.0/24  # hera's pods (its node's podCIDR): pod traffic to hera takes the cable, unencrypted
+    gateway: 10.250.0.5
+    source: 192.168.0.60
+    metric: 100  # Before the LAN's fallback route (below)
 ---
 apiVersion: v1alpha1
 kind: LinkAliasConfig
@@ -33,10 +40,29 @@ apiVersion: v1alpha1
 kind: LinkConfig
 name: tb-prev
 up: true
-mtu: 1500  # As the LAN's: what Cilium sizes WireGuard for, and what a fallback to the LAN keeps working with
+mtu: 65520  # thunderbolt-net's maximum. The pods stay at 1500 (Cilium); the nodes' own connections adjust when one falls back to the LAN
 addresses:
   - address: 10.250.0.3/31
 routes:
   - destination: 192.168.0.50/32  # hestia's node IP: everything this node sends to hestia takes the cable
     gateway: 10.250.0.2
     source: 192.168.0.60  # The node IP, not the cable's address: peers (etcd's certificate checks, Cilium's node identities) see the usual address
+  - destination: 10.244.1.0/24  # hestia's pods (its node's podCIDR): pod traffic to hestia takes the cable, unencrypted
+    gateway: 10.250.0.2
+    source: 192.168.0.60
+    metric: 100  # Before the LAN's fallback route (below)
+---
+# The LAN's routes to the other nodes' pods, which Cilium no longer installs (autoDirectNodeRoutes: false): the fallback
+# while a cable is down, when its metric-100 route above disappears with its link.
+apiVersion: v1alpha1
+kind: BondConfig
+name: bond0
+routes:
+  - destination: 10.244.0.0/24  # hera's pods
+    gateway: 192.168.0.40
+    source: 192.168.0.60
+    metric: 1024
+  - destination: 10.244.1.0/24  # hestia's pods
+    gateway: 192.168.0.50
+    source: 192.168.0.60
+    metric: 1024
