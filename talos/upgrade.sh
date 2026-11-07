@@ -88,8 +88,10 @@ roll_node()
     fi
     read keypress
 
+    nfs_clients_off "$node_name"
+
     evicted='false'
-    if [ "${EVICT:-true}" = 'true' ] && lh_has_space_for_eviction "$node_name"; then
+    if [ "${EVICT:-true}" = 'true' ] && lh_can_evict "$node_name"; then
         evicted='true'
         kubectl -n longhorn-system patch node.longhorn.io "$node_name" --type=merge -p '{"spec":{"allowScheduling":false,"evictionRequested":true}}'
 
@@ -117,6 +119,9 @@ roll_node()
     done
 
     [ "$evicted" = 'false' ] || kubectl -n longhorn-system patch node.longhorn.io "$node_name" --type=merge -p '{"spec":{"allowScheduling":true,"evictionRequested":false}}'
+
+    # nfs_clients_off may have cordoned the node before topf did; topf only undoes its own
+    kubectl uncordon "$node_name" >/dev/null 2>&1 || true
 
     # topf exits 0 when it skips a node, so confirm the node really moved before the next one
     if [ "$action" = 'upgrade' ] && upgrade_pending "$host"; then
@@ -179,30 +184,84 @@ lh_get_unhealthy_volume_count()
         | jq '[.items[] | select(.status.state == "attached" and .status.robustness != "healthy")] | length'
 }
 
-# lh_has_space_for_eviction <node-name>
-lh_has_space_for_eviction()
+# lh_can_evict <node-name>
+#
+# Whether every replica on the node has somewhere to go. A replica may only move to another
+# schedulable node that does not already hold a replica of the same volume (Longhorn's hard
+# anti-affinity) and has room for it. A total of the free space everywhere is not enough: with
+# 2-replica volumes on 3 nodes, a replica leaving one node can only go to the third one, which
+# may be full while the second has plenty (dike, 2026-11-07: the eviction waited forever).
+# Places the replicas largest first, each on the eligible node with the most room left.
+lh_can_evict()
 {
-    total_replica_size=$(lh_get_total_replica_size "$1")
-    total_free=$(lh_get_total_free "$1")
-    [ "$total_free" -gt "$total_replica_size" ]
+    blocked="$(lh_eviction_blockers "$1")"
+    [ -n "$blocked" ] || return 0
+    printf -- 'Longhorn cannot evict %s: no other node can take a replica of %s.\n' \
+        "$1" "$(printf '%s' "$blocked" | tr '\n' ' ')"
+    return 1
 }
 
-# lh_get_total_replica_size <node-name>
-lh_get_total_replica_size()
+# lh_eviction_blockers <node-name>: the volumes whose replica on the node has nowhere to go.
+# The lists go through stdin (jq -s): as --argjson arguments they exceed the argument size limit.
+# Only a volume's real replicas count: all of them while it is detached (they are all stopped),
+# its running ones while it is attached. A stopped replica of an attached volume is a stale copy
+# from a node that was away (e.g. rebooted without eviction): Longhorn drops it rather than moving
+# it, and it does not hold a node either.
+lh_eviction_blockers()
 {
-    kubectl -n longhorn-system get replicas.longhorn.io -o json \
-        | jq --arg node "${1}" \
-            '[.items[] | select(.spec.nodeID == $node) | .spec.volumeSize | tonumber] | add // 0'
+    { kubectl -n longhorn-system get replicas.longhorn.io -o json
+      kubectl -n longhorn-system get nodes.longhorn.io -o json
+      kubectl -n longhorn-system get volumes.longhorn.io -o json; } \
+    | jq -s -r --arg node "$1" '
+        .[0] as $r | .[1] as $n
+        | (.[2].items | map({key: .metadata.name, value: .status.state}) | from_entries) as $state
+        | [$r.items[] | select($state[.spec.volumeName] != "attached" or .status.currentState == "running")] as $reps
+        | ($n.items
+            | map(select(.metadata.name != $node and .spec.allowScheduling == true)
+                | {key: .metadata.name,
+                   value: ([.status.diskStatus | to_entries[]
+                            | .value.storageAvailable - .value.storageScheduled] | add // 0)})
+            | from_entries) as $free
+        | [$reps[] | select(.spec.nodeID == $node)]
+        | sort_by(-(.spec.volumeSize | tonumber))
+        | reduce .[] as $x ({free: $free, blocked: []};
+            ($x.spec.volumeName) as $v
+            | ($x.spec.volumeSize | tonumber) as $size
+            | [$reps[] | select(.spec.volumeName == $v and .spec.nodeID != $node) | .spec.nodeID] as $holders
+            | ([.free | to_entries[]
+                | select((.key as $k | $holders | index($k)) == null and .value >= $size)]
+               | sort_by(-.value) | .[0].key) as $to
+            | if $to == null then .blocked += [$v] else .free[$to] -= $size end)
+        | .blocked | unique[]'
 }
 
-# lh_get_total_free <node-name>
-lh_get_total_free()
+# nfs_clients_off <node-name>
+#
+# The NFS server is a KubeVirt VM (storage/file), pinned to its node by PCI passthrough. A drain
+# evicts it alongside the pods that mount its exports, in no particular order: a client left on
+# the node after the server is gone hangs in its NFS unmount, the kubelet never finishes removing
+# it, and the drain waits for it forever (deluged on hera, 2026-11-07). So on a node running a VM,
+# its pods with an NFS volume are moved first, while the server still answers: cordoned, so they
+# come back on another node.
+nfs_clients_off()
 {
-    kubectl -n longhorn-system get nodes.longhorn.io -o json \
-        | jq --arg node "${1}" \
-            '[.items[] | select(.metadata.name != $node and .spec.allowScheduling == true)
-            | .status.diskStatus | to_entries[]
-            | (.value.storageAvailable - .value.storageScheduled)] | add // 0'
+    vms="$(kubectl get vmi -A -o json | jq --arg node "$1" '[.items[] | select(.status.nodeName == $node)] | length')"
+    [ "$vms" -gt 0 ] || return 0
+
+    claims="$(kubectl get pv -o json | jq -c '[.items[] | select(.spec.nfs and .spec.claimRef)
+        | "\(.spec.claimRef.namespace)/\(.spec.claimRef.name)"]')"
+    clients="$(kubectl get pods -A --field-selector "spec.nodeName=$1" -o json \
+        | jq -r --argjson claims "$claims" '.items[] | .metadata.namespace as $ns
+            | select([.spec.volumes[]? | .persistentVolumeClaim.claimName // empty | "\($ns)/\(.)"]
+                     | any(. as $c | $claims | index($c)))
+            | "\($ns) \(.metadata.name)"')"
+    [ -n "$clients" ] || return 0
+
+    printf -- 'Moving the NFS clients off %s before its VM is evicted...\n' "$1"
+    kubectl cordon "$1" >/dev/null
+    echo "$clients" | while read -r ns pod; do
+        kubectl -n "$ns" delete pod "$pod" --wait=true --timeout=300s
+    done
 }
 
 # lh_get_replica_count_on_node <node-name>

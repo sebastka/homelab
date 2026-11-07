@@ -67,3 +67,13 @@ routes:
     gateway: 192.168.0.60
     source: 192.168.0.40
     metric: 1024
+---
+# Receive Packet Steering onto the P-cores (cpu0-5, 0x3f): the cables' receive interrupts land on E-cores (cpu10-13,
+# 4.5 GHz), and one core does each cable's receive work, which held traffic into hera at 4-5 Gbit/s. With RPS, its IP
+# and TCP processing moves to the P-cores: dike -> hera pods 5.3 -> 9.3 Gbit/s (iperf3, 2026-11-07). A udev rule, by
+# driver: the kernel's names (enx<MAC>) change at boot with the MACs, so a SysfsConfig by name cannot hold.
+# Check: talosctl -n hera read /sys/class/net/<enx…>/queues/rx-0/rps_cpus    (003f)
+apiVersion: v1alpha1
+kind: UdevRulesConfig
+rules:
+  - ACTION=="add", SUBSYSTEM=="net", DRIVERS=="thunderbolt-net", ATTR{queues/rx-0/rps_cpus}="3f"
