@@ -21,6 +21,7 @@ addresses:
 routes:
   - destination: 192.168.0.40/32  # hera's node IP: everything this node sends to hera takes the cable
     gateway: 10.250.0.5
+    source: 192.168.0.60  # The node IP, not the cable's address: peers (etcd's certificate checks, Cilium's node identities) see the usual address
 ---
 apiVersion: v1alpha1
 kind: LinkAliasConfig
@@ -38,3 +39,4 @@ addresses:
 routes:
   - destination: 192.168.0.50/32  # hestia's node IP: everything this node sends to hestia takes the cable
     gateway: 10.250.0.2
+    source: 192.168.0.60  # The node IP, not the cable's address: peers (etcd's certificate checks, Cilium's node identities) see the usual address
