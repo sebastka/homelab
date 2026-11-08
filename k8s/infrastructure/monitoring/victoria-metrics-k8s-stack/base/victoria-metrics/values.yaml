@@ -112,6 +112,13 @@ defaultDashboards:
 
 defaultRules:
   create: true
+  rules:
+    # Fires constantly on Talos: its node controller (k8s.NodeApplyController) calls the API every minute or so with a
+    # temporary client certificate valid for 10 minutes (talos pkg/kubernetes NewTemporaryClientFromPKI, CN=admin), and the
+    # break-glass kubeconfig mints 12-hour ones. The histogram it reads cannot tell those from a certificate really about to
+    # expire. The control plane's own certificates are Talos's, renewed at each upgrade (valid a year).
+    KubeClientCertificateExpiration:
+      enabled: false
 
 kubeProxy:
   enabled: false  # Cilium replaces kube-proxy
