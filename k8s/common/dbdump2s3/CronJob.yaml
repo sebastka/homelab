@@ -60,6 +60,11 @@ spec:
                 # (any dump over 8 MB): back to the earlier behaviour.
                 - {name: AWS_REQUEST_CHECKSUM_CALCULATION, value: when_required}
                 - {name: AWS_RESPONSE_CHECKSUM_VALIDATION, value: when_required}
+                # Retries per request: the default (legacy mode, 2 retries) let one GatewayTimeout from Hetzner on a
+                # part of Synapse's 1.2 GB multipart upload fail the whole run (postgres, 2026-11-03, all 3 attempts).
+                # Standard mode backs off exponentially, and retries throttling and timeouts.
+                - {name: AWS_RETRY_MODE, value: standard}
+                - {name: AWS_MAX_ATTEMPTS, value: '10'}
               volumeMounts:
                 - {name: users-databases-volume, mountPath: /mnt/users-databases, readOnly: true}
                 - {name: passwords-volume,       mountPath: /mnt/passwords,       readOnly: true}
