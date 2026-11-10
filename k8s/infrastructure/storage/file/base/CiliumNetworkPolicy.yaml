@@ -15,6 +15,7 @@ spec:
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: zabbix-server}}], toPorts: [ports: [{port: '10050', protocol: TCP}]]}  # Zabbix passive checks
     - {fromEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: kubevirt, kubevirt.io: virt-api}}]}
   egress:
+    - {toEntities: [world, cluster], icmps: [{fields: [{type: EchoRequest, family: IPv4}]}]}
     - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}, {port: '80', protocol: TCP}]]}  # Upgrades: GitHub, cache.nixos.org
     - {toEntities: [world], toPorts: [ports: [{port: '123', protocol: UDP}]]}  # NTP
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Attic (attic.karlsen.app), through the gateway
