@@ -25,7 +25,7 @@ terraform {
   required_providers {
     tailscale = {
       source  = "tailscale/tailscale"
-      version = "~> 0.29"
+      version = "~> 0.30"
     }
 
     # Writes the operator's OAuth client into a Secret under ../k8s; see oauth_clients.tf.
