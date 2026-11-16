@@ -34,7 +34,7 @@ spec:
       containers:
         - name: mcp-nixos
           # https://github.com/utensils/mcp-nixos (flake.nix builds the image)
-          image: ghcr.io/utensils/mcp-nixos:3.1.0@sha256:21a84aae04f6f9e6a640d4dee6b38639fcfe5208f8f6dbf84a483acf2128df74
+          image: ghcr.io/utensils/mcp-nixos:3.1.1@sha256:195c29fe882a00a689a06d6c9e862e7d021905436acca195618ed56cd6413977
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
