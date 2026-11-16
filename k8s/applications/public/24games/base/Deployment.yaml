@@ -34,7 +34,7 @@ spec:
       containers:
         - name: 24games
           # Dockerfile: https://github.com/sebastka/24Games/blob/master/Dockerfile
-          image: ghcr.io/sebastka/24games:edge@sha256:7a965bb16cb5419284ebe14b49fbf59089e9adcc13a81f0bf20652bdcc25e996
+          image: ghcr.io/sebastka/24games:edge@sha256:cac5f880c18fb794ed7b1352e7d7bab53cf8d3038e94a70c721dd46e7151c3e3
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
