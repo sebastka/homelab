@@ -172,6 +172,15 @@ identity_providers:
     cors:
       allowed_origins_from_client_redirect_uris: true
       endpoints: [userinfo, authorization, token, revocation, introspection]
+    # Who may sign in to a client at all, checked by Authelia before it issues a token. kubernetes (kube_login): only the
+    # groups the cluster's RBAC knows (k8s/infrastructure/auth/users: oidc-cluster-admin, oidc-cluster-reader). Any other
+    # account (e.g. sebastka, the old Matrix one) is refused at the login page, rather than getting a token without
+    # groups that the API server then answers with Forbidden.
+    authorization_policies:
+      kubernetes:
+        default_policy: deny
+        rules:
+          - {policy: two_factor, subject: ['group:k8s_admins', 'group:k8s_users']}
     claims_policies:
       embed_id_token_claims: {id_token: [email, name, preferred_username, groups, picture]}
       sshPublicKey: {custom_claims: {sshPublicKey: {attribute: sshPublicKey}, pgpKey: {attribute: pgpKey}, timezone: {attribute: timezone}}, id_token: [email, preferred_username, groups, picture]}
@@ -299,7 +308,7 @@ identity_providers:
         client_name: Kubernetes Cluster Access
         # client_secret:
         public: true
-        authorization_policy: two_factor
+        authorization_policy: kubernetes
         pre_configured_consent_duration: 3 months
         claims_policy: embed_id_token_claims
         require_pkce: true
