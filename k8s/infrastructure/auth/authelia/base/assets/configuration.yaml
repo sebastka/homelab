@@ -99,6 +99,11 @@ authentication_backend:
 access_control:
   default_policy: deny
   rules:
+    # Guests (LLDAP group guests, e.g. a friend on a spare Claude seat) get the clients that let them in (the anthropic
+    # policy, identity_providers below) and nothing behind forward auth. First: the first matching rule wins.
+    - domain_regex: '^.*\.karlsen\.(fr|app)$'
+      subject: 'group:guests'
+      policy: deny
     - domain_regex: '^.*\.karlsen\.(fr|app)$'
       policy: two_factor
     - domain_regex: '^.*\.talmox\.hera\.home\.karlsen\.fr$'
@@ -172,15 +177,22 @@ identity_providers:
     cors:
       allowed_origins_from_client_redirect_uris: true
       endpoints: [userinfo, authorization, token, revocation, introspection]
-    # Who may sign in to a client at all, checked by Authelia before it issues a token. kubernetes (kube_login): only the
-    # groups the cluster's RBAC knows (k8s/infrastructure/auth/users: oidc-cluster-admin, oidc-cluster-reader). Any other
-    # account (e.g. sebastka, the old Matrix one) is refused at the login page, rather than getting a token without
-    # groups that the API server then answers with Forbidden.
+    # Who may sign in to a client at all, checked by Authelia before it issues a token
     authorization_policies:
       kubernetes:
         default_policy: deny
         rules:
           - {policy: two_factor, subject: ['group:k8s_admins', 'group:k8s_users']}
+      # anthropic: the Claude organization's seats, by account. Add one here when giving someone a seat.
+      anthropic:
+        default_policy: deny
+        rules:
+          - {policy: two_factor, subject: ['user:sebastian', 'user:alex.h']}
+      # Every other client: everyone but the guests (LLDAP group guests), who only get what a policy above lets them in.
+      no_guests:
+        default_policy: two_factor
+        rules:
+          - {policy: deny, subject: 'group:guests'}
     claims_policies:
       embed_id_token_claims: {id_token: [email, name, preferred_username, groups, picture]}
       sshPublicKey: {custom_claims: {sshPublicKey: {attribute: sshPublicKey}, pgpKey: {attribute: pgpKey}, timezone: {attribute: timezone}}, id_token: [email, preferred_username, groups, picture]}
@@ -196,7 +208,7 @@ identity_providers:
         client_name: Anthropic
         client_secret: {{ secret "/secrets/client-secrets/anthropic" }}
         public: false
-        authorization_policy: two_factor
+        authorization_policy: anthropic  # authorization_policies above
         pre_configured_consent_duration: 3 months
         claims_policy: full_name
         require_pkce: true
@@ -214,7 +226,7 @@ identity_providers:
         client_name: Envoy Gateway
         client_secret: {{ secret "/secrets/client-secrets/envoy" }}
         public: false
-        authorization_policy: two_factor
+        authorization_policy: no_guests
         pre_configured_consent_duration: 3 months
         claims_policy: embed_id_token_claims
         require_pkce: true
@@ -240,7 +252,7 @@ identity_providers:
         client_name: Forgejo
         client_secret: {{ secret "/secrets/client-secrets/forgejo" }}
         public: false
-        authorization_policy: two_factor
+        authorization_policy: no_guests
         pre_configured_consent_duration: 3 months
         claims_policy: sshPublicKey
         require_pkce: true
@@ -258,7 +270,7 @@ identity_providers:
         client_name: Grafana
         client_secret: {{ secret "/secrets/client-secrets/grafana" }}
         public: false
-        authorization_policy: two_factor
+        authorization_policy: no_guests
         pre_configured_consent_duration: 3 months
         claims_policy: embed_id_token_claims
         require_pkce: true
@@ -276,7 +288,7 @@ identity_providers:
         client_name: Ferrocine
         client_secret: {{ secret "/secrets/client-secrets/ferrocine" }}
         public: false
-        authorization_policy: two_factor
+        authorization_policy: no_guests
         pre_configured_consent_duration: 3 months
         claims_policy: embed_id_token_claims
         require_pkce: true
@@ -294,7 +306,7 @@ identity_providers:
       #   client_name: Harbor
       #   client_secret: {{ secret "/secrets/client-secrets/harbor" }}
       #   public: false
-      #   authorization_policy: two_factor
+      #   authorization_policy: no_guests
       #   require_pkce: false
       #   redirect_uris: [https://harbor.karlsen.app/c/oidc/callback]
       #   scopes: [openid, offline_access, email, profile, groups]
@@ -326,7 +338,7 @@ identity_providers:
         client_name: Paperless-ngx
         client_secret: {{ secret "/secrets/client-secrets/paperless" }}
         public: false
-        authorization_policy: two_factor
+        authorization_policy: no_guests
         pre_configured_consent_duration: 3 months
         # claims_policy: embed_id_token_claims
         require_pkce: true
@@ -345,7 +357,7 @@ identity_providers:
         client_name: MailWatch
         client_secret: {{ secret "/secrets/client-secrets/mailwatch" }}
         public: false
-        authorization_policy: two_factor
+        authorization_policy: no_guests
         pre_configured_consent_duration: 3 months
         require_pkce: true
         pkce_challenge_method: S256
@@ -363,7 +375,7 @@ identity_providers:
         client_name: Matrix Authentication Service
         client_secret: {{ secret "/secrets/client-secrets/mas" }}
         public: false
-        authorization_policy: two_factor
+        authorization_policy: no_guests
         pre_configured_consent_duration: 3 months
         # claims_policy: embed_id_token_claims
         require_pkce: true
@@ -380,7 +392,7 @@ identity_providers:
       - client_id: step-ca
         client_name: Step CA
         public: true
-        authorization_policy: two_factor
+        authorization_policy: no_guests
         pre_configured_consent_duration: 3 months
         claims_policy: embed_id_token_claims
         require_pkce: true
@@ -398,7 +410,7 @@ identity_providers:
         client_name: Tailscale
         client_secret: {{ secret "/secrets/client-secrets/tailscale" }}
         public: false
-        authorization_policy: two_factor
+        authorization_policy: no_guests
         pre_configured_consent_duration: 3 months
         claims_policy: embed_id_token_claims
         require_pkce: false
@@ -417,7 +429,7 @@ identity_providers:
         client_name: TLS Reports
         client_secret: {{ secret "/secrets/client-secrets/tlsrpt" }}
         public: false
-        authorization_policy: two_factor
+        authorization_policy: no_guests
         pre_configured_consent_duration: 3 months
         require_pkce: true
         pkce_challenge_method: S256
