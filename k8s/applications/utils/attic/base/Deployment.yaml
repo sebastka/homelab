@@ -7,7 +7,7 @@ metadata:
   annotations:
     reloader.stakater.com/auto: 'true'
 spec:
-  strategy: {type: Recreate}  # One instance: SQLite, and a ReadWriteOncePod volume
+  strategy: {type: Recreate}  # One instance: a ReadWriteOncePod volume
   replicas: 1
   selector:
     matchLabels:
@@ -47,7 +47,7 @@ spec:
             - {name: TZ, value: Europe/Oslo}
             - {name: RUST_LOG, value: info}
           envFrom:
-            - secretRef: {name: attic-secrets}  # ATTIC_SERVER_TOKEN_RS256_SECRET_BASE64
+            - secretRef: {name: attic-secrets}  # ATTIC_SERVER_TOKEN_RS256_SECRET_BASE64, ATTIC_SERVER_DATABASE_URL
           resources:
             # Chunking and zstd of large NARs while they are pushed, several at once (each CI job's attic push sends
             # some in parallel): OOM-killed at 1024Mi by two jobs' first pushes (VS Code, OnlyOffice...)

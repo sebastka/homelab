@@ -5,9 +5,9 @@ listen = "[::]:8080"
 allowed-hosts = ["attic.karlsen.app"]
 api-endpoint = "https://attic.karlsen.app/"
 
-# One instance, its database beside the store, on the same volume
+# Postgres (infrastructure/database/postgres): its URL, with the password, from the environment:
+# ATTIC_SERVER_DATABASE_URL (attic-secrets)
 [database]
-url = "sqlite:///var/lib/attic/server.db?mode=rwc"
 
 [storage]
 type = "local"

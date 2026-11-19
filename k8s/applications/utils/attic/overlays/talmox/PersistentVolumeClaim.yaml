@@ -1,6 +1,7 @@
-# The store (deduplicated chunks) and its SQLite database. Only builds missing from cache.nixos.org (upstream key
-# skipped at push), unused ones removed after 30 days (server.toml): a few tens of GB. Rebuildable: a lost volume only
-# costs one rebuild, so no recurring backup (no recurring-job labels).
+# The store (deduplicated chunks); its database is in Postgres. Only builds missing from cache.nixos.org (upstream key
+# skipped at push), unused ones removed after 30 days (server.toml): a few tens of GB. Rebuildable, so no recurring
+# backup (no recurring-job labels). The database (backed up nightly with the others) lists these chunks: after losing
+# the volume, empty the database too (drop and recreate `attic` in Postgres), or Attic serves paths it no longer has.
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
