@@ -8,4 +8,5 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: attic}}
   ingress:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
-  # egress: []  # None: local storage and database
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: postgres, app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}  # Its database

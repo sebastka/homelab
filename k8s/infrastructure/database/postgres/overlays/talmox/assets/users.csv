@@ -9,6 +9,7 @@
 # The passwords are db02's (secret_postgres_<role>_pw in ansible's secrets.sops.yaml), so the
 # consumers' own Secrets keep working when they move here.
 user,database,privileges
+attic,attic,ALL
 crowdsec,crowdsec,ALL
 ferrocine,ferrocine,ALL
 lldap,lldap,ALL

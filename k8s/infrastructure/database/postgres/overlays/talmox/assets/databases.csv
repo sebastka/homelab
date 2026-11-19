@@ -8,6 +8,7 @@
 # From db02 (ansible host_vars). Not carried over: harbor-core (Harbor is in the repository, not
 # deployed), joplin, joplintranscribe, opentogethertube (no consumer).
 database,locale
+attic,default
 crowdsec,default
 ferrocine,default
 lldap,default
