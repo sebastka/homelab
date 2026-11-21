@@ -28,6 +28,17 @@ spec:
     spec:
       serviceAccountName: deluged
       automountServiceAccountToken: false
+      # On the file VM's node (hera: PCI passthrough) when possible: downloads are written to its NFS export, and writes
+      # from another node cross the Thunderbolt mesh, whose driver delivers 64 KB packets the VM's 1500-byte interface
+      # refuses ("fragmentation needed"): slow writes. Preferred only, so a drain of that node still moves it.
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: file}}
+                labelSelector: {matchLabels: {kubevirt.io: virt-launcher, vm.kubevirt.io/name: file}}
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
