@@ -36,6 +36,18 @@ spec:
     - {toEntities: [kube-apiserver]}
     # - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Sigstore/registry, only needed by verifyImages
 ---
+# The chart's pre-install/pre-upgrade hook: without it, the Job cannot reach the API, fails, and Argo CD waits on the hook, so no Kyverno sync completes (2026-11-21)
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-checklegacypolicies
+  namespace: kyverno
+spec:
+  endpointSelector: {matchLabels: {job-name: kyverno-check-legacy-policies}}
+  # ingress: []
+  egress:
+    - {toEntities: [kube-apiserver]}
+---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:

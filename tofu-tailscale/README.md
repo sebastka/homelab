@@ -9,12 +9,9 @@ Owns the tailnet's configuration (`hinny-toad.ts.net`):
 - helios's OAuth client (`helios-subnet-router`, tag `tag:router`): helios is the tailnet's subnet
   router for the home LAN (`192.168.0.0/16`, sebastka/nixos: `hosts/helios/tailscale.nix`), its
   route approved by the policy. Its secret goes into sebastka/nixos's `secrets/helios.sops.yaml` by
-  hand: `tofu output -raw helios_oauth_client_secret`;
-- the Kubernetes operator's OAuth client (`talmox-ts-operator`), and the Secret that hands it to
-  the operator, whose Connector was the subnet router before helios.
+  hand: `tofu output -raw helios_oauth_client_secret`.
 
-Not managed here: the OAuth client this root authenticates with, personal devices, the
-operator's own devices, and global DNS nameservers and search paths (both empty).
+Not managed here: the OAuth client this root authenticates with, personal devices, and global DNS nameservers and search paths (both empty).
 
 A separate root with its own state, because the tailnet is part of the way back in when other
 things are down: it must be appliable without Proxmox, the cluster or Cloudflare.
@@ -28,7 +25,7 @@ things are down: it must be appliable without Proxmox, the cluster or Cloudflare
 | `policy.tf`         | The `tailscale_acl` resource, joining `policy/` into one policy file |
 | `policy/`           | The policy file, one HuJSON file per top-level key, edited by hand   |
 | `tailnet.tf`        | Tailnet settings, DNS, contacts                                      |
-| `oauth_clients.tf`  | The operator's OAuth client and its generated Secret                 |
+| `oauth_clients.tf`  | helios's OAuth client, and its secret as an output                   |
 | `templates/`        | The Secret template                                                  |
 | `secrets.sops.yaml` | Committed, PGP-encrypted: the OAuth client and the state passphrase  |
 | `terraform.tfstate` | Committed, encrypted with the passphrase                             |
@@ -91,9 +88,7 @@ previous `policy/` from a device that still has access.
 - **Split DNS is one resource per domain** (`tailscale_dns_split_nameservers`), not the
   all-in-one `tailscale_dns_configuration`: in provider 0.29.2 that one reads the domains from an
   unordered map into an ordered list, so plans kept showing them "reordered".
-- **The operator's OAuth client secret is shown only once.** `oauth_clients.tf` keeps it in
-  state and writes it to `k8s/infrastructure/network/tailscale/overlays/talmox/Secret.operator-oauth.yaml`,
-  plaintext and gitignored. Seal it with `seal Secret.operator-oauth.yaml` in that directory,
-  commit `SealedSecret.operator-oauth.yaml`, and delete the plaintext file. Rotating it means a
-  new client: `tofu state mv` the old one aside, apply, reseal, restart the operator, then drop
-  the old client.
+- **An OAuth client's secret is shown only once.** `oauth_clients.tf` keeps helios's in state;
+  `tofu output -raw helios_oauth_client_secret` prints it for `secrets/helios.sops.yaml` in
+  sebastka/nixos. Rotating it means a new client: `tofu state mv` the old one aside, apply, update
+  the sops secret and redeploy helios, then drop the old client.

@@ -16,8 +16,8 @@ resource "tailscale_tailnet_settings" "this" {
   route_selection                             = "active-passive-failover" # Regional routing off
 }
 
-# MagicDNS, with the home zones answered by helios's resolver (unbound) through the operator's
-# Connector on talmox, the home LAN's subnet router.
+# MagicDNS, with the home zones answered by helios's resolver (unbound), through helios as the home
+# LAN's subnet router.
 #
 # One resource per split-DNS domain rather than the all-in-one tailscale_dns_configuration: that
 # one reads the domains from an unordered map into an ordered list (provider 0.29.2), so every

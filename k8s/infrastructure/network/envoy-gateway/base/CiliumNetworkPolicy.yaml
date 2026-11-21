@@ -45,7 +45,7 @@ spec:
     # unprivileged; every listener's targetPort must be here or connections time out.
     # world: clients from the internet and the LAN (externalTrafficPolicy: Local keeps their
     # address). cluster: pods calling this cluster's own public names, such as the proxies' OIDC
-    # filter reaching auth.karlsen.fr, and the tailscale Connector routing the tailnet in. UDP 10443: HTTP/3 (QUIC).
+    # filter reaching auth.karlsen.fr. UDP 10443: HTTP/3 (QUIC).
     - {fromEntities: [world, cluster], toPorts: [ports: [{port: '10080', protocol: TCP}, {port: '10443', protocol: TCP}, {port: '10443', protocol: UDP}, {port: '10022', protocol: TCP}, {port: '10389', protocol: TCP}, {port: '10636', protocol: TCP}, {port: '2200', protocol: TCP}]]}
 ---
 apiVersion: cilium.io/v2
@@ -54,13 +54,10 @@ metadata:
   name: allow-envoy-proxy-internal
   namespace: envoy-gateway-system
 spec:
-  # The internal Gateway trusts the whole pod network at L7 (gateway/default-deny-ingress-internal),
-  # because tailnet clients reach it through the Connector's pod address. This is what keeps that
-  # trust to the Connector alone: no other pod may connect.
+  # The internal Gateway: the LAN only (tailnet clients included, masqueraded by helios), no pod.
   endpointSelector: {matchLabels: {app.kubernetes.io/name: envoy, gateway.envoyproxy.io/owning-gateway-name: internal}}
   ingress:
     - {fromEntities: [world], toPorts: [ports: [{port: '10080', protocol: TCP}, {port: '10443', protocol: TCP}, {port: '10443', protocol: UDP}]]}  # The LAN (externalTrafficPolicy: Local keeps the client's address)
-    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: tailscale, tailscale.com/parent-resource-type: connector}], toPorts: [ports: [{port: '10080', protocol: TCP}, {port: '10443', protocol: TCP}, {port: '10443', protocol: UDP}]]}  # Tailnet clients, through the Connector
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy

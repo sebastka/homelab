@@ -27,12 +27,6 @@ terraform {
       source  = "tailscale/tailscale"
       version = "~> 0.30"
     }
-
-    # Writes the operator's OAuth client into a Secret under ../k8s; see oauth_clients.tf.
-    local = {
-      source  = "hashicorp/local"
-      version = ">= 2.5"
-    }
   }
 }
 
