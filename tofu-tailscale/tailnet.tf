@@ -13,7 +13,7 @@ resource "tailscale_tailnet_settings" "this" {
   https_enabled                               = true
   network_flow_logging_on                     = false
   posture_identity_collection_on              = false
-  regional_routing_on                         = false
+  route_selection                             = "active-passive-failover" # Regional routing off
 }
 
 # MagicDNS, with the home zones answered by helios's resolver (unbound) through the operator's

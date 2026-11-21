@@ -3,8 +3,10 @@
 	// per tag; anything else a device advertises waits for review in the admin console.
 	"autoApprovers": {
 		"routes": {
-			// The home LAN, advertised by the operator's Connector on talmox (tag:k8s).
+			// The home LAN, advertised by helios (tag:router), and by the operator's Connector on
+			// talmox (tag:k8s) until it's removed.
 			"192.168.0.0/16": [
+				"tag:router",
 				"tag:k8s",
 			],
 		},

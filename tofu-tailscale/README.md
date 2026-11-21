@@ -6,9 +6,12 @@ Owns the tailnet's configuration (`hinny-toad.ts.net`):
   grants, and the tests Tailscale runs against every change. Grants and auto-approvers name
   groups, not people: access changes by editing `policy/groups.hujson`;
 - tailnet settings, DNS (MagicDNS and split DNS to helios) and contacts;
+- helios's OAuth client (`helios-subnet-router`, tag `tag:router`): helios is the tailnet's subnet
+  router for the home LAN (`192.168.0.0/16`, sebastka/nixos: `hosts/helios/tailscale.nix`), its
+  route approved by the policy. Its secret goes into sebastka/nixos's `secrets/helios.sops.yaml` by
+  hand: `tofu output -raw helios_oauth_client_secret`;
 - the Kubernetes operator's OAuth client (`talmox-ts-operator`), and the Secret that hands it to
-  the operator. The operator's Connector is the tailnet's subnet router for the home LAN
-  (`192.168.0.0/16`), its route approved by the policy.
+  the operator, whose Connector was the subnet router before helios.
 
 Not managed here: the OAuth client this root authenticates with, personal devices, the
 operator's own devices, and global DNS nameservers and search paths (both empty).

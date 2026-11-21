@@ -13,7 +13,7 @@
 				"*",
 			],
 		},
-		// The home LAN, through the operator's Connector on talmox (k8s/infrastructure/network/tailscale).
+		// The home LAN, through its subnet router, helios (sebastka/nixos: hosts/helios/tailscale.nix).
 		{
 			"src": [
 				"group:admins",

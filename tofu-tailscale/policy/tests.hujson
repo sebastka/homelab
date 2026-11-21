@@ -2,7 +2,7 @@
 	// Evaluated by Tailscale on every policy update; a failing test rejects the update before it
 	// takes effect. Keep a test for any access that must never be lost, the admin path first.
 	"tests": [
-		// The home LAN through the operator's Connector: helios (DNS, SSH) and hera (Proxmox).
+		// The home LAN through its subnet router: helios (DNS, SSH) and hera (Proxmox).
 		{
 			"src": "sebastian@karlsen.fr",
 			"accept": [
