@@ -11,6 +11,6 @@ metadata:
     backup.velero.io/nightly-hetzner: enabled
 spec:
   accessModes: [ReadWriteOncePod]
-  resources: {requests: {storage: 20Gi}}
+  resources: {requests: {storage: 40Gi}}
   storageClassName: longhorn-encrypted
   volumeName: syncthing-data-pv
