@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   name: texel
   labels:
+    karlsen.fr/database: mariadb  # Admitted by mariadb's CiliumNetworkPolicy
     pod-security.kubernetes.io/enforce: restricted
     pod-security.kubernetes.io/enforce-version: latest
     pod-security.kubernetes.io/audit: restricted
