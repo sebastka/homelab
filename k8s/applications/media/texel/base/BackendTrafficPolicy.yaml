@@ -1,0 +1,15 @@
+# No time limit on a response, where the gateway's 30s would cut:
+# - disc images (hundreds of MB each) and BIOS images, streamed to the browser
+# - netplay's WebSocket (/api/netplay/), open for as long as a room is
+# Stalled streams are still closed by Envoy's stream idle timeout (5 min without a byte).
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: no-timeout
+  namespace: texel
+spec:
+  mergeType: StrategicMerge  # Keeps the gateway's own settings
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  timeout: {http: {requestTimeout: 0s, maxStreamDuration: 0s}}

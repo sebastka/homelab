@@ -1,0 +1,15 @@
+# Replaces the Gateway-level default deny: public, behind CrowdSec. Texel authenticates its users itself; this only
+# opens the route to it. Keep it out of kustomization.yaml until the image with that authentication is published:
+# without it, Texel serves BIOS and game images to anyone.
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-all-http
+  namespace: texel
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  extAuth:
+    failOpen: false
+    grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenapp, port: 8080}]}

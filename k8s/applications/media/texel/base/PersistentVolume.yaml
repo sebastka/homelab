@@ -1,0 +1,18 @@
+# The game library: ps1/{bios,games}, ps2/{bios,games}, on the file VM's NFS share (/mnt/data_disk1/homelab/k8s/texel
+# on its disk, exported under /mnt/nfs). Read-only: Texel never writes there.
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: texel-library-pv
+  labels:
+    app.kubernetes.io/name: texel
+spec:
+  accessModes: [ReadOnlyMany]
+  capacity: {storage: 1Gi}
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: file.home.karlsen.fr
+    path: /mnt/nfs/homelab/k8s/texel
+    readOnly: true

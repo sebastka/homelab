@@ -1,0 +1,16 @@
+# The library's NFS mount is the kubelet's (the node's), not the pod's: no rule for it here.
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-texel
+  namespace: texel
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: texel}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
+  egress:
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: mariadb, app.kubernetes.io/name: mariadb, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '3306', protocol: TCP}]]}
+    - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '10443', protocol: TCP}]]}  # Authelia (OIDC)
+    # Metadata: Redump (http), libretro's DATs and thumbnails (GitHub), Wikipedia, Wikidata, IGDB
+    - {toEntities: [world], toPorts: [ports: [{port: '80', protocol: TCP}, {port: '443', protocol: TCP}]]}

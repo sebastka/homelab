@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: texel
+  namespace: texel
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  strategy: {type: Recreate}  # Netplay rooms live in the server's memory: one pod at a time
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: texel
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: texel
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: texel
+      labels:
+        app.kubernetes.io/name: texel
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: texel
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: texel
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532  # The image's user (distroless static: nonroot)
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: texel
+          # Dockerfile: https://github.com/sebastka/texel/blob/master/Dockerfile
+          image: ghcr.io/sebastka/texel:edge@sha256:42cca8c60e8dd55399936e4ee7aefb960b6e0440b3285f64b18e80ca25d8d9f0
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          env:
+            - {name: TEXEL_LOG_FORMAT, value: json}
+            - {name: TEXEL_PUBLIC_URL, value: 'https://texel.karlsen.app'}
+            - {name: TEXEL_OIDC_ISSUER, value: 'https://auth.karlsen.fr'}
+            - {name: TEXEL_OIDC_CLIENT_ID, value: texel}
+            - {name: TEXEL_OIDC_SCOPES, value: openid profile email groups}
+            - {name: TEXEL_OIDC_ADMIN_GROUPS, value: k8s_admins}
+            - {name: TEXEL_OIDC_NAME, value: karlsen.fr}
+          envFrom:
+            - secretRef: {name: texel}  # TEXEL_DATABASE_URL (MariaDB: saves, settings, hashes), TEXEL_OIDC_CLIENT_SECRET
+          resources:
+            requests: {memory: 256Mi}
+            limits: {memory: 512Mi}  # Parsing Redump's DAT (~13 MB of XML) peaks around 150 MiB (the project's figure)
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8080}
+          startupProbe: {httpGet: {port: http, path: /readyz}, periodSeconds: 5, failureThreshold: 60}
+          livenessProbe: {httpGet: {port: http, path: /healthz}, periodSeconds: 60}
+          readinessProbe: {httpGet: {port: http, path: /readyz}, periodSeconds: 30}
+          volumeMounts:
+            - {name: library-volume, mountPath: /library,                 readOnly: true}
+            - {name: state-volume,   mountPath: /state,   subPath: state, readOnly: false}
+      volumes:
+        - {name: library-volume, persistentVolumeClaim: {claimName: texel-library-pvc, readOnly: true}}
+        - {name: state-volume, emptyDir: {sizeLimit: 1024Mi}}  # Caches only (DATs, artwork, game details), fetched again after a restart
