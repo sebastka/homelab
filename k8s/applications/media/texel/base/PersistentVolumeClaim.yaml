@@ -11,3 +11,19 @@ spec:
   resources: {requests: {storage: 1Gi}}
   storageClassName: nfs-static
   volumeName: texel-library-pv
+---
+# Texel's state directory: caches only (DATs, artwork, game details), kept across restarts so they are not fetched
+# again each time (Wikipedia answers a whole library's lookups at once with 429). Rebuildable, so no backups.
+# Create the Longhorn volume texel-state-pv (longhorn-encrypted) and its PV before the first sync.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: texel-state-pvc
+  namespace: texel
+  labels:
+    app.kubernetes.io/name: texel
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 2Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: texel-state-pv
