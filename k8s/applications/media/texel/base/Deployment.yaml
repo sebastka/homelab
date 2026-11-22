@@ -36,6 +36,7 @@ spec:
         - name: texel
           # Dockerfile: https://github.com/sebastka/texel/blob/master/Dockerfile
           image: ghcr.io/sebastka/texel:edge@sha256:42cca8c60e8dd55399936e4ee7aefb960b6e0440b3285f64b18e80ca25d8d9f0
+          imagePullPolicy: Always
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
