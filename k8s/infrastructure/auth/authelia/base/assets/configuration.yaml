@@ -188,6 +188,12 @@ identity_providers:
         default_policy: deny
         rules:
           - {policy: two_factor, subject: ['user:sebastian', 'user:alex.h']}
+      # texel: like no_guests, plus the guests in the LLDAP group friends (the first matching rule wins). Others still get in through Texel's own invitations.
+      texel:
+        default_policy: two_factor
+        rules:
+          - {policy: two_factor, subject: 'group:friends'}
+          - {policy: deny, subject: 'group:guests'}
       # Every other client: everyone but the guests (LLDAP group guests), who only get what a policy above lets them in.
       no_guests:
         default_policy: two_factor
@@ -306,7 +312,7 @@ identity_providers:
         client_name: Texel
         client_secret: {{ secret "/secrets/client-secrets/texel" }}
         public: false
-        authorization_policy: no_guests
+        authorization_policy: texel  # authorization_policies above: no_guests, plus the friends group
         pre_configured_consent_duration: 3 months
         claims_policy: embed_id_token_claims
         require_pkce: true

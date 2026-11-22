@@ -4,3 +4,4 @@
 {"name": "forgejo_users",  "displayName": "Forgejo Users",               "gidNumber": 2003}
 {"name": "family",         "displayName": "Family",                      "gidNumber": 2004}
 {"name": "guests",         "displayName": "Guests",                      "gidNumber": 2005}
+{"name": "friends",        "displayName": "Friends",                     "gidNumber": 2006}

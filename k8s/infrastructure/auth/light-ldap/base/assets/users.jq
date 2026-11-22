@@ -79,7 +79,7 @@
   "lastName": "H.",
   "avatar_url": null,
   "pictureUrl": null,
-  "groups": ["guests"],
+  "groups": ["guests", "friends"],
   "telephoneNumber": null,
   "streetAddress": null,
   "localityName": null,
