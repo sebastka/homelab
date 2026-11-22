@@ -13,3 +13,4 @@ forgejo,utf8mb4,utf8mb4_0900_as_cs
 mailwatch,utf8mb4,utf8mb4_general_ci
 tlsrpt,utf8mb4,utf8mb4_general_ci
 24games,utf8mb4,utf8mb4_general_ci
+texel,utf8mb4,utf8mb4_general_ci

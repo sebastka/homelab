@@ -218,6 +218,9 @@
 # applications/media/metube
 - ghcr.io/alexta69/metube
 
+# applications/media/texel
+- ghcr.io/sebastka/texel
+
 # applications/media/opentogethertube
 - docker.io/dyc3/opentogethertube
 
