@@ -19,8 +19,15 @@ kind: Service
 metadata:
   name: daemon
   namespace: deluge
+  labels:
+    arp.cilium.io/announce-service: default-arp-l2-announcement-policy
+    arp.cilium.io/ip-pool: default-arp-ip-pool
+  annotations:
+    lbipam.cilium.io/ips: 192.168.2.16
+    service.cilium.io/forwarding-mode: snat
 spec:
-  type: ClusterIP
+  type: LoadBalancer
+  externalTrafficPolicy: Local  # Keeps the client's address, for the network policy's CIDR
   selector:
     app.kubernetes.io/name: deluged
   ports:
