@@ -1,0 +1,81 @@
+# VueTorrent (https://github.com/VueTorrent/VueTorrent): qBittorrent's Web UI, static files served by nginx, apart from
+# qBittorrent so that updating it does not restart qBittorrent. The HTTPRoute sends /api/ to qBittorrent.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vuetorrent
+  namespace: qbittorrent
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  strategy: {type: RollingUpdate}  # Stateless
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vuetorrent
+      app.kubernetes.io/component: webui
+      app.kubernetes.io/part-of: qbittorrent
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: qbittorrent
+      labels:
+        app.kubernetes.io/name: vuetorrent
+        app.kubernetes.io/component: webui
+        app.kubernetes.io/part-of: qbittorrent
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: qbittorrent
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532  # The image's user (Docker Hardened Images: nonroot)
+        runAsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        # VueTorrent's release, pinned and checked
+        - name: fetch-vuetorrent
+          image: docker.io/library/busybox:1.37.0-musl@sha256:f6a95d611e0a8780fabdb2aec43e31275b2720dfefa3e41b16835bfc42454478
+          command: [sh, -euc]
+          args:
+            - |
+              cd /webui
+              wget -q -O vuetorrent.zip "https://github.com/VueTorrent/VueTorrent/releases/download/v${VUETORRENT_VERSION}/vuetorrent.zip"
+              echo "${VUETORRENT_SHA256}  vuetorrent.zip" | sha256sum -c -
+              unzip -q -o vuetorrent.zip
+              rm vuetorrent.zip
+          env:
+            - {name: VUETORRENT_VERSION, value: 2.37.0}  # https://github.com/VueTorrent/VueTorrent/releases
+            - {name: VUETORRENT_SHA256,  value: 5244a29314a4befcc1ffb659e8b8b03f8c1a84b7a3d3f26a651bd6069b57a7ed}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 32Mi}
+            limits: {memory: 128Mi}
+          volumeMounts:
+            - {name: webui-volume, mountPath: /webui}
+      containers:
+        - name: nginx
+          image: dhi.io/nginx:1.31.9-alpine3.24@sha256:8f759926203e4ec4efd10f20beb92451db5d9d980846657440c53292e32ac52e
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 16Mi}
+            limits: {memory: 64Mi}
+          ports:
+            - {name: http, protocol: TCP, containerPort: 8080}
+          startupProbe:   {httpGet: {port: http, path: /healthz}, periodSeconds: 2, failureThreshold: 30}
+          livenessProbe:  {httpGet: {port: http, path: /healthz}, periodSeconds: 60}
+          readinessProbe: {httpGet: {port: http, path: /healthz}, periodSeconds: 30}
+          volumeMounts:
+            - {name: nginx-conf-volume, mountPath: /etc/nginx/nginx.conf, subPath: nginx.conf, readOnly: true}
+            - {name: tmp-volume,        mountPath: /webui,                subPath: webui,      readOnly: true}
+            - {name: tmp-volume,        mountPath: /tmp,                  subPath: tmp,        readOnly: false}
+      volumes:
+        - {name: nginx-conf-volume, configMap: {name: vuetorrent-nginx}}
+        - {name: tmp-volume,        emptyDir: {sizeLimit: 64Mi}}

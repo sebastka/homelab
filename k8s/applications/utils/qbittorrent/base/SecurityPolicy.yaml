@@ -1,0 +1,45 @@
+# Authelia in front (its client envoy, as Deluge), for k8s_admins only; qBittorrent's own login stays on behind it.
+# OIDC:
+# - https://gateway.envoyproxy.io/docs/tasks/security/oidc/
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-sso
+  namespace: qbittorrent
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: HTTPRoute, name: web}
+  oidc:
+    clientID: envoy
+    clientSecret: {namespace: qbittorrent, kind: Secret, name: oidc}
+    cookieConfig: {sameSite: Lax}
+    cookieDomain: qbittorrent.karlsen.app
+    cookieNames: {accessToken: oidc-access-token, idToken: oidc-id-token}
+    logoutPath: /authelia/logout
+    provider:
+      issuer: https://auth.karlsen.fr
+      authorizationEndpoint: https://auth.karlsen.fr/api/oidc/authorization
+      tokenEndpoint: https://auth.karlsen.fr/api/oidc/token
+    redirectURL: https://qbittorrent.karlsen.app/authelia/openid_connect/callback
+    forwardAccessToken: false
+    refreshToken: false
+    passThroughAuthHeader: false
+    scopes: [openid, email, profile, groups]
+  jwt:
+    providers:
+      - name: authelia
+        issuer: https://auth.karlsen.fr
+        audiences: [envoy]
+        remoteJWKS: {uri: https://auth.karlsen.fr/jwks.json}
+        extractFrom: {cookies: [oidc-id-token]}
+  authorization:
+    defaultAction: Deny
+    rules:
+      - name: allow-homelab-admins
+        action: Allow
+        principal:
+          jwt:
+            provider: authelia
+            claims:
+              - {name: groups, valueType: StringArray, values: ['k8s_admins']}

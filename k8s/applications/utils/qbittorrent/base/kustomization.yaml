@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: qbittorrent
+
+configMapGenerator:
+  - {namespace: qbittorrent, name: qbittorrent-seed, files: [qBittorrent.conf=assets/qBittorrent.conf]}
+  - {namespace: qbittorrent, name: vuetorrent-nginx, files: [nginx.conf=assets/nginx.conf]}
+
+resources:
+  - Namespace.yaml
+  - SealedSecret.oidc.yaml
+  - ServiceAccount.yaml
+  - PersistentVolume.yaml
+  - PersistentVolumeClaim.yaml
+  - Deployment.qbittorrent.yaml
+  - Deployment.vuetorrent.yaml
+  - Services.yaml
+  - HTTPRoute.yaml
+  - SecurityPolicy.yaml
+  - CiliumNetworkPolicy.yaml

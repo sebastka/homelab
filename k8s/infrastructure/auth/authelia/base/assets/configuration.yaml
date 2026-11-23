@@ -240,6 +240,7 @@ identity_providers:
         redirect_uris:
           - https://glance.karlsen.app/authelia/openid_connect/callback
           - https://deluge.karlsen.app/authelia/openid_connect/callback
+          - https://qbittorrent.karlsen.app/authelia/openid_connect/callback
           - https://searxng.karlsen.app/authelia/openid_connect/callback
           - https://thelounge.karlsen.app/authelia/openid_connect/callback
           - https://metube.karlsen.app/authelia/openid_connect/callback

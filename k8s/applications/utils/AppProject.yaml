@@ -19,9 +19,10 @@ spec:
     - {namespace: n8n,                           name: talmox}
     - {namespace: ntfy,                          name: talmox}
     - {namespace: paperless,                     name: talmox}
+    - {namespace: qbittorrent,                   name: talmox}
     - {namespace: searxng,                       name: talmox}
     - {namespace: syncthing,                     name: talmox}
     - {namespace: thelounge,                     name: talmox}
   clusterResourceWhitelist:
     - {group: '', kind: Namespace}
-    - {group: '', kind: PersistentVolume}  # Needed by Deluge
+    - {group: '', kind: PersistentVolume}  # Needed by Deluge and qBittorrent (NFS)

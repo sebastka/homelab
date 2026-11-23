@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: qbittorrent-downloads-pv
+  labels:
+    app.kubernetes.io/name: qbittorrent
+spec:
+  accessModes: [ReadWriteOncePod]
+  capacity: {storage: 1Gi}
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-static
+  nfs:
+    server: file.home.karlsen.fr
+    path: /mnt/nfs/homelab/k8s/qbittorrent/downloads

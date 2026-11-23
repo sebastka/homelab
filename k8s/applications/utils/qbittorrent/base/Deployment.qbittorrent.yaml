@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorrent
+  namespace: qbittorrent
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  strategy: {type: Recreate}  # ReadWriteOncePod volumes
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: qbittorrent
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: qbittorrent
+      app.kubernetes.io/managed-by: kustomize
+  template:
+    metadata:
+      namespace: qbittorrent
+      labels:
+        app.kubernetes.io/name: qbittorrent
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: qbittorrent
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      serviceAccountName: qbittorrent
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+      initContainers:
+        # The first configuration (assets/qBittorrent.conf), only when there is none: qBittorrent keeps it up to date
+        - name: seed-config
+          image: docker.io/library/busybox:1.37.0-musl@sha256:f6a95d611e0a8780fabdb2aec43e31275b2720dfefa3e41b16835bfc42454478
+          command: [sh, -euc]
+          args:
+            - |
+              conf=/config/qBittorrent/config/qBittorrent.conf
+              if [ ! -f "$conf" ]; then
+                mkdir -p "$(dirname "$conf")"
+                cp /seed/qBittorrent.conf "$conf"
+              fi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 16Mi}
+            limits: {memory: 64Mi}
+          volumeMounts:
+            - {name: config-volume, mountPath: /config}
+            - {name: seed-volume,   mountPath: /seed, readOnly: true}
+      containers:
+        - name: qbittorrent
+          image: docker.io/qbittorrentofficial/qbittorrent-nox:5.3.0-2@sha256:43b2d352cf76330a7ca34c7320b9b74227d6f31e662e0e123d0457206b09a7ea
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          env:
+            - {name: TZ,                  value: Europe/Oslo}
+            - {name: QBT_LEGAL_NOTICE,    value: confirm}
+            - {name: QBT_WEBUI_PORT,      value: '8080'}
+            - {name: QBT_TORRENTING_PORT, value: '6882'}  # 6881 is Deluge's (the router forwards each to its own address)
+          resources:
+            requests: {memory: 256Mi}
+            limits: {memory: 1024Mi}
+          ports:
+            - {name: http,        protocol: TCP, containerPort: 8080}
+            - {name: torrent-tcp, protocol: TCP, containerPort: 6882}
+            - {name: torrent-udp, protocol: UDP, containerPort: 6882}
+          # TCP: an HTTP probe would send the pod's address as Host, which WebUI\HostHeaderValidation refuses
+          startupProbe:   {tcpSocket: {port: http}, periodSeconds: 5, failureThreshold: 60}
+          livenessProbe:  {tcpSocket: {port: http}, periodSeconds: 60}
+          readinessProbe: {tcpSocket: {port: http}, periodSeconds: 30}
+          volumeMounts:
+            - {name: config-volume,    mountPath: /config}
+            - {name: downloads-volume, mountPath: /downloads}
+            - {name: tmp-volume,       mountPath: /tmp}
+      volumes:
+        - {name: config-volume,    persistentVolumeClaim: {claimName: qbittorrent-config-pvc}}
+        - {name: downloads-volume, persistentVolumeClaim: {claimName: qbittorrent-downloads-pvc}}
+        - {name: seed-volume,      configMap: {name: qbittorrent-seed}}
+        - {name: tmp-volume,       emptyDir: {}}

@@ -1,0 +1,26 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-qbittorrent
+  namespace: qbittorrent
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: qbittorrent}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway: /api/, VueTorrent's calls
+    - {fromEntities: [world], toPorts: [ports: [{port: '6882', protocol: TCP}, {port: '6882', protocol: UDP}]]}  # Peers
+    - {fromEntities: [world], icmps: [fields: [{type: 3, family: IPv4}, {type: 11, family: IPv4}]]}  # Peers' unreachable and time-exceeded replies
+  egress:
+    - {toEntities: [world]}  # Peers, trackers, DHT
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-vuetorrent
+  namespace: qbittorrent
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: vuetorrent}}
+  ingress:
+    - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
+  egress:
+    - {toEntities: [world], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # VueTorrent's release (GitHub), for the init container

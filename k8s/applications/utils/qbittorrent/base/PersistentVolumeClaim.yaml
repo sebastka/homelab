@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qbittorrent-config-pvc
+  namespace: qbittorrent
+  labels:
+    app.kubernetes.io/name: qbittorrent
+    backup.velero.io/nightly-hetzner: enabled
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 1Gi}}
+  storageClassName: longhorn-encrypted
+  volumeName: qbittorrent-config-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qbittorrent-downloads-pvc
+  namespace: qbittorrent
+  labels:
+    app.kubernetes.io/name: qbittorrent
+spec:
+  accessModes: [ReadWriteOncePod]
+  resources: {requests: {storage: 1Gi}}
+  storageClassName: nfs-static
+  volumeName: qbittorrent-downloads-pv
