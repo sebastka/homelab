@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: texel-library-pvc
+  name: texel-games-pvc
   namespace: texel
   labels:
     app.kubernetes.io/name: texel
@@ -10,7 +10,7 @@ spec:
   accessModes: [ReadOnlyMany]
   resources: {requests: {storage: 1Gi}}
   storageClassName: nfs-static
-  volumeName: texel-library-pv
+  volumeName: texel-games-pv
 ---
 # Texel's state directory: caches only (DATs, artwork, game details), kept across restarts so they are not fetched
 # again each time (Wikipedia answers a whole library's lookups at once with 429). Rebuildable, so no backups.

@@ -63,5 +63,5 @@ spec:
             - {name: library-volume, mountPath: /library,                 readOnly: true}
             - {name: state-volume,   mountPath: /state,   subPath: state, readOnly: false}
       volumes:
-        - {name: library-volume, persistentVolumeClaim: {claimName: texel-library-pvc, readOnly: true}}
-        - {name: state-volume,   persistentVolumeClaim: {claimName: texel-state-pvc,   readOnly: false}}  # Caches (DATs, artwork, game details), kept across restarts
+        - {name: library-volume, persistentVolumeClaim: {claimName: texel-games-pvc, readOnly: true}}
+        - {name: state-volume,   persistentVolumeClaim: {claimName: texel-state-pvc, readOnly: false}}  # Caches (DATs, artwork, game details), kept across restarts
