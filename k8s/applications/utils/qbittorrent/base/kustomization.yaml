@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: qbittorrent
 
 configMapGenerator:
-  - {namespace: qbittorrent, name: qbittorrent-seed, files: [qBittorrent.conf=assets/qBittorrent.conf]}
+  - {namespace: qbittorrent, name: qbittorrent-seed, files: [qBittorrent.conf=assets/qBittorrent.conf, categories.json=assets/categories.json]}
   - {namespace: qbittorrent, name: vuetorrent-nginx, files: [nginx.conf=assets/nginx.conf]}
 
 resources:

@@ -34,7 +34,8 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
       initContainers:
-        # The first configuration (assets/qBittorrent.conf), only when there is none: qBittorrent keeps it up to date
+        # The first configuration (assets/qBittorrent.conf), only when there is none: qBittorrent keeps it up to date.
+        # The categories (assets/categories.json: one per Deluge label, each its own folder), when there are none yet.
         - name: seed-config
           image: docker.io/library/busybox:1.38.0-musl@sha256:80e38f9a1b39188b8bdb28879178edb322a4402b081a9aedda1924609decd6f6
           command: [sh, -euc]
@@ -44,6 +45,10 @@ spec:
               if [ ! -f "$conf" ]; then
                 mkdir -p "$(dirname "$conf")"
                 cp /seed/qBittorrent.conf "$conf"
+              fi
+              cats=/config/qBittorrent/config/categories.json
+              if [ ! -s "$cats" ] || [ "$(tr -d ' \n' < "$cats")" = '{}' ]; then
+                cp /seed/categories.json "$cats"
               fi
           securityContext:
             allowPrivilegeEscalation: false

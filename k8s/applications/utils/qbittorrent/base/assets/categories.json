@@ -1,0 +1,11 @@
+{
+  "nb_dl": {"save_path": "/downloads/nb_dl"},
+  "nb_up": {"save_path": "/downloads/nb_up"},
+  "ops_dl": {"save_path": "/downloads/ops_dl"},
+  "ops_up": {"save_path": "/downloads/ops_up"},
+  "other": {"save_path": "/downloads/other"},
+  "ptp_dl": {"save_path": "/downloads/ptp_dl"},
+  "ptp_up": {"save_path": "/downloads/ptp_up"},
+  "red_dl": {"save_path": "/downloads/red_dl"},
+  "red_up": {"save_path": "/downloads/red_up"}
+}
