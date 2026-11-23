@@ -56,7 +56,7 @@ spec:
             requests: {memory: 32Mi}
             limits: {memory: 128Mi}
           volumeMounts:
-            - {name: webui-volume, mountPath: /webui}
+            - {name: tmp-volume, mountPath: /webui, subPath: webui}
       containers:
         - name: nginx
           image: dhi.io/nginx:1.31.9-alpine3.24@sha256:8f759926203e4ec4efd10f20beb92451db5d9d980846657440c53292e32ac52e
