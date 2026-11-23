@@ -18,7 +18,7 @@ spec:
           responseHeaderModifier:
             set:
               - {name: Strict-Transport-Security, value: 'max-age=31536000; includeSubDomains; preload'}
-    - matches: [path: {type: PathPrefixlient-secret: Authelia's client envoy (as every Envoy OIDC route), value: /}]
+    - matches: [path: {type: PathPrefix, value: /}]
       backendRefs: [{name: vuetorrent, kind: Service, port: 80}]
       filters:
         - type: ResponseHeaderModifier
