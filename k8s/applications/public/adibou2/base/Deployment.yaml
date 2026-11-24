@@ -33,7 +33,7 @@ spec:
         - name: adibou2
           # Dockerfile: https://github.com/sebastka/adibou2/blob/master/Dockerfile
           # The site and the game's optimized data (574 MB, in the image), no state.
-          image: ghcr.io/sebastka/adibou2:edge@sha256:e3fa3158be2bdc59bace8dd57b7699b93395ee8b3c041e806f5f95a043bb1f75
+          image: ghcr.io/sebastka/adibou2:edge@sha256:8cce364e21503298247c7d0b230d541f5e81692fb5a3bd112c728f9bc6ecf2c7
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
