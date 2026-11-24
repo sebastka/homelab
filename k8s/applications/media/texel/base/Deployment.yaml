@@ -45,8 +45,8 @@ spec:
             - configMapRef: {name: texel-env}
             - secretRef: {name: texel}  # TEXEL_DATABASE_URL (MariaDB: saves, settings, hashes), TEXEL_OIDC_CLIENT_SECRET
           resources:
-            requests: {memory: 256Mi}
-            limits: {memory: 512Mi}  # Parsing Redump's DAT (~13 MB of XML) peaks around 150 MiB (the project's figure)
+            requests: {memory: 512Mi}
+            limits: {memory: 2048Mi}
           ports:
             - {name: http, protocol: TCP, containerPort: 8080}
           startupProbe: {httpGet: {port: http, path: /readyz}, periodSeconds: 5, failureThreshold: 60}
