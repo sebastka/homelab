@@ -1,6 +1,3 @@
-# The game library: ps1/{bios,games}, ps2/{bios,games}, on the file VM's Games share (/mnt/data_disk1/Games on its
-# disk, exported under /mnt/nfs; read-only to the cluster, backed up off-site: sebastka/nixos, hosts/file). Read-only:
-# Texel never writes there. A PV's source can't change: a new path means a new PV (and PVC) name.
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -15,5 +12,5 @@ spec:
   storageClassName: nfs-static
   nfs:
     server: file.home.karlsen.fr
-    path: /mnt/nfs/Games
+    path: /mnt/nfs/homelab/k8s
     readOnly: true

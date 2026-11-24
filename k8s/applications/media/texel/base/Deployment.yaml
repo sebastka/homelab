@@ -41,15 +41,8 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities: {drop: [ALL]}
-          env:
-            - {name: TEXEL_LOG_FORMAT, value: json}
-            - {name: TEXEL_PUBLIC_URL, value: 'https://texel.karlsen.app'}
-            - {name: TEXEL_OIDC_ISSUER, value: 'https://auth.karlsen.fr'}
-            - {name: TEXEL_OIDC_CLIENT_ID, value: texel}
-            - {name: TEXEL_OIDC_SCOPES, value: openid profile email groups}
-            - {name: TEXEL_OIDC_ADMIN_GROUPS, value: k8s_admins}
-            - {name: TEXEL_OIDC_NAME, value: karlsen.fr}
           envFrom:
+            - configMapRef: {name: texel-env}
             - secretRef: {name: texel}  # TEXEL_DATABASE_URL (MariaDB: saves, settings, hashes), TEXEL_OIDC_CLIENT_SECRET
           resources:
             requests: {memory: 256Mi}

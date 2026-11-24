@@ -3,15 +3,18 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: texel
 
+configMapGenerator:
+  - {name: texel-env, envs: [assets/texel.env]}
+
 resources:
   - Namespace.yaml
-  - SealedSecret.texel.yaml  # TEXEL_DATABASE_URL (the texel user's, as in mariadb's Secret.mariadb-users.yaml), TEXEL_OIDC_CLIENT_SECRET (Authelia's client texel)
+  - SealedSecret.texel.yaml
   - ServiceAccount.yaml
   - Deployment.yaml
   - Service.yaml
   - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
   - HTTPRoute.yaml
-  - SecurityPolicy.yaml  # Opens the public route: only once Texel's own authentication is in the image
+  - SecurityPolicy.yaml
   - BackendTrafficPolicy.yaml
   - CiliumNetworkPolicy.yaml
