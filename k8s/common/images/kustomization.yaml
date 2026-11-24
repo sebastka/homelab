@@ -8,4 +8,4 @@ images:
   - {name: busybox,        newName: docker.io/library/busybox, newTag: 1.38.0-glibc,    digest: sha256:99813cb178ace2cd9c6c53ee3bddef5d2f5708aa438335111d7a9e3c5e1aaebe}
   - {name: mariadb,        newName: dhi.io/mariadb,            newTag: 13.1.2-debian13, digest: sha256:edf6359fa8a26c7770fd15c865827b6e2761a881b088c7b5846b50943423ace1}
   - {name: postgres,       newName: dhi.io/postgres,           newTag: 18.7-alpine3.24, digest: sha256:11d2673dae24c4fa2df8be1f7ce81bd9136e4fe64bebef2508c5233ae884c3e4}
-  - {name: valkey,         newName: dhi.io/valkey,             newTag: 9.1.4-debian13,  digest: sha256:c999dbf64ed556df00eb226b5a5cdae8646b47e1fa7254711e73afd0522ec5b3}
+  - {name: valkey,         newName: dhi.io/valkey,             newTag: 9.1.4-debian13,  digest: sha256:a57d42543e9dbb01ac1a2bf8de9c3286f3e859d8ecf977b55859cd8e410ad0d2}
