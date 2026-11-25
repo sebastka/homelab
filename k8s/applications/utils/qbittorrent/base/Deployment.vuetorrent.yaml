@@ -59,7 +59,7 @@ spec:
             - {name: tmp-volume, mountPath: /webui, subPath: webui}
       containers:
         - name: nginx
-          image: dhi.io/nginx:1.31.9-alpine3.24@sha256:d319254f901133993ea3308d9266f29dada690b0bd20ea756b6d18d6fb99a0da
+          image: dhi.io/nginx:1.31.9-alpine3.24@sha256:380d96811457235d458b346fe5f339209ded88405ea0f89a2b98d0aa63236fc8
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
