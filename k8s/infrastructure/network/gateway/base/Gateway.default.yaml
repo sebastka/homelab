@@ -89,3 +89,11 @@ spec:
       port: 443
       allowedRoutes: {namespaces: {from: All}}
       tls: {mode: Passthrough}
+
+    # Texel's netplay datagrams (WebTransport: QUIC, which Texel terminates with its own certificate for
+    # texel.karlsen.app): relayed as plain UDP, on this Gateway's address so that texel.karlsen.app reaches it from the
+    # LAN (helios resolves every karlsen.app name here) as from the internet (helios forwards UDP 4433 here).
+    - name: texel-webtransport
+      protocol: UDP
+      port: 4433
+      allowedRoutes: {namespaces: {from: Selector, selector: {matchLabels: {kubernetes.io/metadata.name: texel}}}, kinds: [{kind: UDPRoute}]}

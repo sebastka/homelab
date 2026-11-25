@@ -1,0 +1,12 @@
+# Texel's own certificate for texel.karlsen.app: WebTransport (QUIC) ends in Texel, not at Envoy
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: texel-tls
+  namespace: texel
+spec:
+  secretName: texel-tls
+  dnsNames: [texel.karlsen.app]
+  issuerRef: {group: cert-manager.io, kind: ClusterIssuer, name: cloudflare-dns01-issuer}
+  privateKey: {algorithm: ECDSA, size: 256, rotationPolicy: Always}

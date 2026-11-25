@@ -14,7 +14,9 @@ resources:
   - Service.yaml
   - PersistentVolume.yaml
   - PersistentVolumeClaim.yaml
+  - Certificate.texel-tls.yaml
   - HTTPRoute.yaml
+  - UDPRoute.yaml
   - SecurityPolicy.yaml
   - BackendTrafficPolicy.yaml
   - CiliumNetworkPolicy.yaml

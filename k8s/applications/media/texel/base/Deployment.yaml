@@ -48,13 +48,16 @@ spec:
             requests: {memory: 512Mi}
             limits: {memory: 2048Mi}
           ports:
-            - {name: http, protocol: TCP, containerPort: 8080}
+            - {name: http,         protocol: TCP, containerPort: 8080}
+            - {name: webtransport, protocol: UDP, containerPort: 4433}  # Netplay's datagrams (assets/texel.env)
           startupProbe: {httpGet: {port: http, path: /readyz}, periodSeconds: 5, failureThreshold: 60}
           livenessProbe: {httpGet: {port: http, path: /healthz}, periodSeconds: 60}
           readinessProbe: {httpGet: {port: http, path: /readyz}, periodSeconds: 30}
           volumeMounts:
             - {name: library-volume, mountPath: /library,                 readOnly: true}
             - {name: state-volume,   mountPath: /state,   subPath: state, readOnly: false}
+            - {name: tls-volume,     mountPath: /tls,                    readOnly: true}  # No subPath: renewals reach the pod
       volumes:
         - {name: library-volume, persistentVolumeClaim: {claimName: texel-games-pvc, readOnly: true}}
+        - {name: tls-volume,     secret: {secretName: texel-tls}}  # Certificate.texel-tls.yaml: WebTransport's certificate
         - {name: state-volume,   persistentVolumeClaim: {claimName: texel-state-pvc, readOnly: false}}  # Caches (DATs, artwork, game details), kept across restarts

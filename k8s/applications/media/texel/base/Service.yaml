@@ -10,3 +10,16 @@ spec:
     app.kubernetes.io/name: texel
   ports:
     - {name: http, protocol: TCP, port: 80, targetPort: http}
+---
+# Netplay's datagrams (WebTransport), behind the default Gateway's UDP 4433 listener (UDPRoute.yaml)
+apiVersion: v1
+kind: Service
+metadata:
+  name: webtransport
+  namespace: texel
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: texel
+  ports:
+    - {name: webtransport, protocol: UDP, port: 4433, targetPort: webtransport}
