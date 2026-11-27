@@ -13,3 +13,18 @@ spec:
   extAuth:
     failOpen: false
     grpc: {backendRefs: [{group: '', kind: Service, namespace: envoy-gateway-system, name: envoy-proxy-bouncer-karlsenapp, port: 8080}]}
+---
+# The same for netplay's datagrams (UDPRoute.yaml): without it, the UDP 4433 listener inherits the Gateway's default
+# deny, which only lets 192.168.0.0/24 in (Envoy Gateway turns it into a client-address match on the UDP proxy: every
+# player outside the LAN got "no route", 2026-11-27). Datagrams only carry inputs, for members Texel already admitted
+# (each session presents its member token). No CrowdSec here: extAuth does not apply to UDP.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: allow-all-udp
+  namespace: texel
+spec:
+  targetRefs:
+    - {group: gateway.networking.k8s.io, kind: UDPRoute, name: webtransport}
+  authorization:
+    defaultAction: Allow
