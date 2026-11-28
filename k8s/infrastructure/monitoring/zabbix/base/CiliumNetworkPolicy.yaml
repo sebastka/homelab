@@ -40,3 +40,4 @@ spec:
   # ingress: []
   egress:
     - {toEndpoints: [matchLabels: {app.kubernetes.io/name: zabbix-web}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Zabbix's API (api_jsonrpc.php)
+    - {toFQDNs: [{matchName: raw.githubusercontent.com}], toPorts: [ports: [{port: '443', protocol: TCP}]]}  # Official templates (assets/official-templates.txt)

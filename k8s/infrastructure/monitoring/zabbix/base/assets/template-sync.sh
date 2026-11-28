@@ -1,6 +1,9 @@
 #!/bin/sh
 # Brings Zabbix's templates in line with Git (Job.template-sync.yaml, after every Argo CD sync):
 #
+# 0. Imports the official templates /official/official-templates.txt lists (paths under templates/ in Zabbix's
+#    repository), from the tag of the server's version (apiinfo.version): they follow Zabbix's upgrades. Same rules as
+#    ours: what the new version no longer has is deleted, history included.
 # 1. Imports every /templates/*.yaml (configuration.import): created or updated, and within each template, what Git
 #    no longer has (items, triggers, graphs, discovery rules, web scenarios, dashboards, value maps) is deleted.
 # 2. Deletes our templates no longer in Git: only those tagged managed-by=homelab (each template here carries the tag).
@@ -41,15 +44,30 @@ rules="$(jq -cn --argjson r "$rule" '{
     items: $r, triggers: $r, graphs: $r, discoveryRules: $r, httptests: $r, templateDashboards: $r, valueMaps: $r
 }')"
 
-# 1. Import
+# import <file>: imports a template file, prints its templates' technical names ("template:" under "templates:" in
+# Zabbix's export format), one per line
+import() {
+    names="$(sed -n 's/^      template: *//p' "$1" | sed "s/^'\(.*\)'$/\1/; s/^\"\(.*\)\"$/\1/")"
+    [ -n "$names" ] || { echo "$1: no template name found" >&2; exit 1; }
+    jq -Rs --argjson rules "$rules" '{format: "yaml", rules: $rules, source: .}' "$1" > "$WORK/import.json"
+    call configuration.import "@$WORK/import.json" > /dev/null
+    printf '%s\n' "$names"
+}
+
+# 0. Official templates, at the server's version
+version="$(call apiinfo.version '[]' | jq -r '.')"
+while IFS= read -r path; do
+    case "$path" in '#'* | '') continue ;; esac
+    curl -sSf --max-time 120 -o "$WORK/official.yaml" "https://raw.githubusercontent.com/zabbix/zabbix/$version/templates/$path"
+    names="$(import "$WORK/official.yaml")"
+    printf 'imported %s (Zabbix %s): %s\n' "$path" "$version" "$(printf '%s' "$names" | tr '\n' ',')"
+done < /official/official-templates.txt
+
+# 1. Ours
 : > "$WORK/managed"
 for file in /templates/*.yaml; do
     [ -e "$file" ] || continue
-    jq -Rs --argjson rules "$rules" '{format: "yaml", rules: $rules, source: .}' "$file" > "$WORK/import.json"
-    call configuration.import "@$WORK/import.json" > /dev/null
-    # The template's technical name: "template:" under "templates:" in Zabbix's export format
-    names="$(sed -n 's/^      template: *//p' "$file" | sed "s/^'\(.*\)'$/\1/; s/^\"\(.*\)\"$/\1/")"
-    [ -n "$names" ] || { echo "$file: no template name found" >&2; exit 1; }
+    names="$(import "$file")"
     printf '%s\n' "$names" >> "$WORK/managed"
     printf 'imported %s: %s\n' "$(basename "$file")" "$(printf '%s' "$names" | tr '\n' ',')"
 done

@@ -28,9 +28,10 @@
 
 ## Templates
 
-Ours, in [assets/templates/](assets/templates), are synced from Git after every Argo CD sync by [Job.template-sync.yaml](Job.template-sync.yaml) ([assets/template-sync.sh](assets/template-sync.sh), Zabbix's API):
+Ours, in [assets/templates/](assets/templates), and the official ones we use, are synced from Git after every Argo CD sync by [Job.template-sync.yaml](Job.template-sync.yaml) ([assets/template-sync.sh](assets/template-sync.sh), Zabbix's API):
 
 - **Import:** each template is created or updated. Within a template, what Git no longer has (items, triggers, graphs, discovery rules…) is deleted.
+- **Official templates:** the ones [assets/official-templates.txt](assets/official-templates.txt) lists (paths under `templates/` in [Zabbix's repository](https://github.com/zabbix/zabbix)) are imported from the tag of the running server's version (`apiinfo.version`, e.g. `8.0.0`), so upgrading Zabbix upgrades them at the next sync. What the new version no longer has is deleted, history included, as are changes made to them in the UI: customize through host macros, or a template of ours. List there each official template linked in `template-links.json`. Needs egress to `raw.githubusercontent.com` (CiliumNetworkPolicy.yaml).
 - **Removal:** a template removed from Git is deleted from Zabbix, but only templates tagged `managed-by: homelab`: every template here carries that tag, and official templates are never touched.
 - **Host links:** [assets/template-links.json](assets/template-links.json) (`{"<template>": ["<host>", …]}`, technical names) is the source of truth for every template-host link, ours and official templates alike: missing links are added, links it doesn't list are removed (unlinked and cleared, history included). Only discovered hosts are left alone (their templates come from their host prototype). Link and unlink templates there, not in the UI: the next sync reverts UI changes.
 - **New hosts:** the autoregistration action *NixOS* links *Linux by Zabbix agent active* to each new NixOS server. Add the host to `template-links.json` (under that template, and any other) before the next sync, or that sync unlinks it.

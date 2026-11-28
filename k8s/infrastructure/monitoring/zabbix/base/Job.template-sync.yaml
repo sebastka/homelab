@@ -1,5 +1,6 @@
-# Our templates (assets/templates/) and every template's host links (assets/template-links.json), brought in line with Git by
-# Zabbix's API after every sync: assets/template-sync.sh. Authenticates with TEMPLATE_SYNC_API_TOKEN (zabbix-secrets):
+# Official templates at the server's version (assets/official-templates.txt), ours (assets/templates/) and every
+# template's host links (assets/template-links.json), brought in line with Git by Zabbix's API after every sync:
+# assets/template-sync.sh. Authenticates with TEMPLATE_SYNC_API_TOKEN (zabbix-secrets):
 # the API token of a Zabbix user allowed to write templates and link them to hosts (Users > API tokens).
 ---
 apiVersion: v1
@@ -52,9 +53,11 @@ spec:
             - {name: scripts-volume,   mountPath: /scripts,   readOnly: true}
             - {name: templates-volume, mountPath: /templates, readOnly: true}
             - {name: links-volume,     mountPath: /links,     readOnly: true}
+            - {name: official-volume,  mountPath: /official,  readOnly: true}
             - {name: tmp-volume,       mountPath: /tmp}
       volumes:
         - {name: scripts-volume,   configMap: {name: zabbix-template-sync-script}}
         - {name: templates-volume, configMap: {name: zabbix-templates}}
         - {name: links-volume,     configMap: {name: zabbix-template-links}}
+        - {name: official-volume,  configMap: {name: zabbix-official-templates}}
         - {name: tmp-volume,       emptyDir: {sizeLimit: 16Mi}}
