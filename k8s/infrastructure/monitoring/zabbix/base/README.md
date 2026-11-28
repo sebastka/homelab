@@ -32,7 +32,8 @@ Ours, in [assets/templates/](assets/templates), are synced from Git after every 
 
 - **Import:** each template is created or updated. Within a template, what Git no longer has (items, triggers, graphs, discovery rules…) is deleted.
 - **Removal:** a template removed from Git is deleted from Zabbix, but only templates tagged `managed-by: homelab`: every template here carries that tag, and official templates are never touched.
-- **Host links:** [assets/template-links.json](assets/template-links.json) (`{"<template>": ["<host>", …]}`, technical names) is the source of truth: missing links are added, links it no longer lists are removed (unlinked and cleared).
+- **Host links:** [assets/template-links.json](assets/template-links.json) (`{"<template>": ["<host>", …]}`, technical names) is the source of truth for every template-host link, ours and official templates alike: missing links are added, links it doesn't list are removed (unlinked and cleared, history included). Only discovered hosts are left alone (their templates come from their host prototype). Link and unlink templates there, not in the UI: the next sync reverts UI changes.
+- **New hosts:** the autoregistration action *NixOS* links *Linux by Zabbix agent active* to each new NixOS server. Add the host to `template-links.json` (under that template, and any other) before the next sync, or that sync unlinks it.
 - **Adding a template:** export it from Zabbix (or write it), add the `managed-by: homelab` tag, list the file in [kustomization.yaml](kustomization.yaml)'s `zabbix-templates` ConfigMap (kustomize has no globs), and its hosts in `template-links.json`.
 - **Authentication:** `TEMPLATE_SYNC_API_TOKEN` in `zabbix-secrets`, the API token of a Zabbix user allowed to write templates and link them to hosts (Users > API tokens). The Job's log shows what it imported, deleted, linked and unlinked; any API error fails it.
 
@@ -40,17 +41,6 @@ Current templates:
 
 - [kopia-backups.yaml](assets/templates/kopia-backups.yaml): the file VM's off-site backups (Kopia's lock renewals and oldest object lock), linked to `file.home.karlsen.fr`.
 
-## TODO: disk health (SMART)
+## Disk health (SMART)
 
-The NixOS servers with SMART disks (helios; not hermes, an SD card) run `smartd` (nixos repo:
-`modules/nixos/server/smartd.nix`): nightly short and weekly long self-tests, findings in their journal only
-(`journalctl -u smartd`). Zabbix doesn't see them yet. To have per-attribute items and triggers, Zabbix must read
-`smartctl` itself:
-
-- **Template**: Zabbix's official *SMART by Zabbix agent 2* uses agent 2's SMART plugin. The servers run the classic
-  agent (`zabbix_agentd`, nixos repo: `modules/nixos/server/zabbix-agent.nix`), so either switch them to agent 2, or
-  give the classic agent `UserParameter`s that call `smartctl --json` (discovery of the disks, then their attributes)
-  with a template matching them.
-- **sudo**: `smartctl` needs root. The agent's user then needs a sudo rule for it alone, without password, e.g. in
-  `zabbix-agent.nix`: `security.sudo.extraRules` for user `zabbix-agent`, command
-  `/run/current-system/sw/bin/smartctl` with `NOPASSWD`. Agent 2's plugin needs the same.
+The NixOS servers with SMART disks (helios, file; not hermes, an SD card) run `smartd` (nixos repo: `modules/nixos/server/smartd.nix`): nightly short and weekly long self-tests, findings in their journal (`journalctl -u smartd`). In Zabbix, per-disk items and triggers come from the official *SMART by Zabbix agent 2 active* template (active: the agents only run active checks), linked to both in `template-links.json`. It needs agent 2's SMART plugin (nixos repo: `modules/nixos/server/zabbix-agent.nix`): `Plugins.Smart.Path` points to `smartctl`, which the plugin always runs as `sudo -n smartctl ...`, allowed to the agent's user (that command only, without password).

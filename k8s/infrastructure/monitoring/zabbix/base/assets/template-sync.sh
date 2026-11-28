@@ -5,8 +5,9 @@
 #    no longer has (items, triggers, graphs, discovery rules, web scenarios, dashboards, value maps) is deleted.
 # 2. Deletes our templates no longer in Git: only those tagged managed-by=homelab (each template here carries the tag).
 #    Never deleteMissing on templates themselves: that would delete every template the import lacks, official ones too.
-# 3. Links our templates to the hosts /links/template-links.json lists ({"<template>": ["<host>", ...]}), and unlinks
-#    and clears them from the hosts it no longer lists.
+# 3. Host links, of every template (ours and official): /links/template-links.json ({"<template>": ["<host>", ...]}) lists
+#    them all. Missing links are added; links it doesn't list are removed (unlinked and cleared), on every host but
+#    discovered ones.
 #
 # Any API error stops it, with the error: the Job fails, and Argo CD shows the sync's hook as failed.
 set -eu
@@ -64,17 +65,29 @@ if [ "$(printf '%s' "$gone" | jq 'length')" -gt 0 ]; then
     printf 'deleted: %s\n' "$(printf '%s' "$gone" | jq -r 'map(.host) | join(", ")')"
 fi
 
-# 3. Host links, for each of our templates
-printf '%s' "$managed" | jq -r '.[]' | while IFS= read -r name; do
-    template="$(call template.get "$(jq -cn --arg n "$name" '{output: ["templateid"], filter: {host: [$n]}, selectHosts: ["hostid", "host"]}')" | jq -c '.[0]')"
-    [ "$template" != null ] || { printf '%s: not found after import\n' "$name" >&2; exit 1; }
-    tid="$(printf '%s' "$template" | jq -r '.templateid')"
-    wanted="$(jq -c --arg n "$name" '.[$n] // []' /links/template-links.json)"
-    hosts="$(call host.get "$(jq -cn --argjson h "$wanted" '{output: ["hostid", "host"], filter: {host: $h}}')")"
-    missing="$(jq -cn --argjson w "$wanted" --argjson f "$hosts" '$w - ($f | map(.host))')"
-    [ "$missing" = '[]' ] || { printf '%s: hosts not found in Zabbix: %s\n' "$name" "$missing" >&2; exit 1; }
-    add="$(jq -cn --argjson f "$hosts" --argjson t "$template" '[$f[] | select(.hostid as $i | $t.hosts | map(.hostid) | index($i) | not)]')"
-    remove="$(jq -cn --argjson f "$hosts" --argjson t "$template" '[$t.hosts[] | select(.hostid as $i | $f | map(.hostid) | index($i) | not)]')"
+# 3. Host links: the file lists every template-host link, ours and official templates alike. Each template it lists,
+#    or that a host has, gets the listed hosts and only them. Discovered hosts (flags 4) are left alone: their templates
+#    come from their host prototype.
+hosts="$(call host.get '{"output": ["hostid", "host"], "filter": {"flags": 0}, "selectParentTemplates": ["templateid", "host"]}')"
+wanted="$(jq -c '[keys[]]' /links/template-links.json)"
+templates="$(call template.get "$(jq -cn --argjson n "$wanted" '{output: ["templateid", "host"], filter: {host: $n}}')")"
+missing="$(jq -cn --argjson w "$wanted" --argjson f "$templates" '$w - ($f | map(.host))')"
+[ "$missing" = '[]' ] || { printf 'templates not found in Zabbix: %s\n' "$missing" >&2; exit 1; }
+missing="$(jq -c --argjson f "$hosts" '[.[][]] - ($f | map(.host)) | unique' /links/template-links.json)"
+[ "$missing" = '[]' ] || { printf 'hosts not found in Zabbix: %s\n' "$missing" >&2; exit 1; }
+jq -c --argjson hosts "$hosts" --argjson templates "$templates" '. as $links
+    | ([$templates[], $hosts[].parentTemplates[]] | map({key: .host, value: .templateid}) | from_entries) as $ids
+    | [($links | keys[]), $hosts[].parentTemplates[].host] | unique | .[]
+    | . as $t | ($links[$t] // []) as $w
+    | {name: $t, tid: $ids[$t],
+       add: [$hosts[] | select((.host | IN($w[])) and (.parentTemplates | any(.host == $t) | not)) | {hostid, host}],
+       remove: [$hosts[] | select((.parentTemplates | any(.host == $t)) and (.host | IN($w[]) | not)) | {hostid, host}]}
+    | select(.add != [] or .remove != [])' /links/template-links.json > "$WORK/plan"
+while IFS= read -r change; do
+    name="$(printf '%s' "$change" | jq -r '.name')"
+    tid="$(printf '%s' "$change" | jq -r '.tid')"
+    add="$(printf '%s' "$change" | jq -c '.add')"
+    remove="$(printf '%s' "$change" | jq -c '.remove')"
     if [ "$add" != '[]' ]; then
         # From the host side: since Zabbix 6.0, template.massadd no longer links hosts
         call host.massadd "$(jq -cn --arg t "$tid" --argjson h "$add" '{hosts: ($h | map({hostid})), templates: [{templateid: $t}]}')" > /dev/null
@@ -84,5 +97,5 @@ printf '%s' "$managed" | jq -r '.[]' | while IFS= read -r name; do
         call host.massremove "$(jq -cn --arg t "$tid" --argjson h "$remove" '{hostids: ($h | map(.hostid)), templateids_clear: [$t]}')" > /dev/null
         printf '%s: unlinked and cleared from %s\n' "$name" "$(printf '%s' "$remove" | jq -r 'map(.host) | join(", ")')"
     fi
-done
+done < "$WORK/plan"
 echo 'templates in sync'

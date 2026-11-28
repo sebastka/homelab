@@ -1,4 +1,4 @@
-# Our templates (assets/templates/) and their host links (assets/template-links.json), brought in line with Git by
+# Our templates (assets/templates/) and every template's host links (assets/template-links.json), brought in line with Git by
 # Zabbix's API after every sync: assets/template-sync.sh. Authenticates with TEMPLATE_SYNC_API_TOKEN (zabbix-secrets):
 # the API token of a Zabbix user allowed to write templates and link them to hosts (Users > API tokens).
 ---
