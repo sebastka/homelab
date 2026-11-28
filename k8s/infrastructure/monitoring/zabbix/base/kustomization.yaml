@@ -22,7 +22,7 @@ resources:
 helmCharts:
   - name: zabbix
     repo: oci://ghcr.io/sebastka/charts
-    version: 0.1.9
+    version: 0.2.0
     releaseName: zabbix
     namespace: zabbix
     valuesFile: values.yaml
