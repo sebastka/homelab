@@ -76,7 +76,8 @@ printf '%s' "$managed" | jq -r '.[]' | while IFS= read -r name; do
     add="$(jq -cn --argjson f "$hosts" --argjson t "$template" '[$f[] | select(.hostid as $i | $t.hosts | map(.hostid) | index($i) | not)]')"
     remove="$(jq -cn --argjson f "$hosts" --argjson t "$template" '[$t.hosts[] | select(.hostid as $i | $f | map(.hostid) | index($i) | not)]')"
     if [ "$add" != '[]' ]; then
-        call template.massadd "$(jq -cn --arg t "$tid" --argjson h "$add" '{templates: [{templateid: $t}], hosts: ($h | map({hostid}))}')" > /dev/null
+        # From the host side: since Zabbix 6.0, template.massadd no longer links hosts
+        call host.massadd "$(jq -cn --arg t "$tid" --argjson h "$add" '{hosts: ($h | map({hostid})), templates: [{templateid: $t}]}')" > /dev/null
         printf '%s: linked to %s\n' "$name" "$(printf '%s' "$add" | jq -r 'map(.host) | join(", ")')"
     fi
     if [ "$remove" != '[]' ]; then
