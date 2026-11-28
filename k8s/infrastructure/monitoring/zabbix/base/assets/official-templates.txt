@@ -2,6 +2,7 @@
 # from Zabbix's repository, at the tag of the running server's version (https://github.com/zabbix/zabbix, under
 # templates/), after every Argo CD sync. A Zabbix upgrade therefore upgrades them too. One path per line, under
 # templates/; a file may hold several templates (all imported). List the ones linked in template-links.json.
+app/systemd/template_app_systemd.yaml
 app/zabbix_server/template_app_zabbix_server.yaml
 os/linux_active/template_os_linux_active.yaml
 server/smart_agent2_active/template_module_smart_agent2_active.yaml

@@ -19,3 +19,18 @@ spec:
   ports:
     - {name: ssh, protocol: TCP, port: 22,   targetPort: 22}
     - {name: nfs, protocol: TCP, port: 2049, targetPort: 2049}
+---
+# The Zabbix agent's passive checks (port 10050), from the Zabbix server's pod: a stable name for the host's interface
+# in Zabbix (zabbix-agent.file.svc.cluster.local), where the VM's pod address changes with each restart. ClusterIP only:
+# the server's pod address is kept, which the VM's firewall allows (the cluster's pods).
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-agent
+  namespace: file
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: file
+  ports:
+    - {name: zabbix-agent, protocol: TCP, port: 10050, targetPort: 10050}

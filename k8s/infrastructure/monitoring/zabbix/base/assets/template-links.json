@@ -2,5 +2,6 @@
   "Kopia backups": ["file.home.karlsen.fr"],
   "Linux by Zabbix agent active": ["file.home.karlsen.fr", "helios.home.karlsen.fr"],
   "SMART by Zabbix agent 2 active": ["file.home.karlsen.fr", "helios.home.karlsen.fr"],
+  "Systemd by Zabbix agent 2": ["file.home.karlsen.fr", "helios.home.karlsen.fr"],
   "Zabbix server health": ["Zabbix server"]
 }
