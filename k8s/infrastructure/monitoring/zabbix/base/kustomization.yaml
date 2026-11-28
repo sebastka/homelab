@@ -8,12 +8,16 @@ generatorOptions:
 
 configMapGenerator:
   - {namespace: zabbix, name: openldap-conf, files: [ldap.conf=assets/ldap.conf]}
+  - {namespace: zabbix, name: zabbix-template-sync-script, files: [template-sync.sh=assets/template-sync.sh]}
+  - {namespace: zabbix, name: zabbix-template-links, files: [template-links.json=assets/template-links.json]}
+  - {namespace: zabbix, name: zabbix-templates, files: [kopia-backups.yaml=assets/templates/kopia-backups.yaml]}
 
 resources:
   - Namespace.yaml
   - SealedSecret.zabbix-secrets.yaml  # POSTGRES_PASSWORD (database.existingSecret)
   - HTTPRoute.yaml
   - CiliumNetworkPolicy.yaml
+  - Job.template-sync.yaml
 
 helmCharts:
   - name: zabbix

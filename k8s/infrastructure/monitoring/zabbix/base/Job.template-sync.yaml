@@ -1,0 +1,60 @@
+# Our templates (assets/templates/) and their host links (assets/template-links.json), brought in line with Git by
+# Zabbix's API after every sync: assets/template-sync.sh. Authenticates with TEMPLATE_SYNC_API_TOKEN (zabbix-secrets):
+# the API token of a Zabbix user allowed to write templates and link them to hosts (Users > API tokens).
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: zabbix-template-sync
+  namespace: zabbix
+automountServiceAccountToken: false
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: zabbix-template-sync
+  namespace: zabbix
+  annotations:
+    argocd.argoproj.io/hook: PostSync  # After the server and frontend are up to date
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation  # Kept until the next sync, for its logs
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zabbix-template-sync
+        app.kubernetes.io/component: template-sync
+        app.kubernetes.io/part-of: zabbix
+        app.kubernetes.io/managed-by: kustomize
+    spec:
+      restartPolicy: Never
+      serviceAccountName: zabbix-template-sync
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: template-sync
+          image: registry.gitlab.com/gitlab-ci-utils/curl-jq:5.0.3@sha256:eaf99ecea8b7e4fbbe161db8ba6fa2099a1d53b4e108926492d3c6577135b1f0
+          command: [sh, /scripts/template-sync.sh]
+          env:
+            - {name: TEMPLATE_SYNC_API_TOKEN, valueFrom: {secretKeyRef: {name: zabbix-secrets, key: TEMPLATE_SYNC_API_TOKEN}}}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {memory: 32Mi}
+            limits: {memory: 128Mi}
+          volumeMounts:
+            - {name: scripts-volume,   mountPath: /scripts,   readOnly: true}
+            - {name: templates-volume, mountPath: /templates, readOnly: true}
+            - {name: links-volume,     mountPath: /links,     readOnly: true}
+            - {name: tmp-volume,       mountPath: /tmp}
+      volumes:
+        - {name: scripts-volume,   configMap: {name: zabbix-template-sync-script}}
+        - {name: templates-volume, configMap: {name: zabbix-templates}}
+        - {name: links-volume,     configMap: {name: zabbix-template-links}}
+        - {name: tmp-volume,       emptyDir: {sizeLimit: 16Mi}}

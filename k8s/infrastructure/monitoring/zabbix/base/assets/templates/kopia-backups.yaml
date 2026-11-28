@@ -1,0 +1,74 @@
+---
+# Zabbix template: Kopia's off-site backups on the file VM (nixos repo: hosts/file/backup.nix), from its kopia-status
+# job's status.json through the agent's kopia.status[*] keys. Import it (Data collection > Templates > Import), then
+# link it to file.home.karlsen.fr (Data collection > Hosts > file > Templates). Active checks, hourly; kopia-status
+# runs daily.
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: a571c0d144b14fd4a87a9d9b2aa9fcd6
+      name: Templates/Applications
+  templates:
+    - uuid: d15b240a35cb4d08a38e3700552dc85b
+      template: Kopia backups
+      name: Kopia backups
+      description: "Kopia's object locks on the Hetzner bucket (nixos repo: hosts/file/backup.nix)."
+      groups:
+        - name: Templates/Applications
+      tags:
+        - tag: managed-by  # template-sync.sh: ours, deleted from Zabbix when removed from Git
+          value: homelab
+      items:
+        - uuid: fd6f97a277144b1ca198d129a3d4e26c
+          name: 'Kopia: last successful lock renewal'
+          type: ZABBIX_ACTIVE
+          key: 'kopia.status[lastLockRenewal]'
+          delay: 1h
+          history: 90d
+          value_type: UNSIGNED
+          units: unixtime
+          description: "The end of full maintenance's last successful extend-blob-retention-time task (0: none)."
+          triggers:
+            - uuid: 61b0c74cdffb46cdbd37537c27f57bd8
+              expression: 'now()-last(/Kopia backups/kopia.status[lastLockRenewal])>3d'
+              name: 'Kopia: no successful full maintenance (lock renewal) in 3 days'
+              priority: HIGH
+              description: >-
+                The backups' object locks are only renewed by the nightly full maintenance (kopia-maintenance). See
+                journalctl -u kopia-maintenance, and sudo kopia maintenance info on file.
+        - uuid: c3dadd965c024441a466c0415711a20c
+          name: 'Kopia: oldest object lock'
+          type: ZABBIX_ACTIVE
+          key: 'kopia.status[oldestLock]'
+          delay: 1h
+          history: 90d
+          value_type: UNSIGNED
+          units: unixtime
+          description: 'The earliest lock expiry in a sample of pack blobs: the 16 oldest, 16 at random (0: unlocked).'
+          triggers:
+            - uuid: 002b9fb4be6342408d25dc050f4279fe
+              expression: 'last(/Kopia backups/kopia.status[oldestLock])-now()<7d'
+              name: 'Kopia: an object lock expires in less than 7 days'
+              priority: HIGH
+              description: >-
+                Once its lock expires, a pack blob can be deleted or overwritten with the bucket's key. Renewals
+                happen at each full maintenance: check that it runs and succeeds (journalctl -u kopia-maintenance).
+        - uuid: e2f0d596417645a1bd4fada743af83a5
+          name: 'Kopia: status checked'
+          type: ZABBIX_ACTIVE
+          key: 'kopia.status[checked]'
+          delay: 1h
+          history: 90d
+          value_type: UNSIGNED
+          units: unixtime
+          description: 'When kopia-status last succeeded (daily, 07:00).'
+          triggers:
+            - uuid: 06b8b7eadf8a4822be126205827329cc
+              expression: >-
+                nodata(/Kopia backups/kopia.status[checked],2d)=1 or
+                now()-last(/Kopia backups/kopia.status[checked])>2d
+              name: 'Kopia: status not updated in 2 days'
+              priority: AVERAGE
+              description: >-
+                kopia-status failed or didn't run (journalctl -u kopia-status on file), or the agent can't read its
+                file: the two other triggers can't be trusted until it's fixed.

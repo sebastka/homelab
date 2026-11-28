@@ -24,7 +24,19 @@ spec:
   endpointSelector: {matchLabels: {app.kubernetes.io/name: zabbix-web}}
   ingress:
     - {fromEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: envoy-gateway-system}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Envoy Gateway
+    - {fromEndpoints: [matchLabels: {app.kubernetes.io/name: zabbix-template-sync}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Job.template-sync.yaml: the API
   egress:
     - {toEndpoints: [{matchLabels: {k8s:io.kubernetes.pod.namespace: zabbix, app.kubernetes.io/name: zabbix-server}}], toPorts: [ports: [{port: '10051', protocol: TCP}]]}  # Zabbix server API
     - {toEndpoints: [matchLabels: {k8s:io.kubernetes.pod.namespace: postgres, app.kubernetes.io/name: postgres, app.kubernetes.io/component: server}], toPorts: [ports: [{port: '5432', protocol: TCP}]]}
     - {toEndpoints: [{matchLabels: {'k8s:io.kubernetes.pod.namespace': light-ldap, app.kubernetes.io/name: light-ldap}}], toPorts: [ports: [{port: '6360', protocol: TCP}]]}  # ldaps
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-template-sync
+  namespace: zabbix
+spec:
+  endpointSelector: {matchLabels: {app.kubernetes.io/name: zabbix-template-sync}}
+  # ingress: []
+  egress:
+    - {toEndpoints: [matchLabels: {app.kubernetes.io/name: zabbix-web}], toPorts: [ports: [{port: '8080', protocol: TCP}]]}  # Zabbix's API (api_jsonrpc.php)
