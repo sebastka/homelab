@@ -6,6 +6,6 @@ images:
   - {name: alpine,         newName: docker.io/library/alpine,  newTag: 3.24.4,          digest: sha256:f59abe656b692d901e184be3445e084786602108599d2a51d229c0f5a48c71bf}
   - {name: alpine/kubectl, newName: docker.io/alpine/kubectl,  newTag: 1.37.3,          digest: sha256:266a17d072fcee990846c7058d5c4857c73c3f6aec1f33a12036aea2b597e0df}
   - {name: busybox,        newName: docker.io/library/busybox, newTag: 1.38.0-glibc,    digest: sha256:99813cb178ace2cd9c6c53ee3bddef5d2f5708aa438335111d7a9e3c5e1aaebe}
-  - {name: mariadb,        newName: dhi.io/mariadb,            newTag: 13.2.1-debian13, digest: sha256:a45fc8b59fc595dcae5c3f3ab2dc1f0e5dc0f7f5b6c8153f62fb4ef8bdf479d8}
+  - {name: mariadb,        newName: dhi.io/mariadb,            newTag: 13.2.1-debian13, digest: sha256:d17c01d8a76b197fc5dc9b9e86ffcad16d8aed9bac68e18dfd111f2f0942e891}
   - {name: postgres,       newName: dhi.io/postgres,           newTag: 18.7-alpine3.24, digest: sha256:1aac9fc413387ff382fa3d52b6646d0dc97f6e555699b6a8511398f1cf91d30b}
   - {name: valkey,         newName: dhi.io/valkey,             newTag: 9.2.1-debian13,  digest: sha256:7d7a29a35cf70266071d15a7de605011fc5bd160a45876947b409b4855d2ee3d}
